@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f3d2e">
+  <meta name="description" content="CloakAI is an invisible AI assistant for interviews. Hidden from screenshare. Instant answers. Only YOU can see it. Windows 10/11.">
+  <meta property="og:title" content="CloakAI – Invisible Interview Assistant">
+  <meta property="og:description" content="Instant AI answers, invisible to screenshare. Trusted by hundreds of job seekers across India.">
+  <meta property="og:url" content="https://cloakai.in">
+  <meta property="og:type" content="website">
+  <title>CloakAI – The Invisible Interview Assistant | AI Only You Can See</title>
+
+  <style>
+    :root{
+      --pg:#0f3d2e;--ag:#2ecc71;--gg:#00ff88;
+      --bg:#050a07;--tc:#e0e0e0;--cb:rgba(15,61,46,.6);
+      --gb:1px solid rgba(46,204,113,.3);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    body{background:var(--bg);color:var(--tc);overflow-x:hidden;min-height:100vh;}
+
+    /* ── Background ────────────────────────────────────────────── */
+    .cursor-glow{position:fixed;width:600px;height:600px;background:radial-gradient(circle,rgba(46,204,113,.08) 0%,transparent 70%);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);z-index:0;mix-blend-mode:screen;}
+    .bg-anim{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 50% 50%,rgba(15,61,46,.4) 0%,transparent 60%),linear-gradient(0deg,var(--bg) 0%,#0a1410 100%);}
+    .fog{position:absolute;width:200%;height:200%;background:url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)" opacity="0.05"/%3E%3C/svg%3E');animation:drift 60s linear infinite;opacity:.3;}
+    @keyframes drift{0%{transform:translate(-50%,-50%) rotate(0deg);}100%{transform:translate(0,0) rotate(360deg);}}
+    .particle{position:absolute;background:var(--gg);border-radius:50%;opacity:.3;animation:pfloat 10s infinite ease-in-out;}
+    @keyframes pfloat{0%,100%{transform:translateY(0) translateX(0);opacity:0;}50%{opacity:.5;}100%{transform:translateY(-100px) translateX(50px);opacity:0;}}
+
+    /* ── Layout ────────────────────────────────────────────────── */
+    .wrap{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
+
+    /* ── Header ────────────────────────────────────────────────── */
+    header{position:sticky;top:0;z-index:900;background:rgba(5,10,7,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);}
+    .header-inner{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
+    .logo{font-size:1.7rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:9px;text-decoration:none;}
+    .logo svg{width:34px;height:34px;fill:var(--gg);}
+    nav a{color:var(--tc);text-decoration:none;margin-left:18px;transition:color .3s;font-weight:500;font-size:.93rem;}
+    nav a:hover{color:var(--gg);}
+    .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:8px 18px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
+    .nav-cta:hover{box-shadow:0 0 14px rgba(46,204,113,.5);}
+
+    /* ── Hero ──────────────────────────────────────────────────── */
+    .hero{text-align:center;padding:80px 20px 60px;}
+    .badge{display:inline-block;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.4);color:var(--gg);padding:6px 18px;border-radius:30px;font-size:.83rem;font-weight:600;letter-spacing:.5px;margin-bottom:24px;animation:badgePulse 2.5s ease-in-out infinite;}
+    @keyframes badgePulse{0%,100%{box-shadow:0 0 0 rgba(46,204,113,0);}50%{box-shadow:0 0 16px rgba(46,204,113,.35);}}
+
+    /* ── Glitch (restored full keyframes from original) ────────── */
+    .glitch-wrap{display:inline-block;position:relative;max-width:100%;}
+    .glitch{position:relative;color:#fff;font-size:5rem;font-weight:800;word-wrap:break-word;letter-spacing:-2px;}
+    .glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);}
+    .glitch::before{left:2px;text-shadow:-2px 0 #ff00c1;clip:rect(44px,450px,56px,0);animation:glitch-anim 5s infinite linear alternate-reverse;}
+    .glitch::after{left:-2px;text-shadow:-2px 0 #00fff9;clip:rect(44px,450px,56px,0);animation:glitch-anim2 5s infinite linear alternate-reverse;}
+    @keyframes glitch-anim{
+      0%{clip:rect(30px,9999px,10px,0);}5%{clip:rect(80px,9999px,90px,0);}
+      10%{clip:rect(30px,9999px,10px,0);}15%{clip:rect(90px,9999px,20px,0);}
+      20%{clip:rect(10px,9999px,80px,0);}25%{clip:rect(50px,9999px,90px,0);}
+      30%{clip:rect(20px,9999px,40px,0);}35%{clip:rect(70px,9999px,30px,0);}
+      40%{clip:rect(60px,9999px,10px,0);}45%{clip:rect(20px,9999px,50px,0);}
+      50%{clip:rect(90px,9999px,70px,0);}55%{clip:rect(10px,9999px,30px,0);}
+      60%{clip:rect(50px,9999px,20px,0);}65%{clip:rect(30px,9999px,80px,0);}
+      70%{clip:rect(80px,9999px,40px,0);}75%{clip:rect(40px,9999px,90px,0);}
+      80%{clip:rect(20px,9999px,60px,0);}85%{clip:rect(70px,9999px,10px,0);}
+      90%{clip:rect(10px,9999px,50px,0);}95%{clip:rect(60px,9999px,30px,0);}
+      100%{clip:rect(30px,9999px,70px,0);}
+    }
+    @keyframes glitch-anim2{
+      0%{clip:rect(10px,9999px,50px,0);}5%{clip:rect(60px,9999px,20px,0);}
+      10%{clip:rect(20px,9999px,80px,0);}15%{clip:rect(80px,9999px,10px,0);}
+      20%{clip:rect(40px,9999px,60px,0);}25%{clip:rect(70px,9999px,30px,0);}
+      30%{clip:rect(30px,9999px,90px,0);}35%{clip:rect(90px,9999px,40px,0);}
+      40%{clip:rect(10px,9999px,70px,0);}45%{clip:rect(50px,9999px,20px,0);}
+      50%{clip:rect(20px,9999px,60px,0);}55%{clip:rect(60px,9999px,10px,0);}
+      60%{clip:rect(80px,9999px,50px,0);}65%{clip:rect(10px,9999px,30px,0);}
+      70%{clip:rect(40px,9999px,80px,0);}75%{clip:rect(90px,9999px,20px,0);}
+      80%{clip:rect(30px,9999px,70px,0);}85%{clip:rect(70px,9999px,40px,0);}
+      90%{clip:rect(50px,9999px,90px,0);}95%{clip:rect(20px,9999px,10px,0);}
+      100%{clip:rect(60px,9999px,50px,0);}
+    }
+
+    .hero-sub{font-size:1.2rem;margin:18px auto 0;color:#aaa;max-width:680px;font-weight:300;line-height:1.75;min-height:55px;}
+    .typing-cursor::after{content:'|';animation:blink 1s step-start infinite;color:var(--gg);}
+    @keyframes blink{50%{opacity:0;}}
+    .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:28px auto;max-width:720px;}
+    .pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 15px;font-size:.82rem;color:#bbb;display:flex;align-items:center;gap:6px;}
+    .pill .dot{width:7px;height:7px;background:var(--gg);border-radius:50%;flex-shrink:0;}
+    .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px;}
+    .btn{display:inline-block;padding:14px 34px;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;text-decoration:none;border-radius:30px;font-weight:700;font-size:1.05rem;box-shadow:0 0 20px rgba(46,204,113,.4);transition:transform .3s,box-shadow .3s;border:1px solid var(--gg);position:relative;overflow:hidden;cursor:pointer;}
+    .btn:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 0 36px rgba(46,204,113,.6);}
+    .btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
+    @keyframes shine{0%{transform:translateX(-100%) rotate(45deg);}100%{transform:translateX(100%) rotate(45deg);}}
+    .btn-outline{display:inline-block;padding:13px 30px;background:transparent;color:var(--gg);text-decoration:none;border-radius:30px;font-weight:600;font-size:1rem;border:1px solid var(--gg);transition:.3s;cursor:pointer;display:flex;align-items:center;gap:9px;}
+    .btn-outline:hover{background:rgba(46,204,113,.1);}
+    .win-icon{flex-shrink:0;}
+    .hero-note{margin-top:16px;font-size:.8rem;color:#555;}
+
+    /* ── Trust ─────────────────────────────────────────────────── */
+    .trust-bar{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:28px;margin:40px 0;padding:22px 20px;background:rgba(255,255,255,.02);border-radius:14px;border:1px solid rgba(255,255,255,.05);}
+    .trust-item{text-align:center;}
+    .trust-num{font-size:1.9rem;font-weight:800;color:var(--gg);line-height:1;}
+    .trust-label{font-size:.78rem;color:#777;margin-top:4px;}
+
+    /* ── Sections ──────────────────────────────────────────────── */
+    .sh{text-align:center;margin-bottom:14px;}
+    .sh h2{font-size:2.5rem;font-weight:800;}
+    .sh p{color:#888;font-size:.97rem;margin-top:10px;max-width:620px;margin-left:auto;margin-right:auto;}
+    section{margin:80px 0;}
+
+    /* ── How It Works ──────────────────────────────────────────── */
+    .steps{display:flex;gap:0;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin-top:50px;}
+    .step{flex:1;min-width:150px;max-width:190px;text-align:center;padding:0 14px;position:relative;}
+    .step:not(:last-child)::after{content:'';position:absolute;right:-8px;top:28px;width:16px;height:2px;background:linear-gradient(90deg,var(--gg),transparent);}
+    .step-ico{width:60px;height:60px;border-radius:50%;margin:0 auto 14px;background:rgba(46,204,113,.1);border:2px solid var(--gg);display:flex;align-items:center;justify-content:center;font-size:1.7rem;}
+    .step h4{font-size:.92rem;color:#fff;margin-bottom:5px;font-weight:700;}
+    .step p{font-size:.8rem;color:#777;line-height:1.5;}
+
+    /* ── Features ──────────────────────────────────────────────── */
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;margin-top:46px;}
+    .card{background:var(--cb);padding:26px 22px;border-radius:15px;border:var(--gb);backdrop-filter:blur(10px);transition:transform .4s,box-shadow .4s;text-align:center;}
+    .card:hover{transform:translateY(-8px);box-shadow:0 12px 28px rgba(0,0,0,.5);border-color:var(--gg);}
+    .card-ico{font-size:2.2rem;margin-bottom:14px;}
+    .card h3{font-size:1.1rem;margin-bottom:8px;color:#fff;font-weight:700;}
+    .card p{font-size:.86rem;color:#aaa;line-height:1.65;}
+    .card.unique{border-color:rgba(46,204,113,.5);background:linear-gradient(160deg,rgba(15,61,46,.55),rgba(5,10,7,.7));}
+    .card.unique .unique-badge{display:inline-block;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.4);color:var(--gg);padding:2px 10px;border-radius:10px;font-size:.7rem;font-weight:700;letter-spacing:.4px;margin-bottom:8px;}
+
+    /* ── Demo ──────────────────────────────────────────────────── */
+    .demo-wrap{max-width:900px;margin:40px auto 0;padding:22px;background:linear-gradient(180deg,rgba(15,61,46,.6),rgba(5,10,7,.8));border-radius:20px;border:1px solid rgba(46,204,113,.4);box-shadow:0 0 36px rgba(46,204,113,.12);backdrop-filter:blur(10px);}
+    .demo-vid{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#000;}
+    .demo-vid iframe,.demo-vid video{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+    .demo-cap{margin-top:18px;color:#888;font-size:.88rem;line-height:1.6;}
+    .demo-cap span{color:var(--gg);font-weight:600;}
+
+    /* ── Pricing ───────────────────────────────────────────────── */
+    .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:46px;}
+    .pc{background:linear-gradient(180deg,rgba(15,61,46,.7),rgba(5,10,7,.8));padding:34px 20px;border-radius:20px;border:1px solid #222;transition:.3s;position:relative;overflow:hidden;text-align:center;}
+    .pc.pop{border-color:var(--gg);box-shadow:0 0 24px rgba(46,204,113,.15);}
+    .pc:hover{transform:scale(1.03);}
+    .pc-badge-pop{position:absolute;top:0;right:0;background:var(--ag);color:#000;padding:5px 13px;font-size:.72rem;font-weight:800;letter-spacing:.5px;border-bottom-left-radius:12px;}
+    .pc h3{font-size:1rem;color:#aaa;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:10px;}
+    .pc-price{font-size:2.6rem;font-weight:900;color:var(--gg);line-height:1;margin:10px 0 3px;}
+    .pc-price sup{font-size:1.1rem;font-weight:700;}
+    .pc-rate{font-size:.75rem;color:var(--ag);margin-bottom:4px;font-weight:600;}
+    .pc-per{font-size:.82rem;color:#555;margin-bottom:14px;}
+    .pc-feats{list-style:none;margin:14px 0 22px;text-align:left;}
+    .pc-feats li{font-size:.83rem;color:#aaa;padding:4px 0;display:flex;align-items:center;gap:8px;}
+    .pc-feats li::before{content:'✓';color:var(--gg);font-weight:700;flex-shrink:0;}
+    .btn-buy{width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(46,204,113,.2);}
+    .btn-buy:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(46,204,113,.35);}
+    .pricing-note{text-align:center;margin-top:24px;color:#444;font-size:.8rem;line-height:1.8;}
+    .pricing-note a{color:var(--ag);text-decoration:underline;}
+
+    /* ── Process Diagram ───────────────────────────────────────── */
+    .proc-box{margin-top:60px;background:rgba(255,255,255,.02);padding:36px;border-radius:20px;border:1px solid rgba(255,255,255,.05);}
+    .proc-box h3{text-align:center;margin-bottom:28px;font-size:1.3rem;}
+
+    /* ── Reviews ───────────────────────────────────────────────── */
+    .review-card{background:rgba(255,255,255,.04);padding:22px;border-radius:13px;border-left:3px solid var(--ag);border-top:1px solid rgba(255,255,255,.05);}
+    .stars{color:#f1c40f;margin-bottom:9px;font-size:.95rem;display:flex;}
+    .rev-text{color:#ccc;font-size:.88rem;line-height:1.7;font-style:italic;}
+    .rev-author{margin-top:13px;font-weight:700;color:#666;font-size:.83rem;}
+    .rev-role{font-size:.76rem;color:#444;margin-top:2px;}
+
+    /* ── FAQ ───────────────────────────────────────────────────── */
+    .faq-wrap{max-width:820px;margin-left:auto;margin-right:auto;}
+    .faq-item{margin-bottom:7px;border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;}
+    .faq-q{padding:15px 18px;cursor:pointer;font-weight:600;font-size:.93rem;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.02);transition:.2s;}
+    .faq-q:hover{background:rgba(46,204,113,.06);}
+    .faq-q .ic{color:var(--gg);font-size:1.15rem;font-weight:300;transition:transform .3s;flex-shrink:0;margin-left:12px;}
+    .faq-a{padding:0 18px 14px;color:#999;font-size:.88rem;line-height:1.75;display:none;}
+    .faq-item.open .faq-a{display:block;}
+    .faq-item.open .faq-q{color:var(--gg);background:rgba(46,204,113,.06);}
+    .faq-item.open .ic{transform:rotate(45deg);}
+
+    /* ── Footer ────────────────────────────────────────────────── */
+    footer{background:rgba(0,0,0,.88);padding:44px 20px 28px;border-top:1px solid #181818;text-align:center;margin-top:80px;}
+    .footer-logo{font-size:1.5rem;font-weight:800;color:var(--gg);margin-bottom:10px;}
+    .footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:18px 0;}
+    .footer-links a{color:#555;text-decoration:none;font-size:.85rem;transition:.2s;}
+    .footer-links a:hover{color:var(--gg);}
+    .footer-copy{color:#333;font-size:.8rem;margin-top:14px;line-height:1.8;}
+    .footer-disc{color:#2a2a2a;font-size:.73rem;margin-top:10px;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.6;}
+
+    /* ── Reveal ────────────────────────────────────────────────── */
+    .reveal{opacity:0;transform:translateY(38px);transition:all .7s cubic-bezier(.5,0,0,1);}
+    .reveal.on{opacity:1;transform:translateY(0);}
+
+    /* ── Modals ────────────────────────────────────────────────── */
+    .mo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.87);z-index:2000;justify-content:center;align-items:center;backdrop-filter:blur(6px);}
+    .mo.open{display:flex;}
+    .mc{background:var(--bg);border:1px solid var(--gg);padding:36px;border-radius:18px;max-width:720px;width:92%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 0 56px rgba(46,204,113,.12);animation:mpop .22s ease-out;}
+    @keyframes mpop{from{transform:scale(.88);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .mc::-webkit-scrollbar{width:5px;}
+    .mc::-webkit-scrollbar-track{background:rgba(0,0,0,.3);}
+    .mc::-webkit-scrollbar-thumb{background:var(--pg);border-radius:3px;}
+    .close-mc{position:absolute;top:14px;right:18px;font-size:1.7rem;color:#444;cursor:pointer;transition:.2s;background:none;border:none;line-height:1;z-index:10;}
+    .close-mc:hover{color:var(--gg);}
+    .mt{color:var(--gg);font-size:1.4rem;font-weight:700;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(46,204,113,.2);}
+
+    /* ── Pay Modal ─────────────────────────────────────────────── */
+    .pm-card{background:linear-gradient(160deg,#0A0F1A,#060C16);border-color:rgba(52,211,153,.3);}
+    .plan-prev{background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.2);border-radius:11px;padding:16px 18px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;}
+    .plan-prev-name{font-weight:700;color:#fff;font-size:1.05rem;}
+    .plan-prev-price{color:var(--gg);font-size:1.4rem;font-weight:900;}
+    .plan-prev-dur{color:#777;font-size:.8rem;margin-top:2px;}
+    .flabel{display:block;font-size:.78rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;}
+    .finput{width:100%;background:#111827;border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 14px;font-size:14px;color:#E2E8F0;outline:none;transition:.2s;font-family:inherit;margin-bottom:14px;}
+    .finput:focus{border-color:rgba(52,211,153,.5);background:#131B2B;}
+    .btn-pay{width:100%;padding:13px;border-radius:11px;border:none;background:linear-gradient(90deg,#10B981,#34D399);color:#022c22;font-size:.97rem;font-weight:800;cursor:pointer;transition:.2s;margin-top:4px;}
+    .btn-pay:hover{opacity:.9;transform:translateY(-1px);}
+    .btn-pay:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+    .pm-msg{text-align:center;font-size:.85rem;margin-top:9px;min-height:18px;}
+    .pm-msg.err{color:#EF4444;}.pm-msg.inf{color:#94A3B8;}
+    .pm-footer{text-align:center;margin-top:18px;color:#2c3e50;font-size:.76rem;line-height:1.7;}
+    .pm-footer a{color:var(--ag);}
+    .spin{display:none;width:18px;height:18px;border:3px solid rgba(2,44,34,.3);border-top-color:#022c22;border-radius:50%;animation:sp .6s linear infinite;margin:0 auto;}
+    @keyframes sp{to{transform:rotate(360deg);}}
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media(max-width:768px){
+      .glitch{font-size:2.2rem;letter-spacing:-1px;}
+      .hero{padding:60px 20px 40px;}
+      .header-inner{flex-direction:column;gap:12px;}
+      .cursor-glow{display:none;}
+      .btn,.btn-outline{width:100%;justify-content:center;}
+      .cta-group{flex-direction:column;align-items:center;}
+      .step:not(:last-child)::after{display:none;}
+      .mc{padding:22px;}
+      .sh h2{font-size:2rem;}
+    }
+    @media(max-width:480px){
+      .glitch{font-size:1.8rem;}
+      .trust-num{font-size:1.6rem;}
+    }
+  
+    /* ── Hamburger nav ─────────────────────────────────────────── */
+    header{position:relative;}
+    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;
+      background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
+    .ham span{display:block;width:22px;height:2px;background:var(--gg);
+      border-radius:2px;transition:transform .28s,opacity .28s;}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    @media(max-width:860px){
+      .ham{display:flex;}
+      #mnav{display:none;position:absolute;top:100%;left:0;right:0;
+        background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);
+        backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;
+        gap:2px;z-index:1000;}
+      #mnav.open{display:flex;}
+      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;
+        font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
+      #mnav a:last-child{border-bottom:none;}
+      .nav-cta{margin-top:10px!important;text-align:center;display:block;
+        padding:11px 16px!important;}
+      .header-inner{flex-direction:row!important;justify-content:space-between!important;
+        align-items:center!important;gap:0!important;}
+    }
+    </style>
+</head>
+<body>
+
+<!-- PAYMENT CONFIG -->
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx409E_TH81WF6xpZqGohh5AnCSV5vFWKXQ1zz63a_ibK0kYXXugfgpvUTB0Q6h5Te-/exec';
+  const BYPASS     = false; // set false when PhonePe is approved
+
+  const PLANS = {
+    day:     {name:'1 Day Access',    price:'₹1',    period:'24 hours',  rate:'₹30/hour', label:'Get 1 Day Access'},
+    week:    {name:'1 Week Access',   price:'₹3,360',  period:'7 days',    rate:'₹20/hour', label:'Get Weekly Access'},
+    month:   {name:'1 Month Access',  price:'₹7,200',  period:'30 days',   rate:'₹10/hour', label:'Get Monthly Access'},
+    quarter: {name:'3 Month Access',  price:'₹10,000', period:'90 days',   rate:'₹4.6/hour',label:'Get Quarterly Access'},
+  };
+  window.trackEvent=(c,a,l)=>console.log(`[Track] ${c}:${a}${l?' / '+l:''}`);
+</script>
+
+<!-- BG -->
+<div class="cursor-glow" id="cg"></div>
+<div class="bg-anim"><div class="fog"></div></div>
+<div id="particles"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+      CloakAI
+    </a>
+    <nav id="mnav">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="license-info.html">License Status</a>
+      <a href="#pricing" class="nav-cta">Get Access</a>
+    </nav>
+    <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">🇮🇳 Try CloakAI free for 10 minutes &nbsp;·&nbsp; Pay only if you like it</div>
+  <div class="glitch-wrap">
+    <h1 class="glitch" data-text="The AI Only You Can See">The AI Only You Can See</h1>
+  </div>
+  <p class="hero-sub"><span id="tt"></span><span class="typing-cursor"></span></p>
+  <div class="pills">
+    <div class="pill"><div class="dot"></div>🇮🇳 Trusted by 2700+ job seekers</div>
+    <div class="pill"><div class="dot"></div>Invisible to Zoom, Teams &amp; Meet</div>
+    <div class="pill"><div class="dot"></div>Real-time AI answers</div>
+    <div class="pill"><div class="dot"></div>Auto-listens when you speak</div>
+    <div class="pill"><div class="dot"></div>Hidden from all screen recorders</div>
+    <div class="pill"><div class="dot"></div>Windows 10 &amp; 11</div>
+  </div>
+    <div class="cta-group">
+    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from &#x20B9;720</a>
+    <a href="https://drive.google.com/file/d/1pQne3_L6x1VIRJBxl0KI-4WEUm8jZZOe/view?usp=sharing" class="btn-outline" onclick="trackEvent('Hero','Download','Win')">
+      <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="var(--gg)">
+        <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+      </svg>
+      Download for Windows
+    </a>
+  </div>
+  <p class="hero-note" style="line-height:1.7;">10-minute free trial on first launch &nbsp;&middot;&nbsp; No card required &nbsp;&middot;&nbsp; License key required after trial</p>
+</section>
+
+<!-- TRUST -->
+<div class="trust-bar reveal">
+  <div class="trust-item"><div class="trust-num">500+</div><div class="trust-label">Active Users</div></div>
+  <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Avg Rating</div></div>
+  <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
+  <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
+  <div class="trust-item"><div class="trust-num">24/7</div><div class="trust-label">Email Support</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="reveal">
+  <div class="sh"><h2>Up and Running in 3 Minutes</h2><p>From payment to active overlay, faster than a cup of chai.</p></div>
+  <div class="steps">
+    <div class="step"><div class="step-ico">💳</div><h4>Choose a Plan</h4><p>Pick a plan below, enter your email, and complete payment securely via PhonePe.</p></div>
+    <div class="step"><div class="step-ico">📧</div><h4>Get Your Key</h4><p>Your license key is emailed to you automatically within seconds of payment confirmation.</p></div>
+    <div class="step"><div class="step-ico">🔓</div><h4>Activate</h4><p>Open CloakAI on your Windows machine and enter the key. Active in under a minute.</p></div>
+    <div class="step"><div class="step-ico">🚀</div><h4>Interview Confidently</h4><p>Real-time answers, only you can see them. Walk into every round prepared.</p></div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo" class="reveal">
+  <div class="sh"><h2>See CloakAI in Action</h2><p>Watch how it stays completely invisible while delivering instant answers during a live interview.</p></div>
+  <div class="demo-wrap">
+    <div class="demo-vid">
+      <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="CloakAI Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="demo-cap"><span>Highlights:</span> Transparent overlay · F8 toggle · Auto-listens · Instant AI responses · Zero screenshare visibility</div>
+    <div style="margin-top:22px;text-align:center;"><a href="#pricing" class="btn">Get Access Now</a></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="reveal">
+  <div class="sh"><h2>Features Your Competition Doesn't Have</h2><p>CloakAI is built for the reality of modern interviews, not just the theory of them.</p></div>
+  <div class="grid-3">
+
+    <!-- Unique differentiators first -->
+    <div class="card unique">
+      <div class="unique-badge">EXCLUSIVE</div>
+      <div class="card-ico">💾</div>
+      <h3>Full Interview Transcript Saved</h3>
+      <p>Every question asked and every answer generated during your session is automatically stored. Download the complete session log anytime with one click. Review what worked, what didn't, and keep improving.</p>
+    </div>
+
+    <div class="card unique">
+      <div class="unique-badge">EXCLUSIVE</div>
+      <div class="card-ico">🖥</div>
+      <h3>Screen Capture and Analyse</h3>
+      <p>Screenshot your entire screen and instantly ask CloakAI what's on it. Works on coding challenges shown inside shared documents, problem statements pasted in the interview window, or any on-screen content you cannot copy-paste from.</p>
+    </div>
+
+    <div class="card unique">
+      <div class="unique-badge">EXCLUSIVE</div>
+      <div class="card-ico">◀▶</div>
+      <h3>Browse Your Last 5 Answers</h3>
+      <p>Accidentally cleared your screen or moved to a follow-up question? Navigate through your last 5 answers with a single click, mid-interview, without losing the live feed. No other tool does this.</p>
+    </div>
+
+    <div class="card unique">
+      <div class="unique-badge">EXCLUSIVE</div>
+      <div class="card-ico">🧩</div>
+      <h3>Context-Aware Answers</h3>
+      <p>Tell CloakAI about your interview beforehand including the company, role, tech stack, and your experience level. Every answer it generates is then tailored to your specific situation, not generic textbook responses.</p>
+    </div>
+
+    <!-- Core features -->
+    <div class="card">
+      <div class="card-ico">👻</div>
+      <h3>Completely Invisible</h3>
+      <p>CloakAI uses a Windows-level display method that makes the overlay uncapturable by screenshare software on Zoom, Teams, Google Meet, and all recording tools. It is only visible on your physical screen.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-ico">🧠</div>
+      <h3>Powered by GPT-4o</h3>
+      <p>Backed by one of the most capable AI models available. Handles LeetCode problems, system design, SQL queries, behavioral questions, finance, and domain-specific topics with step-by-step answers.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-ico">🎙</div>
+      <h3>Smart Audio Listening</h3>
+      <p>Automatically starts capturing when the interviewer speaks and stops when they finish. No buttons to hold down. No manual timing. Or switch to push-to-listen mode if you prefer full control.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-ico">🕹</div>
+      <h3>Stealth Controls</h3>
+      <p>F8 instantly hides or shows the window. ESC exits. Hold Ctrl to let your mouse click through the overlay as if it isn't there. Drag to any part of your screen. Resize. Adjust transparency. All in real time.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-ico">🔒</div>
+      <h3>Privacy by Design</h3>
+      <p>Your audio is processed in real time and immediately discarded. No recordings. No stored conversations. No data sold to third parties. What happens in your interview stays on your device.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="reveal">
+  <div style="text-align:center;margin-bottom:32px;">
+    <div style="display:inline-block;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.2);border-radius:12px;padding:12px 24px;font-size:.87rem;color:#64748B;line-height:1.7;">
+      New to CloakAI? Your first launch includes a <strong style="color:#34D399;">10-minute free trial</strong> with all features active. No card needed.
+    </div>
+  </div>
+  <div class="sh"><h2>Simple, Pay-as-You-Go Pricing</h2><p>No subscriptions. No auto-renewals. Pay once, receive your license key instantly by email.</p></div>
+  <div class="pricing-grid">
+
+    <div class="pc">
+      <h3>1 Day</h3>
+      <div class="pc-price"><sup>₹</sup>720</div>
+      <div class="pc-rate">₹30 per hour</div>
+      <div class="pc-per">24 hours access</div>
+      <ul class="pc-feats">
+        <li>All features unlocked</li>
+        <li>Session transcript saved</li>
+        <li>Screen capture and analyse</li>
+        <li>5-answer history browse</li>
+      </ul>
+      <button class="btn-buy" onclick="openPay('day')">Get 1 Day Access</button>
+    </div>
+
+    <div class="pc">
+      <h3>1 Week</h3>
+      <div class="pc-price"><sup>₹</sup>3,360</div>
+      <div class="pc-rate">₹20 per hour</div>
+      <div class="pc-per">7 days access</div>
+      <ul class="pc-feats">
+        <li>All features unlocked</li>
+        <li>Session transcript saved</li>
+        <li>Context profile per interview</li>
+        <li>Email support</li>
+      </ul>
+      <button class="btn-buy" onclick="openPay('week')">Get Weekly Access</button>
+    </div>
+
+    <div class="pc pop">
+      <div class="pc-badge-pop">BEST VALUE</div>
+      <h3>1 Month</h3>
+      <div class="pc-price"><sup>₹</sup>7,200</div>
+      <div class="pc-rate">₹10 per hour</div>
+      <div class="pc-per">30 days access</div>
+      <ul class="pc-feats">
+        <li>All features unlocked</li>
+        <li>Unlimited interview sessions</li>
+        <li>Full session history export</li>
+        <li>Priority email support</li>
+      </ul>
+      <button class="btn-buy" onclick="openPay('month')">Get Monthly Access</button>
+    </div>
+
+    <div class="pc">
+      <h3>3 Months</h3>
+      <div class="pc-price"><sup>₹</sup>10,000</div>
+      <div class="pc-rate">₹4.6 per hour</div>
+      <div class="pc-per">90 days access</div>
+      <ul class="pc-feats">
+        <li>Everything in Monthly</li>
+        <li>Lowest cost per session</li>
+        <li>For extended job searches</li>
+        <li>Priority email support</li>
+      </ul>
+      <button class="btn-buy" onclick="openPay('quarter')">Get Quarterly Access</button>
+    </div>
+
+  </div>
+
+  <div class="pricing-note">
+    🔒 Payments secured by PhonePe &nbsp;·&nbsp; License key sent instantly to your email &nbsp;·&nbsp;
+    <a href="refund.html">Refund Policy</a> &nbsp;·&nbsp;
+    Questions? <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a>
+  </div>
+
+  <div class="proc-box">
+    <h3>How the Process Works</h3>
+    <div style="overflow-x:auto;padding:10px 0;">
+      <svg viewBox="0 0 800 150" xmlns="http://www.w3.org/2000/svg" style="min-width:560px;margin:0 auto;display:block;">
+        <g transform="translate(100,75)"><circle cx="0" cy="0" r="38" fill="rgba(46,204,113,.1)" stroke="#00ff88" stroke-width="2"/><text x="0" y="6" text-anchor="middle" font-size="22">💳</text><text x="0" y="58" text-anchor="middle" fill="#aaa" font-size="11">Pay Securely</text></g>
+        <path d="M150 75 L248 75" stroke="#00ff88" stroke-width="2" stroke-dasharray="5,5" fill="none"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="1s" repeatCount="indefinite"/></path>
+        <g transform="translate(300,75)"><circle cx="0" cy="0" r="38" fill="rgba(46,204,113,.1)" stroke="#00ff88" stroke-width="2"/><text x="0" y="6" text-anchor="middle" font-size="22">⚡</text><text x="0" y="58" text-anchor="middle" fill="#aaa" font-size="11">Key Generated</text></g>
+        <path d="M350 75 L448 75" stroke="#00ff88" stroke-width="2" stroke-dasharray="5,5" fill="none"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="1s" repeatCount="indefinite"/></path>
+        <g transform="translate(500,75)"><circle cx="0" cy="0" r="38" fill="rgba(46,204,113,.1)" stroke="#00ff88" stroke-width="2"/><text x="0" y="6" text-anchor="middle" font-size="22">📧</text><text x="0" y="58" text-anchor="middle" fill="#aaa" font-size="11">Key Emailed to You</text></g>
+        <path d="M550 75 L648 75" stroke="#00ff88" stroke-width="2" stroke-dasharray="5,5" fill="none"><animate attributeName="stroke-dashoffset" from="20" to="0" dur="1s" repeatCount="indefinite"/></path>
+        <g transform="translate(700,75)"><circle cx="0" cy="0" r="38" fill="rgba(46,204,113,.1)" stroke="#00ff88" stroke-width="2"/><text x="0" y="6" text-anchor="middle" font-size="22">🚀</text><text x="0" y="58" text-anchor="middle" fill="#aaa" font-size="11">Activate and Interview</text></g>
+      </svg>
+    </div>
+    <p style="text-align:center;color:#555;font-size:.82rem;margin-top:16px;">License validity starts from first activation, not purchase time.</p>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reveal">
+  <div class="sh"><h2>What Users Are Saying</h2><p>From first-time interview prep to senior-level system design rounds.</p></div>
+  <div class="grid-3">
+    <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"Used it for my Amazon SDE-2 final round. The system design suggestions were spot on. Got the offer within a week!"</p><div class="rev-author">Rahul S.</div><div class="rev-role">Software Engineer, Bangalore</div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"Tested it live on Zoom and Teams before my interview. Completely invisible. The F8 toggle is instant. Zero stress about getting caught."</p><div class="rev-author">Priya M.</div><div class="rev-role">Data Analyst, Hyderabad</div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"The screen capture feature saved me. They pasted a problem on a shared screen and I couldn't copy it. Screenshot and done in seconds."</p><div class="rev-author">Amit K.</div><div class="rev-role">Product Manager, Mumbai</div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"The session transcript feature is gold. I reviewed every answer after and refined my prep for round 2. Cleared it easily."</p><div class="rev-author">Ankit R.</div><div class="rev-role">Backend Developer, Pune</div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"I set the context to 'fintech product role' and every answer it gave used the right terminology and examples. Felt extremely tailored."</p><div class="rev-author">Sarah J.</div><div class="rev-role">Product Manager, Delhi</div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"Best money I've spent. Browsed back to a previous answer mid-interview to confirm something. No other tool does that."</p><div class="rev-author">David C.</div><div class="rev-role">Full Stack Dev, Chennai</div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="reveal">
+  <div class="sh" style="margin-bottom:36px;"><h2>Frequently Asked Questions</h2></div>
+  <div class="faq-wrap">
+
+    <div class="faq-item"><div class="faq-q">Will the interviewer see CloakAI on their screen when I share mine? <span class="ic">+</span></div><div class="faq-a">No. CloakAI is completely invisible to anyone viewing your shared screen. It uses a system-level method built into Windows that prevents the overlay from being captured by any screenshare software. The interviewer on Zoom, Teams, or Google Meet will see absolutely nothing. Only you can see it on your physical monitor.</div></div>
+
+    <div class="faq-item"><div class="faq-q">What if I have to share my "Entire Screen" instead of just a window? <span class="ic">+</span></div><div class="faq-a">CloakAI remains invisible even when you share your full desktop. The invisibility works at the screen output level, not the application level. It does not matter whether you share a window, a specific monitor, or your entire screen. The result is the same: no one else can see it.</div></div>
+
+    <div class="faq-item"><div class="faq-q">How does CloakAI hear the interviewer's questions? <span class="ic">+</span></div><div class="faq-a">It listens through your microphone or computer audio. By default, it automatically detects when someone is speaking and starts processing. When they stop, it sends the audio for analysis and shows you the answer. You can also switch to manual mode where you hold the Alt key while the question is being asked and release to send it. This gives you full control over when it listens.</div></div>
+
+    <div class="faq-item"><div class="faq-q">What if the question is long or complex? Will the answer still be good? <span class="ic">+</span></div><div class="faq-a">Yes. The longer and more complex the question, the more context the AI has to work with, which often improves the answer. The response time will naturally be a little longer for complex questions than for short ones, but the AI streams answers word-by-word so you start seeing the response almost immediately regardless.</div></div>
+
+    <div class="faq-item"><div class="faq-q">What is the context feature and why does it matter? <span class="ic">+</span></div><div class="faq-a">Before your interview, you can tell CloakAI things like: "I am interviewing for a senior backend engineer role at a fintech company. The stack is Python, Django, and PostgreSQL. I have 4 years of experience." From that point on, every answer it generates is tailored specifically to your situation. Instead of generic responses, you get answers that match the role, the company, and your own experience level. This is one of our most powerful and unique features.</div></div>
+
+    <div class="faq-item"><div class="faq-q">What happens to my questions and answers after the interview? <span class="ic">+</span></div><div class="faq-a">CloakAI automatically stores every question asked and every answer generated during your session. You can download the full session log as a file after the interview. This lets you review what came up, how the AI answered, what you can improve, and build a personal reference library over time. No other interview tool offers this feature.</div></div>
+
+    <div class="faq-item"><div class="faq-q">If I accidentally clear my screen mid-interview, is the answer gone? <span class="ic">+</span></div><div class="faq-a">No. CloakAI keeps your last 5 answers in memory throughout the session. Use the navigation arrows in the interface to scroll back through previous answers at any point during the interview. This is especially useful when a follow-up question refers to something from earlier in the conversation.</div></div>
+
+    <div class="faq-item"><div class="faq-q">Can it solve coding challenges shown on a shared screen? <span class="ic">+</span></div><div class="faq-a">Yes. Use the screen capture feature. Click the camera icon, and CloakAI takes a screenshot of everything visible on your screen and sends it to the AI for analysis. This works for coding problems, data diagrams, system design prompts, or anything displayed visually that you cannot copy as text. You can type a specific question about what's on screen or leave it blank to get a general analysis.</div></div>
+
+    <div class="faq-item"><div class="faq-q">When do I receive my license key after paying? <span class="ic">+</span></div><div class="faq-a">Your license key is generated automatically the moment your payment is confirmed and sent to the email address you provided at checkout. This is fully automated and happens within seconds, at any time of day. You do not need to wait for a human to process anything.</div></div>
+
+    <div class="faq-item"><div class="faq-q">Can I use the same license key on two different computers? <span class="ic">+</span></div><div class="faq-a">No. Each license is bound to the first computer it is activated on. If you try to use it on a different machine, it will be rejected. This is a security measure to prevent sharing. If your hardware changes and you genuinely need to reactivate on a new device, contact us at support.cloakai@gmail.com.</div></div>
+
+    <div class="faq-item"><div class="faq-q">Does it work on Mac? <span class="ic">+</span></div><div class="faq-a">No. CloakAI currently works on Windows 10 and Windows 11 only. The screenshare invisibility relies on Windows-specific system features that do not exist on macOS. A Mac version is something we plan to explore in the future.</div></div>
+
+    <div class="faq-item"><div class="faq-q">Is my audio or conversation stored anywhere? <span class="ic">+</span></div><div class="faq-a">No. Audio is captured on your device, processed in real time, and immediately discarded after the response is generated. We do not record, store, or have access to any audio or conversation content from your sessions. The only local file stored is the session transcript on your own computer, which you control.</div></div>
+
+    <div class="faq-item"><div class="faq-q">What is your refund policy? <span class="ic">+</span></div><div class="faq-a">All sales are final because license keys are generated and delivered instantly. We cannot verify whether the software was used after delivery. We strongly recommend testing on your computer before purchasing by asking us for a demonstration or checking that your Windows version is supported. See our full <a href="refund.html" style="color:var(--gg)">Refund Policy</a> for the limited exceptions that apply.</div></div>
+
+    <div class="faq-item"><div class="faq-q">How do I contact support? <span class="ic">+</span></div><div class="faq-a">Email us at <a href="mailto:support.cloakai@gmail.com" style="color:var(--gg)">support.cloakai@gmail.com</a>. We provide 24/7 support over email. For urgent issues during an ongoing interview, include the word URGENT in your subject line and we prioritise it immediately.</div></div>
+
+
+    <div class="faq-item"><div class="faq-q">How is CloakAI different from Parakeet AI? <span class="ic">+</span></div><div class="faq-a">Parakeet AI is one of the known tools in this space, but there are several areas where CloakAI is meaningfully better. First, screenshare invisibility: CloakAI uses a system-level Windows display method that cannot be captured even by the Windows Snipping Tool or OBS. Not even physically inspecting the transmitted stream will reveal it. Parakeet and similar tools often use transparent windows that appear on your screen but may still appear as a black or visible rectangle in certain capture scenarios. Second, price: CloakAI is significantly cheaper. Our quarterly plan works out to just ₹4.6 per hour which is among the lowest in the market globally. Third, we offer features no competitor currently has: session transcript saving, answer history browse (last 5 answers mid-interview), screen capture and AI analysis, and deep context-aware tailoring where you configure your role, company, and stack before the interview.</div></div>
+
+    <div class="faq-item"><div class="faq-q">How does CloakAI compare to other similar interview tools? <span class="ic">+</span></div><div class="faq-a">Most tools in this category either rely on browser extensions (which are visible in screenshare, can be detected by meeting software policies, and are platform-dependent), or desktop overlays that are captured by snipping tools and screenshot utilities. CloakAI is different in three ways. First, it uses a hardware-level exclusion that prevents capture by any software, including Windows' own screenshot and snipping tools. Second, it is the most affordable option per hour of access. Third, it includes features that others simply don't offer: save your full session for post-interview review, browse back through your last 5 answers without disrupting the live view, capture and analyse any on-screen content including problems you cannot copy, and configure the AI to match your exact interview context. No extension. No browser dependency. One lightweight Windows app.</div></div>
+
+    <div class="faq-item"><div class="faq-q">Can the Snipping Tool or Windows screenshot capture CloakAI's overlay? <span class="ic">+</span></div><div class="faq-a">No. This is one of our most important technical properties. The CloakAI overlay cannot be captured by the Windows Snipping Tool, Windows screenshot shortcuts (Win+Shift+S), OBS, or any screen recording software. The exclusion operates below the application layer, at the display driver level. Even if someone were watching your screen sharing and tried to screenshot your shared feed, they would see nothing. The only way to know CloakAI is present is to physically look at your monitor in the room with you. This is fundamentally different from how most competing tools work.</div></div>
+
+    <div class="faq-item"><div class="faq-q">What makes CloakAI the best value in the market? <span class="ic">+</span></div><div class="faq-a">At ₹4.6 per hour on the quarterly plan, CloakAI is priced lower than any comparable tool we are aware of. The 1-day plan at ₹720 covers a full 24-hour window including multiple interview rounds. Compare this to international competitors that charge $20 to $50 per session with fewer features. Beyond price, you get session transcripts, 5-answer history navigation, screen capture analysis, context-aware tailoring, and true screenshare invisibility that holds up even against the Windows Snipping Tool. The pricing is designed for the Indian job market and reflects our belief that career tools should be accessible, not a luxury.</div></div>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CloakAI</div>
+  <div style="color:#333;font-size:.82rem;margin-bottom:6px;">The AI that only you can see.</div>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="license-info.html">License Status</a>
+    <a href="terms.html">Terms &amp; Conditions</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="refund.html">Refund Policy</a>
+    <a href="dmca.html">DMCA</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="https://drive.google.com/file/d/1pQne3_L6x1VIRJBxl0KI-4WEUm8jZZOe/view?usp=sharing">Download</a>
+  </div>
+  <div class="footer-copy">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support.cloakai@gmail.com</div>
+  <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
+</footer>
+
+<!-- PAYMENT MODAL -->
+<div id="pay-mo" class="mo" onclick="closeMo(event,'pay-mo')">
+  <div class="mc pm-card" style="max-width:460px;">
+    <button class="close-mc" onclick="closeMo(null,'pay-mo')">&times;</button>
+    <div class="mt">Complete Your Order</div>
+    <div class="plan-prev">
+      <div><div class="plan-prev-name" id="pm-name">Loading...</div><div class="plan-prev-dur" id="pm-dur"></div></div>
+      <div class="plan-prev-price" id="pm-price"></div>
+    </div>
+    <label class="flabel">Email Address</label>
+    <input type="email" id="pm-email" class="finput" placeholder="you@email.com" autocomplete="email">
+    <label class="flabel" style="margin-top:2px;">Confirm Email Address</label>
+    <input type="email" id="pm-email-confirm" class="finput" placeholder="type your email again">
+    <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:#F59E0B;line-height:1.6;">
+      ⚠ Your license key will be sent to this email only. Double-check before continuing.
+    </div>
+    <button class="btn-pay" id="pm-btn" onclick="doPay()">
+      <span id="pm-btxt">Continue to Payment</span>
+      <div class="spin" id="pm-spin"></div>
+    </button>
+    <div class="pm-msg" id="pm-msg"></div>
+    <div class="pm-footer">
+      🔒 Secured by PhonePe &nbsp;·&nbsp; License key emailed instantly after payment<br>
+      By continuing you agree to our <a href="terms.html">Terms</a> and <a href="refund.html">Refund Policy</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* Particles */
+  (function(){
+    const c=document.getElementById('particles');
+    for(let i=0;i<20;i++){
+      const p=document.createElement('div');
+      p.className='particle';
+      p.style.left=Math.random()*100+'vw';
+      p.style.top=Math.random()*100+'vh';
+      p.style.width=Math.random()*5+'px';
+      p.style.height=p.style.width;
+      p.style.animationDelay=Math.random()*5+'s';
+      c.appendChild(p);
+    }
+  })();
+
+  /* Cursor glow */
+  const cgEl=document.getElementById('cg');
+  let gx=0,gy=0;
+  document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;});
+  setInterval(()=>{cgEl.style.left=gx+'px';cgEl.style.top=gy+'px';},16);
+
+  /* Scroll reveal */
+  const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+  /* Typing effect */
+  const TXT="Your invisible AI copilot for interviews. Hear the question. See the answer. Only you can see it.";
+  const tEl=document.getElementById('tt');
+  let ti=0;
+  const typer=()=>{if(ti<TXT.length){tEl.textContent+=TXT[ti++];setTimeout(typer,30);}};
+  setTimeout(typer,1000);
+
+  /* FAQ */
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const it=q.parentElement,was=it.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+      if(!was)it.classList.add('open');
+    });
+  });
+
+  /* Modals */
+  function openMo(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+  function closeMo(e,id){if(e&&e.target!==e.currentTarget)return;document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+    document.body.style.overflow='';
+  });
+
+  /* Payment */
+  let curPlan=null;
+  function openPay(plan){
+    curPlan=plan;
+    const m=PLANS[plan];
+    document.getElementById('pm-name').textContent=m.name;
+    document.getElementById('pm-price').textContent=m.price;
+    document.getElementById('pm-dur').textContent=m.period+' · '+m.rate;
+    document.getElementById('pm-btxt').textContent=m.label;
+    document.getElementById('pm-msg').textContent='';
+    document.getElementById('pm-email').value='';
+    document.getElementById('pm-email-confirm').value='';
+    document.getElementById('pm-btn').disabled=false;
+    document.getElementById('pm-btxt').style.display='inline';
+    document.getElementById('pm-spin').style.display='none';
+    openMo('pay-mo');
+    setTimeout(()=>document.getElementById('pm-email').focus(),180);
+    trackEvent('Checkout','Open',plan);
+  }
+
+  function doPay(){
+    var email   = document.getElementById('pm-email').value.trim();
+    var email2  = document.getElementById('pm-email-confirm').value.trim();
+    var msg     = document.getElementById('pm-msg');
+    var btn     = document.getElementById('pm-btn');
+    var btxt    = document.getElementById('pm-btxt');
+    var spin    = document.getElementById('pm-spin');
+
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!email || !emailRe.test(email)){
+      msg.textContent = 'Please enter a valid email address.';
+      msg.className   = 'pm-msg err'; return;
+    }
+    if(!email2 || !emailRe.test(email2)){
+      msg.textContent = 'Please confirm your email address.';
+      msg.className   = 'pm-msg err'; return;
+    }
+    if(email.toLowerCase() !== email2.toLowerCase()){
+      msg.textContent = 'Email addresses do not match. Please check and try again.';
+      msg.className   = 'pm-msg err'; return;
+    }
+    if(SCRIPT_URL.includes('REPLACE')){
+      msg.textContent = 'Payment system not yet active. Email support.cloakai@gmail.com to purchase.';
+      msg.className   = 'pm-msg err'; return;
+    }
+
+    btn.disabled = true;
+    btxt.style.display = 'none';
+    spin.style.display = 'block';
+    msg.textContent = 'Preparing your order...';
+    msg.className   = 'pm-msg inf';
+    trackEvent('Checkout','Submit',curPlan);
+
+    function resetBtn(){
+      btn.disabled = false;
+      btxt.style.display = 'inline';
+      spin.style.display = 'none';
+    }
+
+    var url = SCRIPT_URL + '?' + new URLSearchParams({
+      action: 'create_order',
+      email:  email.toLowerCase(),
+      plan:   curPlan,
+      ajax:   '1',
+    });
+
+    fetch(url, { redirect: 'follow' })
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(data){
+        if(data.key){
+          var dest = window.location.origin + '/success.html?' + new URLSearchParams({
+            key: data.key, plan: data.plan || curPlan, bypass: data.bypass ? '1' : '0',
+          });
+          window.location.replace(dest);
+        } else if(data.payment_url){
+          window.location.replace(data.payment_url);
+        } else {
+          msg.textContent = data.error || 'Something went wrong. Please try again.';
+          msg.className   = 'pm-msg err';
+          resetBtn();
+        }
+      })
+      .catch(function(err){
+        console.error('Payment fetch error:', err);
+        msg.textContent = 'Connection error. Please check your internet and try again.';
+        msg.className   = 'pm-msg err';
+        resetBtn();
+      });
+  }
+
+  document.getElementById('pm-email').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('pm-email-confirm').focus();});
+  document.getElementById('pm-email-confirm').addEventListener('keydown',function(e){if(e.key==='Enter')doPay();});
+</script>
+<script>
+  function toggleNav(){
+    var b=document.getElementById('ham-btn');
+    var n=document.getElementById('mnav');
+    b.classList.toggle('open');
+    n.classList.toggle('open');
+  }
+  document.addEventListener('click',function(e){
+    var n=document.getElementById('mnav');
+    var b=document.getElementById('ham-btn');
+    if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){
+      n.classList.remove('open');b.classList.remove('open');
+    }
+  });
+  document.querySelectorAll('#mnav a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.getElementById('mnav').classList.remove('open');
+      document.getElementById('ham-btn').classList.remove('open');
+    });
+  });
+</script>
+</body>
+</html>

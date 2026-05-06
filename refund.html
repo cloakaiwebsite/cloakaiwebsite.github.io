@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow"><meta name="theme-color" content="#0f3d2e">
+  <title>Refund Policy – CloakAI</title>
+  <style>
+    :root{--pg:#0f3d2e;--ag:#2ecc71;--gg:#00ff88;--bg:#050a07;--tc:#e0e0e0;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    body{background:var(--bg);color:var(--tc);min-height:100vh;overflow-x:hidden;}
+    .bg-anim{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 50% 30%,rgba(15,61,46,.35) 0%,transparent 60%),linear-gradient(0deg,var(--bg) 0%,#0a1410 100%);}
+    header{background:rgba(5,10,7,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);}
+    .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
+    .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:8px;text-decoration:none;}
+    .logo svg{width:30px;height:30px;fill:var(--gg);}
+    nav a{color:var(--tc);text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}nav a:hover{color:var(--gg);}
+    .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
+    .wrap{max-width:860px;margin:0 auto;padding:60px 20px 100px;}
+    .ph{text-align:center;padding:50px 0 40px;}
+    .ph .tag{display:inline-block;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);color:var(--gg);padding:5px 16px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px;}
+    .ph h1{font-size:2.8rem;font-weight:900;letter-spacing:-1px;margin-bottom:10px;}.ph p{color:#666;font-size:.88rem;}
+    .bc{background:rgba(15,61,46,.12);border:1px solid rgba(46,204,113,.12);border-radius:18px;padding:40px;}
+    .bc h2{color:var(--gg);font-size:1.05rem;font-weight:700;margin:26px 0 9px;padding-left:12px;border-left:3px solid var(--gg);}
+    .bc h2:first-child{margin-top:0;}
+    .bc p{color:#b0b8c8;font-size:.9rem;line-height:1.8;margin-bottom:10px;}
+    .bc ul{margin:8px 0 14px 20px;color:#9aa5b8;font-size:.88rem;line-height:1.8;}.bc li{margin-bottom:4px;}
+    .bc a{color:var(--gg);}.bc strong{color:#e2e8f0;}
+    .warn{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:16px 18px;color:#EF4444;font-size:.9rem;margin:14px 0;}
+    .good{background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.2);border-radius:10px;padding:16px 18px;color:#34D399;font-size:.9rem;margin:14px 0;}
+    .note{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:14px 16px;color:#F59E0B;font-size:.87rem;margin:14px 0;}
+    .trial-box h3{color:#fff;font-size:1.2rem;margin-bottom:8px;}
+    .trial-box p{color:#aaa;font-size:.88rem;margin-bottom:16px;}
+    footer{background:rgba(0,0,0,.88);padding:36px 20px 24px;border-top:1px solid #181818;text-align:center;}
+    .fl{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:14px 0;}.fl a{color:#444;text-decoration:none;font-size:.82rem;transition:.2s;}.fl a:hover{color:var(--gg);}
+    .fc{color:#2a2a2a;font-size:.76rem;margin-top:12px;line-height:1.7;}.ph h1{font-size:2rem;}.bc{padding:22px;}}
+  
+    /* ── Hamburger nav ─────────────────────────────────────────── */
+    header{position:relative;}
+    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;
+      background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
+    .ham span{display:block;width:22px;height:2px;background:var(--gg);
+      border-radius:2px;transition:transform .28s,opacity .28s;}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    @media(max-width:860px){
+      .ham{display:flex;}
+      #mnav{display:none;position:absolute;top:100%;left:0;right:0;
+        background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);
+        backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;gap:2px;z-index:1000;}
+      #mnav.open{display:flex;}
+      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;
+        font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
+      #mnav a:last-child{border-bottom:none;}
+      .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:11px 16px!important;}
+      .header-inner,.hi{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}
+    }
+    </style>
+</head>
+<body>
+<div class="bg-anim"></div>
+<header><div class="hi">
+  <a href="index.html" class="logo"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>CloakAI</a>
+      <nav id="mnav">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="license-info.html">License Status</a>
+      <a href="index.html#pricing" class="nav-cta">Get Access</a>
+    </nav>
+    <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div></header>
+
+<div class="wrap">
+  <div class="ph">
+    <div class="tag">Legal</div>
+    <h1>Refund Policy</h1>
+    <p>Last Updated: January 2025 &nbsp;·&nbsp; Please read this carefully before making a purchase.</p>
+  </div>
+  <div class="bc">
+
+        <h2>General Policy</h2>
+    <div class="warn"><strong>ALL SALES ARE FINAL AND NON-REFUNDABLE.</strong> This policy exists because CloakAI delivers a digital product (license key) instantly and automatically upon payment confirmation. Once your license key is generated and delivered to your email, the product has been fully consumed and cannot be "returned."</div>
+    <p>This is standard practice for instant-delivery digital goods under Indian consumer protection law (Consumer Protection Act, 2019) and international norms for software licenses.</p>
+
+    <h2>Why We Can't Offer General Refunds</h2>
+    <ul>
+      <li>License keys are generated and sent to your email within seconds of payment.</li>
+      <li>Once activated, the key is cryptographically bound to your device it cannot be transferred or reused.</li>
+      <li>We offer a fully functional <strong>the lowest-cost 1-day plan</strong> to verify compatibility and satisfaction before purchasing.</li>
+      <li>We cannot verify whether the Software was used during an interview or assessment after purchase.</li>
+    </ul>
+
+    <h2>Limited Exceptions Considered Case-by-Case</h2>
+    <div class="good">The following circumstances <em>may</em> result in a refund or license extension, at CloakAI's sole discretion. These are exceptions, not entitlements.</div>
+    <ul>
+      <li><strong>Duplicate payment:</strong> You were charged twice for the exact same order. Must be reported within 48 hours with payment evidence (PhonePe transaction screenshots).</li>
+      <li><strong>Non-delivery:</strong> Your license key was not delivered to your email within 30 minutes of payment, and our support team cannot resolve the issue within 24 hours of your report.</li>
+      <li><strong>Verified technical failure:</strong> The Software completely fails to launch on a supported device (Windows 10/11) and our support team is unable to resolve the issue after reasonable diagnostic effort (typically within 48 hours).</li>
+    </ul>
+
+    <h2>What Is NOT Eligible for a Refund</h2>
+    <ul>
+      <li>Change of mind after license key delivery</li>
+      <li>Interview outcome CloakAI does not guarantee any result</li>
+      <li>Device incompatibility on unsupported operating systems (macOS, Linux, older Windows versions)</li>
+      <li>Failure due to the user's network, hardware, or third-party software conflicts</li>
+      <li>License suspension due to Terms of Service violations (e.g., key sharing)</li>
+      <li>Platforms updating their screenshare behaviour after your purchase</li>
+      <li>Failure to read the system requirements before purchasing</li>
+    </ul>
+
+    <h2>How to Request a Refund</h2>
+    <p>Email <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a> with the subject line:</p>
+    <div class="note" style="font-family:monospace;">REFUND REQUEST [your registered email address]</div>
+    <p>Include: your registered email, PhonePe transaction ID, the nature of the issue, and any screenshots or evidence. We aim to respond within 24 hours on weekdays.</p>
+
+    <h2>Chargeback Policy</h2>
+    <p>Initiating a chargeback or payment dispute for a valid purchase without first contacting us and allowing us a reasonable opportunity to resolve the issue will result in:</p>
+    <ul>
+      <li>Immediate and permanent revocation of your license</li>
+      <li>Permanent ban from future purchases</li>
+      <li>Reporting of fraudulent chargeback activity to PhonePe</li>
+    </ul>
+    <p>We take chargebacks seriously and reserve all legal rights in response to fraudulent disputes.</p>
+
+    <h2>Contact</h2>
+    <p>Refund enquiries: <strong><a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a></strong><br>We provide 24/7 support over email.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo" style="font-size:1.2rem;font-weight:800;color:var(--gg);margin-bottom:8px;">CloakAI</div>
+  <div class="footer-links" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:12px 0;">
+    <a href="index.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Home</a>
+    <a href="about.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">About</a>
+    <a href="license-info.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">License Status</a>
+    <a href="terms.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Terms</a>
+    <a href="privacy.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Privacy</a>
+    <a href="refund.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Refund</a>
+    <a href="dmca.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">DMCA</a>
+    <a href="contact.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Contact</a>
+  </div>
+  <div class="fc" style="color:#2a2a2a;font-size:.76rem;margin-top:10px;line-height:1.7;">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support.cloakai@gmail.com</div>
+</footer>
+<script>
+  function toggleNav(){
+    var b=document.getElementById('ham-btn');
+    var n=document.getElementById('mnav');
+    b.classList.toggle('open');
+    n.classList.toggle('open');
+  }
+  document.addEventListener('click',function(e){
+    var n=document.getElementById('mnav');
+    var b=document.getElementById('ham-btn');
+    if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){
+      n.classList.remove('open');b.classList.remove('open');
+    }
+  });
+  document.querySelectorAll('#mnav a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.getElementById('mnav').classList.remove('open');
+      document.getElementById('ham-btn').classList.remove('open');
+    });
+  });
+</script>
+</body></html>

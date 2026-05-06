@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow"><meta name="theme-color" content="#0f3d2e">
+  <title>About – CloakAI</title>
+  <style>
+    :root{--pg:#0f3d2e;--ag:#2ecc71;--gg:#00ff88;--bg:#050a07;--tc:#e0e0e0;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    body{background:var(--bg);color:var(--tc);min-height:100vh;overflow-x:hidden;}
+    .bg-anim{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 50% 30%,rgba(15,61,46,.35) 0%,transparent 60%),linear-gradient(0deg,var(--bg) 0%,#0a1410 100%);}
+    header{background:rgba(5,10,7,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);}
+    .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
+    .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:8px;text-decoration:none;}
+    .logo svg{width:30px;height:30px;fill:var(--gg);}
+    nav a{color:var(--tc);text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}nav a:hover{color:var(--gg);}
+    .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
+    .wrap{max-width:880px;margin:0 auto;padding:60px 20px 100px;}
+    .ph{text-align:center;padding:50px 0 50px;}
+    .ph .tag{display:inline-block;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);color:var(--gg);padding:5px 16px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px;}
+    .ph h1{font-size:2.8rem;font-weight:900;letter-spacing:-1px;margin-bottom:14px;}
+    .ph .lead{color:#aaa;font-size:1.1rem;line-height:1.75;max-width:680px;margin:0 auto;}
+    .story-block{background:rgba(15,61,46,.12);border:1px solid rgba(46,204,113,.12);border-radius:18px;padding:36px;margin-bottom:28px;}
+    .story-block h2{color:var(--gg);font-size:1.3rem;font-weight:700;margin-bottom:16px;}
+    .story-block p{color:#b0b8c8;font-size:.93rem;line-height:1.85;margin-bottom:12px;}
+    .story-block p:last-child{margin-bottom:0;}
+    .story-block a{color:var(--gg);}
+    .values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-bottom:28px;}
+    .val-card{background:rgba(255,255,255,.03);border:1px solid rgba(46,204,113,.1);border-radius:14px;padding:22px;text-align:center;transition:.3s;}
+    .val-card:hover{border-color:rgba(46,204,113,.3);transform:translateY(-4px);}
+    .val-card .ico{font-size:2rem;margin-bottom:12px;}
+    .val-card h3{color:#fff;font-size:1rem;font-weight:700;margin-bottom:7px;}
+    .val-card p{color:#777;font-size:.84rem;line-height:1.6;}
+    .stats-row{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin:36px 0;}
+    .stat{text-align:center;}
+    .stat-num{font-size:2.4rem;font-weight:900;color:var(--gg);line-height:1;}
+    .stat-label{font-size:.8rem;color:#666;margin-top:4px;}
+    .cta-box{background:linear-gradient(135deg,rgba(15,61,46,.5),rgba(5,10,7,.8));border:1px solid rgba(46,204,113,.25);border-radius:18px;padding:36px;text-align:center;margin-top:28px;}
+    .cta-box h2{color:#fff;font-size:1.6rem;font-weight:800;margin-bottom:10px;}
+    .cta-box p{color:#888;font-size:.9rem;margin-bottom:22px;}
+    .btn{display:inline-block;padding:12px 30px;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;text-decoration:none;border-radius:24px;font-weight:700;font-size:.97rem;border:1px solid var(--gg);margin:6px;}
+    .btn-out{display:inline-block;padding:11px 28px;background:transparent;color:var(--gg);text-decoration:none;border-radius:24px;font-weight:600;font-size:.95rem;border:1px solid var(--gg);margin:6px;transition:.3s;}
+    .btn-out:hover{background:rgba(46,204,113,.1);}
+    footer{background:rgba(0,0,0,.88);padding:36px 20px 24px;border-top:1px solid #181818;text-align:center;}
+    .fl{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:14px 0;}.fl a{color:#444;text-decoration:none;font-size:.82rem;transition:.2s;}.fl a:hover{color:var(--gg);}
+    .fc{color:#2a2a2a;font-size:.76rem;margin-top:12px;line-height:1.7;}.ph h1{font-size:2rem;}.story-block{padding:22px;}}
+  
+    /* ── Hamburger nav ─────────────────────────────────────────── */
+    header{position:relative;}
+    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;
+      background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
+    .ham span{display:block;width:22px;height:2px;background:var(--gg);
+      border-radius:2px;transition:transform .28s,opacity .28s;}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    @media(max-width:860px){
+      .ham{display:flex;}
+      #mnav{display:none;position:absolute;top:100%;left:0;right:0;
+        background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);
+        backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;gap:2px;z-index:1000;}
+      #mnav.open{display:flex;}
+      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;
+        font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
+      #mnav a:last-child{border-bottom:none;}
+      .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:11px 16px!important;}
+      .header-inner,.hi{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}
+    }
+    </style>
+</head>
+<body>
+<div class="bg-anim"></div>
+<header><div class="hi">
+  <a href="index.html" class="logo"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>CloakAI</a>
+      <nav id="mnav">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="license-info.html">License Status</a>
+      <a href="index.html#pricing" class="nav-cta">Get Access</a>
+    </nav>
+    <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div></header>
+
+<div class="wrap">
+  <div class="ph">
+    <div class="tag">Our Story</div>
+    <h1>About CloakAI</h1>
+    <p class="lead">We built the tool we wished existed when we were grinding through interview cycles. An AI that helps you without getting in the way invisible, intelligent, and instant.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Users helped</div></div>
+    <div class="stat"><div class="stat-num">2025</div><div class="stat-label">Founded</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Indian-built</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Avg rating</div></div>
+  </div>
+
+  <div class="story-block">
+    <h2>🧠 Why CloakAI Exists</h2>
+    <p>Modern job interviews are brutal. Companies use HackerRank, LeetCode, system design whiteboards, and behavioural frameworks all compressed into 45-minute windows that rarely reflect the day-to-day reality of the role.</p>
+    <p>Most candidates spend weeks preparing, reading documentation, and practising problems they may never encounter. A single bad day anxiety, a hard question, a topic gap can derail months of preparation and a legitimate career opportunity.</p>
+    <p>We believe preparation tools shouldn't end when the interview starts. CloakAI is the reference layer that stays with you throughout the process helping you articulate what you know, recover when you're stuck, and present your best self under pressure.</p>
+    <p>It's not about faking expertise. It's about making sure your knowledge and preparation actually show up when it matters most.</p>
+  </div>
+
+  <div class="story-block">
+    <h2>🛠 What Makes CloakAI Different</h2>
+    <p>CloakAI was built from scratch with one obsessive focus: make the experience completely invisible and completely instant. From the first day we started building, we refused to use shortcuts. Every component was designed to fail gracefully, work reliably, and never draw attention to itself during the most important moments of your career.</p>
+    <p>The screenshare invisibility is real — not a visual trick, not a black window overlay, not something that breaks when you share your whole screen instead of a window. It works the same way across every major video platform because it operates at a level below the screenshare software entirely. No screenshare tool can capture what it cannot see.</p>
+    <p>The audio intelligence was the hardest part to get right. The challenge is not just transcribing what was said — it is knowing when to start, when to stop, and how to filter out background noise, your own breathing, and keyboard clicks without cutting off legitimate speech. We spent months tuning this until it felt natural in real interview conditions.</p>
+    <p>Speed was non-negotiable. We optimised every part of the pipeline so that the first words of an answer appear on your screen as quickly as possible. For most questions, you see results faster than you could type a search query — without any manual steps on your part.</p>
+  </div>
+
+  <div class="values-grid">
+    <div class="val-card"><div class="ico">🎯</div><h3>Purpose-Built</h3><p>Every design decision is made for one user in one scenario: you, in an interview, under pressure. Nothing bloated, nothing unnecessary.</p></div>
+    <div class="val-card"><div class="ico">🔒</div><h3>Privacy-First</h3><p>We never store your audio, transcriptions, or AI responses. All processing is real-time and ephemeral. Your conversations are yours alone.</p></div>
+    <div class="val-card"><div class="ico">🇮🇳</div><h3>Made for India</h3><p>Priced for Indian salaries, optimised for Indian interview formats, and with support that responds in your timezone not theirs.</p></div>
+    <div class="val-card"><div class="ico">⚡</div><h3>Speed Obsessed</h3><p>Every millisecond of latency matters during an interview. We continuously optimise the transcription, AI, and rendering pipeline for speed.</p></div>
+    <div class="val-card"><div class="ico">🤝</div><h3>Honest</h3><p>We're clear about what CloakAI is and what it isn't. We don't make guarantees about outcomes. We build a good tool and let you decide how to use it.</p></div>
+    <div class="val-card"><div class="ico">🔄</div><h3>Always Improving</h3><p>We ship updates regularly based on user feedback. If something doesn't work, we fix it. If you have a feature idea, we listen.</p></div>
+  </div>
+
+  <div class="story-block">
+    <h2>📋 Responsible Use</h2>
+    <p>CloakAI is an assistive productivity tool. We believe in providing technology and letting individuals make their own informed decisions about how to use it.</p>
+    <p>We're transparent: <strong>users are entirely responsible for complying with the rules and policies of any interview or assessment they participate in.</strong> CloakAI does not endorse misrepresentation, dishonesty, or violation of any employer's guidelines.</p>
+    <p>Our tool is also used legitimately for interview preparation practice, self-assessment, learning new domains, and as a real-time reference for freelance consultants and professionals in client-facing meetings where AI assistance is permitted or expected.</p>
+    <p>We've invested in clear <a href="terms.html">Terms of Service</a>, a <a href="privacy.html">Privacy Policy</a>, and a <a href="refund.html">Refund Policy</a> to ensure every interaction with our platform is transparent and fair.</p>
+  </div>
+
+  <div class="cta-box">
+    <h2>Ready to experience it?</h2>
+    <p>Plans start from ₹720 for a full day of access. Pick the plan that fits your interview schedule.</p>
+    <a href="index.html#pricing" class="btn">View Pricing</a>
+    <a href="contact.html" class="btn-out">Contact Us</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo" style="font-size:1.2rem;font-weight:800;color:var(--gg);margin-bottom:8px;">CloakAI</div>
+  <div class="footer-links" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:12px 0;">
+    <a href="index.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Home</a>
+    <a href="about.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">About</a>
+    <a href="license-info.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">License Status</a>
+    <a href="terms.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Terms</a>
+    <a href="privacy.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Privacy</a>
+    <a href="refund.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Refund</a>
+    <a href="dmca.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">DMCA</a>
+    <a href="contact.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Contact</a>
+  </div>
+  <div class="fc" style="color:#2a2a2a;font-size:.76rem;margin-top:10px;line-height:1.7;">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support.cloakai@gmail.com</div>
+</footer>
+<script>
+  function toggleNav(){
+    var b=document.getElementById('ham-btn');
+    var n=document.getElementById('mnav');
+    b.classList.toggle('open');
+    n.classList.toggle('open');
+  }
+  document.addEventListener('click',function(e){
+    var n=document.getElementById('mnav');
+    var b=document.getElementById('ham-btn');
+    if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){
+      n.classList.remove('open');b.classList.remove('open');
+    }
+  });
+  document.querySelectorAll('#mnav a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.getElementById('mnav').classList.remove('open');
+      document.getElementById('ham-btn').classList.remove('open');
+    });
+  });
+</script>
+</body></html>

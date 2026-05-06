@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow"><meta name="theme-color" content="#0f3d2e">
+  <title>Terms & Conditions – CloakAI</title>
+  <style>
+    :root{--pg:#0f3d2e;--ag:#2ecc71;--gg:#00ff88;--bg:#050a07;--tc:#e0e0e0;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    body{background:var(--bg);color:var(--tc);min-height:100vh;overflow-x:hidden;}
+    .bg-anim{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 50% 30%,rgba(15,61,46,.35) 0%,transparent 60%),linear-gradient(0deg,var(--bg) 0%,#0a1410 100%);}
+    header{background:rgba(5,10,7,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);}
+    .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
+    .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:8px;text-decoration:none;}
+    .logo svg{width:30px;height:30px;fill:var(--gg);}
+    nav a{color:var(--tc);text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}
+    nav a:hover{color:var(--gg);}
+    .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
+    .wrap{max-width:860px;margin:0 auto;padding:60px 20px 100px;}
+    .ph{text-align:center;padding:50px 0 40px;}
+    .ph .tag{display:inline-block;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);color:var(--gg);padding:5px 16px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px;}
+    .ph h1{font-size:2.8rem;font-weight:900;letter-spacing:-1px;margin-bottom:10px;}
+    .ph p{color:#666;font-size:.88rem;}
+    .bc{background:rgba(15,61,46,.12);border:1px solid rgba(46,204,113,.12);border-radius:18px;padding:40px;}
+    .bc h2{color:var(--gg);font-size:1.05rem;font-weight:700;margin:26px 0 9px;padding-left:12px;border-left:3px solid var(--gg);}
+    .bc h2:first-child{margin-top:0;}
+    .bc p{color:#b0b8c8;font-size:.9rem;line-height:1.8;margin-bottom:10px;}
+    .bc ul,.bc ol{margin:8px 0 14px 20px;color:#9aa5b8;font-size:.88rem;line-height:1.8;}
+    .bc li{margin-bottom:4px;}.bc a{color:var(--gg);}.bc strong{color:#e2e8f0;}
+    .warn{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px 16px;color:#EF4444;font-size:.86rem;margin:14px 0;}
+    .note{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px 16px;color:#F59E0B;font-size:.86rem;margin:14px 0;}
+    footer{background:rgba(0,0,0,.88);padding:36px 20px 24px;border-top:1px solid #181818;text-align:center;}
+    .fl{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:14px 0;}
+    .fl a{color:#444;text-decoration:none;font-size:.82rem;transition:.2s;}.fl a:hover{color:var(--gg);}
+    .fc{color:#2a2a2a;font-size:.76rem;margin-top:12px;line-height:1.7;}.ph h1{font-size:2rem;}.bc{padding:22px;}}
+  
+    /* ── Hamburger nav ─────────────────────────────────────────── */
+    header{position:relative;}
+    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;
+      background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
+    .ham span{display:block;width:22px;height:2px;background:var(--gg);
+      border-radius:2px;transition:transform .28s,opacity .28s;}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    @media(max-width:860px){
+      .ham{display:flex;}
+      #mnav{display:none;position:absolute;top:100%;left:0;right:0;
+        background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);
+        backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;gap:2px;z-index:1000;}
+      #mnav.open{display:flex;}
+      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;
+        font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
+      #mnav a:last-child{border-bottom:none;}
+      .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:11px 16px!important;}
+      .header-inner,.hi{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}
+    }
+    </style>
+</head>
+<body>
+<div class="bg-anim"></div>
+<header><div class="hi">
+  <a href="index.html" class="logo"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>CloakAI</a>
+      <nav id="mnav">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="license-info.html">License Status</a>
+      <a href="index.html#pricing" class="nav-cta">Get Access</a>
+    </nav>
+    <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div></header>
+
+<div class="wrap">
+  <div class="ph">
+    <div class="tag">Legal</div>
+    <h1>Terms &amp; Conditions</h1>
+    <p>Last Updated: January 2025 &nbsp;·&nbsp; Effective for all purchases made after this date.</p>
+  </div>
+  <div class="bc">
+    <div class="note">Please read these Terms carefully before downloading, installing, or using CloakAI. By using the Software, you agree to be legally bound by these Terms.</div>
+
+    <h2>1. User Responsibility Disclaimer</h2>
+    <p>CloakAI is an assistive productivity tool designed for personal reference, preparation, and learning. <strong>The User is solely and entirely responsible</strong> for complying with the rules, code of conduct, non-disclosure agreements, and policies of any interview, assessment, examination, or organisation in which they participate. CloakAI does not encourage, condone, or endorse any form of dishonesty, misrepresentation, or violation of third-party terms. CloakAI and its creators bear no liability for any consequences arising from the User's choice of how to use the Software.</p>
+
+    <h2>2. Acceptance of Terms</h2>
+    <p>By downloading, installing, activating, or using CloakAI ("the Software"), you ("User") agree to be legally bound by these Terms and Conditions. If you do not agree with any part of these Terms, you must not download, install, or use the Software. These Terms constitute a binding agreement between you and CloakAI.</p>
+
+    <h2>3. Eligibility</h2>
+    <p>You must be at least 18 years old to purchase or use CloakAI. By using the Software, you represent that you are of legal age to form a binding contract under the laws of your jurisdiction.</p>
+
+    <h2>4. License Grant</h2>
+    <p>Upon successful payment and license activation, CloakAI grants you a personal, non-exclusive, non-transferable, revocable license to use the Software for the duration of your purchased plan on a single registered device, solely for your personal, non-commercial use.</p>
+
+    <h2>5. Restrictions</h2>
+    <ul>
+      <li>You may not share, sublicense, sell, rent, lease, or transfer your license key to any third party.</li>
+      <li>You may not reverse engineer, decompile, deobfuscate, disassemble, or modify the Software.</li>
+      <li>You may not use the Software for any unlawful purpose or in violation of applicable laws.</li>
+      <li>Concurrent use of the same license key on multiple devices will result in immediate termination without refund.</li>
+      <li>You may not create derivative works based on the Software or any part thereof.</li>
+      <li>You may not remove, alter, or obscure any proprietary notices within the Software.</li>
+    </ul>
+
+    <h2>6. Device Binding &amp; License Activation</h2>
+    <p>Each license is cryptographically bound to the hardware fingerprint of the first device on which it is activated. Subsequent activation attempts from a different device will be rejected. Licenses are non-transferable between devices.</p>
+
+    <h2>7. Payment &amp; Billing</h2>
+    <p>All prices are displayed in Indian Rupees (INR). Payments are processed via PhonePe. CloakAI does not store any payment card or banking credentials. License validity begins from the time of first activation, not the time of purchase. Plans are available from ₹720 for 1 day access up to ₹10,000 for 90 days.</p>
+
+    <h2>8. No Refund Policy</h2>
+    <div class="warn"><strong>ALL SALES ARE FINAL.</strong> Due to the instant digital delivery of license keys, CloakAI does not offer refunds, credits, or exchanges once a license key has been generated and delivered. Please verify the Software works on your Windows device before making any purchase. See our <a href="refund.html">Refund Policy</a> for the limited exceptions that apply.</div>
+
+    <h2>9. Service Availability</h2>
+    <p>CloakAI is provided "as is" and "as available." We make no guarantee of uninterrupted service, error-free operation, or compatibility with every future version of third-party software (including Zoom, Teams, Google Meet, or any other platform). We will use commercially reasonable efforts to maintain and update the Software, but are not obligated to do so.</p>
+
+    <h2>10. Disclaimer of Warranties</h2>
+    <p>To the fullest extent permitted by applicable law, the Software is provided without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, title, accuracy, or non-infringement. CloakAI does not warrant that the Software will meet your specific requirements or that it will be compatible with all hardware configurations.</p>
+
+    <h2>11. Limitation of Liability</h2>
+    <p>CloakAI, its founders, and its contributors shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of income, loss of opportunity, or damages arising from interview outcomes, loss of data, or system failure, in connection with your use of or inability to use the Software. Total aggregate liability to you for any claim arising under these Terms shall not exceed the amount you paid for the relevant license.</p>
+
+    <h2>12. Indemnification</h2>
+    <p>You agree to indemnify and hold harmless CloakAI, its founders, and its contributors from and against any claims, damages, losses, liabilities, costs, and expenses (including legal fees) arising from your use of the Software, your violation of these Terms, or your infringement of any third party's rights.</p>
+
+    <h2>13. Termination</h2>
+    <p>CloakAI may terminate or suspend your license immediately, without prior notice or liability, for any breach of these Terms. Upon termination, your right to use the Software ceases immediately. No refund will be provided upon termination due to a Terms violation.</p>
+
+    <h2>14. Intellectual Property</h2>
+    <p>The Software, including all code, design, text, graphics, and branding, is the exclusive intellectual property of CloakAI and is protected by applicable copyright and intellectual property laws. Nothing in these Terms grants you any ownership rights in the Software.</p>
+
+    <h2>15. Governing Law &amp; Jurisdiction</h2>
+    <p>These Terms are governed by and construed in accordance with the laws of India. Any disputes arising from or relating to these Terms or the Software shall be subject to the exclusive jurisdiction of the courts located in India.</p>
+
+    <h2>16. Severability</h2>
+    <p>If any provision of these Terms is found to be unenforceable or invalid under applicable law, such provision shall be modified to the minimum extent necessary to make it enforceable, and the remaining provisions shall continue in full force and effect.</p>
+
+    <h2>17. Changes to Terms</h2>
+    <p>CloakAI reserves the right to update or modify these Terms at any time. Changes are effective upon posting to the website. Continued use of the Software after changes constitutes your acceptance of the revised Terms. The "Last Updated" date at the top of this page reflects the most recent revision.</p>
+
+    <h2>18. Contact</h2>
+    <p>For legal enquiries, questions, or notices: <strong><a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a></strong></p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo" style="font-size:1.2rem;font-weight:800;color:var(--gg);margin-bottom:8px;">CloakAI</div>
+  <div class="footer-links" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:12px 0;">
+    <a href="index.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Home</a>
+    <a href="about.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">About</a>
+    <a href="license-info.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">License Status</a>
+    <a href="terms.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Terms</a>
+    <a href="privacy.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Privacy</a>
+    <a href="refund.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Refund</a>
+    <a href="dmca.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">DMCA</a>
+    <a href="contact.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Contact</a>
+  </div>
+  <div class="fc" style="color:#2a2a2a;font-size:.76rem;margin-top:10px;line-height:1.7;">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support.cloakai@gmail.com</div>
+</footer>
+<script>
+  function toggleNav(){
+    var b=document.getElementById('ham-btn');
+    var n=document.getElementById('mnav');
+    b.classList.toggle('open');
+    n.classList.toggle('open');
+  }
+  document.addEventListener('click',function(e){
+    var n=document.getElementById('mnav');
+    var b=document.getElementById('ham-btn');
+    if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){
+      n.classList.remove('open');b.classList.remove('open');
+    }
+  });
+  document.querySelectorAll('#mnav a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.getElementById('mnav').classList.remove('open');
+      document.getElementById('ham-btn').classList.remove('open');
+    });
+  });
+</script>
+</body></html>

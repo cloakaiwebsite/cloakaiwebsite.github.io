@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CloakAI - License Activated</title>
+  <style>
+    :root{
+      --pg:#0f3d2e;--ag:#2ecc71;--gg:#00ff88;--bg:#050a07;--tc:#e0e0e0;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    body{
+      background:var(--bg);color:var(--tc);min-height:100vh;
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      background:radial-gradient(circle at 50% 40%,rgba(15,61,46,.4) 0%,transparent 60%),
+                 linear-gradient(0deg,#050a07 0%,#0a1410 100%);
+    }
+
+    .card{
+      background:linear-gradient(160deg,#0A0F1A,#060C16);
+      border:1px solid rgba(52,211,153,.25);
+      border-radius:22px;
+      padding:44px 48px;
+      max-width:540px;
+      width:100%;
+      text-align:center;
+      box-shadow:0 0 80px rgba(52,211,153,.08), 0 24px 64px rgba(0,0,0,.6);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:'';position:absolute;top:-1px;left:10%;right:10%;
+      height:2px;background:linear-gradient(90deg,transparent,#34D399,transparent);
+    }
+
+    .logo{
+      font-size:1.3rem;font-weight:800;color:var(--gg);
+      letter-spacing:.5px;margin-bottom:28px;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .logo svg{width:24px;height:24px;fill:var(--gg);}
+
+    .check-circle{
+      width:64px;height:64px;border-radius:50%;
+      background:rgba(52,211,153,.12);border:2px solid #34D399;
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 20px;font-size:28px;
+    }
+
+    h1{font-size:1.9rem;font-weight:800;color:#fff;margin-bottom:8px;}
+    .subtitle{color:#64748B;font-size:.95rem;margin-bottom:28px;line-height:1.6;}
+
+    /* Plan badge */
+    .plan-badge{
+      display:inline-block;background:rgba(52,211,153,.1);
+      border:1px solid rgba(52,211,153,.25);color:#34D399;
+      padding:4px 14px;border-radius:20px;font-size:.82rem;font-weight:600;
+      margin-bottom:20px;
+    }
+
+    /* Key display */
+    .key-label{color:#475569;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+    .key-box{
+      font-family:'Consolas','Courier New',monospace;
+      font-size:1.5rem;font-weight:700;letter-spacing:3px;
+      color:#34D399;background:rgba(2,44,34,.6);
+      border:1px solid rgba(52,211,153,.3);border-radius:14px;
+      padding:20px 24px;margin-bottom:18px;
+      word-break:break-all;line-height:1.4;
+    }
+    .key-box.hidden{filter:blur(8px);user-select:none;cursor:pointer;transition:filter .2s;}
+    .key-box.hidden:hover{filter:blur(4px);}
+
+    /* Buttons */
+    .btn-copy{
+      width:100%;padding:14px;border-radius:12px;border:none;
+      background:linear-gradient(135deg,#059669,#34D399);
+      color:#022c22;font-size:1rem;font-weight:800;cursor:pointer;
+      transition:.2s;margin-bottom:10px;
+    }
+    .btn-copy:hover{opacity:.9;transform:translateY(-1px);}
+    .btn-copy:active{transform:translateY(0);}
+    .btn-copy.copied{background:linear-gradient(135deg,#065f46,#10b981);}
+
+    .btn-reveal{
+      background:transparent;border:1px solid rgba(255,255,255,.1);
+      color:#64748B;font-size:.82rem;padding:7px 16px;
+      border-radius:8px;cursor:pointer;transition:.2s;margin-bottom:20px;
+    }
+    .btn-reveal:hover{border-color:rgba(52,211,153,.3);color:#94A3B8;}
+
+    /* Steps */
+    .steps{text-align:left;margin:22px 0;}
+    .step{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+    .step:last-child{border-bottom:none;}
+    .step-num{
+      width:24px;height:24px;border-radius:50%;flex-shrink:0;
+      background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);
+      color:#34D399;font-size:.78rem;font-weight:700;
+      display:flex;align-items:center;justify-content:center;margin-top:1px;
+    }
+    .step-text{font-size:.88rem;color:#94A3B8;line-height:1.5;}
+    .step-text strong{color:#cbd5e1;}
+
+    /* Email sent notice */
+    .email-note{
+      background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+      border-radius:10px;padding:12px 16px;margin:18px 0;
+      font-size:.83rem;color:#475569;display:flex;align-items:center;gap:10px;
+    }
+
+    /* Redirect bar */
+    .redirect-bar{margin-top:22px;color:#334155;font-size:.8rem;}
+    .redirect-bar a{color:#34D399;text-decoration:none;}
+    .progress-track{
+      margin-top:8px;height:2px;background:rgba(255,255,255,.06);
+      border-radius:2px;overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;width:100%;background:#34D399;border-radius:2px;
+      animation:drain 5s linear forwards;
+    }
+    @keyframes drain{from{width:100%;}to{width:0%;}}
+
+    /* Error state */
+    .error-card{border-color:rgba(239,68,68,.25);}
+    .error-card .check-circle{border-color:#EF4444;background:rgba(239,68,68,.1);}
+
+    small{display:block;color:#334155;font-size:.75rem;margin-top:16px;line-height:1.7;}
+    small a{color:var(--ag);text-decoration:none;}
+  </style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+    CloakAI
+  </div>
+
+  <!-- Content injected by JS -->
+  <div id="content"></div>
+</div>
+
+<script>
+(function () {
+  // Read URL parameters
+  var params = new URLSearchParams(window.location.search);
+  var key    = (params.get('key')  || '').trim().toUpperCase();
+  var plan   = (params.get('plan') || '').trim();
+  var bypass = params.get('bypass') === '1';
+
+  var content = document.getElementById('content');
+  var card    = document.getElementById('card');
+
+  // ── Error: no key in URL ──────────────────────────────────────────────────
+  if (!key || !key.startsWith('CLAI-')) {
+    card.classList.add('error-card');
+    content.innerHTML = [
+      '<div class="check-circle">✕</div>',
+      '<h1 style="color:#EF4444;">Something went wrong</h1>',
+      '<p class="subtitle">We could not find your license key.<br>',
+      'Check your email — it was sent there automatically.<br>',
+      'If the issue persists, contact us below.</p>',
+      '<a href="mailto:support.cloakai@gmail.com" style="color:#34D399;font-size:.9rem;">',
+      'support.cloakai@gmail.com</a>',
+    ].join('');
+    return;
+  }
+
+  // Plan display name
+  var PLANS = {
+    day:     '1 Day Access',
+    week:    '1 Week Access',
+    month:   '1 Month Access',
+    quarter: '3 Month Access',
+  };
+  var planName = PLANS[plan] || plan || 'License';
+
+  // Bypass banner (only in test mode)
+  var bypassBanner = bypass
+    ? '<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:#F59E0B;padding:8px 14px;border-radius:8px;font-size:.8rem;font-weight:600;margin-bottom:20px;">Testing mode — payment bypass active</div>'
+    : '';
+
+  content.innerHTML = [
+    bypassBanner,
+    '<div class="check-circle">✓</div>',
+    '<h1>You are all set!</h1>',
+    '<p class="subtitle">Your purchase was successful. Your license key is below.</p>',
+    '<div class="plan-badge">' + planName + '</div>',
+    '<div class="key-label">Your License Key</div>',
+    '<div class="key-box" id="key-display">' + key + '</div>',
+    '<button class="btn-copy" id="copy-btn" onclick="copyKey()">Copy License Key</button>',
+    '<div class="steps">',
+      '<div class="step"><div class="step-num">1</div><div class="step-text">Download and open <strong>CloakAI.exe</strong> on your Windows machine.</div></div>',
+      '<div class="step"><div class="step-num">2</div><div class="step-text">Paste the key above when prompted and click <strong>Activate</strong>.</div></div>',
+      '<div class="step"><div class="step-num">3</div><div class="step-text">Press <strong>F8</strong> to show or hide the overlay anytime during your interview.</div></div>',
+    '</div>',
+    '<div class="email-note">📧 &nbsp;A copy of this key has been emailed to you. Check your inbox (and spam folder).</div>',
+    '<small>This license is bound to the first device it is activated on. Licenses are non-transferable.<br>',
+    'Questions? <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a></small>',
+    '<div class="redirect-bar">',
+      'Returning to <a href="https://cloakai.in">cloakai.in</a> in <strong id="cd">5</strong>s',
+      '<div class="progress-track"><div class="progress-fill"></div></div>',
+    '</div>',
+  ].join('');
+
+  // Copy to clipboard
+  window.copyKey = function () {
+    navigator.clipboard.writeText(key).then(function () {
+      var btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy License Key';
+        btn.classList.remove('copied');
+      }, 2500);
+    }).catch(function () {
+      // Fallback for browsers without clipboard API
+      var ta = document.createElement('textarea');
+      ta.value = key; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+      var btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(function () { btn.textContent = 'Copy License Key'; }, 2500);
+    });
+  };
+
+  // Countdown and redirect
+  var secs = 10;
+  var cdEl  = document.getElementById('cd');
+  var timer = setInterval(function () {
+    secs--;
+    if (cdEl) cdEl.textContent = secs;
+    if (secs <= 0) {
+      clearInterval(timer);
+      window.location.replace('https://cloakai.in');
+    }
+  }, 1000);
+})();
+</script>
+
+<footer style="background:rgba(0,0,0,.88);padding:32px 20px 24px;border-top:1px solid #181818;text-align:center;">
+  <div style="font-size:1.2rem;font-weight:800;color:#00ff88;margin-bottom:8px;">CloakAI</div>
+  <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:12px 0;">
+    <a href="index.html" style="color:#444;text-decoration:none;font-size:.82rem;">Home</a>
+    <a href="index.html#pricing" style="color:#444;text-decoration:none;font-size:.82rem;">Pricing</a>
+    <a href="license-info.html" style="color:#00ff88;text-decoration:none;font-size:.82rem;font-weight:600;">License Status</a>
+    <a href="terms.html" style="color:#444;text-decoration:none;font-size:.82rem;">Terms</a>
+    <a href="privacy.html" style="color:#444;text-decoration:none;font-size:.82rem;">Privacy</a>
+    <a href="contact.html" style="color:#444;text-decoration:none;font-size:.82rem;">Contact</a>
+  </div>
+  <div style="color:#222;font-size:.76rem;margin-top:10px;line-height:1.7;">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support.cloakai@gmail.com</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CloakAI — Payment Result</title>
+  <style>
+    :root{--pg:#0f3d2e;--ag:#2ecc71;--gg:#00ff88;--bg:#050a07;--tc:#e0e0e0;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+    body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+      background:radial-gradient(circle at 50% 40%,rgba(15,61,46,.4) 0%,transparent 60%),linear-gradient(0deg,#050a07,#0a1410);}
+
+    .card{background:linear-gradient(160deg,#0A0F1A,#060C16);border:1px solid rgba(52,211,153,.2);border-radius:22px;
+      padding:44px 48px;max-width:520px;width:100%;text-align:center;
+      box-shadow:0 0 60px rgba(52,211,153,.06),0 24px 64px rgba(0,0,0,.6);position:relative;overflow:hidden;}
+    .card::before{content:'';position:absolute;top:-1px;left:10%;right:10%;height:2px;
+      background:linear-gradient(90deg,transparent,#34D399,transparent);}
+
+    .logo{font-size:1.3rem;font-weight:800;color:var(--gg);letter-spacing:.5px;margin-bottom:28px;
+      display:flex;align-items:center;justify-content:center;gap:8px;}
+    .logo svg{width:22px;height:22px;fill:var(--gg);}
+
+    /* States */
+    .state{display:none;}
+    .state.active{display:block;}
+
+    /* Spinner */
+    .spinner-wrap{margin:0 auto 24px;width:64px;height:64px;position:relative;}
+    .spinner{width:64px;height:64px;border:3px solid rgba(52,211,153,.15);border-top-color:#34D399;
+      border-radius:50%;animation:spin .8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* Icon circles */
+    .icon-circle{width:64px;height:64px;border-radius:50%;margin:0 auto 20px;
+      display:flex;align-items:center;justify-content:center;font-size:26px;}
+    .icon-success{background:rgba(52,211,153,.12);border:2px solid #34D399;}
+    .icon-fail{background:rgba(239,68,68,.1);border:2px solid #EF4444;}
+    .icon-pending{background:rgba(245,158,11,.1);border:2px solid #F59E0B;}
+
+    h1{font-size:1.7rem;font-weight:800;margin-bottom:8px;}
+    .sub{color:#64748B;font-size:.9rem;line-height:1.7;margin-bottom:22px;}
+
+    /* Info boxes */
+    .info-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+      border-radius:12px;padding:16px 20px;margin:16px 0;text-align:left;}
+    .info-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;
+      border-bottom:1px solid rgba(255,255,255,.04);}
+    .info-row:last-child{border-bottom:none;}
+    .info-label{color:#475569;font-size:.82rem;}
+    .info-value{color:#CBD5E1;font-size:.85rem;font-weight:600;text-align:right;word-break:break-all;max-width:60%;}
+    .info-value.green{color:#34D399;}
+
+    /* Key box */
+    .key-box{font-family:'Consolas','Courier New',monospace;font-size:1.3rem;font-weight:700;
+      letter-spacing:2px;color:#34D399;background:rgba(2,44,34,.6);
+      border:1px solid rgba(52,211,153,.3);border-radius:12px;
+      padding:16px 20px;margin:16px 0;word-break:break-all;line-height:1.4;}
+
+    .email-note{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);
+      border-radius:10px;padding:12px 16px;color:#7dd3fc;font-size:.82rem;
+      margin:14px 0;display:flex;align-items:flex-start;gap:10px;}
+
+    /* Buttons */
+    .btn{display:block;width:100%;padding:13px;border-radius:11px;border:none;
+      background:linear-gradient(135deg,#059669,#34D399);color:#022c22;
+      font-size:.97rem;font-weight:800;cursor:pointer;transition:.2s;text-decoration:none;
+      text-align:center;margin-top:8px;}
+    .btn:hover{opacity:.9;transform:translateY(-1px);}
+    .btn.secondary{background:rgba(255,255,255,.07);color:#CBD5E1;
+      border:1px solid rgba(255,255,255,.1);font-weight:600;}
+    .btn.secondary:hover{background:rgba(255,255,255,.12);}
+
+    /* Poll bar */
+    .poll-bar{margin-top:22px;}
+    .poll-label{color:#475569;font-size:.78rem;margin-bottom:6px;}
+    .poll-track{height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;}
+    .poll-fill{height:100%;background:#34D399;border-radius:2px;
+      animation:pulse-width 2s ease-in-out infinite;}
+    @keyframes pulse-width{0%,100%{width:15%;}50%{width:85%;}}
+
+    small{display:block;color:#334155;font-size:.75rem;margin-top:18px;line-height:1.7;}
+    small a{color:var(--ag);text-decoration:none;}
+  </style>
+</head>
+<body>
+
+<!-- ⚙ Update this before deploying -->
+<script>
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx409E_TH81WF6xpZqGohh5AnCSV5vFWKXQ1zz63a_ibK0kYXXugfgpvUTB0Q6h5Te-/exec';
+</script>
+
+<div class="card">
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+    CloakAI
+  </div>
+
+  <!-- ── CHECKING state ─────────────────────────────────── -->
+  <div id="state-checking" class="state active">
+    <div class="spinner-wrap"><div class="spinner"></div></div>
+    <h1 style="color:#fff;">Confirming Payment</h1>
+    <p class="sub">Please wait while we verify your payment with PhonePe.<br>This usually takes a few seconds.</p>
+    <div class="poll-bar">
+      <div class="poll-label">Checking payment status...</div>
+      <div class="poll-track"><div class="poll-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ── SUCCESS state ──────────────────────────────────── -->
+  <div id="state-success" class="state">
+    <div class="icon-circle icon-success">✓</div>
+    <h1 style="color:#34D399;">Payment Confirmed!</h1>
+    <p class="sub">Your license key is ready. Save it somewhere safe.</p>
+
+    <div id="key-display" class="key-box" style="display:none;"></div>
+    <button class="btn" id="copy-btn" onclick="copyKey()" style="display:none;">Copy License Key</button>
+
+    <div class="email-note">
+      📧 &nbsp;Your license key and order details have been emailed to <strong id="email-display"></strong>. Check your inbox and spam folder.
+    </div>
+
+    <div class="info-box" id="order-details"></div>
+
+    <a href="https://cloakai.in/license-info.html" class="btn secondary" style="margin-top:10px;">Check License Status</a>
+
+    <small>This license is bound to the first device it is activated on.<br>
+    Need help? <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a><br>
+    Always include your Order ID when contacting support.</small>
+  </div>
+
+  <!-- ── TIMEOUT state (polling gave up) ──────────────────────── -->
+  <div id="state-timeout" class="state">
+    <div class="icon-circle icon-pending">⏱</div>
+    <h1 style="color:#F59E0B;">Verification Timed Out</h1>
+    <p class="sub">We could not confirm your payment status in time.<br>
+    <strong>If your payment went through, your license key has been emailed to you automatically.</strong><br>
+    Please check your inbox and spam folder before contacting support.</p>
+    <div class="info-box">
+      <div class="info-row"><span class="info-label">Order Reference</span><span class="info-value green" id="timeout-order-id"></span></div>
+    </div>
+    <div class="email-note">📧 &nbsp;Your license key is sent automatically once PhonePe confirms the payment. This can take up to 5 minutes after a successful transaction.</div>
+    <a href="license-info.html" class="btn" style="margin-top:10px;">Check License Status</a>
+    <a href="https://cloakai.in" class="btn secondary" style="margin-top:8px;">Back to CloakAI</a>
+    <small>If you don't receive a key within 10 minutes and money was deducted,<br>email <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a> with your Order ID above.</small>
+  </div>
+
+  <!-- ── PENDING state (payment in progress) ───────────── -->
+  <div id="state-pending" class="state">
+    <div class="icon-circle icon-pending">⏳</div>
+    <h1 style="color:#F59E0B;">Payment Processing</h1>
+    <p class="sub">Your payment is still being processed by PhonePe.<br>
+    Your license key will be emailed to you automatically once confirmed.<br>
+    You can close this tab.</p>
+    <div class="info-box">
+      <div class="info-row"><span class="info-label">Order ID</span><span class="info-value" id="pending-order-id"></span></div>
+    </div>
+    <a href="https://cloakai.in" class="btn">Back to CloakAI</a>
+    <small>If you don't receive your key within 10 minutes, email us at<br>
+    <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a> with your Order ID.</small>
+  </div>
+
+  <!-- ── FAILED state ───────────────────────────────────── -->
+  <div id="state-failed" class="state">
+    <div class="icon-circle icon-fail">✕</div>
+    <h1 style="color:#EF4444;">Payment Failed</h1>
+    <p class="sub">Your payment was not completed. No charges have been made to your account.</p>
+    <a href="https://cloakai.in/#pricing" class="btn">Try Again</a>
+    <a href="mailto:support.cloakai@gmail.com" class="btn secondary" style="margin-top:8px;">Contact Support</a>
+    <small>If money was deducted from your account, email us immediately at<br>
+    <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a> with your bank transaction reference.</small>
+  </div>
+
+  <!-- ── ERROR state (no order_id or network issue) ────── -->
+  <div id="state-error" class="state">
+    <div class="icon-circle icon-fail">!</div>
+    <h1 style="color:#EF4444;">Something Went Wrong</h1>
+    <p class="sub" id="error-message">We could not retrieve your payment status.</p>
+    <a href="https://cloakai.in/#pricing" class="btn">Back to Pricing</a>
+    <small>If your payment went through, email us at<br>
+    <a href="mailto:support.cloakai@gmail.com">support.cloakai@gmail.com</a> with your PhonePe transaction reference.</small>
+  </div>
+</div>
+
+<script>
+(function () {
+  var orderId   = new URLSearchParams(window.location.search).get('order') || '';
+  var pollCount = 0;
+  var MAX_POLLS = 24;        // 24 × 5s = 2 minutes max
+  var copiedKey = '';
+
+  function showState(id) {
+    document.querySelectorAll('.state').forEach(function(el){ el.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+  }
+
+  function fmt(isoStr) {
+    if (!isoStr) return 'N/A';
+    try {
+      return new Date(isoStr).toLocaleString('en-IN', {
+        day:'2-digit', month:'short', year:'numeric',
+        hour:'2-digit', minute:'2-digit', hour12:true
+      });
+    } catch(e){ return isoStr; }
+  }
+
+  if (!orderId) {
+    document.getElementById('error-message').textContent =
+      'No order reference found in the URL. Please check your email for your license key.';
+    showState('state-error'); return;
+  }
+
+  document.getElementById('pending-order-id').textContent = orderId;
+
+  function pollOrder() {
+    if (pollCount >= MAX_POLLS) {
+      // Real timeout — don't show "pending", show a clear timeout message
+      var toEl = document.getElementById('timeout-order-id');
+      if (toEl) toEl.textContent = orderId;
+      showState('state-timeout');
+      return;
+    }
+    pollCount++;
+
+    var url = SCRIPT_URL + '?' + new URLSearchParams({
+      action:   'check_order',
+      order_id: orderId,
+      ajax:     '1',
+    });
+
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        if (!data.success) {
+          document.getElementById('error-message').textContent =
+            data.error || 'Could not find order. Check your email for the license key.';
+          showState('state-error');
+          return;
+        }
+
+        var status = data.status;
+
+        if (status === 'PAID') {
+          renderSuccess(data);
+        } else if (status === 'FAILED') {
+          showState('state-failed');
+        } else {
+          // PENDING — keep polling
+          setTimeout(pollOrder, 5000);
+        }
+      })
+      .catch(function() {
+        // Network error — retry
+        setTimeout(pollOrder, 5000);
+      });
+  }
+
+  function renderSuccess(data) {
+    // Email hint
+    var emailEl = document.getElementById('email-display');
+    if (emailEl) emailEl.textContent = data.email || 'your email';
+
+    // Key display (only if key was returned)
+    if (data.license_key) {
+      copiedKey = data.license_key;
+      var keyEl = document.getElementById('key-display');
+      var btnEl = document.getElementById('copy-btn');
+      if (keyEl) { keyEl.textContent = data.license_key; keyEl.style.display = 'block'; }
+      if (btnEl) { btnEl.style.display = 'block'; }
+    }
+
+    // Order details
+    var PLAN_NAMES = {
+      day:'1 Day', week:'1 Week', month:'1 Month', quarter:'3 Months'
+    };
+    var planName = data.plan_name || PLAN_NAMES[data.plan] || data.plan || 'License';
+    var rows = [
+      { label: 'Order ID',    value: data.order_id  || orderId },
+      { label: 'Plan',        value: planName + (data.plan_days ? ' (' + data.plan_days + ' days)' : '') },
+      { label: 'Amount Paid', value: data.amount ? 'INR ' + data.amount : 'Paid' },
+      { label: 'Payment Time',value: fmt(data.paid_at) },
+    ];
+    var html = rows.map(function(r){
+      return '<div class="info-row"><span class="info-label">' + r.label +
+             '</span><span class="info-value green">' + r.value + '</span></div>';
+    }).join('');
+    var detailEl = document.getElementById('order-details');
+    if (detailEl) detailEl.innerHTML = html;
+
+    showState('state-success');
+  }
+
+  window.copyKey = function() {
+    if (!copiedKey) return;
+    navigator.clipboard.writeText(copiedKey).then(function(){
+      var btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(function(){ btn.textContent = 'Copy License Key'; }, 2500);
+    }).catch(function(){
+      var ta = document.createElement('textarea');
+      ta.value = copiedKey; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    });
+  };
+
+  // Start polling immediately
+  pollOrder();
+})();
+</script>
+</body>
+</html>
