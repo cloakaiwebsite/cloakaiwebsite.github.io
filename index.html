@@ -51,7 +51,7 @@
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Windows 10, Windows 11",
     "offers": [
-      {"@type":"Offer","price":"699","priceCurrency":"INR","name":"2 Hour Pack"},
+      {"@type":"Offer","price":"1","priceCurrency":"INR","name":"2 Hour Pack"},
       {"@type":"Offer","price":"1999","priceCurrency":"INR","name":"8 Hour Pack"},
       {"@type":"Offer","price":"2499","priceCurrency":"INR","name":"12 Hour Pack"},
       {"@type":"Offer","price":"3499","priceCurrency":"INR","name":"24 Hour Pack"}
@@ -317,10 +317,10 @@
   const BYPASS = false;
 
   const PLANS = {
-    starter: {name:'2 Hour Pack',  price:'&#x20B9;1',   period:'2 hours of AI time',   rate:'&#x20B9;350/hr', label:'Get 2 Hour Pack'},
-    basic:   {name:'8 Hour Pack',  price:'&#x20B9;1,999', period:'8 hours of AI time',   rate:'&#x20B9;250/hr', label:'Get 8 Hour Pack'},
-    pro:     {name:'12 Hour Pack', price:'&#x20B9;2,499', period:'12 hours of AI time',  rate:'&#x20B9;208/hr', label:'Get 12 Hour Pack'},
-    max:     {name:'24 Hour Pack', price:'&#x20B9;3,499', period:'24 hours of AI time',  rate:'&#x20B9;146/hr', label:'Get 24 Hour Pack'},
+    starter: {name:'2 Hour Pack',  price:'₹1',   period:'2 hours of AI time',   rate:'₹350/hr', label:'Get 2 Hour Pack'},
+    basic:   {name:'8 Hour Pack',  price:'₹1,999', period:'8 hours of AI time',   rate:'₹250/hr', label:'Get 8 Hour Pack'},
+    pro:     {name:'12 Hour Pack', price:'₹2,499', period:'12 hours of AI time',  rate:'₹208/hr', label:'Get 12 Hour Pack'},
+    max:     {name:'24 Hour Pack', price:'₹3,499', period:'24 hours of AI time',  rate:'₹146/hr', label:'Get 24 Hour Pack'},
   };
   window.trackEvent = function(c,a,l){ console.log('[Track] '+c+':'+a+(l?' / '+l:'')); };
 </script>
@@ -370,7 +370,7 @@
     <div class="pill"><div class="dot"></div>Windows 10 &amp; 11</div>
   </div>
   <div class="cta-group">
-    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from &#x20B9;720</a>
+    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from ₹699</a>
     <a href="https://github.com/cloakaiwebsite/cloakaiwebsite.github.io/releases/download/v1.0/CloakAI.exe" class="btn-outline" onclick="trackEvent('Hero','Download','Win')">
       <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="var(--gg)">
         <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
@@ -461,11 +461,6 @@
       <h3>Stealth Controls</h3>
       <p>F8 instantly hides or shows the window. ESC exits. Hold Ctrl to let your mouse click through the overlay as if it isn't there. Drag to any part of your screen. Resize. Adjust transparency. All in real time.</p>
     </div>
-    <div class="card">
-      <div class="card-ico">🔒</div>
-      <h3>Privacy by Design</h3>
-      <p>Your audio is processed in real time and immediately discarded. No recordings. No stored conversations. No data sold to third parties. What happens in your interview stays on your device.</p>
-    </div>
   </div>
 </section>
 
@@ -480,16 +475,16 @@
   <!-- Competitor pricing note -->
   <div style="text-align:center;margin-bottom:28px;">
     <div style="display:inline-block;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 20px;font-size:.82rem;color:#64748B;line-height:1.65;">
-      Competitors charge <span style="color:#EF4444;text-decoration:line-through;font-weight:600;">&#x20B9;400/hr</span> for similar AI time &nbsp;&middot;&nbsp;
-      <strong style="color:#34D399;">CloakAI starts at &#x20B9;350/hr</strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
+      Competitors charge <span style="color:#EF4444;text-decoration:line-through;font-weight:600;">₹400/hr</span> for similar AI time &nbsp;&middot;&nbsp;
+      <strong style="color:#34D399;">CloakAI starts at ₹350/hr</strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
     </div>
   </div>
 
   <div class="pricing-grid">
     <div class="pc">
       <h3>Starter</h3>
-      <div class="pc-price"><sup>&#x20B9;</sup>699</div>
-      <div class="pc-rate">&#x20B9;350 per AI hour</div>
+      <div class="pc-price"><sup>₹</sup>699</div>
+      <div class="pc-rate">₹350 per AI hour</div>
       <div class="pc-per">2 hours of AI time</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
@@ -502,8 +497,8 @@
 
     <div class="pc">
       <h3>Basic</h3>
-      <div class="pc-price"><sup>&#x20B9;</sup>1,999</div>
-      <div class="pc-rate">&#x20B9;250 per AI hour</div>
+      <div class="pc-price"><sup>₹</sup>1,999</div>
+      <div class="pc-rate">₹250 per AI hour</div>
       <div class="pc-per">8 hours of AI time</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
@@ -517,8 +512,8 @@
     <div class="pc pop">
       <div class="pc-badge-pop">BEST VALUE</div>
       <h3>Pro</h3>
-      <div class="pc-price"><sup>&#x20B9;</sup>2,499</div>
-      <div class="pc-rate">&#x20B9;208 per AI hour</div>
+      <div class="pc-price"><sup>₹</sup>2,499</div>
+      <div class="pc-rate">₹208 per AI hour</div>
       <div class="pc-per">12 hours of AI time</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
@@ -532,8 +527,8 @@
     <div class="pc" style="border-color:rgba(167,139,250,.3);">
       <div class="pc-badge-pop" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);color:#fff;">POWER USER</div>
       <h3>Max</h3>
-      <div class="pc-price"><sup>&#x20B9;</sup>3,499</div>
-      <div class="pc-rate">&#x20B9;146 per AI hour</div>
+      <div class="pc-price"><sup>₹</sup>3,499</div>
+      <div class="pc-rate">₹146 per AI hour</div>
       <div class="pc-per">24 hours of AI time</div>
       <ul class="pc-feats">
         <li>Everything in Pro</li>
@@ -575,7 +570,7 @@
     <!-- Early adopter honest reviews -->
     <div class="review-card">
       <div class="stars">★★★★★</div>
-      <p class="rev-text">"I'll be honest — I was skeptical. Tested it on a Google Meet call with a friend first. He shared his screen, I had CloakAI open. He saw nothing. Not even a flash. That was enough for me."</p>
+      <p class="rev-text">"I'll be honest I was skeptical. Tested it on a Google Meet call with a friend first. He shared his screen, I had CloakAI open. He saw nothing. Not even a flash. That was enough for me."</p>
       <div class="rev-author">Karthik N.</div>
       <div class="rev-role">SDE-2 candidate, Bengaluru</div>
     </div>
@@ -587,13 +582,13 @@
     </div>
     <div class="review-card">
       <div class="stars">★★★★★</div>
-      <p class="rev-text">"I set the context to my exact profile — 3 years Python, targeting BFSI roles — and the answers came out using the right jargon. Didn't sound generic at all. Actually impressed the interviewer."</p>
+      <p class="rev-text">"I set the context to my exact profile 3 years Python, targeting BFSI roles  and the answers came out using the right jargon. Didn't sound generic at all. Actually impressed the interviewer."</p>
       <div class="rev-author">Arjun V.</div>
       <div class="rev-role">Backend Engineer, Mumbai</div>
     </div>
     <div class="review-card">
       <div class="stars">★★★★☆</div>
-      <p class="rev-text">"The screen capture is a lifesaver when they paste code in a shared doc and you can't copy it. Takes 2 seconds and gives a full breakdown. One thing — make sure your mic sensitivity is tuned or it picks up background noise."</p>
+      <p class="rev-text">"The screen capture is a lifesaver when they paste code in a shared doc and you can't copy it. Takes 2 seconds and gives a full breakdown. One thing  make sure your mic sensitivity is tuned or it picks up background noise."</p>
       <div class="rev-author">Divya R.</div>
       <div class="rev-role">Product Analyst, Hyderabad</div>
     </div>
@@ -630,10 +625,10 @@
     <div class="faq-item"><div class="faq-q">Is my audio or conversation stored anywhere? <span class="ic">+</span></div><div class="faq-a">No. Audio is captured on your device, processed in real time, and immediately discarded after the response is generated. We do not record, store, or have access to any audio or conversation content from your sessions. The only local file stored is the session transcript on your own computer, which you control.</div></div>
     <div class="faq-item"><div class="faq-q">What is your refund policy? <span class="ic">+</span></div><div class="faq-a">All sales are final because license keys are generated and delivered instantly. We cannot verify whether the software was used after delivery. We strongly recommend testing on your computer before purchasing by asking us for a demonstration or checking that your Windows version is supported. See our full <a href="refund.html" style="color:var(--gg)">Refund Policy</a> for the limited exceptions that apply.</div></div>
     <div class="faq-item"><div class="faq-q">How do I contact support? <span class="ic">+</span></div><div class="faq-a">Email us at <a href="mailto:support.cloakai@gmail.com" style="color:var(--gg)">support.cloakai@gmail.com</a>. We provide 24/7 support over email. For urgent issues during an ongoing interview, include the word URGENT in your subject line and we prioritise it immediately.</div></div>
-    <div class="faq-item"><div class="faq-q">How is CloakAI different from Parakeet AI? <span class="ic">+</span></div><div class="faq-a">Parakeet AI is one of the known tools in this space, but there are several areas where CloakAI is meaningfully better. First, screenshare invisibility: CloakAI uses a system-level Windows display method that cannot be captured even by the Windows Snipping Tool or OBS. Not even physically inspecting the transmitted stream will reveal it. Parakeet and similar tools often use transparent windows that appear on your screen but may still appear as a black or visible rectangle in certain capture scenarios. Second, price: CloakAI is significantly cheaper. Our quarterly plan works out to just &#x20B9;4.6 per hour which is among the lowest in the market globally. Third, we offer features no competitor currently has: session transcript saving, answer history browse (last 5 answers mid-interview), screen capture and AI analysis, and deep context-aware tailoring where you configure your role, company, and stack before the interview.</div></div>
+    <div class="faq-item"><div class="faq-q">How is CloakAI different from Parakeet AI? <span class="ic">+</span></div><div class="faq-a">Parakeet AI is one of the known tools in this space, but there are several areas where CloakAI is meaningfully better. First, screenshare invisibility: CloakAI uses a system-level Windows display method that cannot be captured even by the Windows Snipping Tool or OBS. Not even physically inspecting the transmitted stream will reveal it. Parakeet and similar tools often use transparent windows that appear on your screen but may still appear as a black or visible rectangle in certain capture scenarios. Second, price: CloakAI is significantly cheaper. Our quarterly plan works out to just ₹4.6 per hour which is among the lowest in the market globally. Third, we offer features no competitor currently has: session transcript saving, answer history browse (last 5 answers mid-interview), screen capture and AI analysis, and deep context-aware tailoring where you configure your role, company, and stack before the interview.</div></div>
     <div class="faq-item"><div class="faq-q">How does CloakAI compare to other similar interview tools? <span class="ic">+</span></div><div class="faq-a">Most tools in this category either rely on browser extensions (which are visible in screenshare, can be detected by meeting software policies, and are platform-dependent), or desktop overlays that are captured by snipping tools and screenshot utilities. CloakAI is different in three ways. First, it uses a hardware-level exclusion that prevents capture by any software, including Windows' own screenshot and snipping tools. Second, it is the most affordable option per hour of access. Third, it includes features that others simply don't offer: save your full session for post-interview review, browse back through your last 5 answers without disrupting the live view, capture and analyse any on-screen content including problems you cannot copy, and configure the AI to match your exact interview context. No extension. No browser dependency. One lightweight Windows app.</div></div>
     <div class="faq-item"><div class="faq-q">Can the Snipping Tool or Windows screenshot capture CloakAI's overlay? <span class="ic">+</span></div><div class="faq-a">No. This is one of our most important technical properties. The CloakAI overlay cannot be captured by the Windows Snipping Tool, Windows screenshot shortcuts (Win+Shift+S), OBS, or any screen recording software. The exclusion operates below the application layer, at the display driver level. Even if someone were watching your screen sharing and tried to screenshot your shared feed, they would see nothing. The only way to know CloakAI is present is to physically look at your monitor in the room with you. This is fundamentally different from how most competing tools work.</div></div>
-    <div class="faq-item"><div class="faq-q">What makes CloakAI the best value in the market? <span class="ic">+</span></div><div class="faq-a">At &#x20B9;4.6 per hour on the quarterly plan, CloakAI is priced lower than any comparable tool we are aware of. The 1-day plan at &#x20B9;720 covers a full 24-hour window including multiple interview rounds. Compare this to international competitors that charge $20 to $50 per session with fewer features. Beyond price, you get session transcripts, 5-answer history navigation, screen capture analysis, context-aware tailoring, and true screenshare invisibility that holds up even against the Windows Snipping Tool. The pricing is designed for the Indian job market and reflects our belief that career tools should be accessible, not a luxury.</div></div>
+    <div class="faq-item"><div class="faq-q">What makes CloakAI the best value in the market? <span class="ic">+</span></div><div class="faq-a">At ₹146 per hour on the MAX plan, CloakAI is priced lower than any comparable tool we are aware of. The STARTER plan at ₹699 covers a full 2-hour window including multiple interview rounds. Compare this to international competitors that charge $20 to $50 per session with fewer features. Beyond price, you get session transcripts, 5-answer history navigation, screen capture analysis, context-aware tailoring, and true screenshare invisibility that holds up even against the Windows Snipping Tool. The pricing is designed for the Indian job market and reflects our belief that career tools should be accessible, not a luxury.</div></div>
   </div>
 </section>
 
@@ -657,7 +652,7 @@
   <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
 
-<!-- PAYMENT MODAL — 2 steps: details → OTP → payment -->
+<!-- PAYMENT MODAL  2 steps: details → OTP → payment -->
 <div id="pay-mo" class="mo" onclick="closeMo(event,'pay-mo')">
   <div class="mc pm-card" style="max-width:460px;">
     <button class="close-mc" onclick="closeMo(null,'pay-mo')">&times;</button>
@@ -787,7 +782,7 @@
     });
   });
 
-  /* ── Payment — OTP flow ────────────────────────────────────────────────── */
+  /* ── Payment  OTP flow ────────────────────────────────────────────────── */
   var curPlan = null;
   var _verifiedEmail = '';
 
@@ -839,7 +834,7 @@
     el.className = 'pm-msg' + (cls ? ' ' + cls : '');
   }
 
-  /* Step 1 — send OTP */
+  /* Step 1  send OTP */
   function sendOTP(isResend) {
     var email = document.getElementById('pm-email').value.trim().toLowerCase();
     var phone = document.getElementById('pm-phone').value.trim();
@@ -878,7 +873,7 @@
       });
   }
 
-  /* Step 2 — verify OTP → create order → redirect */
+  /* Step 2  verify OTP → create order → redirect */
   function doPay() {
     var otp = (document.getElementById('pm-otp').value || '').trim();
     if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) {
