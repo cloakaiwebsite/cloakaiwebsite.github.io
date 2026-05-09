@@ -7,10 +7,9 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-E78JBBWJQW');
   </script>
-  
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
@@ -52,12 +51,36 @@
     .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:8px 18px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
     .nav-cta:hover{box-shadow:0 0 14px rgba(46,204,113,.5);}
 
+    /* ── Hamburger nav ─────────────────────────────────────────── */
+    header{position:relative;}
+    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;
+      background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
+    .ham span{display:block;width:22px;height:2px;background:var(--gg);
+      border-radius:2px;transition:transform .28s,opacity .28s;}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    @media(max-width:860px){
+      .ham{display:flex;}
+      #mnav{display:none;position:absolute;top:100%;left:0;right:0;
+        background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);
+        backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;
+        gap:2px;z-index:1000;}
+      #mnav.open{display:flex;}
+      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;
+        font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
+      #mnav a:last-child{border-bottom:none;}
+      .nav-cta{margin-top:10px!important;text-align:center;display:block;
+        padding:11px 16px!important;}
+      .header-inner{flex-direction:row!important;justify-content:space-between!important;
+        align-items:center!important;gap:0!important;}
+    }
+
     /* ── Hero ──────────────────────────────────────────────────── */
     .hero{text-align:center;padding:80px 20px 60px;}
     .badge{display:inline-block;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.4);color:var(--gg);padding:6px 18px;border-radius:30px;font-size:.83rem;font-weight:600;letter-spacing:.5px;margin-bottom:24px;animation:badgePulse 2.5s ease-in-out infinite;}
     @keyframes badgePulse{0%,100%{box-shadow:0 0 0 rgba(46,204,113,0);}50%{box-shadow:0 0 16px rgba(46,204,113,.35);}}
 
-    /* ── Glitch (restored full keyframes from original) ────────── */
     .glitch-wrap{display:inline-block;position:relative;max-width:100%;}
     .glitch{position:relative;color:#fff;font-size:5rem;font-weight:800;word-wrap:break-word;letter-spacing:-2px;}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);}
@@ -232,7 +255,6 @@
     @media(max-width:768px){
       .glitch{font-size:2.2rem;letter-spacing:-1px;}
       .hero{padding:60px 20px 40px;}
-      .header-inner{flex-direction:column;gap:12px;}
       .cursor-glow{display:none;}
       .btn,.btn-outline{width:100%;justify-content:center;}
       .cta-group{flex-direction:column;align-items:center;}
@@ -244,47 +266,22 @@
       .glitch{font-size:1.8rem;}
       .trust-num{font-size:1.6rem;}
     }
-  
-    /* ── Hamburger nav ─────────────────────────────────────────── */
-    header{position:relative;}
-    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;
-      background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
-    .ham span{display:block;width:22px;height:2px;background:var(--gg);
-      border-radius:2px;transition:transform .28s,opacity .28s;}
-    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    @media(max-width:860px){
-      .ham{display:flex;}
-      #mnav{display:none;position:absolute;top:100%;left:0;right:0;
-        background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);
-        backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;
-        gap:2px;z-index:1000;}
-      #mnav.open{display:flex;}
-      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;
-        font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
-      #mnav a:last-child{border-bottom:none;}
-      .nav-cta{margin-top:10px!important;text-align:center;display:block;
-        padding:11px 16px!important;}
-      .header-inner{flex-direction:row!important;justify-content:space-between!important;
-        align-items:center!important;gap:0!important;}
-    }
-    </style>
+  </style>
 </head>
 <body>
 
 <!-- PAYMENT CONFIG -->
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx409E_TH81WF6xpZqGohh5AnCSV5vFWKXQ1zz63a_ibK0kYXXugfgpvUTB0Q6h5Te-/exec';
-  const BYPASS     = false; // set false when PhonePe is approved
+  const BYPASS = false;
 
   const PLANS = {
-    day:     {name:'1 Day Access',    price:'₹720',    period:'24 hours',  rate:'₹30/hour', label:'Get 1 Day Access'},
-    week:    {name:'1 Week Access',   price:'₹3,360',  period:'7 days',    rate:'₹20/hour', label:'Get Weekly Access'},
-    month:   {name:'1 Month Access',  price:'₹7,200',  period:'30 days',   rate:'₹10/hour', label:'Get Monthly Access'},
-    quarter: {name:'3 Month Access',  price:'₹10,000', period:'90 days',   rate:'₹4.6/hour',label:'Get Quarterly Access'},
+    day:     {name:'1 Day Access',    price:'&#x20B9;720',    period:'24 hours',  rate:'&#x20B9;30/hour', label:'Get 1 Day Access'},
+    week:    {name:'1 Week Access',   price:'&#x20B9;3,360',  period:'7 days',    rate:'&#x20B9;20/hour', label:'Get Weekly Access'},
+    month:   {name:'1 Month Access',  price:'&#x20B9;7,200',  period:'30 days',   rate:'&#x20B9;10/hour', label:'Get Monthly Access'},
+    quarter: {name:'3 Month Access',  price:'&#x20B9;10,000', period:'90 days',   rate:'&#x20B9;4.6/hour',label:'Get Quarterly Access'},
   };
-  window.trackEvent=(c,a,l)=>console.log(`[Track] ${c}:${a}${l?' / '+l:''}`);
+  window.trackEvent = function(c,a,l){ console.log('[Track] '+c+':'+a+(l?' / '+l:'')); };
 </script>
 
 <!-- BG -->
@@ -331,7 +328,7 @@
     <div class="pill"><div class="dot"></div>Hidden from all screen recorders</div>
     <div class="pill"><div class="dot"></div>Windows 10 &amp; 11</div>
   </div>
-    <div class="cta-group">
+  <div class="cta-group">
     <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from &#x20B9;720</a>
     <a href="https://github.com/cloakaiwebsite/cloakaiwebsite.github.io/releases/download/v1.0/CloakAI.exe" class="btn-outline" onclick="trackEvent('Hero','Download','Win')">
       <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="var(--gg)">
@@ -345,8 +342,8 @@
 
 <!-- TRUST -->
 <div class="trust-bar reveal">
-  <div class="trust-item"><div class="trust-num">500+</div><div class="trust-label">Active Users</div></div>
-  <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Avg Rating</div></div>
+  <div class="trust-item"><div class="trust-num">2700+</div><div class="trust-label">Active Users</div></div>
+  <div class="trust-item"><div class="trust-num">4.9&#x2605;</div><div class="trust-label">Avg Rating</div></div>
   <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
   <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
   <div class="trust-item"><div class="trust-num">24/7</div><div class="trust-label">Email Support</div></div>
@@ -379,67 +376,55 @@
 <section id="features" class="reveal">
   <div class="sh"><h2>Features Your Competition Doesn't Have</h2><p>CloakAI is built for the reality of modern interviews, not just the theory of them.</p></div>
   <div class="grid-3">
-
-    <!-- Unique differentiators first -->
     <div class="card unique">
       <div class="unique-badge">EXCLUSIVE</div>
       <div class="card-ico">💾</div>
       <h3>Full Interview Transcript Saved</h3>
       <p>Every question asked and every answer generated during your session is automatically stored. Download the complete session log anytime with one click. Review what worked, what didn't, and keep improving.</p>
     </div>
-
     <div class="card unique">
       <div class="unique-badge">EXCLUSIVE</div>
       <div class="card-ico">🖥</div>
       <h3>Screen Capture and Analyse</h3>
       <p>Screenshot your entire screen and instantly ask CloakAI what's on it. Works on coding challenges shown inside shared documents, problem statements pasted in the interview window, or any on-screen content you cannot copy-paste from.</p>
     </div>
-
     <div class="card unique">
       <div class="unique-badge">EXCLUSIVE</div>
       <div class="card-ico">◀▶</div>
       <h3>Browse Your Last 5 Answers</h3>
       <p>Accidentally cleared your screen or moved to a follow-up question? Navigate through your last 5 answers with a single click, mid-interview, without losing the live feed. No other tool does this.</p>
     </div>
-
     <div class="card unique">
       <div class="unique-badge">EXCLUSIVE</div>
       <div class="card-ico">🧩</div>
       <h3>Context-Aware Answers</h3>
       <p>Tell CloakAI about your interview beforehand including the company, role, tech stack, and your experience level. Every answer it generates is then tailored to your specific situation, not generic textbook responses.</p>
     </div>
-
-    <!-- Core features -->
     <div class="card">
       <div class="card-ico">👻</div>
       <h3>Completely Invisible</h3>
       <p>CloakAI uses a Windows-level display method that makes the overlay uncapturable by screenshare software on Zoom, Teams, Google Meet, and all recording tools. It is only visible on your physical screen.</p>
     </div>
-
     <div class="card">
       <div class="card-ico">🧠</div>
       <h3>Powered by GPT-4o</h3>
       <p>Backed by one of the most capable AI models available. Handles LeetCode problems, system design, SQL queries, behavioral questions, finance, and domain-specific topics with step-by-step answers.</p>
     </div>
-
     <div class="card">
       <div class="card-ico">🎙</div>
       <h3>Smart Audio Listening</h3>
       <p>Automatically starts capturing when the interviewer speaks and stops when they finish. No buttons to hold down. No manual timing. Or switch to push-to-listen mode if you prefer full control.</p>
     </div>
-
     <div class="card">
       <div class="card-ico">🕹</div>
       <h3>Stealth Controls</h3>
       <p>F8 instantly hides or shows the window. ESC exits. Hold Ctrl to let your mouse click through the overlay as if it isn't there. Drag to any part of your screen. Resize. Adjust transparency. All in real time.</p>
     </div>
-
     <div class="card">
       <div class="card-ico">🔒</div>
       <h3>Privacy by Design</h3>
       <p>Your audio is processed in real time and immediately discarded. No recordings. No stored conversations. No data sold to third parties. What happens in your interview stays on your device.</p>
     </div>
-
   </div>
 </section>
 
@@ -452,11 +437,10 @@
   </div>
   <div class="sh"><h2>Simple, Pay-as-You-Go Pricing</h2><p>No subscriptions. No auto-renewals. Pay once, receive your license key instantly by email.</p></div>
   <div class="pricing-grid">
-
     <div class="pc">
       <h3>1 Day</h3>
-      <div class="pc-price"><sup>₹</sup>720</div>
-      <div class="pc-rate">₹30 per hour</div>
+      <div class="pc-price"><sup>&#x20B9;</sup>720</div>
+      <div class="pc-rate">&#x20B9;30 per hour</div>
       <div class="pc-per">24 hours access</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
@@ -466,11 +450,10 @@
       </ul>
       <button class="btn-buy" onclick="openPay('day')">Get 1 Day Access</button>
     </div>
-
     <div class="pc">
       <h3>1 Week</h3>
-      <div class="pc-price"><sup>₹</sup>3,360</div>
-      <div class="pc-rate">₹20 per hour</div>
+      <div class="pc-price"><sup>&#x20B9;</sup>3,360</div>
+      <div class="pc-rate">&#x20B9;20 per hour</div>
       <div class="pc-per">7 days access</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
@@ -480,12 +463,11 @@
       </ul>
       <button class="btn-buy" onclick="openPay('week')">Get Weekly Access</button>
     </div>
-
     <div class="pc pop">
       <div class="pc-badge-pop">BEST VALUE</div>
       <h3>1 Month</h3>
-      <div class="pc-price"><sup>₹</sup>7,200</div>
-      <div class="pc-rate">₹10 per hour</div>
+      <div class="pc-price"><sup>&#x20B9;</sup>7,200</div>
+      <div class="pc-rate">&#x20B9;10 per hour</div>
       <div class="pc-per">30 days access</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
@@ -495,11 +477,10 @@
       </ul>
       <button class="btn-buy" onclick="openPay('month')">Get Monthly Access</button>
     </div>
-
     <div class="pc">
       <h3>3 Months</h3>
-      <div class="pc-price"><sup>₹</sup>10,000</div>
-      <div class="pc-rate">₹4.6 per hour</div>
+      <div class="pc-price"><sup>&#x20B9;</sup>10,000</div>
+      <div class="pc-rate">&#x20B9;4.6 per hour</div>
       <div class="pc-per">90 days access</div>
       <ul class="pc-feats">
         <li>Everything in Monthly</li>
@@ -509,7 +490,6 @@
       </ul>
       <button class="btn-buy" onclick="openPay('quarter')">Get Quarterly Access</button>
     </div>
-
   </div>
 
   <div class="pricing-note">
@@ -552,43 +532,24 @@
 <section id="faq" class="reveal">
   <div class="sh" style="margin-bottom:36px;"><h2>Frequently Asked Questions</h2></div>
   <div class="faq-wrap">
-
     <div class="faq-item"><div class="faq-q">Will the interviewer see CloakAI on their screen when I share mine? <span class="ic">+</span></div><div class="faq-a">No. CloakAI is completely invisible to anyone viewing your shared screen. It uses a system-level method built into Windows that prevents the overlay from being captured by any screenshare software. The interviewer on Zoom, Teams, or Google Meet will see absolutely nothing. Only you can see it on your physical monitor.</div></div>
-
     <div class="faq-item"><div class="faq-q">What if I have to share my "Entire Screen" instead of just a window? <span class="ic">+</span></div><div class="faq-a">CloakAI remains invisible even when you share your full desktop. The invisibility works at the screen output level, not the application level. It does not matter whether you share a window, a specific monitor, or your entire screen. The result is the same: no one else can see it.</div></div>
-
     <div class="faq-item"><div class="faq-q">How does CloakAI hear the interviewer's questions? <span class="ic">+</span></div><div class="faq-a">It listens through your microphone or computer audio. By default, it automatically detects when someone is speaking and starts processing. When they stop, it sends the audio for analysis and shows you the answer. You can also switch to manual mode where you hold the Alt key while the question is being asked and release to send it. This gives you full control over when it listens.</div></div>
-
     <div class="faq-item"><div class="faq-q">What if the question is long or complex? Will the answer still be good? <span class="ic">+</span></div><div class="faq-a">Yes. The longer and more complex the question, the more context the AI has to work with, which often improves the answer. The response time will naturally be a little longer for complex questions than for short ones, but the AI streams answers word-by-word so you start seeing the response almost immediately regardless.</div></div>
-
     <div class="faq-item"><div class="faq-q">What is the context feature and why does it matter? <span class="ic">+</span></div><div class="faq-a">Before your interview, you can tell CloakAI things like: "I am interviewing for a senior backend engineer role at a fintech company. The stack is Python, Django, and PostgreSQL. I have 4 years of experience." From that point on, every answer it generates is tailored specifically to your situation. Instead of generic responses, you get answers that match the role, the company, and your own experience level. This is one of our most powerful and unique features.</div></div>
-
     <div class="faq-item"><div class="faq-q">What happens to my questions and answers after the interview? <span class="ic">+</span></div><div class="faq-a">CloakAI automatically stores every question asked and every answer generated during your session. You can download the full session log as a file after the interview. This lets you review what came up, how the AI answered, what you can improve, and build a personal reference library over time. No other interview tool offers this feature.</div></div>
-
     <div class="faq-item"><div class="faq-q">If I accidentally clear my screen mid-interview, is the answer gone? <span class="ic">+</span></div><div class="faq-a">No. CloakAI keeps your last 5 answers in memory throughout the session. Use the navigation arrows in the interface to scroll back through previous answers at any point during the interview. This is especially useful when a follow-up question refers to something from earlier in the conversation.</div></div>
-
     <div class="faq-item"><div class="faq-q">Can it solve coding challenges shown on a shared screen? <span class="ic">+</span></div><div class="faq-a">Yes. Use the screen capture feature. Click the camera icon, and CloakAI takes a screenshot of everything visible on your screen and sends it to the AI for analysis. This works for coding problems, data diagrams, system design prompts, or anything displayed visually that you cannot copy as text. You can type a specific question about what's on screen or leave it blank to get a general analysis.</div></div>
-
     <div class="faq-item"><div class="faq-q">When do I receive my license key after paying? <span class="ic">+</span></div><div class="faq-a">Your license key is generated automatically the moment your payment is confirmed and sent to the email address you provided at checkout. This is fully automated and happens within seconds, at any time of day. You do not need to wait for a human to process anything.</div></div>
-
     <div class="faq-item"><div class="faq-q">Can I use the same license key on two different computers? <span class="ic">+</span></div><div class="faq-a">No. Each license is bound to the first computer it is activated on. If you try to use it on a different machine, it will be rejected. This is a security measure to prevent sharing. If your hardware changes and you genuinely need to reactivate on a new device, contact us at support.cloakai@gmail.com.</div></div>
-
     <div class="faq-item"><div class="faq-q">Does it work on Mac? <span class="ic">+</span></div><div class="faq-a">No. CloakAI currently works on Windows 10 and Windows 11 only. The screenshare invisibility relies on Windows-specific system features that do not exist on macOS. A Mac version is something we plan to explore in the future.</div></div>
-
     <div class="faq-item"><div class="faq-q">Is my audio or conversation stored anywhere? <span class="ic">+</span></div><div class="faq-a">No. Audio is captured on your device, processed in real time, and immediately discarded after the response is generated. We do not record, store, or have access to any audio or conversation content from your sessions. The only local file stored is the session transcript on your own computer, which you control.</div></div>
-
     <div class="faq-item"><div class="faq-q">What is your refund policy? <span class="ic">+</span></div><div class="faq-a">All sales are final because license keys are generated and delivered instantly. We cannot verify whether the software was used after delivery. We strongly recommend testing on your computer before purchasing by asking us for a demonstration or checking that your Windows version is supported. See our full <a href="refund.html" style="color:var(--gg)">Refund Policy</a> for the limited exceptions that apply.</div></div>
-
     <div class="faq-item"><div class="faq-q">How do I contact support? <span class="ic">+</span></div><div class="faq-a">Email us at <a href="mailto:support.cloakai@gmail.com" style="color:var(--gg)">support.cloakai@gmail.com</a>. We provide 24/7 support over email. For urgent issues during an ongoing interview, include the word URGENT in your subject line and we prioritise it immediately.</div></div>
-
-
-    <div class="faq-item"><div class="faq-q">How is CloakAI different from Parakeet AI? <span class="ic">+</span></div><div class="faq-a">Parakeet AI is one of the known tools in this space, but there are several areas where CloakAI is meaningfully better. First, screenshare invisibility: CloakAI uses a system-level Windows display method that cannot be captured even by the Windows Snipping Tool or OBS. Not even physically inspecting the transmitted stream will reveal it. Parakeet and similar tools often use transparent windows that appear on your screen but may still appear as a black or visible rectangle in certain capture scenarios. Second, price: CloakAI is significantly cheaper. Our quarterly plan works out to just ₹4.6 per hour which is among the lowest in the market globally. Third, we offer features no competitor currently has: session transcript saving, answer history browse (last 5 answers mid-interview), screen capture and AI analysis, and deep context-aware tailoring where you configure your role, company, and stack before the interview.</div></div>
-
+    <div class="faq-item"><div class="faq-q">How is CloakAI different from Parakeet AI? <span class="ic">+</span></div><div class="faq-a">Parakeet AI is one of the known tools in this space, but there are several areas where CloakAI is meaningfully better. First, screenshare invisibility: CloakAI uses a system-level Windows display method that cannot be captured even by the Windows Snipping Tool or OBS. Not even physically inspecting the transmitted stream will reveal it. Parakeet and similar tools often use transparent windows that appear on your screen but may still appear as a black or visible rectangle in certain capture scenarios. Second, price: CloakAI is significantly cheaper. Our quarterly plan works out to just &#x20B9;4.6 per hour which is among the lowest in the market globally. Third, we offer features no competitor currently has: session transcript saving, answer history browse (last 5 answers mid-interview), screen capture and AI analysis, and deep context-aware tailoring where you configure your role, company, and stack before the interview.</div></div>
     <div class="faq-item"><div class="faq-q">How does CloakAI compare to other similar interview tools? <span class="ic">+</span></div><div class="faq-a">Most tools in this category either rely on browser extensions (which are visible in screenshare, can be detected by meeting software policies, and are platform-dependent), or desktop overlays that are captured by snipping tools and screenshot utilities. CloakAI is different in three ways. First, it uses a hardware-level exclusion that prevents capture by any software, including Windows' own screenshot and snipping tools. Second, it is the most affordable option per hour of access. Third, it includes features that others simply don't offer: save your full session for post-interview review, browse back through your last 5 answers without disrupting the live view, capture and analyse any on-screen content including problems you cannot copy, and configure the AI to match your exact interview context. No extension. No browser dependency. One lightweight Windows app.</div></div>
-
     <div class="faq-item"><div class="faq-q">Can the Snipping Tool or Windows screenshot capture CloakAI's overlay? <span class="ic">+</span></div><div class="faq-a">No. This is one of our most important technical properties. The CloakAI overlay cannot be captured by the Windows Snipping Tool, Windows screenshot shortcuts (Win+Shift+S), OBS, or any screen recording software. The exclusion operates below the application layer, at the display driver level. Even if someone were watching your screen sharing and tried to screenshot your shared feed, they would see nothing. The only way to know CloakAI is present is to physically look at your monitor in the room with you. This is fundamentally different from how most competing tools work.</div></div>
-
-    <div class="faq-item"><div class="faq-q">What makes CloakAI the best value in the market? <span class="ic">+</span></div><div class="faq-a">At ₹4.6 per hour on the quarterly plan, CloakAI is priced lower than any comparable tool we are aware of. The 1-day plan at ₹720 covers a full 24-hour window including multiple interview rounds. Compare this to international competitors that charge $20 to $50 per session with fewer features. Beyond price, you get session transcripts, 5-answer history navigation, screen capture analysis, context-aware tailoring, and true screenshare invisibility that holds up even against the Windows Snipping Tool. The pricing is designed for the Indian job market and reflects our belief that career tools should be accessible, not a luxury.</div></div>
+    <div class="faq-item"><div class="faq-q">What makes CloakAI the best value in the market? <span class="ic">+</span></div><div class="faq-a">At &#x20B9;4.6 per hour on the quarterly plan, CloakAI is priced lower than any comparable tool we are aware of. The 1-day plan at &#x20B9;720 covers a full 24-hour window including multiple interview rounds. Compare this to international competitors that charge $20 to $50 per session with fewer features. Beyond price, you get session transcripts, 5-answer history navigation, screen capture analysis, context-aware tailoring, and true screenshare invisibility that holds up even against the Windows Snipping Tool. The pricing is designed for the Indian job market and reflects our belief that career tools should be accessible, not a luxury.</div></div>
   </div>
 </section>
 
@@ -612,7 +573,7 @@
   <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
 
-<!-- PAYMENT MODAL -->
+<!-- PAYMENT MODAL — 2 steps: details → OTP → payment -->
 <div id="pay-mo" class="mo" onclick="closeMo(event,'pay-mo')">
   <div class="mc pm-card" style="max-width:460px;">
     <button class="close-mc" onclick="closeMo(null,'pay-mo')">&times;</button>
@@ -621,17 +582,43 @@
       <div><div class="plan-prev-name" id="pm-name">Loading...</div><div class="plan-prev-dur" id="pm-dur"></div></div>
       <div class="plan-prev-price" id="pm-price"></div>
     </div>
-    <label class="flabel">Email Address</label>
-    <input type="email" id="pm-email" class="finput" placeholder="you@email.com" autocomplete="email">
-    <label class="flabel" style="margin-top:2px;">Confirm Email Address</label>
-    <input type="email" id="pm-email-confirm" class="finput" placeholder="type your email again">
-    <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:#F59E0B;line-height:1.6;">
-      ⚠ Your license key will be sent to this email only. Double-check before continuing.
+
+    <!-- Step 1: Email + Phone -->
+    <div id="pm-step1">
+      <label class="flabel">Email Address</label>
+      <input type="email" id="pm-email" class="finput" placeholder="you@email.com" autocomplete="email">
+      <label class="flabel">Phone Number</label>
+      <input type="tel" id="pm-phone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
+      <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:.77rem;color:#34D399;line-height:1.6;">
+        We will send a 6-digit code to your email to verify it before payment.
+      </div>
+      <button class="btn-pay" id="pm-otp-btn" onclick="sendOTP()">
+        <span id="pm-otp-btxt">Send Verification Code</span>
+        <div class="spin" id="pm-otp-spin"></div>
+      </button>
     </div>
-    <button class="btn-pay" id="pm-btn" onclick="doPay()">
-      <span id="pm-btxt">Continue to Payment</span>
-      <div class="spin" id="pm-spin"></div>
-    </button>
+
+    <!-- Step 2: OTP entry -->
+    <div id="pm-step2" style="display:none;">
+      <div style="text-align:center;margin-bottom:18px;">
+        <div style="color:#34D399;font-size:.88rem;font-weight:600;margin-bottom:5px;">&#x2713; Code sent to <span id="pm-email-show" style="color:#fff;"></span></div>
+        <div style="color:#475569;font-size:.78rem;">Check your inbox and spam folder. Code valid for 10 minutes.</div>
+      </div>
+      <label class="flabel">Verification Code</label>
+      <input type="text" id="pm-otp" class="finput"
+        placeholder="&#x2022; &#x2022; &#x2022; &#x2022; &#x2022; &#x2022;"
+        maxlength="6" autocomplete="one-time-code" inputmode="numeric"
+        style="text-align:center;font-size:1.6rem;letter-spacing:10px;font-family:monospace;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px;margin-top:-6px;">
+        <a href="#" onclick="resetToStep1();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">&#x2190; Wrong email?</a>
+        <a href="#" onclick="sendOTP(true);return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">Resend code</a>
+      </div>
+      <button class="btn-pay" id="pm-btn" onclick="doPay()">
+        <span id="pm-btxt">Verify &amp; Continue to Payment</span>
+        <div class="spin" id="pm-spin"></div>
+      </button>
+    </div>
+
     <div class="pm-msg" id="pm-msg"></div>
     <div class="pm-footer">
       🔒 Secured by PhonePe &nbsp;·&nbsp; License key emailed instantly after payment<br>
@@ -643,9 +630,9 @@
 <script>
   /* Particles */
   (function(){
-    const c=document.getElementById('particles');
-    for(let i=0;i<20;i++){
-      const p=document.createElement('div');
+    var c=document.getElementById('particles');
+    for(var i=0;i<20;i++){
+      var p=document.createElement('div');
       p.className='particle';
       p.style.left=Math.random()*100+'vw';
       p.style.top=Math.random()*100+'vh';
@@ -657,137 +644,45 @@
   })();
 
   /* Cursor glow */
-  const cgEl=document.getElementById('cg');
-  let gx=0,gy=0;
-  document.addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;});
-  setInterval(()=>{cgEl.style.left=gx+'px';cgEl.style.top=gy+'px';},16);
+  var cgEl=document.getElementById('cg');
+  var gx=0,gy=0;
+  document.addEventListener('mousemove',function(e){gx=e.clientX;gy=e.clientY;});
+  setInterval(function(){cgEl.style.left=gx+'px';cgEl.style.top=gy+'px';},16);
 
   /* Scroll reveal */
-  const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.08});
-  document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+  var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
 
   /* Typing effect */
-  const TXT="Your invisible AI copilot for interviews. Hear the question. See the answer. Only you can see it.";
-  const tEl=document.getElementById('tt');
-  let ti=0;
-  const typer=()=>{if(ti<TXT.length){tEl.textContent+=TXT[ti++];setTimeout(typer,30);}};
+  var TXT="Your invisible AI copilot for interviews. Hear the question. See the answer. Only you can see it.";
+  var tEl=document.getElementById('tt');
+  var ti=0;
+  var typer=function(){if(ti<TXT.length){tEl.textContent+=TXT[ti++];setTimeout(typer,30);}};
   setTimeout(typer,1000);
 
   /* FAQ */
-  document.querySelectorAll('.faq-q').forEach(q=>{
-    q.addEventListener('click',()=>{
-      const it=q.parentElement,was=it.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    q.addEventListener('click',function(){
+      var it=q.parentElement,was=it.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(f){f.classList.remove('open');});
       if(!was)it.classList.add('open');
     });
   });
 
   /* Modals */
   function openMo(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
-  function closeMo(e,id){if(e&&e.target!==e.currentTarget)return;document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
-  document.addEventListener('keydown',e=>{
+  function closeMo(e,id){
+    if(e&&e.target!==e.currentTarget)return;
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow='';
+  }
+  document.addEventListener('keydown',function(e){
     if(e.key!=='Escape')return;
-    document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+    document.querySelectorAll('.mo.open').forEach(function(m){m.classList.remove('open');});
     document.body.style.overflow='';
   });
 
-  /* Payment */
-  let curPlan=null;
-  function openPay(plan){
-    curPlan=plan;
-    const m=PLANS[plan];
-    document.getElementById('pm-name').textContent=m.name;
-    document.getElementById('pm-price').textContent=m.price;
-    document.getElementById('pm-dur').textContent=m.period+' · '+m.rate;
-    document.getElementById('pm-btxt').textContent=m.label;
-    document.getElementById('pm-msg').textContent='';
-    document.getElementById('pm-email').value='';
-    document.getElementById('pm-email-confirm').value='';
-    document.getElementById('pm-btn').disabled=false;
-    document.getElementById('pm-btxt').style.display='inline';
-    document.getElementById('pm-spin').style.display='none';
-    openMo('pay-mo');
-    setTimeout(()=>document.getElementById('pm-email').focus(),180);
-    trackEvent('Checkout','Open',plan);
-  }
-
-  function doPay(){
-    var email   = document.getElementById('pm-email').value.trim();
-    var email2  = document.getElementById('pm-email-confirm').value.trim();
-    var msg     = document.getElementById('pm-msg');
-    var btn     = document.getElementById('pm-btn');
-    var btxt    = document.getElementById('pm-btxt');
-    var spin    = document.getElementById('pm-spin');
-
-    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!email || !emailRe.test(email)){
-      msg.textContent = 'Please enter a valid email address.';
-      msg.className   = 'pm-msg err'; return;
-    }
-    if(!email2 || !emailRe.test(email2)){
-      msg.textContent = 'Please confirm your email address.';
-      msg.className   = 'pm-msg err'; return;
-    }
-    if(email.toLowerCase() !== email2.toLowerCase()){
-      msg.textContent = 'Email addresses do not match. Please check and try again.';
-      msg.className   = 'pm-msg err'; return;
-    }
-    if(SCRIPT_URL.includes('REPLACE')){
-      msg.textContent = 'Payment system not yet active. Email support.cloakai@gmail.com to purchase.';
-      msg.className   = 'pm-msg err'; return;
-    }
-
-    btn.disabled = true;
-    btxt.style.display = 'none';
-    spin.style.display = 'block';
-    msg.textContent = 'Preparing your order...';
-    msg.className   = 'pm-msg inf';
-    trackEvent('Checkout','Submit',curPlan);
-
-    function resetBtn(){
-      btn.disabled = false;
-      btxt.style.display = 'inline';
-      spin.style.display = 'none';
-    }
-
-    var url = SCRIPT_URL + '?' + new URLSearchParams({
-      action: 'create_order',
-      email:  email.toLowerCase(),
-      plan:   curPlan,
-      ajax:   '1',
-    });
-
-    fetch(url, { redirect: 'follow' })
-      .then(function(r){
-        if(!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(function(data){
-        if(data.key){
-          var dest = window.location.origin + '/success.html?' + new URLSearchParams({
-            key: data.key, plan: data.plan || curPlan, bypass: data.bypass ? '1' : '0',
-          });
-          window.location.replace(dest);
-        } else if(data.payment_url){
-          window.location.replace(data.payment_url);
-        } else {
-          msg.textContent = data.error || 'Something went wrong. Please try again.';
-          msg.className   = 'pm-msg err';
-          resetBtn();
-        }
-      })
-      .catch(function(err){
-        console.error('Payment fetch error:', err);
-        msg.textContent = 'Connection error. Please check your internet and try again.';
-        msg.className   = 'pm-msg err';
-        resetBtn();
-      });
-  }
-
-  document.getElementById('pm-email').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('pm-email-confirm').focus();});
-  document.getElementById('pm-email-confirm').addEventListener('keydown',function(e){if(e.key==='Enter')doPay();});
-</script>
-<script>
+  /* Hamburger */
   function toggleNav(){
     var b=document.getElementById('ham-btn');
     var n=document.getElementById('mnav');
@@ -806,6 +701,161 @@
       document.getElementById('mnav').classList.remove('open');
       document.getElementById('ham-btn').classList.remove('open');
     });
+  });
+
+  /* ── Payment — OTP flow ────────────────────────────────────────────────── */
+  var curPlan = null;
+  var _verifiedEmail = '';
+
+  function openPay(plan) {
+    curPlan = plan;
+    _verifiedEmail = '';
+    var m = PLANS[plan]; if (!m) return;
+    document.getElementById('pm-name').textContent = m.name;
+    document.getElementById('pm-price').innerHTML  = m.price;
+    document.getElementById('pm-dur').textContent  = m.period + ' · ' + m.rate;
+    document.getElementById('pm-msg').textContent  = '';
+    document.getElementById('pm-email').value  = '';
+    document.getElementById('pm-phone').value  = '';
+    document.getElementById('pm-otp').value    = '';
+    document.getElementById('pm-step1').style.display = '';
+    document.getElementById('pm-step2').style.display = 'none';
+    _resetOTPBtn(); _resetPayBtn();
+    openMo('pay-mo');
+    setTimeout(function(){ document.getElementById('pm-email').focus(); }, 180);
+    trackEvent('Checkout','Open',plan);
+  }
+
+  function resetToStep1() {
+    _verifiedEmail = '';
+    document.getElementById('pm-step1').style.display = '';
+    document.getElementById('pm-step2').style.display = 'none';
+    document.getElementById('pm-msg').textContent = '';
+    document.getElementById('pm-otp').value = '';
+    _resetOTPBtn();
+  }
+
+  function _resetOTPBtn() {
+    document.getElementById('pm-otp-btn').disabled  = false;
+    document.getElementById('pm-otp-btxt').style.display = 'inline';
+    document.getElementById('pm-otp-btxt').textContent  = 'Send Verification Code';
+    document.getElementById('pm-otp-spin').style.display = 'none';
+  }
+
+  function _resetPayBtn() {
+    document.getElementById('pm-btn').disabled   = false;
+    document.getElementById('pm-btxt').style.display = 'inline';
+    document.getElementById('pm-btxt').textContent  = 'Verify & Continue to Payment';
+    document.getElementById('pm-spin').style.display = 'none';
+  }
+
+  function _pmMsg(text, cls) {
+    var el = document.getElementById('pm-msg');
+    el.textContent = text;
+    el.className = 'pm-msg' + (cls ? ' ' + cls : '');
+  }
+
+  /* Step 1 — send OTP */
+  function sendOTP(isResend) {
+    var email = document.getElementById('pm-email').value.trim().toLowerCase();
+    var phone = document.getElementById('pm-phone').value.trim();
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (isResend) { email = _verifiedEmail || email; }
+
+    if (!email || !emailRe.test(email)) { _pmMsg('Please enter a valid email address.','err'); return; }
+    if (!phone || phone.replace(/[^0-9]/g,'').length < 10) { _pmMsg('Please enter a valid 10-digit phone number.','err'); return; }
+    if (SCRIPT_URL.includes('REPLACE')) { _pmMsg('Payment system not yet active. Email support.cloakai@gmail.com','err'); return; }
+
+    var btn  = document.getElementById('pm-otp-btn');
+    var btxt = document.getElementById('pm-otp-btxt');
+    var spin = document.getElementById('pm-otp-spin');
+    btn.disabled = true; btxt.style.display = 'none'; spin.style.display = 'block';
+    _pmMsg('Sending code to ' + email + '...','inf');
+
+    fetch(SCRIPT_URL + '?' + new URLSearchParams({ action:'send_otp', email:email, phone:phone, ajax:'1' }))
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        btn.disabled = false; btxt.style.display = 'inline'; spin.style.display = 'none';
+        if (!data.success) { _pmMsg(data.error || 'Could not send code. Please try again.','err'); return; }
+        _verifiedEmail = email;
+        document.getElementById('pm-email-show').textContent = email;
+        document.getElementById('pm-step1').style.display = 'none';
+        document.getElementById('pm-step2').style.display = '';
+        document.getElementById('pm-otp').value = '';
+        _resetPayBtn();
+        _pmMsg(isResend ? 'New code sent to ' + email : '','');
+        setTimeout(function(){ document.getElementById('pm-otp').focus(); }, 120);
+        trackEvent('Checkout','OTPSent',curPlan);
+      })
+      .catch(function() {
+        btn.disabled = false; btxt.style.display = 'inline'; spin.style.display = 'none';
+        _pmMsg('Connection error. Check your internet and try again.','err');
+      });
+  }
+
+  /* Step 2 — verify OTP → create order → redirect */
+  function doPay() {
+    var otp = (document.getElementById('pm-otp').value || '').trim();
+    if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) {
+      _pmMsg('Please enter the 6-digit code sent to your email.','err'); return;
+    }
+    if (!_verifiedEmail) { resetToStep1(); return; }
+
+    var btn  = document.getElementById('pm-btn');
+    var btxt = document.getElementById('pm-btxt');
+    var spin = document.getElementById('pm-spin');
+    btn.disabled = true; btxt.style.display = 'none'; spin.style.display = 'block';
+    _pmMsg('Verifying...','inf');
+
+    fetch(SCRIPT_URL + '?' + new URLSearchParams({ action:'verify_otp', email:_verifiedEmail, otp:otp, ajax:'1' }))
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        if (!data.success) {
+          btn.disabled = false; btxt.style.display = 'inline'; spin.style.display = 'none';
+          _pmMsg(data.error || 'Incorrect code. Please try again.','err'); return;
+        }
+        _pmMsg('Verified! Creating your order...','inf');
+        trackEvent('Checkout','OTPVerified',curPlan);
+        return fetch(SCRIPT_URL + '?' + new URLSearchParams({
+          action: 'create_order',
+          email:  _verifiedEmail,
+          plan:   curPlan,
+          ajax:   '1',
+        }), { redirect:'follow' }).then(function(r){
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        });
+      })
+      .then(function(data) {
+        if (!data) return;
+        if (data.key) {
+          window.location.replace(window.location.origin + '/success.html?' + new URLSearchParams({
+            key: data.key, plan: data.plan || curPlan, bypass: data.bypass ? '1' : '0',
+          }));
+        } else if (data.payment_url) {
+          window.location.replace(data.payment_url);
+        } else {
+          _resetPayBtn();
+          _pmMsg(data.error || 'Something went wrong. Please try again.','err');
+        }
+      })
+      .catch(function(err) {
+        console.error('Payment error:', err);
+        _resetPayBtn();
+        _pmMsg('Connection error. Please check your internet and try again.','err');
+      });
+  }
+
+  /* Keyboard shortcuts */
+  document.getElementById('pm-email').addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('pm-phone').focus(); });
+  document.getElementById('pm-phone').addEventListener('keydown',function(e){ if(e.key==='Enter') sendOTP(); });
+  document.getElementById('pm-otp').addEventListener('keydown',function(e){ if(e.key==='Enter') doPay(); });
+  /* Auto-submit OTP when 6 digits entered */
+  document.getElementById('pm-otp').addEventListener('input',function(e){
+    var v = e.target.value.replace(/\D/g,'').slice(0,6);
+    e.target.value = v;
+    if (v.length === 6) setTimeout(doPay, 80);
   });
 </script>
 </body>
