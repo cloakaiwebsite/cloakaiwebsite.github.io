@@ -1,0 +1,7 @@
+# ads.txt – CloakAI (https://cloakai.in)
+# This file declares authorized digital sellers for this domain.
+# CloakAI does not currently serve programmatic advertising.
+# This file exists to prevent ad fraud impersonation of this domain.
+# https://iabtechlab.com/ads-txt/
+
+placeholder.example.com, placeholder, DIRECT, placeholder

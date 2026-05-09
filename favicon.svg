@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3d2e"/>
+      <stop offset="100%" style="stop-color:#2ecc71"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#g)"/>
+  <!-- Shield icon -->
+  <path fill="#00ff88" d="M50 12L20 24v24c0 22 12.5 36 30 40 17.5-4 30-18 30-40V24L50 12zm0 46h29c-1.7 13.4-11 26-29 29V58zM21 58h29v29c-18-3-27.3-15.6-29-29z"/>
+</svg>

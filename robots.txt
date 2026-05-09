@@ -1,0 +1,40 @@
+# CloakAI – robots.txt
+# https://cloakai.in
+
+User-agent: *
+Allow: /
+
+# Block transaction/result pages from indexing (no SEO value, contain sensitive params)
+Disallow: /payment-result.html
+Disallow: /success.html
+
+# Block common exploit scan paths
+Disallow: /admin/
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /.env
+Disallow: /config/
+Disallow: /api/
+Disallow: /.git/
+Disallow: /backup/
+Disallow: /db/
+Disallow: /sql/
+Disallow: /*.sql$
+Disallow: /*.bak$
+Disallow: /*.log$
+
+# Allow important crawlers specifically
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemap location
+Sitemap: https://cloakai.in/sitemap.xml
+
+# Crawl delay for generic bots (seconds)
+Crawl-delay: 10
