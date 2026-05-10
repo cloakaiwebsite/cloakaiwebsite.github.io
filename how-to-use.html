@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How to use CloakAI — step-by-step setup guide for the invisible AI interview assistant.">
+<title>How to Use CloakAI — Setup Guide</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://cloakai.in/how-to-use.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#05080F;
+  --surface:#0A0F1A;
+  --surface2:#0F172A;
+  --border:rgba(52,211,153,.14);
+  --border-bright:rgba(52,211,153,.4);
+  --green:#34D399;
+  --green-dim:rgba(52,211,153,.12);
+  --green-glow:rgba(52,211,153,.25);
+  --blue:#38BDF8;
+  --purple:#A78BFA;
+  --amber:#F59E0B;
+  --red:#EF4444;
+  --text:#E2E8F0;
+  --muted:#64748B;
+  --faint:#1E293B;
+  --mono:'Space Mono',monospace;
+  --sans:'DM Sans',sans-serif;
+}
+
+/* ─── RESET ─────────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ─── NOISE GRAIN ───────────────────────────────────────────────────────── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;opacity:.4;
+}
+
+/* ─── HEADER ────────────────────────────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(5,8,15,.9);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.hdr{max-width:960px;margin:0 auto;padding:13px 24px;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:8px;text-decoration:none;}
+.logo svg{width:22px;height:22px;fill:var(--green);}
+.back{font-size:.82rem;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s;}
+.back:hover{color:var(--green);}
+
+/* ─── HERO ──────────────────────────────────────────────────────────────── */
+.hero{
+  max-width:960px;margin:0 auto;padding:64px 24px 0;
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+}
+@media(max-width:700px){.hero{grid-template-columns:1fr;gap:24px;padding:40px 20px 0;}}
+.hero-text h1{font-size:2.6rem;font-weight:700;line-height:1.15;letter-spacing:-.03em;color:#fff;margin-bottom:14px;}
+.hero-text h1 em{font-style:normal;color:var(--green);}
+.hero-text p{color:var(--muted);font-size:.95rem;margin-bottom:24px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-dim);border:1px solid var(--border-bright);border-radius:30px;padding:7px 16px;font-size:.78rem;color:var(--green);font-weight:600;}
+.hero-badge span{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+
+/* ─── TOC PILLS ─────────────────────────────────────────────────────────── */
+.toc-wrap{max-width:960px;margin:48px auto 0;padding:0 24px;}
+.toc-title{font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.toc-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.toc-pill{
+  font-size:.78rem;padding:6px 14px;border-radius:20px;text-decoration:none;
+  background:var(--surface);border:1px solid var(--faint);color:var(--muted);
+  transition:all .2s;display:flex;align-items:center;gap:6px;
+}
+.toc-pill:hover{border-color:var(--green);color:var(--green);background:var(--green-dim);}
+.toc-pill .n{font-family:var(--mono);font-size:.7rem;color:var(--faint);}
+.toc-pill:hover .n{color:var(--green);}
+
+/* ─── STEP LAYOUT ───────────────────────────────────────────────────────── */
+.steps{max-width:960px;margin:64px auto 80px;padding:0 24px;}
+.step{
+  display:grid;grid-template-columns:52px 1fr;gap:0 28px;
+  margin-bottom:80px;
+  opacity:0;transform:translateY(32px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.step.visible{opacity:1;transform:translateY(0);}
+
+.step-left{display:flex;flex-direction:column;align-items:center;gap:0;}
+.step-num{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:var(--surface2);border:1px solid var(--border-bright);
+  font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 4px var(--green-dim);
+}
+.step-line{flex:1;width:1px;background:linear-gradient(180deg,var(--border-bright),transparent);margin-top:8px;}
+
+.step-right{padding-bottom:16px;}
+.step-tag{font-family:var(--mono);font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}
+.step-title{font-size:1.35rem;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.25;}
+.step-body{color:var(--muted);font-size:.9rem;line-height:1.75;margin-bottom:20px;}
+.step-body strong{color:var(--text);font-weight:600;}
+.step-body code{background:var(--surface2);border:1px solid var(--faint);border-radius:4px;padding:1px 6px;font-family:var(--mono);font-size:.8rem;color:var(--green);}
+
+/* ─── CALLOUT ───────────────────────────────────────────────────────────── */
+.callout{
+  border-radius:10px;padding:13px 16px;
+  font-size:.84rem;line-height:1.65;margin-top:16px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.callout.green{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.18);}
+.callout.amber{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);}
+.callout.blue{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.18);}
+.callout .icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.callout p{color:var(--muted);margin:0;}
+.callout p strong{color:var(--text);}
+
+/* ─── ANNOTATED MOCKUP CARD ─────────────────────────────────────────────── */
+.mockup-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  position:relative;
+  overflow:visible;
+  margin-top:24px;
+}
+.mockup-label{
+  font-family:var(--mono);font-size:.62rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;
+  display:flex;align-items:center;gap:6px;
+}
+.mockup-label::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);}
+
+/* ─── WINDOWS SMARTSCREEN ───────────────────────────────────────────────── */
+.win-dlg{
+  background:#1C2333;border:1px solid #2D3A52;border-radius:8px;
+  max-width:400px;margin:0 auto;padding:28px 24px;position:relative;
+}
+.win-dlg-hdr{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.win-shield{width:44px;height:44px;background:#1a3a5c;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.win-dlg-hdr h4{color:#fff;font-size:.95rem;font-weight:600;margin-bottom:2px;}
+.win-dlg-hdr p{color:#64748B;font-size:.75rem;}
+.win-more-link{color:#60A5FA;font-size:.82rem;text-decoration:underline;cursor:pointer;display:inline-block;margin-bottom:10px;position:relative;}
+.win-dlg-body{color:#94A3B8;font-size:.82rem;line-height:1.6;margin-bottom:16px;}
+.win-btns{display:flex;gap:10px;}
+.win-btn{padding:8px 18px;border-radius:5px;font-size:.82rem;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);}
+.win-btn.run{background:#2563EB;color:#fff;}
+.win-btn.cancel{background:rgba(255,255,255,.08);color:#94A3B8;}
+
+/* Animated dotted arrow */
+.arr-wrap{position:absolute;pointer-events:none;}
+.arr-label{
+  background:var(--green);color:#022c22;font-family:var(--mono);font-size:.68rem;
+  font-weight:700;padding:4px 9px;border-radius:6px;white-space:nowrap;
+  animation:labelPop .4s ease both;
+}
+@keyframes labelPop{from{opacity:0;transform:scale(.8);}to{opacity:1;transform:scale(1);}}
+
+/* Dotted animated SVG arrow */
+.dashed-arrow{overflow:visible;}
+.dashed-arrow path{
+  fill:none;stroke:var(--green);stroke-width:1.5;
+  stroke-dasharray:5 4;stroke-linecap:round;
+  stroke-dashoffset:100;
+  animation:dashFlow 1.2s ease forwards;
+}
+@keyframes dashFlow{to{stroke-dashoffset:0;}}
+.dashed-arrow polygon{fill:var(--green);opacity:0;animation:arrowTip .2s .9s ease forwards;}
+@keyframes arrowTip{to{opacity:1;}}
+
+/* ─── APP BAR MOCKUP ────────────────────────────────────────────────────── */
+.app-bar-wrap{position:relative;}
+.app-bar{
+  background:linear-gradient(180deg,rgba(10,15,26,.98),rgba(6,10,18,1));
+  border:1px solid rgba(52,211,153,.22);border-radius:12px;
+  padding:10px 14px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  position:relative;
+}
+.b-logo{font-family:var(--mono);font-size:.78rem;font-weight:700;color:#00ff88;}
+.b-sep{width:1px;height:18px;background:rgba(52,211,153,.1);flex-shrink:0;}
+.b-pill{padding:4px 10px;border-radius:10px;font-weight:700;font-size:.68rem;white-space:nowrap;cursor:default;display:flex;align-items:center;gap:4px;}
+.p-green{background:rgba(52,211,153,.12);color:#34D399;border:1px solid rgba(52,211,153,.3);}
+.p-blue{background:rgba(56,189,248,.08);color:#38BDF8;border:1px solid rgba(56,189,248,.25);}
+.p-purple{background:rgba(167,139,250,.08);color:#A78BFA;border:1px solid rgba(167,139,250,.22);}
+.p-amber{background:rgba(245,158,11,.1);color:#F59E0B;border:1px solid rgba(245,158,11,.3);}
+.p-grey{background:rgba(148,163,184,.06);color:#64748B;border:1px solid rgba(148,163,184,.15);}
+.b-toggle{width:30px;height:16px;background:#22C55E;border-radius:8px;position:relative;flex-shrink:0;}
+.b-toggle::after{content:'';position:absolute;right:2px;top:2px;width:12px;height:12px;background:#fff;border-radius:50%;}
+.b-nav{display:flex;align-items:center;gap:4px;}
+.b-nav-btn{width:18px;height:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:4px;color:#475569;font-size:.62rem;display:flex;align-items:center;justify-content:center;}
+.b-live{color:#34D399;font-family:var(--mono);font-size:.6rem;font-weight:700;}
+.b-mic{width:22px;height:22px;background:#0F172A;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.b-timer{font-family:var(--mono);font-size:.68rem;color:#34D399;font-weight:600;}
+.b-kbd{color:#475569;font-size:.7rem;line-height:1;}
+.b-gear{color:#475569;font-size:.7rem;}
+.b-trash{background:#EF4444;border-radius:5px;padding:3px 6px;font-size:.62rem;}
+.b-slider{width:38px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;position:relative;flex-shrink:0;}
+.b-slider::after{content:'';position:absolute;left:0;top:0;width:70%;height:100%;background:#34D399;border-radius:2px;}
+.b-cdot{width:7px;height:7px;background:#22C55E;border-radius:50%;flex-shrink:0;}
+
+/* annotation tooltip */
+.ann{
+  position:absolute;
+  background:var(--surface2);border:1px solid var(--border-bright);
+  border-radius:8px;padding:6px 10px;
+  font-size:.7rem;font-family:var(--mono);color:var(--green);
+  white-space:nowrap;z-index:10;
+  opacity:0;animation:annShow .3s ease forwards;
+}
+@keyframes annShow{to{opacity:1;}}
+
+/* ─── DEVICE PICKER MOCKUP ──────────────────────────────────────────────── */
+.dev-menu{
+  background:#0A0F1A;border:1px solid rgba(52,211,153,.22);border-radius:10px;
+  max-width:290px;overflow:hidden;
+}
+.dev-hdr{padding:6px 14px 3px;color:#1E3A2E;font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.dev-item{padding:9px 16px;font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:10px;color:#64748B;transition:all .15s;}
+.dev-item.active{background:rgba(52,211,153,.1);color:#34D399;}
+.dev-item:hover{background:rgba(52,211,153,.07);color:#94A3B8;}
+.dev-sep{height:1px;background:rgba(255,255,255,.05);margin:4px 12px;}
+
+/* ─── SHORTCUT TABLE ────────────────────────────────────────────────────── */
+.shortcut-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:16px;}
+.sc-card{
+  background:var(--surface);border:1px solid var(--faint);border-radius:10px;
+  padding:14px 16px;display:flex;align-items:flex-start;gap:12px;
+}
+.sc-key{
+  font-family:var(--mono);font-size:.72rem;color:var(--green);
+  background:var(--surface2);border:1px solid var(--border-bright);
+  border-radius:6px;padding:4px 8px;white-space:nowrap;flex-shrink:0;
+}
+.sc-desc{font-size:.8rem;color:var(--muted);line-height:1.45;}
+
+/* ─── RESPONSIVE ────────────────────────────────────────────────────────── */
+@media(max-width:600px){
+  .step{grid-template-columns:36px 1fr;gap:0 16px;}
+  .step-num{width:34px;height:34px;font-size:.75rem;}
+  .step-title{font-size:1.1rem;}
+  .hero-text h1{font-size:1.8rem;}
+  .app-bar{gap:5px;padding:8px 10px;}
+}
+
+/* ─── FOOTER ────────────────────────────────────────────────────────────── */
+footer{background:rgba(0,0,0,.7);border-top:1px solid #0f1a12;padding:28px 24px;text-align:center;color:#1E293B;font-size:.8rem;margin-top:0;}
+footer a{color:#2ecc71;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+      CloakAI
+    </a>
+    <a href="index.html" class="back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Back to Home
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <span class="hero-badge"><span></span>Setup takes under 3 minutes</span>
+    <h1 style="margin-top:14px;">Get started with <em>CloakAI</em></h1>
+    <p>Follow these steps once before your first interview. After that, it's just open and go.</p>
+  </div>
+  <div>
+    <!-- mini app preview -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;">
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-bottom:10px;letter-spacing:1px;">LIVE PREVIEW</div>
+      <div class="app-bar" style="border-radius:8px;gap:5px;padding:8px 10px;">
+        <span class="b-logo">🛡 CloakAI</span>
+        <span class="b-sep"></span>
+        <span class="b-pill p-green">🎤 AI Answer</span>
+        <span class="b-sep"></span>
+        <span class="b-pill p-blue">🖥 Analyze Screen</span>
+        <span class="b-sep"></span>
+        <span class="b-toggle"></span>
+        <span class="b-timer">1h 58m</span>
+        <span class="b-cdot"></span>
+      </div>
+      <div style="margin-top:10px;background:rgba(10,15,26,.8);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:.72rem;color:#34D399;line-height:1.7;">
+        <div style="color:#38BDF8;margin-bottom:4px;">Q: What is a deadlock in databases?</div>
+        <div style="color:#64748B;">A deadlock occurs when two transactions each<br>hold a lock the other needs to proceed...</div>
+        <div style="display:inline-block;width:6px;height:14px;background:#34D399;animation:blink 1s infinite;margin-left:2px;vertical-align:middle;"></div>
+      </div>
+      <div style="position:absolute;top:-10px;right:-10px;background:#34D399;color:#022c22;font-family:var(--mono);font-size:.65rem;font-weight:700;padding:4px 9px;border-radius:20px;">INVISIBLE TO INTERVIEWER</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc-wrap">
+  <div class="toc-title">Jump to step</div>
+  <div class="toc-pills">
+    <a href="#s1" class="toc-pill"><span class="n">01</span> Download</a>
+    <a href="#s2" class="toc-pill"><span class="n">02</span> SmartScreen warning</a>
+    <a href="#s3" class="toc-pill"><span class="n">03</span> Trial or License</a>
+    <a href="#s4" class="toc-pill"><span class="n">04</span> Pick your device</a>
+    <a href="#s5" class="toc-pill"><span class="n">05</span> Main bar buttons</a>
+    <a href="#s6" class="toc-pill"><span class="n">06</span> Auto vs Manual</a>
+    <a href="#s7" class="toc-pill"><span class="n">07</span> Analyze Screen</a>
+    <a href="#s8" class="toc-pill"><span class="n">08</span> Context settings</a>
+    <a href="#s9" class="toc-pill"><span class="n">09</span> Shortcuts</a>
+    <a href="#s10" class="toc-pill"><span class="n">10</span> Interview tips</a>
+  </div>
+</div>
+
+<!-- STEPS -->
+<div class="steps">
+
+  <!-- ── STEP 1 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s1">
+    <div class="step-left">
+      <div class="step-num">01</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Install</div>
+      <h2 class="step-title">Download the app</h2>
+      <p class="step-body">Go to <a href="https://cloakai.in" style="color:var(--green);">cloakai.in</a> and click <strong>Download for Windows</strong>. You get a single <code>CloakAI.exe</code> file. No installer, nothing added to your system, no sign-up before download.</p>
+      <div class="mockup-card">
+        <div class="mockup-label">Homepage — download button</div>
+        <div style="text-align:center;padding:20px 0;position:relative;">
+          <div style="display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+            <div style="background:linear-gradient(45deg,#0f3d2e,#2ecc71);color:#fff;padding:12px 26px;border-radius:28px;font-weight:700;font-size:.9rem;border:1px solid #00ff88;box-shadow:0 0 22px rgba(46,204,113,.3);cursor:pointer;">
+              Get Access from ₹699
+            </div>
+            <div id="dl-btn" style="background:transparent;color:#00ff88;padding:11px 20px;border-radius:28px;font-weight:600;font-size:.85rem;border:1px solid #00ff88;display:flex;align-items:center;gap:7px;cursor:pointer;position:relative;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="#00ff88"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+              Download for Windows
+            </div>
+          </div>
+          <!-- Arrow annotation -->
+          <div style="position:relative;height:60px;margin-top:8px;">
+            <svg class="dashed-arrow" width="100%" height="60" viewBox="0 0 300 60" style="display:block;margin:0 auto;max-width:300px;">
+              <path d="M 220 8 C 240 8 250 40 235 50" />
+              <polygon points="232,56 228,46 238,48" style="animation-delay:.9s;"/>
+            </svg>
+            <div style="position:absolute;right:10px;top:0;" class="arr-label" style="animation-delay:.2s;">Click this button</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 2 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s2">
+    <div class="step-left">
+      <div class="step-num">02</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Install</div>
+      <h2 class="step-title">Windows says "protected your PC" — ignore it</h2>
+      <p class="step-body">Windows shows this for any new app that hasn't been downloaded thousands of times yet. It's automatic. <strong>CloakAI is safe.</strong> Here's what to do:</p>
+      <p class="step-body">Click <strong>More info</strong> then click <strong>Run anyway</strong>. That's it.</p>
+      <div class="mockup-card">
+        <div class="mockup-label">Windows SmartScreen dialog</div>
+        <div class="win-dlg" style="position:relative;">
+          <div class="win-dlg-hdr">
+            <div class="win-shield">🛡</div>
+            <div><h4>Windows protected your PC</h4><p>Microsoft Defender SmartScreen</p></div>
+          </div>
+          <div class="win-dlg-body">Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.</div>
+          <a class="win-more-link" id="more-info-link">More info</a>
+          <div id="run-anyway-row" style="display:none;margin-bottom:14px;color:#94A3B8;font-size:.8rem;">
+            App: CloakAI.exe<br>Publisher: Unknown publisher
+          </div>
+          <div class="win-btns">
+            <button class="win-btn run" id="run-anyway-btn" style="display:none;">Run anyway</button>
+            <button class="win-btn cancel">Don't run</button>
+          </div>
+
+          <!-- Arrow 1: More info -->
+          <div id="arr-more" style="position:absolute;left:-110px;top:108px;" class="arr-wrap">
+            <div class="arr-label">Step A: click here</div>
+            <svg class="dashed-arrow" width="90" height="30" viewBox="0 0 90 30">
+              <path d="M 10 15 C 30 15 60 18 80 18" />
+              <polygon points="82,14 82,22 88,18"/>
+            </svg>
+          </div>
+
+          <!-- Arrow 2: Run anyway (shown after click) -->
+          <div id="arr-run" style="position:absolute;left:-120px;top:152px;display:none;" class="arr-wrap">
+            <div class="arr-label" style="background:var(--blue);color:#0c1a2e;">Step B: click here</div>
+            <svg class="dashed-arrow" width="100" height="30" viewBox="0 0 100 30">
+              <path d="M 10 15 C 35 15 70 18 90 18" />
+              <polygon points="92,14 92,22 98,18"/>
+            </svg>
+          </div>
+        </div>
+        <p style="color:var(--muted);font-size:.75rem;text-align:center;margin-top:12px;">Click "More info" above to see the interactive demo</p>
+      </div>
+
+      <div class="callout amber" style="margin-top:14px;">
+        <span class="icon">💡</span>
+        <p><strong>Why does this happen?</strong> SmartScreen counts downloads. New apps always trigger it. The same thing happened when Chrome was first released. After more users download CloakAI, the warning disappears automatically.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 3 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s3">
+    <div class="step-left">
+      <div class="step-num">03</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Activation</div>
+      <h2 class="step-title">Start your trial or enter your license key</h2>
+      <p class="step-body">On first launch a screen appears. Two choices: <strong>Start Free Trial</strong> (10 minutes, no card) or paste your license key if you already bought a plan. Trial time carries over to your plan later.</p>
+
+      <div class="mockup-card">
+        <div class="mockup-label">First launch screen</div>
+        <div style="background:linear-gradient(160deg,#0C1220,#060C16);border:1px solid rgba(52,211,153,.28);border-radius:16px;padding:24px;max-width:360px;margin:0 auto;text-align:center;position:relative;">
+          <div style="color:#34D399;font-family:var(--mono);font-size:1.1rem;font-weight:700;margin-bottom:4px;">🛡 CloakAI</div>
+          <div style="color:#64748B;font-size:.78rem;margin-bottom:18px;">Activate your license or start a free 10-minute trial.</div>
+
+          <!-- Trial card with arrow -->
+          <div id="trial-card" style="background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:left;cursor:pointer;transition:all .2s;position:relative;">
+            <div style="color:#34D399;font-size:.82rem;font-weight:700;margin-bottom:3px;">Free Trial · 10 minutes, all features</div>
+            <div style="color:#475569;font-size:.74rem;line-height:1.5;">No card required. Trial time adds to any plan you buy later.</div>
+            <button style="background:rgba(52,211,153,.15);color:#34D399;border:1px solid rgba(52,211,153,.3);border-radius:7px;padding:7px 16px;font-size:.82rem;font-weight:700;width:100%;margin-top:8px;cursor:pointer;">Start Free Trial</button>
+          </div>
+
+          <div style="color:#1E293B;font-size:.75rem;margin-bottom:10px;">or activate your license key</div>
+          <div style="background:#020D07;border:1px solid rgba(52,211,153,.22);border-radius:8px;padding:9px;font-family:var(--mono);font-size:.82rem;color:#475569;text-align:center;margin-bottom:10px;">CLAI-XXXXX-XXXXX-XXXXX</div>
+          <button style="background:linear-gradient(90deg,#10B981,#34D399);color:#022c22;border:none;border-radius:10px;padding:10px;font-size:.88rem;font-weight:800;width:100%;cursor:pointer;">Activate License</button>
+
+          <!-- Annotations -->
+          <div style="position:absolute;left:-140px;top:60px;text-align:right;" class="arr-wrap">
+            <div class="arr-label" style="margin-bottom:4px;">New user? Start here</div>
+            <svg class="dashed-arrow" width="110" height="24" viewBox="0 0 110 24">
+              <path d="M 10 12 Q 60 12 100 12" />
+              <polygon points="102,8 102,16 108,12"/>
+            </svg>
+          </div>
+          <div style="position:absolute;right:-130px;bottom:60px;" class="arr-wrap">
+            <svg class="dashed-arrow" width="100" height="24" viewBox="0 0 100 24" style="transform:scaleX(-1)">
+              <path d="M 10 12 Q 55 12 90 12" />
+              <polygon points="92,8 92,16 98,12"/>
+            </svg>
+            <div class="arr-label" style="margin-top:4px;">Paid? Paste key here</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout green" style="margin-top:14px;">
+        <span class="icon">✓</span>
+        <p>Your license key arrives by email within seconds of payment. Check your inbox and spam folder. It looks like <code style="background:var(--surface2);border:1px solid var(--faint);border-radius:3px;padding:1px 5px;font-family:var(--mono);font-size:.78rem;color:var(--green);">CLAI-ABCDE-FGHIJ-KLMNO</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 4 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s4">
+    <div class="step-left">
+      <div class="step-num">04</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Audio setup</div>
+      <h2 class="step-title">Pick your audio device — do this before the interview</h2>
+      <p class="step-body">See the <strong>orange "Set Device" button</strong> in the bar? Click it and choose where your audio comes from. Getting this right is the most important setup step.</p>
+
+      <div class="mockup-card">
+        <div class="mockup-label">Device picker</div>
+        <div style="position:relative;max-width:320px;margin:0 auto;">
+          <!-- Button -->
+          <div id="dev-trigger" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:5px 14px;color:#F59E0B;font-size:.8rem;font-weight:600;text-align:center;margin-bottom:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+            🎧&nbsp; Set Device &nbsp; ▾
+          </div>
+
+          <!-- Menu -->
+          <div class="dev-menu" id="dev-menu">
+            <div class="dev-hdr">MICROPHONES</div>
+            <div class="dev-item" onclick="pickDev(this,'Headphones','🎧','headphone')">🎧&nbsp; Headset Microphone</div>
+            <div class="dev-item" onclick="pickDev(this,'Mic','🎤','mic')">🎤&nbsp; Microphone (Internal)</div>
+            <div class="dev-item" onclick="pickDev(this,'USB Mic','🎤','usb')">🎤&nbsp; USB Microphone</div>
+            <div class="dev-sep"></div>
+            <div class="dev-hdr">SPEAKERS (captures what you hear)</div>
+            <div class="dev-item" onclick="pickDev(this,'Speakers','🔊','spk')">🔊&nbsp; Speakers (Realtek)</div>
+            <div class="dev-item" onclick="pickDev(this,'Speakers','🔊','spk')">🔊&nbsp; Headphones Output</div>
+          </div>
+
+          <!-- Arrows pointing to sections -->
+          <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="background:var(--surface);border:1px solid rgba(52,211,153,.15);border-radius:8px;padding:9px 11px;font-size:.73rem;color:var(--muted);">
+              <div style="color:var(--green);font-weight:700;margin-bottom:3px;">🎧 Wearing headphones?</div>
+              Pick <strong style="color:var(--text);">headset mic</strong> to capture your voice
+            </div>
+            <div style="background:var(--surface);border:1px solid rgba(56,189,248,.15);border-radius:8px;padding:9px 11px;font-size:.73rem;color:var(--muted);">
+              <div style="color:var(--blue);font-weight:700;margin-bottom:3px;">🔊 Remote interview?</div>
+              Pick <strong style="color:var(--text);">Speakers / Loopback</strong> to hear the interviewer
+            </div>
+          </div>
+
+          <!-- Result badge -->
+          <div id="dev-result" style="display:none;margin-top:10px;text-align:center;">
+            <div id="dev-pill" style="display:inline-flex;align-items:center;gap:6px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);border-radius:12px;padding:5px 14px;color:#34D399;font-size:.8rem;font-weight:700;"></div>
+            <div style="color:var(--muted);font-size:.72rem;margin-top:5px;">Button turns green once device is set</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout blue" style="margin-top:14px;">
+        <span class="icon">💡</span>
+        <p><strong>Loopback tip:</strong> If the interviewer speaks through your Zoom/Meet and you want CloakAI to hear their questions, pick a <strong>Speakers</strong> entry. It captures everything your computer plays — including the interviewer's voice coming through your headphones.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 5 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s5">
+    <div class="step-left">
+      <div class="step-num">05</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">The overlay</div>
+      <h2 class="step-title">What every button in the bar does</h2>
+      <p class="step-body">Hover over each button below to see what it does.</p>
+
+      <div class="mockup-card" style="overflow:visible;">
+        <div class="mockup-label">Main overlay bar — hover to explore</div>
+        <div class="app-bar-wrap" style="position:relative;padding-bottom:10px;">
+          <div class="app-bar" id="main-bar">
+            <span class="b-logo" data-tip="CloakAI — invisible to screenshare and recording software">🛡 CloakAI</span>
+            <span class="b-sep"></span>
+            <span class="b-pill p-green" data-tip="AI Answer — toggles Auto listening vs Manual (hold Alt)">🎤 AI Answer</span>
+            <span class="b-sep"></span>
+            <span class="b-pill p-blue" data-tip="Analyze Screen — screenshots your screen and asks AI to explain it">🖥 Analyze Screen</span>
+            <span class="b-sep"></span>
+            <span class="b-pill p-purple" data-tip="Save Session — downloads a full transcript of all Qs and answers">💾 Save Session</span>
+            <span class="b-sep"></span>
+            <span style="color:#94A3B8;font-size:.7rem;" data-tip="Auto AI label — shows current listening mode">Auto AI</span>
+            <span class="b-toggle" data-tip="Toggle switch — green = Auto mode, off = Manual mode"></span>
+            <span class="b-sep"></span>
+            <div class="b-nav" data-tip="Browse last 5 answers — use arrows mid-interview without losing live view">
+              <div class="b-nav-btn">◀</div>
+              <span class="b-live">LIVE</span>
+              <div class="b-nav-btn">▶</div>
+            </div>
+            <span class="b-sep"></span>
+            <div class="b-mic" data-tip="Mic indicator — green pulse = listening, amber = thinking, red = error">🎤</div>
+            <span class="b-sep"></span>
+            <span class="b-pill p-green" style="font-size:.66rem;" data-tip="Device pill — green = configured, orange = needs setup. Click to change device">🎧 Headphones</span>
+            <span class="b-sep"></span>
+            <span class="b-timer" data-tip="Time remaining on your plan. Counts down only when app is active">1h 58m</span>
+            <span class="b-sep"></span>
+            <span class="b-kbd" data-tip="Text input toggle — opens a box to type questions or paste text (Ctrl+T)">⌨</span>
+            <span class="b-gear" data-tip="Settings — adjust voice sensitivity, silence timeout, and interview context">⚙</span>
+            <span class="b-sep"></span>
+            <span class="b-trash" data-tip="Clear — collapses the answer panel back to bar height (Ctrl+L)">🗑</span>
+            <span class="b-sep"></span>
+            <div class="b-slider" data-tip="Opacity slider — drag to make the overlay more or less transparent"></div>
+            <span style="color:#475569;font-size:.68rem;">95%</span>
+            <span class="b-cdot" data-tip="Green = interactive mode. Hold Ctrl to make it click-through (turns red)"></span>
+          </div>
+          <!-- Tooltip -->
+          <div id="bar-tip" style="display:none;margin-top:10px;background:var(--surface2);border:1px solid var(--border-bright);border-radius:8px;padding:9px 13px;font-size:.78rem;color:var(--text);transition:all .15s;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 6 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s6">
+    <div class="step-left">
+      <div class="step-num">06</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Listening modes</div>
+      <h2 class="step-title">Auto AI vs Manual — pick what suits you</h2>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;">
+        <div style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.18);border-radius:12px;padding:18px 16px;">
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--green);font-weight:700;letter-spacing:1px;margin-bottom:8px;">AUTO AI MODE</div>
+          <div style="font-size:.85rem;color:var(--muted);line-height:1.65;">
+            CloakAI listens continuously. When someone speaks, it records. When they stop, it answers. <strong style="color:var(--text);">No button presses needed.</strong>
+          </div>
+          <div style="margin-top:10px;font-size:.75rem;color:var(--green);">Best for: quiet rooms, headset mic</div>
+        </div>
+        <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:12px;padding:18px 16px;">
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--amber);font-weight:700;letter-spacing:1px;margin-bottom:8px;">MANUAL MODE</div>
+          <div style="font-size:.85rem;color:var(--muted);line-height:1.65;">
+            Hold <kbd style="background:var(--surface2);border:1px solid var(--faint);border-radius:4px;padding:1px 6px;font-family:var(--mono);font-size:.75rem;color:var(--text);">Alt</kbd> while the question is asked, release to send. <strong style="color:var(--text);">You control exactly what gets sent.</strong>
+          </div>
+          <div style="margin-top:10px;font-size:.75rem;color:var(--amber);">Best for: noisy rooms, precise control</div>
+        </div>
+      </div>
+      <p class="step-body" style="margin-top:14px;">Switch between modes any time by clicking the <strong>AI Answer pill</strong> in the bar. No restart needed.</p>
+    </div>
+  </div>
+
+  <!-- ── STEP 7 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s7">
+    <div class="step-left">
+      <div class="step-num">07</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Screen analysis</div>
+      <h2 class="step-title">Solve on-screen coding problems with Analyze Screen</h2>
+      <p class="step-body">Click <strong>Analyze Screen</strong> (blue button) to capture everything on your monitor and send it to the AI. Works for LeetCode problems, shared Google Docs, system design diagrams — anything you can see but can't copy.</p>
+      <p class="step-body">Tip: open the text box first (⌨), type what you want — like <em>"Write a Python solution for this"</em> — then click Analyze Screen. If you leave the text box empty, CloakAI describes everything it sees.</p>
+
+      <div class="mockup-card">
+        <div class="mockup-label">Analyze Screen workflow</div>
+        <div style="display:flex;align-items:center;gap:0;justify-content:center;flex-wrap:wrap;gap:8px;padding:16px 0;">
+          <div style="text-align:center;">
+            <div style="background:var(--surface2);border:1px solid var(--faint);border-radius:8px;padding:10px 14px;font-size:.75rem;color:var(--muted);">Coding problem<br>shown on screen</div>
+          </div>
+          <div style="color:var(--green);font-size:1.2rem;padding:0 4px;">→</div>
+          <div style="text-align:center;">
+            <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:10px 14px;font-size:.75rem;color:var(--blue);">Click<br>"Analyze Screen"</div>
+          </div>
+          <div style="color:var(--green);font-size:1.2rem;padding:0 4px;">→</div>
+          <div style="text-align:center;">
+            <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 14px;font-size:.75rem;color:var(--green);">AI solution<br>appears in 2s</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 8 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s8">
+    <div class="step-left">
+      <div class="step-num">08</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Settings</div>
+      <h2 class="step-title">Set interview context — the most powerful feature</h2>
+      <p class="step-body">Click the gear icon <strong>⚙</strong> and go to the <strong>Context tab</strong>. Fill in two fields before your interview starts. This is what makes every answer feel tailored instead of generic.</p>
+
+      <div class="mockup-card">
+        <div class="mockup-label">Settings — Context tab</div>
+        <div style="background:linear-gradient(160deg,#0A0F1A,#060C16);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:18px;max-width:420px;margin:0 auto;position:relative;">
+          <div style="display:flex;gap:12px;margin-bottom:16px;">
+            <span style="background:rgba(52,211,153,.12);color:#34D399;border:1px solid rgba(52,211,153,.25);border-radius:6px 6px 0 0;padding:6px 16px;font-size:.78rem;font-weight:600;">Audio</span>
+            <span style="background:rgba(56,189,248,.12);color:#38BDF8;border:1px solid rgba(56,189,248,.25);border-bottom:none;border-radius:6px 6px 0 0;padding:6px 16px;font-size:.78rem;font-weight:600;">Context ←</span>
+          </div>
+          <div style="margin-bottom:12px;">
+            <div style="color:#475569;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Interview Context</div>
+            <div style="background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:.78rem;color:#475569;line-height:1.5;min-height:60px;">Python backend at a fintech startup. Django, Postgres, system design, AWS. Senior engineer role.</div>
+          </div>
+          <div>
+            <div style="color:#475569;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Your Role &amp; Skills</div>
+            <div style="background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:.78rem;color:#475569;line-height:1.5;min-height:52px;">4 years Python, strong Django and SQL. Targeting ₹35 LPA roles.</div>
+          </div>
+
+          <!-- arrows -->
+          <div style="position:absolute;right:-130px;top:82px;" class="arr-wrap">
+            <svg class="dashed-arrow" width="90" height="24" viewBox="0 0 90 24" style="transform:scaleX(-1)">
+              <path d="M 8 12 Q 45 12 80 12"/>
+              <polygon points="82,8 82,16 88,12"/>
+            </svg>
+            <div class="arr-label" style="margin-top:4px;">What's the interview about?</div>
+          </div>
+          <div style="position:absolute;right:-130px;top:150px;" class="arr-wrap">
+            <svg class="dashed-arrow" width="90" height="24" viewBox="0 0 90 24" style="transform:scaleX(-1)">
+              <path d="M 8 12 Q 45 12 80 12"/>
+              <polygon points="82,8 82,16 88,12"/>
+            </svg>
+            <div class="arr-label" style="margin-top:4px;">Your background and level</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout green" style="margin-top:14px;">
+        <span class="icon">✓</span>
+        <p><strong>Do this before every interview.</strong> 90 seconds of context leads to answers that mention the right tech stack, match your experience level, and sound like you — not a textbook.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 9 ──────────────────────────────────────────────────────────── -->
+  <div class="step" id="s9">
+    <div class="step-left">
+      <div class="step-num">09</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Controls</div>
+      <h2 class="step-title">Keyboard shortcuts — use these during the interview</h2>
+      <div class="shortcut-grid" style="margin-top:12px;">
+        <div class="sc-card"><span class="sc-key">F8</span><div class="sc-desc">Hide or show the overlay instantly — works even when Zoom is focused</div></div>
+        <div class="sc-card"><span class="sc-key">Alt (hold)</span><div class="sc-desc">Manual mode: record while held, send when released</div></div>
+        <div class="sc-card"><span class="sc-key">Ctrl (hold)</span><div class="sc-desc">Click-through mode — your clicks pass through the overlay to whatever's behind</div></div>
+        <div class="sc-card"><span class="sc-key">Ctrl+L</span><div class="sc-desc">Clear the answer panel and collapse back to bar</div></div>
+        <div class="sc-card"><span class="sc-key">Ctrl+T</span><div class="sc-desc">Toggle text input — type or paste a question manually</div></div>
+        <div class="sc-card"><span class="sc-key">Esc</span><div class="sc-desc">Quit CloakAI completely</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 10 ─────────────────────────────────────────────────────────── -->
+  <div class="step" id="s10">
+    <div class="step-left">
+      <div class="step-num">10</div>
+    </div>
+    <div class="step-right">
+      <div class="step-tag">Interview day</div>
+      <h2 class="step-title">Tips for your first interview</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+        <div style="background:var(--surface);border:1px solid var(--faint);border-radius:10px;padding:14px;">
+          <div style="color:var(--green);font-size:1.1rem;margin-bottom:6px;">🧪</div>
+          <div style="font-size:.83rem;color:var(--text);font-weight:600;margin-bottom:4px;">Do a dry run first</div>
+          <div style="font-size:.78rem;color:var(--muted);">Call a friend on Zoom the day before. Test that CloakAI hears questions correctly with your chosen device.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--faint);border-radius:10px;padding:14px;">
+          <div style="font-size:1.1rem;margin-bottom:6px;">📍</div>
+          <div style="font-size:.83rem;color:var(--text);font-weight:600;margin-bottom:4px;">Position near your camera</div>
+          <div style="font-size:.78rem;color:var(--muted);">Drag the overlay close to your webcam. When you glance at answers, you'll appear to look at the interviewer.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--faint);border-radius:10px;padding:14px;">
+          <div style="font-size:1.1rem;margin-bottom:6px;">⚡</div>
+          <div style="font-size:.83rem;color:var(--text);font-weight:600;margin-bottom:4px;">Start talking early</div>
+          <div style="font-size:.78rem;color:var(--muted);">CloakAI streams answers word by word. Begin your response as soon as enough text appears. Don't wait for it to finish.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--faint);border-radius:10px;padding:14px;">
+          <div style="font-size:1.1rem;margin-bottom:6px;">🫥</div>
+          <div style="font-size:.83rem;color:var(--text);font-weight:600;margin-bottom:4px;">It's truly invisible</div>
+          <div style="font-size:.78rem;color:var(--muted);">The interviewer's recording will not show CloakAI. Even Windows Snipping Tool cannot capture it. Hold F8 to hide if needed.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(56,189,248,.04));border:1px solid var(--border);border-radius:12px;padding:18px 20px;text-align:center;">
+        <div style="color:#fff;font-weight:600;font-size:.95rem;margin-bottom:6px;">Ready? Your first interview is waiting.</div>
+        <div style="color:var(--muted);font-size:.83rem;margin-bottom:14px;">Questions? We reply within 24 hours.</div>
+        <a href="mailto:support.cloakai@gmail.com" style="display:inline-block;background:var(--green-dim);border:1px solid var(--border-bright);color:var(--green);border-radius:20px;padding:8px 20px;font-size:.82rem;font-weight:600;text-decoration:none;">support.cloakai@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /steps -->
+
+<footer>
+  &copy; 2025 CloakAI &nbsp;&bull;&nbsp;
+  <a href="index.html">Home</a> &nbsp;&bull;&nbsp;
+  <a href="mailto:support.cloakai@gmail.com">Support</a> &nbsp;&bull;&nbsp;
+  <a href="privacy.html">Privacy</a>
+</footer>
+
+<style>
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+</style>
+
+<script>
+/* ── scroll reveal ───────────────────────────────────────────────────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.08});
+document.querySelectorAll('.step').forEach(s => io.observe(s));
+
+/* ── SmartScreen interactive demo ────────────────────────────────────────── */
+const moreLink = document.getElementById('more-info-link');
+const runRow   = document.getElementById('run-anyway-row');
+const runBtn   = document.getElementById('run-anyway-btn');
+const arrMore  = document.getElementById('arr-more');
+const arrRun   = document.getElementById('arr-run');
+
+moreLink.addEventListener('click', function(){
+  runRow.style.display = 'block';
+  runBtn.style.display = 'inline-block';
+  moreLink.style.color = '#475569';
+  moreLink.style.textDecoration = 'none';
+  moreLink.style.cursor = 'default';
+  moreLink.removeEventListener('click', arguments.callee);
+  arrMore.style.display = 'none';
+  arrRun.style.display  = 'block';
+  // re-trigger dashed animation
+  arrRun.querySelectorAll('path').forEach(p => { p.style.animation='none'; void p.offsetWidth; p.style.animation=''; });
+});
+
+runBtn.addEventListener('click', function(){
+  runBtn.textContent = 'Launching CloakAI...';
+  runBtn.style.background = '#16a34a';
+  arrRun.style.display = 'none';
+  setTimeout(() => {
+    runBtn.textContent = 'Run anyway';
+    runBtn.style.background = '#2563EB';
+    arrRun.style.display = 'none';
+  }, 2000);
+});
+
+/* ── Device picker demo ──────────────────────────────────────────────────── */
+function pickDev(el, label, icon, type){
+  document.querySelectorAll('.dev-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const pill = document.getElementById('dev-pill');
+  const res  = document.getElementById('dev-result');
+  pill.textContent = icon + '  ' + label;
+  res.style.display = 'block';
+}
+
+/* ── Bar tooltip ─────────────────────────────────────────────────────────── */
+const tipEl = document.getElementById('bar-tip');
+document.querySelectorAll('#main-bar [data-tip]').forEach(el => {
+  el.style.cursor = 'pointer';
+  el.addEventListener('mouseenter', function(){
+    tipEl.textContent = this.dataset.tip;
+    tipEl.style.display = 'block';
+  });
+  el.addEventListener('mouseleave', function(){
+    tipEl.style.display = 'none';
+  });
+});
+</script>
+</body>
+</html>
