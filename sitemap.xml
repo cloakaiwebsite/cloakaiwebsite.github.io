@@ -9,8 +9,15 @@
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://cloakai.in/og-image.png</image:loc>
-      <image:title>CloakAI – The Invisible Interview Assistant</image:title>
+      <image:title>CloakAI - The Invisible Interview Assistant</image:title>
     </image:image>
+  </url>
+
+  <url>
+    <loc>https://cloakai.in/how-to-use.html</loc>
+    <lastmod>2025-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>
 
   <url>
