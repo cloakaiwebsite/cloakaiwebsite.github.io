@@ -352,7 +352,11 @@
       iconEl.textContent = '✓';
       titleEl.textContent = 'License Active';
       titleEl.style.color = '#34D399';
-      subEl.textContent = d.days_left + ' days remaining on your plan.';
+      if (d.license_type === 'hours_based') {
+        subEl.textContent = d.hours_remaining + ' hours of AI time remaining.';
+      } else {
+        subEl.textContent = (d.days_left || 0) + ' days remaining on your plan.';
+      }
     } else if (d.status === 'EXPIRED') {
       iconEl.className  = 'status-icon status-expired';
       iconEl.textContent = '✕';
@@ -371,14 +375,17 @@
     var timerSec = document.getElementById('timer-section');
     var daysBig  = document.getElementById('days-big');
     var daysLbl  = document.getElementById('days-label');
-    if (d.status === 'ACTIVE' && d.days_left > 0) {
+    if (d.status === 'ACTIVE') {
       timerSec.style.display = 'block';
-      if (d.days_left < 1) {
-        daysBig.textContent = 'Less than 1';
-        daysLbl.textContent = 'day remaining';
-      } else {
+      if (d.license_type === 'hours_based') {
+        var hrRem = parseFloat(d.hours_remaining || 0);
+        daysBig.textContent = hrRem.toFixed(1);
+        daysLbl.textContent = 'hours of AI time remaining';
+      } else if (d.days_left > 0) {
         daysBig.textContent = d.days_left;
         daysLbl.textContent = d.days_left === 1 ? 'day remaining' : 'days remaining';
+      } else {
+        timerSec.style.display = 'none';
       }
     } else {
       timerSec.style.display = 'none';
@@ -417,7 +424,7 @@
     document.getElementById('r-status').className      = 'info-value ' + statusClass;
     document.getElementById('r-purchased').textContent = fmt(d.purchased_at);
     document.getElementById('r-activated').textContent = d.activated ? fmt(d.activated_at) : 'Not yet activated';
-    document.getElementById('r-expires').textContent   = d.expires_at ? fmt(d.expires_at) : 'Pending first activation';
+    document.getElementById('r-expires').textContent   = d.license_type === 'hours_based' ? 'Hours-based (' + (d.hours_purchased || '?') + ' hrs purchased)' : (d.expires_at ? fmt(d.expires_at) : 'Pending first activation');
     document.getElementById('r-machine').textContent   = d.machine_bound ? 'Yes — bound to 1 device' : 'Not yet bound';
     document.getElementById('r-email').textContent     = d.email_hint || 'N/A';
     document.getElementById('r-key').textContent       = d.key;
