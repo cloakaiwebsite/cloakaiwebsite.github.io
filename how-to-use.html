@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    gtag('config', 'G-E78JBBWJQW');
-  </script>
-
+  gtag('config', 'G-E78JBBWJQW');
+</script>
+  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="How to use CloakAI — step-by-step setup guide for the invisible AI interview assistant.">
+<meta name="description" content="How to use CloakAI - step-by-step setup guide for the invisible AI interview assistant.">
 <title>How to Use CloakAI — Setup Guide</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="canonical" href="https://cloakai.in/how-to-use.html">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- System fonts used — no external font dependency -->
 <style>
 /* ─── TOKENS ────────────────────────────────────────────────────────────── */
 :root{
@@ -37,8 +36,8 @@
   --text:#E2E8F0;
   --muted:#64748B;
   --faint:#1E293B;
-  --mono:'Space Mono',monospace;
-  --sans:'DM Sans',sans-serif;
+  --mono:'Consolas','Courier New',monospace;
+  --sans:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
 }
 
 /* ─── RESET ─────────────────────────────────────────────────────────────── */
@@ -275,17 +274,21 @@ footer a{color:#2ecc71;text-decoration:none;}
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="hdr">
-    <a href="index.html" class="logo">
-      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+<!-- HEADER — matches main site -->
+<header style="position:sticky;top:0;z-index:900;background:rgba(5,10,7,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;">
+    <a href="index.html" style="font-size:1.6rem;font-weight:800;color:#00ff88;text-shadow:0 0 10px #2ecc71;display:flex;align-items:center;gap:8px;text-decoration:none;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="#00ff88"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
       CloakAI
     </a>
-    <a href="index.html" class="back">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-      Back to Home
-    </a>
+    <nav style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+      <a href="index.html" style="color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;">Home</a>
+      <a href="index.html#pricing" style="color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;">Pricing</a>
+      <a href="index.html#faq" style="color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;">FAQ</a>
+      <a href="how-to-use.html" style="color:#00ff88;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:700;">How to Use</a>
+      <a href="license-info.html" style="color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;">License Status</a>
+      <a href="index.html#pricing" style="background:linear-gradient(45deg,#0f3d2e,#2ecc71);color:#fff;padding:7px 16px;border-radius:20px;border:1px solid #00ff88;font-weight:700;margin-left:16px;font-size:.9rem;text-decoration:none;">Get Access</a>
+    </nav>
   </div>
 </header>
 
@@ -773,14 +776,9 @@ footer a{color:#2ecc71;text-decoration:none;}
 
 <footer>
   &copy; 2025 CloakAI &nbsp;&bull;&nbsp;
-  <a href="index.html">Home</a>
-  <a href="license-info.html">License Status</a>
-  <a href="about.html">About</a>
-  <a href="terms.html">Terms</a>
+  <a href="index.html">Home</a> &nbsp;&bull;&nbsp;
+  <a href="mailto:support.cloakai@gmail.com">Support</a> &nbsp;&bull;&nbsp;
   <a href="privacy.html">Privacy</a>
-  <a href="refund.html">Refund</a>
-  <a href="dmca.html">DMCA</a>
-  <a href="contact.html">Contact</a>
 </footer>
 
 <style>
