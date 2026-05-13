@@ -99,11 +99,11 @@
     <h2>2. Data We Collect</h2>
     <table>
       <tr><th>Data Type</th><th>Why We Collect It</th><th>Where It's Stored</th></tr>
-      <tr><td><strong>Email address</strong></td><td>To deliver your license key and provide support</td><td>Google Sheets (access-controlled)</td></tr>
-      <tr><td><strong>Hardware fingerprint (hash)</strong></td><td>To bind your license to your device (prevents sharing)</td><td>Google Sheets stored as a one-way hash only</td></tr>
-      <tr><td><strong>License key &amp; plan</strong></td><td>To validate your subscription status</td><td>Google Sheets</td></tr>
-      <tr><td><strong>Transaction ID</strong></td><td>To confirm payment and prevent fraud</td><td>Google Sheets</td></tr>
-      <tr><td><strong>Activation timestamp</strong></td><td>To calculate license expiry</td><td>Google Sheets</td></tr>
+      <tr><td><strong>Email address</strong></td><td>To deliver your license key and provide support</td><td>Database Server (access-controlled)</td></tr>
+      <tr><td><strong>Hardware fingerprint (hash)</strong></td><td>To bind your license to your device (prevents sharing)</td><td>Database Server stored as a one-way hash only</td></tr>
+      <tr><td><strong>License key &amp; plan</strong></td><td>To validate your subscription status</td><td>Database Server</td></tr>
+      <tr><td><strong>Transaction ID</strong></td><td>To confirm payment and prevent fraud</td><td>Database Server</td></tr>
+      <tr><td><strong>Activation timestamp</strong></td><td>To calculate license expiry</td><td>Database Server</td></tr>
     </table>
 
     <h2>3. Data We Do NOT Collect</h2>
@@ -135,7 +135,7 @@
     <ul>
       <li><strong>OpenAI API</strong> Audio is sent to Whisper for transcription and to Chat Completions for answers. Processed in transit, not stored by us. Refer to <a href="https://openai.com/privacy" target="_blank">OpenAI's Privacy Policy</a>. We do not share your personal information (email, hardware fingerprint) with OpenAI.</li>
       <li><strong>PhonePe</strong> Payment processing. We do not receive or store card details. Subject to PhonePe's own privacy policy.</li>
-      <li><strong>Google Workspace</strong> License records are stored in Google Sheets accessible only to CloakAI. Subject to Google's privacy policy. We do not use Google Analytics or any Google advertising services.</li>
+      <li><strong>Google Workspace</strong> License records are stored in Database Server accessible only to CloakAI. Subject to Google's privacy policy. We do not use Google Analytics or any Google advertising services.</li>
     </ul>
 
     <h2>7. Data Retention</h2>
@@ -143,7 +143,7 @@
 
     <h2>8. Data Security</h2>
     <ul>
-      <li>Google Sheets are access-restricted to authorised CloakAI accounts only.</li>
+      <li>Database Server are access-restricted to authorised CloakAI accounts only.</li>
       <li>Hardware IDs are stored as SHA-256 hashes they cannot be reverse-engineered.</li>
       <li>The local license cache on your device is encrypted using a machine-derived key.</li>
       <li>All communication between the app and our server uses HTTPS.</li>
