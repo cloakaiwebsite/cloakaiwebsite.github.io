@@ -4,4 +4,4 @@
 # This file exists to prevent ad fraud impersonation of this domain.
 # https://iabtechlab.com/ads-txt/
 
-placeholder.example.com, placeholder, DIRECT, placeholder
+google.com, pub-9285613095773032, DIRECT, f08c47fec0942fa0
