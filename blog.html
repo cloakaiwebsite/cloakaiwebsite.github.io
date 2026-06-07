@@ -31,7 +31,7 @@
                  linear-gradient(0deg,var(--bg) 0%,#0a1410 100%);}
 
     /* ── Shared nav + footer (exact homepage match) ── */
-    header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(46,204,113,.13);position:relative;}
+    header{position:sticky;top:0;z-index:900;background:rgba(5,10,7,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);}
     .header-inner{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
     .logo{font-size:1.7rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:9px;text-decoration:none;}
     .logo img{width:34px;height:34px;border-radius:6px;}
@@ -134,8 +134,8 @@
       <a href="index.html#demo">Demo</a>
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
-      <a href="how-to-use.html">How to use?</a>
-      <a href="blog.html">Blog</a>
+      <a href="how-to-use.html">How to Use?</a>
+      <a href="blog.html" style="color:var(--gg);">Blog</a>
       <a href="index.html#faq">FAQ</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -225,7 +225,7 @@
 </div>
 
 <footer>
-  <div class="footer-logo" style="display:flex;align-items:center;justify-content:center;gap:8px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gg)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>CloakAI</div>
+  <div class="footer-logo">CloakAI</div>
   <div style="color:#333;font-size:.82rem;margin-bottom:6px;">The AI that only you can see.</div>
   <div class="footer-links">
     <a href="index.html">Home</a>
