@@ -36,12 +36,7 @@
     p,li{font-size:.92rem;line-height:1.75;}
 
     /* ── Header ─────────────────────────────────────────── */
-    header{
-      position:sticky;top:0;z-index:900;
-      background:rgba(5,10,7,.97);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid var(--bd);
-    }
+    header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(46,204,113,.13);position:relative;}
     .hdr-inner{
       max-width:1100px;margin:0 auto;
       display:flex;align-items:center;justify-content:space-between;
@@ -68,30 +63,6 @@
     .nav-links .cta:hover{filter:brightness(1.08);}
 
     /* ── Quick nav ──────────────────────────────────────── */
-    .qnav{
-      background:rgba(0,0,0,.28);
-      border-bottom:1px solid var(--bd);
-      padding:0;
-      position:sticky;top:54px;z-index:800;
-      backdrop-filter:blur(10px);
-      overflow-x:auto;
-      -webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-    }
-    .qnav::-webkit-scrollbar{display:none;}
-    .qnav-inner{
-      display:flex;gap:4px;
-      padding:10px 16px;
-      min-width:max-content;
-    }
-    .qnav a{
-      font-size:.78rem;color:var(--t3);text-decoration:none;
-      padding:5px 13px;border-radius:14px;border:1px solid transparent;
-      transition:.15s;white-space:nowrap;flex-shrink:0;
-    }
-    .qnav a:hover,.qnav a.active{
-      color:var(--g);border-color:var(--bd2);background:rgba(0,230,118,.06);
-    }
 
     /* ── Layout ─────────────────────────────────────────── */
     .wrap{max-width:800px;margin:0 auto;padding:0 16px;}
@@ -410,7 +381,6 @@
       .hero h1{font-size:1.65rem;}
 
       /* Quick nav: horizontal scroll, no wrap */
-      .qnav-inner{padding:8px 14px;}
 
       /* Step blocks */
       .step-block{padding:34px 0;}
@@ -444,37 +414,55 @@
       .cards{grid-template-columns:1fr;}
       .hero h1{font-size:1.45rem;}
     }
-  </style>
+  
+    /* ── Shared header nav ── */
+    
+    .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
+    .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px rgba(46,204,113,.5);display:flex;align-items:center;gap:8px;text-decoration:none;}
+    .logo svg{width:28px;height:28px;fill:var(--gg);}
+    nav a{color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}
+    nav a:hover{color:var(--gg);}
+    .nav-cta{background:linear-gradient(45deg,#0f3d2e,#2ecc71);color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid #00ff88;font-weight:700!important;}
+    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
+    .ham span{display:block;width:22px;height:2px;background:#00ff88;border-radius:2px;transition:transform .28s,opacity .28s;}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    @media(max-width:860px){
+      .ham{display:flex;}
+      #mnav{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;gap:2px;z-index:1000;}
+      #mnav.open{display:flex;}
+      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
+      #mnav a:last-child{border-bottom:none;}
+      .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:11px 16px!important;}
+      .hi{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}
+    }
+    </style>
 </head>
 <body>
-
+<div class="bg-anim"></div>
 <header>
-  <div class="hdr-inner">
-    <a href="index.html" class="logo">
-      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-      CloakAI
-    </a>
-    <nav class="nav-links">
+<div class="hi">
+  <a href="index.html" class="logo">
+    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+    CloakAI
+  </a>
+  <nav id="mnav">
+      <a href="index.html#demo">Demo</a>
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
-      <a href="how-to-use.html" style="color:var(--g)">How to Use</a>
+      <a href="how-to-use.html">How to use?</a>
+      <a href="blog.html">Blog</a>
       <a href="index.html#faq">FAQ</a>
-      <a href="index.html#pricing" class="cta">Get Access from ₹399</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="license-info.html">License &amp; Referral</a>
+      <a href="index.html#pricing" class="nav-cta">Get Access</a>
     </nav>
-  </div>
+  <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div>
 </header>
 
-<div class="qnav">
-  <div class="qnav-inner">
-    <a href="#install">1. Install</a>
-    <a href="#register">2. Register</a>
-    <a href="#overlay">3. The App</a>
-    <a href="#listen">4. Listening</a>
-    <a href="#context">5. Upload Resume</a>
-    <a href="#scan">6. Screen Scan</a>
-    <a href="#shortcuts">7. Shortcuts</a>
-    <a href="#trouble">8. Help</a>
-  </div>
 </div>
 
 <div class="hero">
@@ -882,18 +870,20 @@ Reduced API latency by 40% with Redis caching.</p>
     CloakAI
   </div>
   <p style="color:#444;font-size:.8rem;margin-bottom:14px;">India's invisible AI interview assistant. 20-min free trial. No card.</p>
-  <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:14px;">
+  <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
     <a href="index.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Home</a>
-    <a href="index.html#features" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Features</a>
-    <a href="index.html#pricing" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Pricing</a>
-    <a href="how-to-use.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">How to use?</a>
+    <a href="blog.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Blog</a>
     <a href="about.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">About</a>
-    <a href="contact.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Contact</a>
+    <a href="how-to-use.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">How to use?</a>
     <a href="license-info.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">License &amp; Referral</a>
+    <a href="index.html#pricing" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Pricing</a>
+    <a href="contact.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Contact</a>
     <a href="terms.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Terms</a>
     <a href="privacy.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Privacy</a>
     <a href="refund.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Refund</a>
     <a href="dmca.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">DMCA</a>
+    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Windows</a>
+    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.zip" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Mac</a>
     <a href="mailto:support@cloakai.in" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">support@cloakai.in</a>
   </div>
   <div style="color:#333;font-size:.76rem;line-height:1.7;">
@@ -902,6 +892,7 @@ Reduced API latency by 40% with Redis caching.</p>
     <a href="privacy.html" style="color:#333;text-decoration:none;">Privacy</a>&nbsp;&nbsp;·&nbsp;&nbsp;
     <a href="refund.html" style="color:#333;text-decoration:none;">Refund Policy</a>
   </div>
+  <div style="color:#2a2a2a;font-size:.72rem;margin-top:10px;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.6;">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
 
 <script>
@@ -911,20 +902,6 @@ Reduced API latency by 40% with Redis caching.</p>
     {threshold:.06}
   );
   document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
-
-  // Active quick nav highlight
-  const secs   = document.querySelectorAll('.step-block[id]');
-  const qlinks = document.querySelectorAll('.qnav a');
-  const qo = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(e.isIntersecting){
-        qlinks.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.qnav a[href="#${e.target.id}"]`);
-        if(a) a.classList.add('active');
-      }
-    });
-  }, {threshold:.3});
-  secs.forEach(s => qo.observe(s));
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(q => {
@@ -936,5 +913,7 @@ Reduced API latency by 40% with Redis caching.</p>
     });
   });
 </script>
+<script>
+  function toggleNav(){var b=document.getElementById('ham-btn'),n=document.getElementById('mnav');b.classList.toggle('open');n.classList.toggle('open');}document.addEventListener('click',function(e){var n=document.getElementById('mnav'),b=document.getElementById('ham-btn');if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){n.classList.remove('open');b.classList.remove('open');}});document.querySelectorAll('#mnav a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('mnav').classList.remove('open');document.getElementById('ham-btn').classList.remove('open');});});</script>
 </body>
 </html>
