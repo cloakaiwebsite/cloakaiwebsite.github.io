@@ -36,7 +36,12 @@
     p,li{font-size:.92rem;line-height:1.75;}
 
     /* ── Header ─────────────────────────────────────────── */
-    header{background:rgba(8,22,12,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,204,113,.22);box-shadow:0 2px 20px rgba(46,204,113,.06);position:relative;}
+    header{
+      position:sticky;top:0;z-index:900;
+      background:rgba(5,10,7,.97);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--bd);
+    }
     .hdr-inner{
       max-width:1100px;margin:0 auto;
       display:flex;align-items:center;justify-content:space-between;
@@ -67,7 +72,7 @@
       background:rgba(0,0,0,.28);
       border-bottom:1px solid var(--bd);
       padding:0;
-      position:relative;top:0;z-index:800;
+      position:sticky;top:54px;z-index:800;
       backdrop-filter:blur(10px);
       overflow-x:auto;
       -webkit-overflow-scrolling:touch;
@@ -439,53 +444,24 @@
       .cards{grid-template-columns:1fr;}
       .hero h1{font-size:1.45rem;}
     }
-  
-    /* ── Shared header nav ── */
-    header{background:rgba(8,22,12,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,204,113,.22);box-shadow:0 2px 20px rgba(46,204,113,.06);position:relative;}
-    .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
-    .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px rgba(46,204,113,.5);display:flex;align-items:center;gap:8px;text-decoration:none;}
-    .logo svg{width:28px;height:28px;fill:var(--gg);}
-    nav a{color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}
-    nav a:hover{color:var(--gg);}
-    .nav-cta{background:linear-gradient(45deg,#0f3d2e,#2ecc71);color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid #00ff88;font-weight:700!important;}
-    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
-    .ham span{display:block;width:22px;height:2px;background:#00ff88;border-radius:2px;transition:transform .28s,opacity .28s;}
-    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    @media(max-width:860px){
-      .ham{display:flex;}
-      #mnav{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;gap:2px;z-index:1000;}
-      #mnav.open{display:flex;}
-      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
-      #mnav a:last-child{border-bottom:none;}
-      .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:11px 16px!important;}
-      .hi{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}
-    }
-    </style>
+  </style>
 </head>
 <body>
-<div class="bg-anim"></div>
+
 <header>
-<div class="hi">
-  <a href="index.html" class="logo">
-    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-    CloakAI
-  </a>
-  <nav id="mnav">
-      <a href="index.html#demo">Demo</a>
+  <div class="hdr-inner">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+      CloakAI
+    </a>
+    <nav class="nav-links">
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
-      <a href="how-to-use.html">How to use?</a>
-      <a href="blog.html">Blog</a>
+      <a href="how-to-use.html" style="color:var(--g)">How to Use</a>
       <a href="index.html#faq">FAQ</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="license-info.html">License &amp; Referral</a>
-      <a href="index.html#pricing" class="nav-cta">Get Access</a>
+      <a href="index.html#pricing" class="cta">Get Access from ₹399</a>
     </nav>
-  <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
-</div>
+  </div>
 </header>
 
 <div class="qnav">
@@ -494,7 +470,7 @@
     <a href="#register">2. Register</a>
     <a href="#overlay">3. The App</a>
     <a href="#listen">4. Listening</a>
-    <a href="#context">5. Upload Resume</a>
+    <a href="#context">5. Context</a>
     <a href="#scan">6. Screen Scan</a>
     <a href="#shortcuts">7. Shortcuts</a>
     <a href="#trouble">8. Help</a>
@@ -599,7 +575,7 @@
       <span class="a-brand">CloakAI</span>
       <div class="a-pill"><span class="a-dot"></span>Listening</div>
       <div class="a-pill" style="border-color:rgba(255,214,64,.3);color:var(--amber);">⏱ 8h left</div>
-      <div class="a-btn a-btn-p" style="margin-left:4px;">📄 Resume</div>
+      <div class="a-btn a-btn-p" style="margin-left:4px;">📋 Context</div>
       <div class="a-btn a-btn-b">🎙 Mic</div>
       <div class="a-btn" style="color:var(--t3);border:1px solid var(--bd);font-size:.66rem;">◑</div>
       <div class="a-btn a-btn-r" style="margin-left:auto;">✕</div>
@@ -661,8 +637,8 @@
       <p>Hours left on your license. Counts down while app is open. Red when low.</p>
     </div>
     <div class="card">
-      <div class="icon">📄</div>
-      <h4>Resume Pill</h4>
+      <div class="icon">📋</div>
+      <h4>Context Pill</h4>
       <p>Paste your resume or describe the role. Every answer becomes personalized.</p>
     </div>
     <div class="card">
@@ -722,15 +698,15 @@
 
 <!-- ─── 5: CONTEXT ──────────────────────────────────────────────── -->
 <div id="context" class="step-block reveal">
-  <div class="step-tag"><span class="n">5</span> Upload Resume</div>
-  <h2>Upload Your Resume</h2>
-  <p class="lead">Click the <strong style="color:var(--purple)">📄 Resume</strong> pill and paste your resume. CloakAI reads it and answers every question in your voice, with your experience.</p>
+  <div class="step-tag"><span class="n">5</span> Context</div>
+  <h2>Personalize Your Answers</h2>
+  <p class="lead">Click the <strong style="color:var(--purple)">📋 Context</strong> pill and tell CloakAI about yourself. Answers go from generic to genuinely tailored to you.</p>
 
   <div class="steps-list" style="margin-bottom:18px;">
     <div class="sl-item">
       <div class="sl-num">1</div>
       <div class="sl-content">
-        <h4>Click the 📄 Resume pill in the header</h4>
+        <h4>Click the Context pill in the header</h4>
         <p>A text editor opens over the answer panel.</p>
       </div>
     </div>
@@ -744,19 +720,18 @@
     <div class="sl-item">
       <div class="sl-num">3</div>
       <div class="sl-content">
-        <h4>Click &quot;Save Resume&quot;</h4>
+        <h4>Click "Apply &amp; Start Answering"</h4>
         <p>Every answer from this point uses your context. No impact on speed.</p>
       </div>
     </div>
   </div>
 
   <div class="ctx-example">
-    <div class="ctx-label">Example — paste your resume (Ctrl+V, include your coding language)</div>
-    <p>Name: Rahul Sharma
-Role: Applying for SDE-2 at Razorpay, Payments team
+    <div class="ctx-label">Example context that works great</div>
+    <p>Answer questions based on this resume. You are this person.
+Role: SDE-2 at Razorpay, Payments team
 Stack: Node.js, React, PostgreSQL, Redis, AWS
 Experience: 3.5 years, led a 2-person team
-Preferred coding language: Python
 Interview: System design + DSA focus
 
 Built a payment retry system for 2M txn/day.
@@ -765,7 +740,7 @@ Reduced API latency by 40% with Redis caching.</p>
 
   <div class="info-box tip">
     <div class="label">Pro tip</div>
-    <p>Upload your resume <strong>before</strong> the interview starts. When asked "Tell me about yourself", CloakAI uses your context to give a role-specific, personal answer.</p>
+    <p>Set context <strong>before</strong> the interview starts. When asked "Tell me about yourself", CloakAI uses your context to give a role-specific, personal answer.</p>
   </div>
 </div>
 
@@ -886,7 +861,7 @@ Reduced API latency by 40% with Redis caching.</p>
 
 <div class="cta-section">
   <h2>Ready for your next interview?</h2>
-  <p>20-minute free trial. No card needed. Plans from ₹399.</p>
+  <p>10-minute free trial. No card needed. Plans from ₹399.</p>
   <div class="cta-row">
     <a href="index.html#pricing" class="btn-p">Get Access from ₹399</a>
     <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn-s">
@@ -901,34 +876,17 @@ Reduced API latency by 40% with Redis caching.</p>
 </div>
 
 <footer>
-  <div style="font-size:1.3rem;font-weight:900;color:var(--gg);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gg)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-    CloakAI
+  <div style="font-size:1.1rem;font-weight:900;color:var(--g);margin-bottom:7px;">CloakAI</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#features">Features</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="how-to-use.html">How to Use</a>
+    <a href="license-info.html">License Status</a>
+    <a href="contact.html">Contact</a>
+    <a href="mailto:support@cloakai.in">support@cloakai.in</a>
   </div>
-  <p style="color:#444;font-size:.8rem;margin-bottom:14px;">India's invisible AI interview assistant. 20-min free trial. No card.</p>
-  <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
-    <a href="index.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Home</a>
-    <a href="blog.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Blog</a>
-    <a href="about.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">About</a>
-    <a href="how-to-use.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">How to use?</a>
-    <a href="license-info.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">License &amp; Referral</a>
-    <a href="index.html#pricing" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Pricing</a>
-    <a href="contact.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Contact</a>
-    <a href="terms.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Terms</a>
-    <a href="privacy.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Privacy</a>
-    <a href="refund.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Refund</a>
-    <a href="dmca.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">DMCA</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Windows</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.zip" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Mac</a>
-    <a href="mailto:support@cloakai.in" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">support@cloakai.in</a>
-  </div>
-  <div style="color:#333;font-size:.76rem;line-height:1.7;">
-    © 2025 CloakAI. All rights reserved.&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="terms.html" style="color:#333;text-decoration:none;">Terms</a>&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="privacy.html" style="color:#333;text-decoration:none;">Privacy</a>&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="refund.html" style="color:#333;text-decoration:none;">Refund Policy</a>
-  </div>
-  <div style="color:#2a2a2a;font-size:.72rem;margin-top:10px;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.6;">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
+  <div style="color:#333;font-size:.76rem;">© 2025 CloakAI. All rights reserved.</div>
 </footer>
 
 <script>
@@ -963,7 +921,5 @@ Reduced API latency by 40% with Redis caching.</p>
     });
   });
 </script>
-<script>
-  function toggleNav(){var b=document.getElementById('ham-btn'),n=document.getElementById('mnav');b.classList.toggle('open');n.classList.toggle('open');}document.addEventListener('click',function(e){var n=document.getElementById('mnav'),b=document.getElementById('ham-btn');if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){n.classList.remove('open');b.classList.remove('open');}});document.querySelectorAll('#mnav a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('mnav').classList.remove('open');document.getElementById('ham-btn').classList.remove('open');});});</script>
 </body>
 </html>

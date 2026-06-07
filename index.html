@@ -40,7 +40,7 @@
     @keyframes pfloat{0%,100%{transform:translateY(0) translateX(0);opacity:0;}50%{opacity:.5;}100%{transform:translateY(-100px) translateX(50px);opacity:0;}}
     .wrap{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
     /* Header */
-    header{background:rgba(8,22,12,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,204,113,.22);box-shadow:0 2px 20px rgba(46,204,113,.06);position:relative;}
+    header{position:relative;top:0;z-index:900;background:rgba(5,10,7,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);}
     .header-inner{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
     .logo{font-size:1.7rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:9px;text-decoration:none;}
     .logo img{width:34px;height:34px;border-radius:6px;}
@@ -131,7 +131,7 @@
     .card.unique .unique-badge{display:inline-block;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.4);color:var(--gg);padding:2px 10px;border-radius:10px;font-size:.7rem;font-weight:700;letter-spacing:.4px;margin-bottom:8px;}
     /* Pricing */
     .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:46px;}
-    .pc{display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(15,61,46,.7),rgba(5,10,7,.8));padding:34px 20px;border-radius:20px;border:1px solid #222;transition:.3s;position:relative;overflow:hidden;text-align:center;}
+    .pc{background:linear-gradient(180deg,rgba(15,61,46,.7),rgba(5,10,7,.8));padding:34px 20px;border-radius:20px;border:1px solid #222;transition:.3s;position:relative;overflow:hidden;text-align:center;}
     .pc.pop{border-color:var(--gg);box-shadow:0 0 24px rgba(46,204,113,.15);}
     .pc:hover{transform:scale(1.03);}
     .pc-badge-pop{position:absolute;top:0;right:0;background:var(--ag);color:#000;padding:5px 13px;font-size:.68rem;font-weight:800;letter-spacing:.3px;border-bottom-left-radius:12px;line-height:1.3;}
@@ -146,7 +146,7 @@
     .pc-feats{list-style:none;margin:14px 0 22px;text-align:left;}
     .pc-feats li{font-size:.83rem;color:#aaa;padding:4px 0;display:flex;align-items:center;gap:8px;}
     .pc-feats li::before{content:'✓';color:var(--gg);font-weight:700;flex-shrink:0;}
-    .btn-buy{margin-top:auto;width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(46,204,113,.2);}
+    .btn-buy{width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(46,204,113,.2);}
     .btn-buy:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(46,204,113,.35);}
     .pricing-note{text-align:center;margin-top:24px;color:#444;font-size:.8rem;line-height:1.8;}
     .pricing-note a{color:var(--ag);text-decoration:underline;}
@@ -250,46 +250,7 @@
     .sup-btn:disabled{opacity:.45;cursor:not-allowed;}
     .sup-msg{text-align:center;font-size:.8rem;margin-top:8px;min-height:16px;}
     .sup-msg.err{color:#EF4444;}.sup-msg.ok{color:#34D399;}.sup-msg.inf{color:#94A3B8;}
-  
-    /* ── Hero trust bar ─────────────────────────────────────────── */
-    .hero-trust-bar{
-      display:inline-flex;align-items:center;gap:0;
-      background:rgba(15,61,46,.3);border:1px solid rgba(46,204,113,.2);
-      border-radius:30px;padding:8px 16px;margin-bottom:22px;
-      flex-wrap:wrap;justify-content:center;gap:4px;
-      max-width:680px;
-    }
-    .htb-item{
-      display:inline-flex;align-items:center;gap:7px;
-      font-size:.83rem;color:var(--tc);padding:3px 8px;
-      position:relative;
-    }
-    .htb-item svg{color:var(--gg);}
-    .htb-item strong{color:var(--gg);}
-    .htb-divider{width:1px;height:18px;background:rgba(46,204,113,.2);margin:0 2px;}
-    /* Trial item — hover shows tooltip */
-    .htb-trial{cursor:pointer;border-radius:20px;transition:.2s;}
-    .htb-trial:hover,.htb-trial:focus{background:rgba(46,204,113,.08);outline:none;}
-    .htb-tooltip{
-      display:none;position:absolute;top:calc(100% + 10px);left:50%;
-      transform:translateX(-50%);
-      background:rgba(5,10,7,.97);border:1px solid rgba(46,204,113,.3);
-      border-radius:14px;padding:16px 18px;width:280px;z-index:100;
-      box-shadow:0 8px 32px rgba(0,0,0,.6);
-    }
-    .htb-trial:hover .htb-tooltip,.htb-trial:focus .htb-tooltip{display:block;}
-    .htb-tt-title{color:var(--gg);font-size:.8rem;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.6px;}
-    .htb-tooltip ul{list-style:none;margin:0;padding:0;}
-    .htb-tooltip li{font-size:.82rem;color:#94a3b8;line-height:1.7;padding:1px 0;}
-    .htb-tt-note{margin-top:10px;font-size:.75rem;color:#475569;border-top:1px solid rgba(255,255,255,.06);padding-top:8px;line-height:1.6;}
-    @media(max-width:600px){
-      .hero-trust-bar{padding:6px 10px;gap:2px;}
-      .htb-divider{display:none;}
-      .htb-item{font-size:.77rem;padding:2px 4px;}
-      .htb-tooltip{width:240px;left:0;transform:none;}
-    }
-    /* ── Stats row with icons ───────────────────────────────────── */
-</style>
+  </style>
 </head>
 <body>
 
@@ -319,12 +280,11 @@
       <a href="#demo">Demo</a>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
-      <a href="how-to-use.html">How to use?</a>
-      <a href="blog.html">Blog</a>
+      <a href="how-to-use.html">How to Use?</a>
       <a href="#faq">FAQ</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
-      <a href="license-info.html">License &amp; Referral</a>
+      <a href="license-info.html">License Status</a>
       <a href="#pricing" class="nav-cta">Get Access</a>
     </nav>
     <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu">
@@ -337,54 +297,20 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-trust-bar">
-    <div class="htb-item">
-      <svg width="16" height="16" viewBox="0 0 36 36" fill="none" style="flex-shrink:0"><text y="28" font-size="30">🇮🇳</text></svg>
-      <span> 🇮🇳 India's #1 AI Interview Assistant</span>
-    </div>
-    <div class="htb-divider"></div>
-    <div class="htb-item htb-trial" tabindex="0" role="button" aria-label="Free trial details">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <span><strong>20-Min Free Trial</strong> - No card needed</span>
-      <div class="htb-tooltip">
-        <div class="htb-tt-title">What you get for free:</div>
-        <ul>
-          <li>✓ 20 minutes of real AI time</li>
-          <li>✓ All features fully unlocked</li>
-          <li>✓ Just verify your email — nothing else</li>
-          <li>✓ No credit card, no commitment</li>
-          <li>✓ Trial is per device — one fair shot per user</li>
-        </ul>
-        <div class="htb-tt-note">Start the trial from inside the app on first launch.</div>
-      </div>
-    </div>
-    <div class="htb-divider"></div>
-    <div class="htb-item">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-      <span>Plans from ₹399</span>
-    </div>
-  </div>
+  <div class="badge">🇮🇳 India's #1 AI Interview Answers Generator &nbsp;·&nbsp; Plans from ₹399 &nbsp;·&nbsp; 10-Min Free Trial</div>
   <div class="glitch-wrap">
     <h1 class="glitch" data-text="The AI Only You Can See">The AI Only You Can See</h1>
   </div>
   <p class="hero-sub"><span id="tt"></span><span class="typing-cursor"></span></p>
   <div class="pills">
-    <div class="pill">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-   149+ early users</div>
+    <div class="pill"><div class="dot"></div>🇮🇳 Join 160+ early users</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg>Zoom</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#5059C9"/><circle cx="43" cy="20" r="7" fill="#7B83EB"/><rect x="33" y="28" width="22" height="18" rx="4.5" fill="#7B83EB"/><circle cx="24" cy="20" r="10" fill="white"/><rect x="10" y="31" width="28" height="20" rx="5.5" fill="white"/></svg>Teams</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="white"/><path d="M8 22C8 18.7 10.7 16 14 16H27V32H8V22Z" fill="#00832D"/><path d="M27 16H38C41.3 16 44 18.7 44 22V32H27V16Z" fill="#0066DA"/><path d="M8 32H27V48H14C10.7 48 8 45.3 8 42V32Z" fill="#E94235"/><path d="M27 32H44V42C44 45.3 41.3 48 38 48H27V32Z" fill="#00AC47"/><path d="M44 26L56 20V44L44 38V26Z" fill="#00832D"/><rect x="25" y="14" width="4" height="36" fill="white"/><rect x="6" y="30" width="40" height="4" fill="white"/></svg>Google Meet</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#2EC866"/><path d="M21 16V48M21 32H43M43 16V48" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>HackerRank</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#1B1F36"/><path d="M22 20L10 32L22 44" stroke="#FF6B35" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 20L54 32L42 44" stroke="#FF6B35" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M37 14L27 50" stroke="#FF6B35" stroke-width="6" stroke-linecap="round"/></svg>CoderPad</div>
-    <div class="pill">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-    Hidden from all screen recorders</div>
-    <div class="pill">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
-    Win 10/11
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gg);margin-left:2px;"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-    macOS</div>
+    <div class="pill"><div class="dot"></div>Hidden from all screen recorders</div>
+    <div class="pill"><div class="dot"></div>Windows 10 &amp; 11 &nbsp;·&nbsp; macOS</div>
   </div>
   <div class="cta-group">
     <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from ₹399</a>
@@ -397,20 +323,18 @@
       Download for Mac
     </a>
   </div>
-  <p class="hero-note" style="line-height:1.7;">Plans from <strong style="color:var(--gg)">₹399</strong> &nbsp;·&nbsp; 20-min free trial, no card &nbsp;·&nbsp; Windows &amp; macOS</p>
+  <p class="hero-note" style="line-height:1.7;">Plans from <strong style="color:var(--gg)">₹399</strong> &nbsp;·&nbsp; 10-min free trial, no card &nbsp;·&nbsp; Windows &amp; macOS</p>
 </section>
 
-<!-- DEMO (moved up - users see proof before reading features) -->
-<section id="demo" class="reveal">
-  <div class="sh"><h2>See CloakAI in Action</h2><p>Watch it stay completely invisible while delivering instant answers. This is what you see. The interviewer sees nothing.</p></div>
-  <div class="demo-wrap">
-    <div class="demo-vid">
-      <iframe src="https://www.youtube.com/embed/eMxxfDCACKk?si=2Y_29Tx7D4Q-Dwt7" title="CloakAI Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-    <div class="demo-cap"><span>Highlights:</span> Transparent overlay · Ctrl+Shift+H toggle · Auto-listens · Instant AI responses · Zero screenshare visibility</div>
-    <div style="margin-top:22px;text-align:center;"><a href="#pricing" class="btn">Get Access Now</a></div>
-  </div>
-</section>
+<!-- TRUST -->
+<div class="trust-bar reveal">
+  <div class="trust-item"><div class="trust-num">160+</div><div class="trust-label">Users</div></div>
+  <div class="trust-item"><div class="trust-num">1,000+</div><div class="trust-label">Interviews</div></div>
+  <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Early Rating</div></div>
+  <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
+  <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
+  <div class="trust-item"><div class="trust-num">24h</div><div class="trust-label">Support Response</div></div>
+</div>
 
 <!-- COMPANY LOGOS -->
 <div class="company-strip">
@@ -429,6 +353,18 @@
   </div>
 </div>
 
+<!-- DEMO (moved up - users see proof before reading features) -->
+<section id="demo" class="reveal">
+  <div class="sh"><h2>See CloakAI in Action</h2><p>Watch it stay completely invisible while delivering instant answers. This is what you see. The interviewer sees nothing.</p></div>
+  <div class="demo-wrap">
+    <div class="demo-vid">
+      <iframe src="https://www.youtube.com/embed/eMxxfDCACKk?si=2Y_29Tx7D4Q-Dwt7" title="CloakAI Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="demo-cap"><span>Highlights:</span> Transparent overlay · Ctrl+Shift+H toggle · Auto-listens · Instant AI responses · Zero screenshare visibility</div>
+    <div style="margin-top:22px;text-align:center;"><a href="#pricing" class="btn">Get Access Now</a></div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section class="reveal">
   <div class="sh"><h2>Up and Running in 3 Minutes</h2><p>From payment to active overlay, faster than a cup of chai.</p></div>
@@ -440,20 +376,9 @@
   </div>
 </section>
 
-<!-- STATS -->
-<!-- TRUST -->
-<div class="trust-bar reveal">
-  <div class="trust-item"><div class="trust-num">149+</div><div class="trust-label">Users</div></div>
-  <div class="trust-item"><div class="trust-num">1,000+</div><div class="trust-label">Interviews</div></div>
-  <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Early Rating</div></div>
-  <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
-  <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
-  <div class="trust-item"><div class="trust-num">24h</div><div class="trust-label">Support Response</div></div>
-</div>
-
 <!-- FEATURES -->
 <section id="features" class="reveal">
-  <div class="sh"><h2>Features Other AI Tools Don't Have<br><small style='font-size:.75rem;font-weight:600;color:var(--gg);letter-spacing:.5px;text-transform:uppercase;'>Built after talking to 200+ real candidates</small></h2><p>CloakAI is built for the reality of modern interviews, not just the theory of them.</p></div>
+  <div class="sh"><h2>Features Your Competition Doesn't Have</h2><p>CloakAI is built for the reality of modern interviews, not just the theory of them.</p></div>
   <div class="grid-3">
     <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">💾</div><h3>Full Interview Transcript Saved</h3><p>Every question and every answer from your session is automatically stored. Download the complete session log with one click and review what worked.</p></div>
     <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">🖥</div><h3>Screen Scan and Analyse</h3><p>Screenshot your screen and instantly ask CloakAI what's on it. Works on coding challenges shown inside shared documents or any on-screen content.</p></div>
@@ -470,14 +395,14 @@
 <section id="pricing" class="reveal">
   <div style="text-align:center;margin-bottom:28px;">
     <div style="display:inline-block;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.2);border-radius:12px;padding:12px 24px;font-size:.87rem;color:#64748B;line-height:1.7;">
-      New to CloakAI? Your first launch includes a <strong style="color:#34D399;">20-minute free trial</strong> (counted as active AI time). No card needed.
+      New to CloakAI? Your first launch includes a <strong style="color:#34D399;">10-minute free trial</strong> (counted as active AI time). No card needed.
     </div>
   </div>
   <div class="sh"><h2>Pay Only for AI Time You Actually Use</h2><p>Hours count down only when CloakAI is open. Close the app, timer pauses. No calendar expiry.</p></div>
   <div style="text-align:center;margin-bottom:28px;">
     <div style="display:inline-block;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 20px;font-size:.82rem;color:#64748B;line-height:1.65;">
       Competitors charge <span style="color:#EF4444;text-decoration:line-through;font-weight:600;">₹400/hr+</span> for similar AI time &nbsp;&middot;&nbsp;
-      <strong style="color:#34D399;">CloakAI now available at ₹83/hr</strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
+      <strong style="color:#34D399;">CloakAI offers at ₹83/hr</strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
     </div>
   </div>
 
@@ -513,13 +438,13 @@
     </div>
 
     <div class="pc pop">
-      <div class="pc-badge-pop">MOST USERS BUY</div>
+      <div class="pc-badge-pop">MOST USERS BUY PRO</div>
       <h3>Pro</h3>
       <div class="pc-old">₹2,499 <span class="pc-discount">40% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>1,499</div>
       <div class="pc-rate">₹125 per AI hour</div>
       <div class="pc-per">12 hours of AI time</div>
-      <div class="pc-rounds">Enough for 12 full interview rounds</div>
+      <div class="pc-rounds">Enough for 8 full interview rounds</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
         <li>Unlimited interview sessions</li>
@@ -628,7 +553,7 @@
   <h2 style="color:#1E293B;font-size:1.1rem;font-weight:700;margin-bottom:12px;">The AI Interview Tool That Answers in Real Time</h2>
   <p style="color:#1E293B;font-size:.85rem;line-height:1.8;margin-bottom:10px;">CloakAI is the most affordable <strong style="color:#1E3A2E;">AI interview answers generator</strong> available in India. Unlike Final Round AI or other interview AI apps that charge per session, CloakAI charges only for the hours you actively use. Close the app and the timer pauses. Your hours never expire.</p>
   <p style="color:#1E293B;font-size:.85rem;line-height:1.8;margin-bottom:10px;">As a <strong style="color:#1E3A2E;">live interview AI</strong>, CloakAI listens to the interviewer in real time and generates tailored answers within 2 seconds. It works on Zoom, Google Meet, Microsoft Teams, and any screenshare software. The overlay is completely invisible - not even the Windows Snipping Tool can capture it.</p>
-  <p style="color:#1E293B;font-size:.85rem;line-height:1.8;">Searching for a <strong style="color:#1E3A2E;">free interview answer AI</strong> or a <strong style="color:#1E3A2E;">real-time AI interview helper</strong>? CloakAI includes a 20-minute free trial with no card required. It is the best <strong style="color:#1E3A2E;">interview AI app</strong> for Windows users in India, covering technical interviews, behavioural questions, system design, SQL, and coding challenges.</p>
+  <p style="color:#1E293B;font-size:.85rem;line-height:1.8;">Searching for a <strong style="color:#1E3A2E;">free interview answer AI</strong> or a <strong style="color:#1E3A2E;">real-time AI interview helper</strong>? CloakAI includes a 10-minute free trial with no card required. It is the best <strong style="color:#1E3A2E;">interview AI app</strong> for Windows users in India, covering technical interviews, behavioural questions, system design, SQL, and coding challenges.</p>
 </div>
 
 <footer>
@@ -637,8 +562,7 @@
   <div class="footer-links">
     <a href="about.html">About</a>
     <a href="how-to-use.html">How to Use?</a>
-    <a href="blog.html">Blog</a>
-    <a href="license-info.html">License &amp; Referral</a>
+    <a href="license-info.html">License Status</a>
     <a href="terms.html">Terms &amp; Conditions</a>
     <a href="privacy.html">Privacy Policy</a>
     <a href="refund.html">Refund Policy</a>

@@ -160,75 +160,10 @@
       .key-box{font-size:1.05rem;letter-spacing:1px;padding:13px 8px;}
       .btn-copy{font-size:.9rem;}
     }
-      header{background:rgba(8,22,12,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,204,113,.22);box-shadow:0 2px 20px rgba(46,204,113,.06);position:relative;}
-    .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
-    .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px rgba(46,204,113,.5);display:flex;align-items:center;gap:8px;text-decoration:none;}
-    .logo svg{width:28px;height:28px;fill:var(--gg);}
-    nav a{color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}
-    nav a:hover{color:var(--gg);}
-    .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
-    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
-    .ham span{display:block;width:22px;height:2px;background:var(--gg);border-radius:2px;transition:transform .28s,opacity .28s;}
-    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    @media(max-width:860px){
-      .ham{display:flex;}
-      #mnav{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;gap:2px;z-index:1000;}
-      #mnav.open{display:flex;}
-      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
-      #mnav a:last-child{border-bottom:none;}
-      .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:11px 16px!important;}
-      .hi,.header-inner{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}
-    }
-  
-    /* ── Shared header nav ── */
-    header{background:rgba(8,22,12,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,204,113,.22);box-shadow:0 2px 20px rgba(46,204,113,.06);position:relative;}
-    .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
-    .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px rgba(46,204,113,.5);display:flex;align-items:center;gap:8px;text-decoration:none;}
-    .logo svg{width:28px;height:28px;fill:var(--gg);}
-    nav a{color:#e0e0e0;text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}
-    nav a:hover{color:var(--gg);}
-    .nav-cta{background:linear-gradient(45deg,#0f3d2e,#2ecc71);color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid #00ff88;font-weight:700!important;}
-    .ham{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
-    .ham span{display:block;width:22px;height:2px;background:#00ff88;border-radius:2px;transition:transform .28s,opacity .28s;}
-    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .ham.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    @media(max-width:860px){
-      .ham{display:flex;}
-      #mnav{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,10,7,.97);border-bottom:1px solid rgba(46,204,113,.12);backdrop-filter:blur(16px);padding:12px 16px 18px;flex-direction:column;gap:2px;z-index:1000;}
-      #mnav.open{display:flex;}
-      #mnav a{margin:0;padding:11px 14px;border-radius:9px;font-size:.94rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.04);}
-      #mnav a:last-child{border-bottom:none;}
-      .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:11px 16px!important;}
-      .hi{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}
-    }
   </style>
 </head>
 <body>
-<header>
-<div class="hi">
-  <a href="index.html" class="logo">
-    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-    CloakAI
-  </a>
-  <nav id="mnav">
-      <a href="index.html#demo">Demo</a>
-      <a href="index.html#features">Features</a>
-      <a href="index.html#pricing">Pricing</a>
-      <a href="how-to-use.html">How to use?</a>
-      <a href="blog.html">Blog</a>
-      <a href="index.html#faq">FAQ</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="license-info.html">License &amp; Referral</a>
-      <a href="index.html#pricing" class="nav-cta">Get Access</a>
-    </nav>
-  <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
-</div>
-</header>
-<div class="bg-anim"></div>
+
 <div class="card" id="card">
   <div class="logo">
     <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
@@ -238,34 +173,16 @@
 </div>
 
 <footer>
-  <div style="font-size:1.3rem;font-weight:900;color:var(--gg);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gg)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-    CloakAI
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="how-to-use.html">How to use?</a>
+    <a href="license-info.html">License Status</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
   </div>
-  <p style="color:#444;font-size:.8rem;margin-bottom:14px;">India's invisible AI interview assistant. 20-min free trial. No card.</p>
-  <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
-    <a href="index.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Home</a>
-    <a href="blog.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Blog</a>
-    <a href="about.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">About</a>
-    <a href="how-to-use.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">How to use?</a>
-    <a href="license-info.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">License &amp; Referral</a>
-    <a href="index.html#pricing" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Pricing</a>
-    <a href="contact.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Contact</a>
-    <a href="terms.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Terms</a>
-    <a href="privacy.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Privacy</a>
-    <a href="refund.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Refund</a>
-    <a href="dmca.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">DMCA</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Windows</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.zip" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Mac</a>
-    <a href="mailto:support@cloakai.in" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">support@cloakai.in</a>
-  </div>
-  <div style="color:#333;font-size:.76rem;line-height:1.7;">
-    © 2025 CloakAI. All rights reserved.&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="terms.html" style="color:#333;text-decoration:none;">Terms</a>&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="privacy.html" style="color:#333;text-decoration:none;">Privacy</a>&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="refund.html" style="color:#333;text-decoration:none;">Refund Policy</a>
-  </div>
-  <div style="color:#2a2a2a;font-size:.72rem;margin-top:10px;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.6;">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
+  <div class="footer-copy">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
 </footer>
 
 <script>
@@ -324,11 +241,11 @@
 
     '<div class="steps">' +
       '<div class="step"><div class="step-num">1</div>' +
-        '<div class="step-text">Download and install CloakAI from <strong>cloakai.in</strong> on Windows or macOS.</div></div>' +
+        '<div class="step-text">Download and open <strong>CloakAI.exe</strong> on your Windows machine.</div></div>' +
       '<div class="step"><div class="step-num">2</div>' +
         '<div class="step-text">Paste the key above when prompted and click <strong>Activate</strong>.</div></div>' +
       '<div class="step"><div class="step-num">3</div>' +
-        '<div class="step-text">Press <strong>Ctrl+Shift+H</strong> to hide or show the CloakAI overlay during your interview.</div></div>' +
+        '<div class="step-text">Press <strong>F8</strong> to show or hide the overlay during your interview.</div></div>' +
     '</div>' +
 
     '<div class="email-note">' +
@@ -341,7 +258,7 @@
     'Questions? <a href="mailto:support@cloakai.in">support@cloakai.in</a></small>' +
 
     '<a href="index.html" class="btn-home">Back to Home</a>' +
-    '<a href="license-info.html?key=' + encodeURIComponent(key) + '" class="btn-sec">View License &amp; Referral</a>';
+    '<a href="license-info.html?key=' + encodeURIComponent(key) + '" class="btn-sec">View License Status</a>';
 
   // ── Copy key ──────────────────────────────────────────────────────────────
   window.copyKey = function () {
@@ -379,11 +296,6 @@
   };
 
 })();
-</script>
-<script>
-  function toggleNav(){var b=document.getElementById('ham-btn'),n=document.getElementById('mnav');b.classList.toggle('open');n.classList.toggle('open');}
-  document.addEventListener('click',function(e){var n=document.getElementById('mnav'),b=document.getElementById('ham-btn');if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){n.classList.remove('open');b.classList.remove('open');}});
-  document.querySelectorAll('#mnav a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('mnav').classList.remove('open');document.getElementById('ham-btn').classList.remove('open');});});
 </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
     body{background:var(--bg);color:var(--tc);min-height:100vh;overflow-x:hidden;}
     .bg-anim{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 50% 30%,rgba(15,61,46,.35) 0%,transparent 60%),linear-gradient(0deg,var(--bg) 0%,#0a1410 100%);}
-    header{background:rgba(8,22,12,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,204,113,.22);box-shadow:0 2px 20px rgba(46,204,113,.06);position:relative;}
+    header{background:rgba(5,10,7,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(46,204,113,.12);}
     .hi{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;max-width:1200px;margin:0 auto;}
     .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:8px;text-decoration:none;}
     .logo svg{width:30px;height:30px;fill:var(--gg);}
@@ -76,15 +76,13 @@
 <header><div class="hi">
   <a href="index.html" class="logo"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>CloakAI</a>
       <nav id="mnav">
-      <a href="index.html#demo">Demo</a>
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
       <a href="how-to-use.html">How to use?</a>
-      <a href="blog.html">Blog</a>
       <a href="index.html#faq">FAQ</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
-      <a href="license-info.html">License &amp; Referral</a>
+      <a href="license-info.html">License Status</a>
       <a href="index.html#pricing" class="nav-cta">Get Access</a>
     </nav>
     <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
@@ -155,38 +153,39 @@
 </div>
 
 <footer>
-  <div style="font-size:1.3rem;font-weight:900;color:var(--gg);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--gg)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-    CloakAI
+  <div class="footer-logo" style="font-size:1.2rem;font-weight:800;color:var(--gg);margin-bottom:8px;">CloakAI</div>
+  <div class="footer-links" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:12px 0;">
+    <a href="index.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Home</a>
+    <a href="how-to-use.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">How to use?</a>
+    <a href="license-info.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">License Status</a>
+    <a href="about.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">About</a>
+    <a href="terms.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Terms</a>
+    <a href="privacy.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Privacy</a>
+    <a href="refund.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Refund</a>
+    <a href="dmca.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">DMCA</a>
+    <a href="contact.html" style="color:#444;text-decoration:none;font-size:.82rem;transition:.2s;">Contact</a>
   </div>
-  <p style="color:#444;font-size:.8rem;margin-bottom:14px;">India's invisible AI interview assistant. 20-min free trial. No card.</p>
-  <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;">
-    <a href="index.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Home</a>
-    <a href="blog.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Blog</a>
-    <a href="about.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">About</a>
-    <a href="how-to-use.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">How to use?</a>
-    <a href="license-info.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">License &amp; Referral</a>
-    <a href="index.html#pricing" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Pricing</a>
-    <a href="contact.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Contact</a>
-    <a href="terms.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Terms</a>
-    <a href="privacy.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Privacy</a>
-    <a href="refund.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Refund</a>
-    <a href="dmca.html" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">DMCA</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Windows</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.zip" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">Download Mac</a>
-    <a href="mailto:support@cloakai.in" style="color:#555;text-decoration:none;font-size:.82rem;transition:.2s;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#555'">support@cloakai.in</a>
-  </div>
-  <div style="color:#333;font-size:.76rem;line-height:1.7;">
-    © 2025 CloakAI. All rights reserved.&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="terms.html" style="color:#333;text-decoration:none;">Terms</a>&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="privacy.html" style="color:#333;text-decoration:none;">Privacy</a>&nbsp;&nbsp;·&nbsp;&nbsp;
-    <a href="refund.html" style="color:#333;text-decoration:none;">Refund Policy</a>
-  </div>
-  <div style="color:#2a2a2a;font-size:.72rem;margin-top:10px;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.6;">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
+  <div class="fc" style="color:#2a2a2a;font-size:.76rem;margin-top:10px;line-height:1.7;">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
 </footer>
 <script>
-  function toggleNav(){var b=document.getElementById('ham-btn'),n=document.getElementById('mnav');b.classList.toggle('open');n.classList.toggle('open');}
-  document.addEventListener('click',function(e){var n=document.getElementById('mnav'),b=document.getElementById('ham-btn');if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){n.classList.remove('open');b.classList.remove('open');}});
-  document.querySelectorAll('#mnav a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('mnav').classList.remove('open');document.getElementById('ham-btn').classList.remove('open');});});
-  </script>
+  function toggleNav(){
+    var b=document.getElementById('ham-btn');
+    var n=document.getElementById('mnav');
+    b.classList.toggle('open');
+    n.classList.toggle('open');
+  }
+  document.addEventListener('click',function(e){
+    var n=document.getElementById('mnav');
+    var b=document.getElementById('ham-btn');
+    if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){
+      n.classList.remove('open');b.classList.remove('open');
+    }
+  });
+  document.querySelectorAll('#mnav a').forEach(function(a){
+    a.addEventListener('click',function(){
+      document.getElementById('mnav').classList.remove('open');
+      document.getElementById('ham-btn').classList.remove('open');
+    });
+  });
+</script>
 </body></html>
