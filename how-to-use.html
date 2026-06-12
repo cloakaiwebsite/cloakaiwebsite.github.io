@@ -4,11 +4,13 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E78JBBWJQW');</script>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="theme.css">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="description" content="How to use CloakAI — simple step-by-step guide for the invisible AI interview assistant.">
   <title>How to Use CloakAI</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
+    /* Page-specific CSS variables */
     :root{
       --g:#00e676;--g2:#00c853;--g3:#69f0ae;--glow:rgba(0,230,118,.22);
       --bg:#050a07;--bg2:rgba(0,0,0,.35);
@@ -16,9 +18,7 @@
       --bd:rgba(0,230,118,.14);--bd2:rgba(0,230,118,.32);
       --red:#ff5252;--blue:#40c4ff;--amber:#ffd740;--purple:#c084fc;
     }
-
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
 
     body{
       background:var(--bg);
@@ -36,23 +36,14 @@
     p,li{font-size:.92rem;line-height:1.75;}
 
     /* ── Header ─────────────────────────────────────────── */
-    header{
-      position:sticky;top:0;z-index:900;
-      background:rgba(5,10,7,.97);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid var(--bd);
-    }
+    
     .hdr-inner{
       max-width:1100px;margin:0 auto;
       display:flex;align-items:center;justify-content:space-between;
       padding:0 16px;height:54px;
     }
-    .logo{
-      font-size:1.3rem;font-weight:900;color:var(--g);
-      text-decoration:none;display:flex;align-items:center;gap:7px;
-      flex-shrink:0;
-    }
-    .logo svg{width:22px;height:22px;fill:var(--g);}
+    
+    
 
     /* Desktop nav */
     .nav-links{display:flex;align-items:center;gap:4px;}
@@ -72,7 +63,7 @@
       background:rgba(0,0,0,.28);
       border-bottom:1px solid var(--bd);
       padding:0;
-      position:sticky;top:54px;z-index:800;
+      position:sticky;top:0;z-index:800;
       backdrop-filter:blur(10px);
       overflow-x:auto;
       -webkit-overflow-scrolling:touch;
@@ -87,7 +78,7 @@
     .qnav a{
       font-size:.78rem;color:var(--t3);text-decoration:none;
       padding:5px 13px;border-radius:14px;border:1px solid transparent;
-      transition:.15s;white-space:nowrap;flex-shrink:0;
+      transition:.18s;white-space:nowrap;
     }
     .qnav a:hover,.qnav a.active{
       color:var(--g);border-color:var(--bd2);background:rgba(0,230,118,.06);
@@ -382,16 +373,10 @@
     .btn-s:hover{background:rgba(0,230,118,.07);}
 
     /* ── Footer ──────────────────────────────────────────── */
-    footer{
-      background:rgba(0,0,0,.8);padding:26px 16px;
-      border-top:1px solid #181818;text-align:center;
-    }
-    .footer-links{
-      display:flex;justify-content:center;gap:14px;
-      flex-wrap:wrap;margin:11px 0;
-    }
-    .footer-links a{color:#555;text-decoration:none;font-size:.8rem;}
-    .footer-links a:hover{color:var(--g);}
+    
+    
+    
+    
 
     /* ── Reveal ──────────────────────────────────────────── */
     .reveal{opacity:0;transform:translateY(20px);transition:all .52s cubic-bezier(.5,0,0,1);}
@@ -448,19 +433,42 @@
 </head>
 <body>
 
+<div class="cursor-glow" id="cg"></div>
+<div class="bg-anim"><div class="fog"></div></div>
+<div id="particles"></div>
+<!-- ═══════════════════════════════════════════════════════
+     NEWS BAR — set NEWSBAR_ENABLED = true to show
+                set NEWSBAR_ENABLED = false to hide
+     Edit the .news-bar-text span to change the message.
+     ═══════════════════════════════════════════════════════ -->
+<script>var NEWSBAR_ENABLED = true;</script>
+<div id="news-bar">
+  <div class="news-bar-inner">
+    <span class="news-bar-text">🔥 Launch offer ending soon — prices increase from Monday, 15th June.</span>
+    <a href="index.html#pricing" class="news-bar-cta">Get Access →</a>
+    <button class="news-bar-close" id="news-bar-close" aria-label="Dismiss">×</button>
+  </div>
+</div>
+<script>(function(){if(!NEWSBAR_ENABLED)document.getElementById('news-bar').style.display='none';})();</script>
 <header>
-  <div class="hdr-inner">
+  <div class="header-inner">
     <a href="index.html" class="logo">
-      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+      <img src="logo-email.png" width="30" height="30" alt="CloakAI" style="border-radius:5px;">
       CloakAI
     </a>
-    <nav class="nav-links">
+    <nav id="mnav">
+      <a href="index.html#demo">Demo</a>
       <a href="index.html#features">Features</a>
       <a href="index.html#pricing">Pricing</a>
-      <a href="how-to-use.html" style="color:var(--g)">How to Use</a>
+      <a href="how-to-use.html">How to use?</a>
+      <a href="blog.html">Blog</a>
       <a href="index.html#faq">FAQ</a>
-      <a href="index.html#pricing" class="cta">Get Access from ₹399</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="license-info.html">License &amp; Referral</a>
+      <a href="index.html#pricing" class="nav-cta">Get Access</a>
     </nav>
+    <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </header>
 
@@ -876,17 +884,28 @@ Reduced API latency by 40% with Redis caching.</p>
 </div>
 
 <footer>
-  <div style="font-size:1.1rem;font-weight:900;color:var(--g);margin-bottom:7px;">CloakAI</div>
+  <div class="footer-logo">
+    <img src="logo-email.png" width="22" height="22" alt="CloakAI" style="border-radius:4px;">
+    CloakAI
+  </div>
+  <p class="footer-tagline">The AI that only you can see.</p>
   <div class="footer-links">
     <a href="index.html">Home</a>
-    <a href="index.html#features">Features</a>
+    <a href="blog.html">Blog</a>
+    <a href="about.html">About</a>
+    <a href="how-to-use.html">How to use?</a>
+    <a href="license-info.html">License &amp; Referral</a>
     <a href="index.html#pricing">Pricing</a>
-    <a href="how-to-use.html">How to Use</a>
-    <a href="license-info.html">License Status</a>
     <a href="contact.html">Contact</a>
-    <a href="mailto:support@cloakai.in">support@cloakai.in</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="refund.html">Refund</a>
+    <a href="dmca.html">DMCA</a>
+    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe">Download Windows</a>
+    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.zip">Download Mac</a>
   </div>
-  <div style="color:#333;font-size:.76rem;">© 2025 CloakAI. All rights reserved.</div>
+  <div class="footer-copy">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
+  <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
 
 <script>
@@ -921,5 +940,6 @@ Reduced API latency by 40% with Redis caching.</p>
     });
   });
 </script>
+<script src="layout.js"></script>
 </body>
 </html>

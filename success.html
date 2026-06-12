@@ -12,14 +12,12 @@
   </script>
   
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="theme.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>CloakAI - License Ready</title>
   <style>
-    :root{--pg:#0f3d2e;--ag:#2ecc71;--gg:#00ff88;--bg:#050a07;--tc:#e0e0e0;}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-
-    body{
+body{
       background:var(--bg);color:var(--tc);min-height:100vh;
       display:flex;flex-direction:column;align-items:center;
       justify-content:flex-start;padding:16px 16px 40px;
@@ -39,11 +37,8 @@
       height:2px;background:linear-gradient(90deg,transparent,#34D399,transparent);
     }
 
-    .logo{
-      font-size:1.2rem;font-weight:800;color:var(--gg);letter-spacing:.5px;
-      margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:8px;
-    }
-    .logo svg{width:22px;height:22px;fill:var(--gg);}
+    
+    
 
     .check-circle{
       width:58px;height:58px;border-radius:50%;
@@ -143,16 +138,11 @@
     .error-card{border-color:rgba(239,68,68,.25);}
 
     /* Footer */
-    footer{
-      width:100%;max-width:520px;margin-top:20px;
-      text-align:center;padding-bottom:20px;
-    }
-    .footer-links{
-      display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:8px;
-    }
-    .footer-links a{color:#222;text-decoration:none;font-size:.78rem;transition:.2s;}
-    .footer-links a:hover{color:var(--gg);}
-    .footer-copy{color:#1a1a1a;font-size:.72rem;}
+    
+    
+    
+    
+    
 
     @media(max-width:400px){
       .card{padding:22px 14px;}
@@ -164,6 +154,44 @@
 </head>
 <body>
 
+<div class="cursor-glow" id="cg"></div>
+<div class="bg-anim"><div class="fog"></div></div>
+<div id="particles"></div>
+<!-- ═══════════════════════════════════════════════════════
+     NEWS BAR — set NEWSBAR_ENABLED = true to show
+                set NEWSBAR_ENABLED = false to hide
+     Edit the .news-bar-text span to change the message.
+     ═══════════════════════════════════════════════════════ -->
+<script>var NEWSBAR_ENABLED = true;</script>
+<div id="news-bar">
+  <div class="news-bar-inner">
+    <span class="news-bar-text">🔥 Launch offer ending soon — prices increase from Monday, 15th June.</span>
+    <a href="index.html#pricing" class="news-bar-cta">Get Access →</a>
+    <button class="news-bar-close" id="news-bar-close" aria-label="Dismiss">×</button>
+  </div>
+</div>
+<script>(function(){if(!NEWSBAR_ENABLED)document.getElementById('news-bar').style.display='none';})();</script>
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="logo-email.png" width="30" height="30" alt="CloakAI" style="border-radius:5px;">
+      CloakAI
+    </a>
+    <nav id="mnav">
+      <a href="index.html#demo">Demo</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="how-to-use.html">How to use?</a>
+      <a href="blog.html">Blog</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="license-info.html">License &amp; Referral</a>
+      <a href="index.html#pricing" class="nav-cta">Get Access</a>
+    </nav>
+    <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
 <div class="card" id="card">
   <div class="logo">
     <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
@@ -173,16 +201,28 @@
 </div>
 
 <footer>
+  <div class="footer-logo">
+    <img src="logo-email.png" width="22" height="22" alt="CloakAI" style="border-radius:4px;">
+    CloakAI
+  </div>
+  <p class="footer-tagline">The AI that only you can see.</p>
   <div class="footer-links">
     <a href="index.html">Home</a>
-    <a href="index.html#pricing">Pricing</a>
+    <a href="blog.html">Blog</a>
+    <a href="about.html">About</a>
     <a href="how-to-use.html">How to use?</a>
-    <a href="license-info.html">License Status</a>
+    <a href="license-info.html">License &amp; Referral</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="contact.html">Contact</a>
     <a href="terms.html">Terms</a>
     <a href="privacy.html">Privacy</a>
-    <a href="contact.html">Contact</a>
+    <a href="refund.html">Refund</a>
+    <a href="dmca.html">DMCA</a>
+    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe">Download Windows</a>
+    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.zip">Download Mac</a>
   </div>
   <div class="footer-copy">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
+  <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
 
 <script>
@@ -297,5 +337,6 @@
 
 })();
 </script>
+<script src="layout.js"></script>
 </body>
 </html>
