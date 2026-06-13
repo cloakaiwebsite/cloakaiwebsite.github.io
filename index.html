@@ -146,7 +146,8 @@
     .pc-feats{flex:1;list-style:none;margin:14px 0 22px;text-align:left;}
     .pc-feats li{font-size:.83rem;color:#aaa;padding:4px 0;display:flex;align-items:center;gap:8px;}
     .pc-feats li::before{content:'✓';color:var(--gg);font-weight:700;flex-shrink:0;}
-    .btn-buy{margin-top:auto;width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(46,204,113,.2);}
+    .btn-buy{margin-top:auto;width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(46,204,113,.2);position:relative;overflow:hidden;}
+    .btn-buy::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
     .btn-buy:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(46,204,113,.35);}
     .pricing-note{text-align:center;margin-top:24px;color:#444;font-size:.8rem;line-height:1.8;}
     .pricing-note a{color:var(--ag);text-decoration:underline;}
@@ -175,13 +176,7 @@
     .faq-item.open .faq-q{color:var(--gg);background:rgba(46,204,113,.06);}
     .faq-item.open .ic{transform:rotate(45deg);}
     /* Footer */
-    
-    
-    
-    
-    
-    
-    
+
     /* Reveal */
     .reveal{opacity:0;transform:translateY(38px);transition:all .7s cubic-bezier(.5,0,0,1);}
     .reveal.on{opacity:1;transform:translateY(0);}
@@ -280,7 +275,7 @@
 <script>var NEWSBAR_ENABLED = true;</script>
 <div id="news-bar">
   <div class="news-bar-inner">
-    <span class="news-bar-text">🔥 Launch offer ending soon — prices increase from Monday, 15th June.</span>
+    <span class="news-bar-text">🔥 Prices increase from Monday, 15th June.</span>
     <a href="index.html#pricing" class="news-bar-cta">Get Access →</a>
     <button class="news-bar-close" id="news-bar-close" aria-label="Dismiss">×</button>
   </div>
