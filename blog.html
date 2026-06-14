@@ -1,140 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date()); gtag('config', 'G-E78JBBWJQW');
-  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0P7T643Q4F"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0P7T643Q4F');</script>
 
   <meta charset="UTF-8">
   <link rel="stylesheet" href="theme.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0f3d2e">
-  <title>Blog – CloakAI | AI Interview Tips & Guides</title>
-  <meta name="description" content="Interview tips, AI tools, system design guides, and behavioral question frameworks from the CloakAI team. Written for Indian tech job seekers.">
+  <title>Blog – CloakAI | AI Interview Tips &amp; Guides</title>
+  <meta name="description" content="AI interview guides, tool comparisons, and tips from the CloakAI team. Learn which AI tools help most during live interviews, how AI powered interview assistants work, and how to use them effectively.">
   <link rel="canonical" href="https://cloakai.in/blog.html">
-  <link rel="icon" href="favicon.ico">
-  <meta property="og:title" content="CloakAI Blog – Interview Tips & AI Guides">
-  <meta property="og:description" content="Real interview strategies for Indian developers. System design, DSA, behavioral, and how to use AI tools effectively.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon-180.png">
+  <meta property="og:title" content="CloakAI Blog – AI Interview Guides &amp; Tool Comparisons">
+  <meta property="og:description" content="Which AI is best for interview? How do AI powered interview assistants work? Honest guides and comparisons from the CloakAI team.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cloakai.in/blog.html">
+  <meta property="og:image" content="https://cloakai.in/og-image.png">
 
   <style>
-/* ── Shared nav + footer (exact homepage match) ── */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @media(max-width:860px){
-      
-      
-      
-      #m
-      
-      
-      
-    }
+    body{background:var(--bg);color:var(--tc);overflow-x:hidden;min-height:100vh;}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
 
-    /* ── Blog page styles ── */
-    .wrap{max-width:1100px;margin:0 auto;padding:60px 20px 80px;}
-    .ph{text-align:center;padding:50px 0 48px;}
-    .ph .tag{display:inline-block;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.3);color:var(--gg);padding:5px 16px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px;letter-spacing:.5px;}
-    .ph h1{font-size:2.6rem;font-weight:900;letter-spacing:-1px;margin-bottom:10px;color:#fff;}
-    .ph p{color:#666;font-size:.92rem;max-width:540px;margin:0 auto;line-height:1.7;}
+    /* Page hero */
+    .blog-page-hero{padding:90px 0 50px;text-align:center;}
+    .blog-page-hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:12px;}
+    .blog-page-hero h1 span{color:var(--ag);}
+    .blog-page-hero p{color:var(--t2);font-size:1rem;max-width:560px;margin:0 auto;line-height:1.7;}
 
-    /* Blog grid */
-    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;margin-bottom:60px;}
-    .blog-card{
-      background:rgba(15,61,46,.1);border:1px solid rgba(46,204,113,.12);
-      border-radius:16px;overflow:hidden;
-      transition:transform .25s,border-color .25s,box-shadow .25s;
-      text-decoration:none;color:inherit;display:flex;flex-direction:column;
-    }
-    .blog-card:hover{transform:translateY(-4px);border-color:rgba(46,204,113,.35);box-shadow:0 12px 36px rgba(0,0,0,.4);}
-    .blog-card-img{
-      height:160px;background:linear-gradient(135deg,#0a1f15,#0f3d2e);
-      display:flex;align-items:center;justify-content:center;font-size:3rem;
-      border-bottom:1px solid rgba(46,204,113,.1);flex-shrink:0;
-    }
-    .blog-card-body{padding:20px 20px 22px;flex:1;display:flex;flex-direction:column;}
-    .blog-meta{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-    .blog-cat{background:rgba(46,204,113,.12);color:var(--gg);font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:10px;letter-spacing:.4px;text-transform:uppercase;}
-    .blog-date{color:#475569;font-size:.75rem;}
-    .blog-card-body h2{font-size:1.05rem;font-weight:700;color:#e2e8f0;margin-bottom:8px;line-height:1.45;}
-    .blog-card-body p{color:#64748b;font-size:.84rem;line-height:1.7;flex:1;}
-    .blog-read{margin-top:14px;color:var(--gg);font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:5px;}
-    .blog-read::after{content:'→';}
+    /* Grid */
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;padding:0 0 80px;}
 
-    /* Coming soon banner */
-    .coming-banner{
-      background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.18);
-      border-radius:12px;padding:20px 24px;text-align:center;margin-bottom:40px;
-    }
-    .coming-banner p{color:#64748b;font-size:.88rem;line-height:1.7;}
-    .coming-banner strong{color:var(--gg);}
+    /* Card */
+    .blog-card{background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;transition:all .2s;display:flex;flex-direction:column;text-decoration:none;color:inherit;}
+    .blog-card:hover{border-color:rgba(46,204,113,.35);transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
+    .blog-card-thumb{background:linear-gradient(135deg,rgba(46,204,113,.08),rgba(46,204,113,.03));height:160px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;border-bottom:1px solid rgba(255,255,255,.05);}
+    .blog-card-body{padding:22px 24px;flex:1;display:flex;flex-direction:column;}
+    .blog-card-cat{font-size:.65rem;font-weight:700;color:var(--ag);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+    .blog-card h2{font-size:1.05rem;font-weight:800;color:#fff;line-height:1.4;margin:0 0 10px;}
+    .blog-card p{font-size:.83rem;color:var(--t2);line-height:1.6;margin:0 0 16px;flex:1;}
+    .blog-card-meta{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--t3);}
+    .blog-card-read{color:var(--ag);font-weight:700;font-size:.78rem;display:flex;align-items:center;gap:4px;}
+    .blog-card-read::after{content:'→';}
 
-    @media(max-width:600px){
-      .ph h1{font-size:2rem;}
+    @media(max-width:640px){
+      .blog-page-hero{padding:70px 0 36px;}
       .blog-grid{grid-template-columns:1fr;}
     }
   </style>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "CloakAI Blog",
-    "url": "https://cloakai.in/blog.html",
-    "description": "Interview tips, AI tools, system design guides, and behavioral question frameworks for Indian tech job seekers.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "CloakAI",
-      "url": "https://cloakai.in",
-      "logo": { "@type": "ImageObject", "url": "https://cloakai.in/logo-email.png" }
-    }
-  }
-  </script>
 </head>
 <body>
-
-
-<div class="cursor-glow" id="cg"></div>
-<div class="bg-anim"><div class="fog"></div></div>
 <div id="particles"></div>
-<!-- ═══════════════════════════════════════════════════════
-     NEWS BAR — set NEWSBAR_ENABLED = true to show
-                set NEWSBAR_ENABLED = false to hide
-     Edit the .news-bar-text span to change the message.
-     ═══════════════════════════════════════════════════════ -->
-<script>var NEWSBAR_ENABLED = false;</script>
-<div id="news-bar">
-  <div class="news-bar-inner">
-    <span class="news-bar-text">🔥 Launch offer ending soon — prices increase from Monday, 15th June.</span>
-    <a href="index.html#pricing" class="news-bar-cta">Get Access →</a>
-    <button class="news-bar-close" id="news-bar-close" aria-label="Dismiss">×</button>
-  </div>
-</div>
-<script>(function(){if(!NEWSBAR_ENABLED)document.getElementById('news-bar').style.display='none';})();</script>
+<div id="cg"></div>
+
 <header>
   <div class="header-inner">
     <a href="index.html" class="logo">
@@ -157,81 +78,96 @@
   </div>
 </header>
 
-<div class="wrap">
-  <div class="ph">
-    <div class="tag">📝 CloakAI Blog</div>
-    <h1>Interview Insights &amp; Tips</h1>
-    <p>Real strategies from candidates who've been through it. System design, DSA, behavioral frameworks, and how to use AI tools in your job search.</p>
+<main>
+  <div class="wrap">
+    <div class="blog-page-hero">
+      <h1>CloakAI <span>Blog</span></h1>
+      <p>Honest guides on AI interview tools, live interview strategies, and how to use AI effectively during your job search.</p>
+    </div>
+
+    <div class="blog-grid">
+
+      <a class="blog-card" href="ai-powered-interview-assistant.html">
+        <div class="blog-card-thumb">🤖</div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Deep Dive</div>
+          <h2>The Complete Guide to AI Powered Interview Assistants in 2026</h2>
+          <p>What is an AI powered interview assistant, how does it work, and why is it invisible to your interviewer? Everything explained step by step.</p>
+          <div class="blog-card-meta">
+            <span>June 15, 2026 · 8 min read</span>
+            <span class="blog-card-read">Read</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="which-ai-is-best-for-interview.html">
+        <div class="blog-card-thumb">🏆</div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Comparison</div>
+          <h2>Which AI is Best for Interview? Complete 2026 Comparison</h2>
+          <p>We compare ChatGPT, Claude, Final Round AI, Yoodli, and CloakAI — and explain which one actually works when the camera is on.</p>
+          <div class="blog-card-meta">
+            <span>June 15, 2026 · 7 min read</span>
+            <span class="blog-card-read">Read</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="which-ai-assistant-is-better.html">
+        <div class="blog-card-thumb">⚡</div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Comparison</div>
+          <h2>Which AI Assistant is Better for Interviews? ChatGPT vs Claude vs CloakAI</h2>
+          <p>General AI assistants vs specialist interview AI — which is actually better when your interview starts?</p>
+          <div class="blog-card-meta">
+            <span>June 15, 2026 · 7 min read</span>
+            <span class="blog-card-read">Read</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="which-ai-interview-assistant-is-better.html">
+        <div class="blog-card-thumb">🔍</div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Honest Review</div>
+          <h2>Which AI Interview Assistant is Better? Final Round AI vs CloakAI vs Yoodli</h2>
+          <p>An honest, feature-by-feature comparison of every major AI interview assistant — including screenshare visibility, pricing, and real-world performance.</p>
+          <div class="blog-card-meta">
+            <span>June 15, 2026 · 7 min read</span>
+            <span class="blog-card-read">Read</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="which-ai-is-good-for-interview.html">
+        <div class="blog-card-thumb">📋</div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Stage-by-Stage Guide</div>
+          <h2>Which AI is Good for Interview? A Stage-by-Stage Guide</h2>
+          <p>The AI that is good for preparation is different from the AI that is good during the live interview. Here is how to use the right tool at each stage.</p>
+          <div class="blog-card-meta">
+            <span>June 15, 2026 · 7 min read</span>
+            <span class="blog-card-read">Read</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="blog-card" href="which-ai-tool-helps-in-interview.html">
+        <div class="blog-card-thumb">🛠</div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat">Tools Review</div>
+          <h2>Which AI Tool Helps in Interview? Every Tool Reviewed for 2026</h2>
+          <p>From research tools to live interview AI — every category of AI interview tool explained, reviewed, and compared with a full recommended toolkit.</p>
+          <div class="blog-card-meta">
+            <span>June 15, 2026 · 7 min read</span>
+            <span class="blog-card-read">Read</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
   </div>
-
-  <div class="coming-banner">
-    <p>🚀 More in-depth articles coming soon. Subscribe by dropping us a line at <strong>support@cloakai.in</strong> and we'll let you know when we publish.</p>
-  </div>
-
-  <div class="blog-grid">
-
-    <a href="blog/ai-interview-tools-india-2025.html" class="blog-card">
-      <div class="blog-card-img">🤖</div>
-      <div class="blog-card-body">
-        <div class="blog-meta"><span class="blog-cat">AI Tools</span><span class="blog-date">June 2025</span></div>
-        <h2>How AI Interview Assistants Are Changing the Job Search in India (2025)</h2>
-        <p>A practical look at how Indian developers are using AI tools during live interviews — what works, what doesn't, and what ethical lines actually matter.</p>
-        <div class="blog-read">Read article</div>
-      </div>
-    </a>
-
-    <a href="blog/system-design-interview-gap.html" class="blog-card">
-      <div class="blog-card-img">⚙️</div>
-      <div class="blog-card-body">
-        <div class="blog-meta"><span class="blog-cat">System Design</span><span class="blog-date">May 2025</span></div>
-        <h2>System Design Interviews: The Gap Between What's Tested and What's Practiced</h2>
-        <p>Why most system design prep leaves candidates stuck when the real question hits — and the framework that actually gets interviewers nodding.</p>
-        <div class="blog-read">Read article</div>
-      </div>
-    </a>
-
-    <a href="blog/behavioral-questions-india-developers.html" class="blog-card">
-      <div class="blog-card-img">🗣️</div>
-      <div class="blog-card-body">
-        <div class="blog-meta"><span class="blog-cat">Behavioral</span><span class="blog-date">May 2025</span></div>
-        <h2>Top 10 Behavioral Interview Questions Indian Developers Struggle With</h2>
-        <p>The STAR method is taught everywhere but rarely used well. Here's how to answer behavioral questions so they sound natural, not rehearsed.</p>
-        <div class="blog-read">Read article</div>
-      </div>
-    </a>
-
-    <a href="blog/dsa-vs-system-design-which-to-prioritise.html" class="blog-card">
-      <div class="blog-card-img">🧠</div>
-      <div class="blog-card-body">
-        <div class="blog-meta"><span class="blog-cat">Strategy</span><span class="blog-date">April 2025</span></div>
-        <h2>DSA vs System Design: Which Should You Prioritise for Your Next Interview?</h2>
-        <p>The answer depends on the role, the company, and your YOE. A clear framework for deciding where to put your prep hours.</p>
-        <div class="blog-read">Read article</div>
-      </div>
-    </a>
-
-    <a href="blog/how-to-answer-tell-me-about-yourself.html" class="blog-card">
-      <div class="blog-card-img">👋</div>
-      <div class="blog-card-body">
-        <div class="blog-meta"><span class="blog-cat">Communication</span><span class="blog-date">April 2025</span></div>
-        <h2>"Tell Me About Yourself" — The 90-Second Formula That Actually Works</h2>
-        <p>Most candidates either go too short or pitch their entire CV. Here's the structure that makes interviewers lean forward.</p>
-        <div class="blog-read">Read article</div>
-      </div>
-    </a>
-
-    <a href="blog/zoom-teams-meet-interview-setup.html" class="blog-card">
-      <div class="blog-card-img">💻</div>
-      <div class="blog-card-body">
-        <div class="blog-meta"><span class="blog-cat">Setup</span><span class="blog-date">March 2025</span></div>
-        <h2>The Perfect Technical Interview Setup: Audio, Video, Screen Sharing in 2025</h2>
-        <p>Small setup mistakes cause big distractions. A checklist for Zoom, Teams, and Meet interviews so technical issues never cost you the offer.</p>
-        <div class="blog-read">Read article</div>
-      </div>
-    </a>
-
-  </div>
-</div>
+</main>
 
 <footer>
   <div class="footer-logo">
@@ -251,11 +187,9 @@
     <a href="privacy.html">Privacy</a>
     <a href="refund.html">Refund</a>
     <a href="dmca.html">DMCA</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe">Download Windows</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.zip">Download Mac</a>
   </div>
-  <div class="footer-copy">© 2025 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
-  <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
+  <div class="footer-copy">© 2026 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
+  <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation.</div>
 </footer>
 
 <script src="layout.js"></script>
