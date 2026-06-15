@@ -531,6 +531,42 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
     <div class="label">Windows SmartScreen warning — normal</div>
     <p>This appears for all unsigned apps. CloakAI is completely safe. Click <strong>More info → Run anyway</strong>. The warning only shows once on your machine.</p>
   </div>
+
+  <div class="info-box tip" style="margin-top:20px;">
+    <div class="label"> macOS Gatekeeper — "Apple couldn't verify CloakAI"</div>
+    <p style="margin-bottom:14px;">This warning appears because CloakAI is not signed with an Apple Developer certificate. The app is completely safe. Use one of the methods below — try them in order.</p>
+
+    <div class="steps-list">
+
+      <div class="sl-item">
+        <div class="sl-num">A</div>
+        <div class="sl-content">
+          <h4>Right-click method — try this first</h4>
+          <p><strong>Right-click</strong> (or Control+click) the CloakAI app → select <strong>Open</strong> from the menu → a different dialog appears with an <strong>Open</strong> button → click it. Done. This works on most Macs.</p>
+        </div>
+      </div>
+
+      <div class="sl-item" style="border-color:rgba(255,214,64,.18);">
+        <div class="sl-num">B</div>
+        <div class="sl-content">
+          <h4>If method A didn't work — Privacy &amp; Security</h4>
+          <p>Double-click the app (it will be blocked) → open <strong>System Settings</strong> → click <strong>Privacy &amp; Security</strong> in the sidebar → scroll down to the Security section → click <strong>Open Anyway</strong> → enter your Mac password. Works on macOS 13, 14 and 15.</p>
+        </div>
+      </div>
+
+      <div class="sl-item" style="border-color:rgba(255,214,64,.18);">
+        <div class="sl-num">C</div>
+        <div class="sl-content">
+          <h4>If both above didn't work — Terminal command (macOS 15 Sequoia)</h4>
+          <p>Open <strong>Terminal</strong> (press Cmd+Space → type Terminal → press Enter) and paste this command:</p>
+          <p style="margin-top:8px;"><code>xattr -cr ~/Downloads/CloakAI.app</code></p>
+          <p style="margin-top:6px;">If you moved the app to Applications folder first, use: <code>xattr -cr /Applications/CloakAI.app</code></p>
+          <p style="margin-top:6px;">Press Enter, then double-click the app — it opens normally.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <!-- ─── 2: REGISTER ─────────────────────────────────────────────── -->
