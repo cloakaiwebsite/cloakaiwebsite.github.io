@@ -489,11 +489,11 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
   <h1>How to Use <em>CloakAI</em></h1>
   <p>From download to your first answer, in plain, simple steps.</p>
   <div class="hero-tags">
-    <div class="tag" style="border-color:var(--bd2);color:var(--g);">✨ Updated for v16.0.0</div>
+    <div class="tag" style="border-color:var(--bd2);color:var(--g);">✨ Updated for v16.0.1</div>
     <div class="tag">👻 Invisible to screenshare</div>
     <div class="tag">⚡ Real-time AI answers</div>
     <div class="tag">🎙 Auto-listens</div>
-    <div class="tag">Windows &amp; macOS</div>
+    <div class="tag">Windows 10 &amp; 11</div>
   </div>
 </div>
 
@@ -507,7 +507,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
 
   <div class="info-box tip">
     <div class="label">Upgrading from an older version?</div>
-    <p>Uninstall your current CloakAI first (Windows: Control Panel &gt; Programs &gt; Uninstall a program. macOS: drag it from Applications to Trash), then install a fresh copy using the buttons below. Do not install over the old version. Your license and hours carry over.</p>
+    <p>Uninstall your current CloakAI first (Control Panel &gt; Programs &gt; Uninstall a program), then install a fresh copy using the buttons below. Do not install over the old version. Your license and hours carry over.</p>
   </div>
 
   <div class="install-grid">
@@ -538,41 +538,11 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
     <p>This appears for all unsigned apps. CloakAI is completely safe. Click <strong>More info → Run anyway</strong>. The warning only shows once on your machine.</p>
   </div>
 
-  <div class="info-box tip" style="margin-top:20px;">
-    <div class="label"> macOS Gatekeeper, "Apple couldn't verify CloakAI"</div>
-    <p style="margin-bottom:14px;">This warning appears because CloakAI is not signed with an Apple Developer certificate. The app is completely safe. Use one of the methods below, try them in order.</p>
-
-    <div class="steps-list">
-
-      <div class="sl-item">
-        <div class="sl-num">A</div>
-        <div class="sl-content">
-          <h4>Right-click method, try this first</h4>
-          <p><strong>Right-click</strong> (or Control+click) the CloakAI app → select <strong>Open</strong> from the menu → a different dialog appears with an <strong>Open</strong> button → click it. Done. This works on most Macs.</p>
-        </div>
-      </div>
-
-      <div class="sl-item" style="border-color:rgba(255,214,64,.18);">
-        <div class="sl-num">B</div>
-        <div class="sl-content">
-          <h4>If method A didn't work, Privacy &amp; Security</h4>
-          <p>Double-click the app (it will be blocked) → open <strong>System Settings</strong> → click <strong>Privacy &amp; Security</strong> in the sidebar → scroll down to the Security section → click <strong>Open Anyway</strong> → enter your Mac password. Works on macOS 13, 14 and 15.</p>
-        </div>
-      </div>
-
-      <div class="sl-item" style="border-color:rgba(255,214,64,.18);">
-        <div class="sl-num">C</div>
-        <div class="sl-content">
-          <h4>If both above didn't work, Terminal command (macOS 15 Sequoia)</h4>
-          <p>Open <strong>Terminal</strong> (press Cmd+Space → type Terminal → press Enter) and paste this command:</p>
-          <p style="margin-top:8px;"><code>xattr -cr ~/Downloads/CloakAI.app</code></p>
-          <p style="margin-top:6px;">If you moved the app to Applications folder first, use: <code>xattr -cr /Applications/CloakAI.app</code></p>
-          <p style="margin-top:6px;">Press Enter, then double-click the app, it opens normally.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
+  <!-- The macOS Gatekeeper block ("Apple couldn't verify CloakAI", right-click Open,
+       Privacy & Security, xattr -cr) was removed: the site does not distribute a Mac
+       build (theme.css hides the .dmg links and the Mac install card), so these steps
+       described a path no visitor can reach. Restore it in the same change that ships
+       signed and notarized macOS builds. -->
 </div>
 
 <!-- ─── 2: REGISTER ─────────────────────────────────────────────── -->
@@ -626,7 +596,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
       <div class="a-pill"><span class="a-dot"></span>Listening...</div>
       <div class="a-pill" style="border-color:rgba(64,196,255,.3);color:var(--blue);">Interviewer</div>
       <div class="a-pill" style="border-color:rgba(255,214,64,.3);color:var(--amber);">⏱ 8h left</div>
-      <span class="a-btn" style="color:var(--t3);border:1px solid var(--bd);font-size:.62rem;margin-left:auto;">v16.0.0</span>
+      <span class="a-btn" style="color:var(--t3);border:1px solid var(--bd);font-size:.62rem;margin-left:auto;">v16.0.1</span>
       <div class="a-btn a-btn-r">✕</div>
     </div>
     <div class="app-ctrl">
@@ -951,8 +921,8 @@ Reduced API latency by 40% with Redis caching.</p>
   <h4 style="color:var(--g);margin:20px 0 4px;">Upgrading &amp; getting started</h4>
   <div class="faq-list">
     <div class="faq open">
-      <div class="faq-q">How do I upgrade to the latest version (v16.0.0)? <span class="ic">+</span></div>
-      <div class="faq-a">First uninstall your current CloakAI (Windows: Control Panel &gt; Programs &gt; Uninstall a program. macOS: drag it from Applications to Trash). Then download a fresh installer from the buttons on this page or from cloakai.in and install it. Do not install over the old version. Your license key and remaining hours carry over, nothing resets.</div>
+      <div class="faq-q">How do I upgrade to the latest version (v16.0.1)? <span class="ic">+</span></div>
+      <div class="faq-a">First uninstall your current CloakAI (Control Panel &gt; Programs &gt; Uninstall a program). Then download a fresh installer from the buttons on this page or from cloakai.in and install it. Do not install over the old version. Your license key and remaining hours carry over, nothing resets.</div>
     </div>
     <div class="faq">
       <div class="faq-q">Will my license and hours carry over after upgrading? <span class="ic">+</span></div>
@@ -1049,9 +1019,9 @@ Reduced API latency by 40% with Redis caching.</p>
 
 <div class="cta-section">
   <h2>Ready for your next interview?</h2>
-  <p>20-minute free trial. No card needed. Plans from ₹499.</p>
+  <p>20-minute free trial. No card needed. Plans from ₹999.</p>
   <div class="cta-row">
-    <a href="index.html#pricing" class="btn-p">Get Access from ₹499</a>
+    <a href="index.html#pricing" class="btn-p">Get Access from ₹999</a>
     <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn-s">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
       Windows

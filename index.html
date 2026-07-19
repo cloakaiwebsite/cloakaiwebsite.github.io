@@ -27,40 +27,39 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="favicon-180.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CloakAI","description":"Invisible AI interview assistant for Windows. Hidden from screenshare. Real-time AI answers only you can see.","applicationCategory":"BusinessApplication","operatingSystem":"Windows 10, Windows 11","offers":[{"@type":"Offer","price":"499","priceCurrency":"INR","name":"2 Hour Pack"},{"@type":"Offer","price":"1399","priceCurrency":"INR","name":"6 Hour Pack"},{"@type":"Offer","price":"2499","priceCurrency":"INR","name":"12 Hour Pack"},{"@type":"Offer","price":"3999","priceCurrency":"INR","name":"24 Hour Pack"}],"url":"https://cloakai.in","screenshot":"https://cloakai.in/og-image.png","featureList":"Invisible to screenshare, Real-time AI answers, Auto-listens, Session transcript, Screen capture analysis"}</script>
-
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CloakAI","description":"Invisible AI interview assistant for Windows. Hidden from screenshare. Real-time AI answers only you can see.","applicationCategory":"BusinessApplication","operatingSystem":"Windows 10, Windows 11","offers":[{"@type":"Offer","price":"999","priceCurrency":"INR","name":"3 Hour Pack"},{"@type":"Offer","price":"1899","priceCurrency":"INR","name":"6 Hour Pack"},{"@type":"Offer","price":"2699","priceCurrency":"INR","name":"9 Hour Pack"}],"url":"https://cloakai.in","screenshot":"https://cloakai.in/og-image.png","featureList":"Invisible to screenshare, Real-time AI answers, Auto-listens, Session transcript, Screen capture analysis"}</script>
   <style>
     :root{--cb:rgba(15,61,46,.6);--gb:1px solid rgba(46,204,113,.3);}
     body{background:var(--bg);color:var(--tc);overflow-x:hidden;min-height:100vh;}
-    
-    
-    
+
+
+
     100%{transform:translate(0,0) rotate(360deg);}}
-    
+
     50%{opacity:.5;}100%{transform:translateY(-100px) translateX(50px);opacity:0;}}
     .wrap{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
     /* Header */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
     @media(max-width:860px){
-      
-      
-      
+
+
+
       #m
-      
-      
-      
+
+
+
     }
     /* Hero */
     .hero{text-align:center;padding:80px 20px 60px;}
@@ -176,7 +175,6 @@
     .faq-item.open .faq-q{color:var(--gg);background:rgba(46,204,113,.06);}
     .faq-item.open .ic{transform:rotate(45deg);}
     /* Footer */
-
     /* Reveal */
     .reveal{opacity:0;transform:translateY(38px);transition:all .7s cubic-bezier(.5,0,0,1);}
     .reveal.on{opacity:1;transform:translateY(0);}
@@ -263,16 +261,15 @@
   </style>
 </head>
 <body>
-
 <div class="cursor-glow" id="cg"></div>
 <div class="bg-anim"><div class="fog"></div></div>
 <div id="particles"></div>
 <!-- ═══════════════════════════════════════════════════════
-     NEWS BAR — set NEWSBAR_ENABLED = true to show
+     NEWS BAR - set NEWSBAR_ENABLED = true to show
                 set NEWSBAR_ENABLED = false to hide
      Edit the .news-bar-text span to change the message.
      ═══════════════════════════════════════════════════════ -->
-<script>var NEWSBAR_ENABLED = true;</script>
+<script>var NEWSBAR_ENABLED = false;</script>
 <div id="news-bar">
   <div class="news-bar-inner">
     <span class="news-bar-text">🔥 Prices increase from Monday, 20th July.</span>
@@ -282,21 +279,19 @@
 </div>
 <script>(function(){if(!NEWSBAR_ENABLED)document.getElementById('news-bar').style.display='none';})();</script>
 <script>
+  // Account A (ops/web). The website must NOT use the app's deployment
+  // (AKfycbx409E_...), or website traffic burns the quota the installed app
+  // needs for validate_license and update_usage, which breaks paying users
+  // mid-interview. That separation is the whole point of the two accounts.
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz5QOE5ROXK3h-mkF2tN_KAlNrQZ2SLY94hUjsIoyUfJenIsTWG3WZavgdPFu0jYqsRQ/exec';
   const BYPASS = false;
   const PLANS = {
-    starter:{name:'2 Hour Pack',oldPrice:'₹899',price:'₹499',period:'2 hours of AI time',rate:'₹250/hr',label:'Get 2 Hour Pack'},
-    basic:  {name:'6 Hour Pack',oldPrice:'₹2,799',price:'₹1399',period:'6 Hours of AI time',rate:'₹233/hr',label:'Get 6 Hour Pack'},
-    pro:    {name:'12 Hour Pack',oldPrice:'₹5,499',price:'₹2,499',period:'12 hours of AI time',rate:'₹208/hr',label:'Get 12 Hour Pack'},
-    max:    {name:'24 Hour Pack',oldPrice:'₹9,999',price:'₹3,999',period:'24 hours of AI time',rate:'₹167/hr',label:'Get 24 Hour Pack'},
+    starter:{name:'3 Hour Pack',oldPrice:'₹1,799',price:'₹999',period:'3 hours of AI time',rate:'₹333/hr',label:'Get 3 Hour Pack'},
+    basic:  {name:'6 Hour Pack',oldPrice:'₹3,799',price:'₹1,899',period:'6 Hours of AI time',rate:'₹317/hr',label:'Get 6 Hour Pack'},
+    pro:    {name:'9 Hour Pack',oldPrice:'₹5,999',price:'₹2,699',period:'9 hours of AI time',rate:'₹300/hr',label:'Get 9 Hour Pack'},
   };
   window.trackEvent=function(c,a,l){console.log('[Track] '+c+':'+a+(l?' / '+l:''));};
 </script>
-
-
-
-
-
 <header>
   <div class="header-inner">
     <a href="index.html" class="logo">
@@ -318,9 +313,7 @@
     <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </header>
-
 <div class="wrap">
-
 <!-- HERO -->
 <section class="hero">
   <div class="badge">🇮🇳 India's #1 AI Interview Answers Generator &nbsp;·&nbsp; 20-Min Free Trial - No card needed</div>
@@ -329,7 +322,7 @@
   </div>
   <p class="hero-sub"><span id="tt"></span><span class="typing-cursor"></span></p>
   <div class="pills">
-    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Join 300+ early users</div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Join 1000+ early users</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg>Zoom</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#5059C9"/><circle cx="43" cy="20" r="7" fill="#7B83EB"/><rect x="33" y="28" width="22" height="18" rx="4.5" fill="#7B83EB"/><circle cx="24" cy="20" r="10" fill="white"/><rect x="10" y="31" width="28" height="20" rx="5.5" fill="white"/></svg>Teams</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="white"/><path d="M8 22C8 18.7 10.7 16 14 16H27V32H8V22Z" fill="#00832D"/><path d="M27 16H38C41.3 16 44 18.7 44 22V32H27V16Z" fill="#0066DA"/><path d="M8 32H27V48H14C10.7 48 8 45.3 8 42V32Z" fill="#E94235"/><path d="M27 32H44V42C44 45.3 41.3 48 38 48H27V32Z" fill="#00AC47"/><path d="M44 26L56 20V44L44 38V26Z" fill="#00832D"/><rect x="25" y="14" width="4" height="36" fill="white"/><rect x="6" y="30" width="40" height="4" fill="white"/></svg>Google Meet</div>
@@ -339,7 +332,7 @@
     <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg> Windows 10 &amp; 11 </div>
   </div>
   <div class="cta-group">
-    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from ₹499</a>
+    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from ₹999</a>
     <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn-outline" onclick="trackEvent('Hero','Download','Win')">
       <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
       Download for Windows
@@ -349,9 +342,8 @@
       Download for Mac
     </a>
   </div>
-  <p class="hero-note" style="line-height:1.7;">Plans from <strong style="color:var(--gg)">₹499</strong> &nbsp;·&nbsp; 20-min free trial, no card &nbsp;·&nbsp; Windows </p>
+  <p class="hero-note" style="line-height:1.7;">Plans from <strong style="color:var(--gg)">₹999</strong> &nbsp;·&nbsp; 20-min free trial, no card &nbsp;·&nbsp; Windows </p>
 </section>
-
 <!-- DEMO (moved up - users see proof before reading features) -->
 <section id="demo" class="reveal">
   <div class="sh"><h2>See CloakAI in Action</h2><p>Watch it stay completely invisible while delivering instant answers. This is what you see. The interviewer sees nothing.</p></div>
@@ -363,7 +355,6 @@
     <div style="margin-top:22px;text-align:center;"><a href="#pricing" class="btn">Get Access Now</a></div>
   </div>
 </section>
-
 <!-- COMPANY LOGOS -->
 <div class="company-strip">
   <div class="company-strip-inner">
@@ -380,7 +371,6 @@
     </div>
   </div>
 </div>
-
 <!-- HOW IT WORKS -->
 <section class="reveal">
   <div class="sh"><h2>Up and Running in 3 Minutes</h2><p>From payment to active overlay, faster than a cup of chai.</p></div>
@@ -391,17 +381,15 @@
     <div class="step"><div class="step-ico">🚀</div><h4>Interview Confidently</h4><p>Real-time answers, only you can see them. Walk into every round prepared.</p></div>
   </div>
 </section>
-
 <!-- TRUST -->
 <div class="trust-bar reveal">
-  <div class="trust-item"><div class="trust-num">300+</div><div class="trust-label">Users</div></div>
-  <div class="trust-item"><div class="trust-num">1,000+</div><div class="trust-label">Interviews</div></div>
+  <div class="trust-item"><div class="trust-num">1,000+</div><div class="trust-label">Users</div></div>
+  <div class="trust-item"><div class="trust-num">3,800+</div><div class="trust-label">Interviews Supported</div></div>
   <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Early Rating</div></div>
   <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
   <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
   <div class="trust-item"><div class="trust-num">24h</div><div class="trust-label">Support Response</div></div>
 </div>
-
 <!-- FEATURES -->
 <section id="features" class="reveal">
   <div class="sh"><h2>Features No Other AI Interview Tool Has</h2><p>CloakAI is built for the reality of modern interviews, not just the theory of them.</p></div>
@@ -416,7 +404,6 @@
     <div class="card"><div class="card-ico">🕹</div><h3>Stealth Controls</h3><p>Ctrl+Shift+H instantly hides or shows the window. Hold Alt for push-to-talk. Arrow keys browse history. Adjust transparency with the slider in real time.</p></div>
   </div>
 </section>
-
 <!-- PRICING -->
 <section id="pricing" class="reveal">
   <div style="text-align:center;margin-bottom:28px;">
@@ -428,31 +415,30 @@
   <div style="text-align:center;margin-bottom:28px;">
     <div style="display:inline-block;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 20px;font-size:.82rem;color:#64748B;line-height:1.65;">
       Competitors charge <span style="color:#EF4444;text-decoration:line-through;font-weight:600;">₹400/hr+</span> for similar AI time &nbsp;&middot;&nbsp;
-      <strong style="color:#34D399;">CloakAI offers at ₹167/hr</strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
+      <strong style="color:#34D399;">CloakAI offers from ₹300/hr</strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
     </div>
   </div>
-
   <div class="pricing-grid">
     <div class="pc">
       <h3>Starter</h3>
-      <div class="pc-old">₹899 <span class="pc-discount">45% OFF</span></div>
-      <div class="pc-price"><sup>₹</sup>499</div>
-      <div class="pc-rate">₹250 per AI hour</div>
-      <div class="pc-per">2 hours of AI time</div>
+      <div class="pc-old">₹1,799 <span class="pc-discount">45% OFF</span></div>
+      <div class="pc-price"><sup>₹</sup>999</div>
+      <div class="pc-rate">₹333 per AI hour</div>
+      <div class="pc-per">3 hours of AI time</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
         <li>Session transcript saved</li>
         <li>Screen capture &amp; analyse</li>
         <li>Timer pauses when app is closed</li>
       </ul>
-      <button class="btn-buy" onclick="openPay('starter')">Get 2 Hour Pack</button>
+      <button class="btn-buy" onclick="openPay('starter')">Get 3 Hour Pack</button>
     </div>
-
-    <div class="pc">
+    <div class="pc pop">
+      <div class="pc-badge-pop">MOST USERS BUY BASIC</div>
       <h3>Basic</h3>
-      <div class="pc-old">₹2,799 <span class="pc-discount">50% OFF</span></div>
-      <div class="pc-price"><sup>₹</sup>1,399</div>
-      <div class="pc-rate">₹233 per AI hour</div>
+      <div class="pc-old">₹3,799 <span class="pc-discount">50% OFF</span></div>
+      <div class="pc-price"><sup>₹</sup>1,899</div>
+      <div class="pc-rate">₹317 per AI hour</div>
       <div class="pc-per">6 Hours of AI time</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
@@ -462,47 +448,28 @@
       </ul>
       <button class="btn-buy" onclick="openPay('basic')">Get 6 Hour Pack</button>
     </div>
-
-    <div class="pc pop">
-      <div class="pc-badge-pop">MOST USERS BUY PRO</div>
+    <div class="pc pop" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
+      <div class="pc-badge-pop" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);color:#fff;">POWER USER</div>
       <h3>Pro</h3>
-      <div class="pc-old">₹5,499 <span class="pc-discount">55% OFF</span></div>
-      <div class="pc-price"><sup>₹</sup>2,499</div>
-      <div class="pc-rate">₹208 per AI hour</div>
-      <div class="pc-per">12 hours of AI time</div>
-      <div class="pc-rounds">Enough for 12 full interview rounds</div>
+      <div class="pc-old">₹5,999 <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">55% OFF</span></div>
+      <div class="pc-price"><sup>₹</sup>2,699</div>
+      <div class="pc-rate">₹300 per AI hour</div>
+      <div class="pc-per">9 hours of AI time</div>
+      <div class="pc-rounds" style="color:#A78BFA;background:rgba(167,139,250,.1);">Enough for 9 full interview rounds</div>
       <ul class="pc-feats">
         <li>All features unlocked</li>
         <li>Unlimited interview sessions</li>
         <li>Full session history export</li>
         <li>Priority email support</li>
       </ul>
-      <button class="btn-buy" onclick="openPay('pro')">Get 12 Hour Pack</button>
-    </div>
-
-    <div class="pc" style="border-color:rgba(167,139,250,.3);">
-      <div class="pc-badge-pop" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);color:#fff;">POWER USER</div>
-      <h3>Max</h3>
-      <div class="pc-old">₹9,999 <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">60% OFF</span></div>
-      <div class="pc-price"><sup>₹</sup>3,999</div>
-      <div class="pc-rate">₹167 per AI hour</div>
-      <div class="pc-per">24 hours of AI time</div>
-      <ul class="pc-feats">
-        <li>Everything in Pro</li>
-        <li>Lowest cost per session</li>
-        <li>For multiple job hunts</li>
-        <li>Priority email support</li>
-      </ul>
-      <button class="btn-buy" onclick="openPay('max')" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);">Get 24 Hour Pack</button>
+      <button class="btn-buy" onclick="openPay('pro')" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);">Get 9 Hour Pack</button>
     </div>
   </div>
-
   <div class="pricing-note">
     🔒 Payments secured by PhonePe &nbsp;·&nbsp; License key sent instantly to your email &nbsp;·&nbsp; Hours never expire &nbsp;·&nbsp;
     <a href="refund.html">Refund Policy</a> &nbsp;·&nbsp;
     Questions? <a href="mailto:support@cloakai.in">support@cloakai.in</a>
   </div>
-
   <!-- Payment Methods -->
   <div class="pay-methods">
     <p class="pay-methods-label">Accepted Payment Methods</p>
@@ -517,7 +484,6 @@
       <span class="pay-badge" style="background:#5F259F;color:#fff;">PhonePe</span>
     </div>
   </div>
-
   <div class="proc-box">
     <h3>How the Process Works</h3>
     <div style="overflow-x:auto;padding:10px 0;">
@@ -534,7 +500,6 @@
     <p style="text-align:center;color:#555;font-size:.82rem;margin-top:16px;">License validity starts from first activation, not purchase time.</p>
   </div>
 </section>
-
 <!-- REVIEWS -->
 <section class="reveal">
   <div class="sh"><h2>Early Users Are Saying</h2><p>Real feedback from our early access users across India.</p></div>
@@ -547,7 +512,6 @@
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"I saved the session after my first interview with it. Went through the questions that came up, the answers it gave, and how I actually responded. Best prep material I've had."</p><div class="rev-author">Riya M.</div><div class="rev-role">Software Engineer, Delhi</div></div>
   </div>
 </section>
-
 <!-- FAQ -->
 <section id="faq" class="reveal">
   <div class="sh" style="margin-bottom:36px;"><h2>Frequently Asked Questions</h2></div>
@@ -566,14 +530,12 @@
     <div class="faq-item"><div class="faq-q">Is my audio or conversation stored anywhere? <span class="ic">+</span></div><div class="faq-a">No. Audio is captured on your device, processed in real time, and immediately discarded after the response is generated. We do not record, store, or have access to any audio or conversation content from your sessions.</div></div>
     <div class="faq-item"><div class="faq-q">What is your refund policy? <span class="ic">+</span></div><div class="faq-a">All sales are final because license keys are generated and delivered instantly. We strongly recommend testing on your computer before purchasing using the free trial. See our full <a href="refund.html" style="color:var(--gg)">Refund Policy</a> for the limited exceptions that apply.</div></div>
     <div class="faq-item"><div class="faq-q">How do I contact support? <span class="ic">+</span></div><div class="faq-a">Email us at <a href="mailto:support@cloakai.in" style="color:var(--gg)">support@cloakai.in</a>. We provide 24/7 support over email. For urgent issues during an ongoing interview, include the word URGENT in your subject line.</div></div>
-    <div class="faq-item"><div class="faq-q">How is CloakAI different from Parakeet AI? <span class="ic">+</span></div><div class="faq-a">CloakAI uses a system-level Windows display method that cannot be captured even by the Windows Snipping Tool or OBS. Parakeet and similar tools often use transparent windows that may still appear as a black or visible rectangle in certain capture scenarios. CloakAI is also significantly cheaper at ₹167/hr vs ₹400+ for competitors. We offer features no competitor currently has: session transcript saving, answer history browse mid-interview, screen capture analysis, and deep context-aware tailoring.</div></div>
+    <div class="faq-item"><div class="faq-q">How is CloakAI different from Parakeet AI? <span class="ic">+</span></div><div class="faq-a">CloakAI uses a system-level Windows display method that cannot be captured even by the Windows Snipping Tool or OBS. Parakeet and similar tools often use transparent windows that may still appear as a black or visible rectangle in certain capture scenarios. CloakAI is also significantly cheaper at ₹300/hr vs ₹400+ for competitors. We offer features no competitor currently has: session transcript saving, answer history browse mid-interview, screen capture analysis, and deep context-aware tailoring.</div></div>
     <div class="faq-item"><div class="faq-q">Can the Snipping Tool or Windows screenshot capture CloakAI's overlay? <span class="ic">+</span></div><div class="faq-a">No. The CloakAI overlay cannot be captured by the Windows Snipping Tool, Windows screenshot shortcuts (Win+Shift+S), OBS, or any screen recording software. The exclusion operates below the application layer, at the display driver level.</div></div>
-    <div class="faq-item"><div class="faq-q">What makes CloakAI the best value in the market? <span class="ic">+</span></div><div class="faq-a">At ₹167 per hour on the MAX plan, CloakAI is priced lower than any comparable tool we are aware of. The STARTER plan at ₹499 covers a full 2-hour window. Compare this to international competitors that charge $40 to $50 per session with fewer features.</div></div>
+    <div class="faq-item"><div class="faq-q">What makes CloakAI the best value in the market? <span class="ic">+</span></div><div class="faq-a">At ₹300 per hour on the Pro plan, CloakAI is priced lower than any comparable tool we are aware of. The STARTER plan at ₹999 covers a full 3-hour window. Compare this to international competitors that charge $40 to $50 per session with fewer features.</div></div>
   </div>
 </section>
-
 </div><!-- /wrap -->
-
 <!-- SEO block -->
 <div style="max-width:1200px;margin:40px auto 0;padding:32px 24px;background:rgba(255,255,255,.02);border-radius:14px;border:1px solid rgba(255,255,255,.04);">
   <h2 style="color:#1E293B;font-size:1.1rem;font-weight:700;margin-bottom:12px;">The AI Interview Tool That Answers in Real Time</h2>
@@ -581,7 +543,6 @@
   <p style="color:#1E293B;font-size:.85rem;line-height:1.8;margin-bottom:10px;">As a <strong style="color:#1E3A2E;">live interview AI</strong>, CloakAI listens to the interviewer in real time and generates tailored answers within 2 seconds. It works on Zoom, Google Meet, Microsoft Teams, and any screenshare software. The overlay is completely invisible - not even the Windows Snipping Tool can capture it.</p>
   <p style="color:#1E293B;font-size:.85rem;line-height:1.8;">Searching for a <strong style="color:#1E3A2E;">free interview answer AI</strong> or a <strong style="color:#1E3A2E;">real-time AI interview helper</strong>? CloakAI includes a 20-minute free trial with no card required. It is the best <strong style="color:#1E3A2E;">interview AI app</strong> for Windows users in India, covering technical interviews, behavioural questions, system design, SQL, and coding challenges.</p>
 </div>
-
 <footer>
   <div class="footer-logo">
     <img src="logo-email.png" width="22" height="22" alt="CloakAI" style="border-radius:4px;">
@@ -606,7 +567,6 @@
   <div class="footer-copy">© 2026 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
   <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
-
 <!-- PAYMENT MODAL -->
 <div id="pay-mo" class="mo" onclick="closeMo(event,'pay-mo')">
   <div class="mc pm-card" style="max-width:460px;">
@@ -616,7 +576,6 @@
       <div><div class="plan-prev-name" id="pm-name">Loading...</div><div class="plan-prev-dur" id="pm-dur"></div></div>
       <div class="plan-prev-price" id="pm-price"></div>
     </div>
-
     <!-- Step 1: Email + Phone -->
     <div id="pm-step1">
       <label class="flabel">Email Address</label>
@@ -631,7 +590,6 @@
         <div class="spin" id="pm-otp-spin"></div>
       </button>
     </div>
-
     <!-- Step 2: OTP entry - spam hint moved below verify button -->
     <div id="pm-step2" style="display:none;">
       <div style="text-align:center;margin-bottom:16px;">
@@ -657,19 +615,16 @@
         <span>Can't find the code? Check <strong style="color:#64748B;">Spam</strong>, <strong style="color:#64748B;">Promotions</strong>, Updates &amp; All Mail. Valid 10 min.</span>
       </div>
     </div>
-
     <div class="pm-footer">
       🔒 Secured by PhonePe &nbsp;·&nbsp; License key emailed instantly after payment<br>
       By continuing you agree to our <a href="terms.html">Terms</a> and <a href="refund.html">Refund Policy</a>
     </div>
   </div>
 </div>
-
 <script>
-  (function(){var c=document.getElementById('particles');for(var i=0;i<20;i++){var p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'vw';p.style.top=Math.random()*100+'vh';p.style.width=Math.random()*5+'px';p.style.height=p.style.width;p.style.animationDelay=Math.random()*5+'s';c.appendChild(p);}})();
-  var cgEl=document.getElementById('cg'),gx=0,gy=0;
-  document.addEventListener('mousemove',function(e){gx=e.clientX;gy=e.clientY;});
-  setInterval(function(){cgEl.style.left=gx+'px';cgEl.style.top=gy+'px';},16);
+  // Particles and cursor glow are created by layout.js (loaded at the bottom of this
+  // page). They used to be duplicated here, which built 40 particles instead of 20 and
+  // ran two 16ms setIntervals against the same #cg element. Do not re-add them.
   var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08});
   document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
   var TXT="Your invisible AI copilot for interviews. Hear the question. See the answer. Only you can see it.";
@@ -683,8 +638,57 @@
   function toggleNav(){var b=document.getElementById('ham-btn'),n=document.getElementById('mnav');b.classList.toggle('open');n.classList.toggle('open');}
   document.addEventListener('click',function(e){var n=document.getElementById('mnav'),b=document.getElementById('ham-btn');if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){n.classList.remove('open');b.classList.remove('open');}});
   document.querySelectorAll('#mnav a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('mnav').classList.remove('open');document.getElementById('ham-btn').classList.remove('open');});});
-
   var curPlan=null,_verifiedEmail='',_resendTimer=null;
+
+  /* ── Backend resilience ───────────────────────────────────────────
+     Apps Script has per-account quotas and can hang or return an HTML
+     error page (not JSON) when overloaded. Previously these flows had NO
+     timeout at all, so an overloaded backend left the spinner turning
+     forever with the button disabled and no message. Every failure also
+     said "check your internet", which blames the user for our outage and
+     invites immediate retries that make the overload worse.
+     _apiFetch adds a hard timeout and classifies the failure so we can
+     tell the user to wait rather than to check their wifi. */
+  var API_TIMEOUT_MS=25000;   /* Apps Script cold starts can legitimately take 10-20s */
+  function _apiFetch(url){
+    /* AbortController is supported in every browser we target. If it is
+       somehow missing, fall through to a plain fetch rather than break. */
+    if(typeof AbortController==='undefined'){
+      return fetch(url).then(function(r){return _apiParse(r);});
+    }
+    var ctrl=new AbortController();
+    var timer=setTimeout(function(){ctrl.abort();},API_TIMEOUT_MS);
+    return fetch(url,{signal:ctrl.signal})
+      .then(function(r){clearTimeout(timer);return _apiParse(r);},
+            function(err){clearTimeout(timer);throw err;});
+  }
+  function _apiParse(r){
+    /* 429/500/503 are the shapes an exhausted or erroring Apps Script
+       returns. Mark them busy so the caller shows the right message. */
+    if(!r.ok){
+      var e=new Error('HTTP '+r.status);
+      e.busy=(r.status===429||r.status>=500);
+      throw e;
+    }
+    return r.text().then(function(t){
+      try{return JSON.parse(t);}
+      catch(_){
+        /* Valid HTTP status but not JSON: almost always an Apps Script
+           quota or runtime error page. Treat as busy, never as a bug in
+           the user's input. */
+        var e=new Error('Non-JSON response');e.busy=true;throw e;
+      }
+    });
+  }
+  /* One place that decides what the user is told when a call fails. */
+  function _apiErrMsg(err){
+    if(typeof navigator!=='undefined'&&navigator.onLine===false)
+      return 'You appear to be offline. Check your connection and try again.';
+    if(err&&(err.name==='AbortError'||err.busy))
+      return 'Our servers are busy right now. Please wait a minute and try again. Nothing has been charged.';
+    return 'Something went wrong on our side. Please try again in a minute, or email support@cloakai.in.';
+  }
+
   function openPay(plan){
     curPlan=plan;_verifiedEmail='';
     var m=PLANS[plan];if(!m)return;
@@ -716,8 +720,7 @@
     var btn=document.getElementById('pm-otp-btn'),btxt=document.getElementById('pm-otp-btxt'),spin=document.getElementById('pm-otp-spin');
     btn.disabled=true;btxt.style.display='none';spin.style.display='block';
     _pmMsg('Sending code to '+email+'...','inf');
-    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,phone:phone,ajax:'1'}))
-      .then(function(r){return r.json();})
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,phone:phone,ajax:'1'}))
       .then(function(data){
         btn.disabled=false;btxt.style.display='inline';spin.style.display='none';
         if(!data.success){_pmMsg(data.error||'Could not send code. Please try again.','err');return;}
@@ -731,7 +734,7 @@
         setTimeout(function(){document.getElementById('pm-otp').focus();},120);
         trackEvent('Checkout','OTPSent',curPlan);
       })
-      .catch(function(){btn.disabled=false;btxt.style.display='inline';spin.style.display='none';_pmMsg('Connection error. Check your internet and try again.','err');});
+      .catch(function(err){btn.disabled=false;btxt.style.display='inline';spin.style.display='none';_pmMsg(_apiErrMsg(err),'err');});
   }
   function doPay(){
     var otp=(document.getElementById('pm-otp').value||'').trim();
@@ -739,12 +742,11 @@
     if(!_verifiedEmail){resetToStep1();return;}
     var btn=document.getElementById('pm-btn'),btxt=document.getElementById('pm-btxt'),spin=document.getElementById('pm-spin');
     btn.disabled=true;btxt.style.display='none';spin.style.display='block';_pmMsg('Verifying...','inf');
-    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:_verifiedEmail,otp:otp,ajax:'1'}))
-      .then(function(r){return r.json();})
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:_verifiedEmail,otp:otp,ajax:'1'}))
       .then(function(data){
         if(!data.success){btn.disabled=false;btxt.style.display='inline';spin.style.display='none';_pmMsg(data.error||'Incorrect code. Please try again.','err');return;}
         _pmMsg('Verified! Creating your order...','inf');trackEvent('Checkout','OTPVerified',curPlan);
-        return fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_order',email:_verifiedEmail,plan:curPlan,ajax:'1'}),{redirect:'follow'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});
+        return _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_order',email:_verifiedEmail,plan:curPlan,ajax:'1'}));
       })
       .then(function(data){
         if(!data)return;
@@ -752,14 +754,13 @@
         else if(data.payment_url){window.location.replace(data.payment_url);}
         else{_resetPayBtn();_pmMsg(data.error||'Something went wrong. Please try again.','err');}
       })
-      .catch(function(err){console.error('Payment error:',err);_resetPayBtn();_pmMsg('Connection error. Please check your internet and try again.','err');});
+      .catch(function(err){console.error('Payment error:',err);_resetPayBtn();_pmMsg(_apiErrMsg(err),'err');});
   }
   document.getElementById('pm-email').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('pm-phone').focus();});
   document.getElementById('pm-phone').addEventListener('keydown',function(e){if(e.key==='Enter')sendOTP();});
   document.getElementById('pm-otp').addEventListener('keydown',function(e){if(e.key==='Enter')doPay();});
   document.getElementById('pm-otp').addEventListener('input',function(e){var v=e.target.value.replace(/\D/g,'').slice(0,6);e.target.value=v;if(v.length===6)setTimeout(doPay,80);});
 </script>
-
 <button class="sup-fab" onclick="openSup()" aria-label="Support">
   <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
 </button>
@@ -790,14 +791,13 @@
     if(!msg||msg.length<10){resp.textContent='Please describe your issue briefly.';resp.className='sup-msg err';return;}
     if(SCRIPT_URL.includes('REPLACE')){resp.textContent='Support not yet configured. Email support@cloakai.in';resp.className='sup-msg err';return;}
     btn.disabled=true;resp.textContent='Sending...';resp.className='sup-msg inf';
-    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_ticket',name:name||'User',email:email,subject:subj,message:msg,ajax:'1'}))
-      .then(function(r){return r.json();})
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_ticket',name:name||'User',email:email,subject:subj,message:msg,ajax:'1'}))
       .then(function(d){
         btn.disabled=false;
         if(d.success){resp.textContent='✓ Ticket '+d.ticket_id+' created. Check your email!';resp.className='sup-msg ok';setTimeout(function(){document.getElementById('sup-name').value='';document.getElementById('sup-email').value='';document.getElementById('sup-subj').value='';document.getElementById('sup-msg').value='';resp.textContent='';btn.disabled=false;closeSup(null);},3500);}
         else{resp.textContent=d.error||'Something went wrong. Please try again.';resp.className='sup-msg err';}
       })
-      .catch(function(){btn.disabled=false;resp.textContent='Connection error. Email support@cloakai.in directly.';resp.className='sup-msg err';});
+      .catch(function(err){btn.disabled=false;resp.textContent=_apiErrMsg(err)+' You can also email support@cloakai.in directly.';resp.className='sup-msg err';});
   }
   document.getElementById('sup-msg').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.ctrlKey)sendTicket();});
 </script>
