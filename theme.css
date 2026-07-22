@@ -55,6 +55,11 @@ header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter
    Sized in em, not px, so they track the two font sizes the nav uses (.9rem desktop,
    .95rem mobile) and stay proportional to the label instead of drifting.
    flex-shrink:0 stops the icon squashing when a label wraps. */
+/* The width/height ATTRIBUTES in the markup are the real safety net, not this rule.
+   An inline <svg> with only a viewBox has no intrinsic size, so if this stylesheet
+   is ever stale in cache or slow to arrive the browser falls back to the default
+   replaced-element box of 300x150px. That is nearly a full phone width per icon,
+   which is exactly how the mobile menu broke. Never size a nav icon in CSS alone. */
 #mnav a svg{width:1.2em;height:1.2em;flex-shrink:0;stroke:var(--gg);opacity:.8;transition:opacity .3s;}
 #mnav a:hover svg{opacity:1;}
 /* EXCEPTION, and it has to be one: .nav-cta is a solid green gradient pill, so a
