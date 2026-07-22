@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="theme.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- noindex: this page only ever exists as the landing spot for a link in one
+       customer's survey email. It carries a license key in the query string, so it
+       must never end up in a search index. Also excluded from sitemap.xml and
+       disallowed in robots.txt, same as success.html and payment-result.html. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Thank You - CloakAI</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E78JBBWJQW');</script>
+  <style>
+    body{
+      background:var(--bg);color:var(--tc);min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:24px 16px 40px;
+      background:radial-gradient(circle at 50% 30%,rgba(15,61,46,.4) 0%,transparent 60%),
+                 linear-gradient(0deg,#050a07 0%,#0a1410 100%);
+    }
+    .card{
+      background:linear-gradient(160deg,#0A0F1A,#060C16);
+      border:1px solid rgba(52,211,153,.25);border-radius:22px;
+      padding:34px 26px;max-width:520px;width:100%;text-align:center;
+      box-shadow:0 0 60px rgba(52,211,153,.07),0 24px 64px rgba(0,0,0,.6);
+      position:relative;overflow:hidden;
+    }
+    .card::before{
+      content:'';position:absolute;top:-1px;left:10%;right:10%;
+      height:2px;background:linear-gradient(90deg,transparent,#34D399,transparent);
+    }
+    .brand{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:20px;}
+    .brand img{border-radius:6px;}
+    .brand span{color:var(--gg);font-weight:700;letter-spacing:.5px;}
+    .icon{
+      width:64px;height:64px;border-radius:50%;margin:0 auto 16px;
+      display:flex;align-items:center;justify-content:center;font-size:1.7rem;
+      background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);
+    }
+    h1{font-size:1.5rem;font-weight:800;margin-bottom:10px;color:#34D399;}
+    p{color:#94A3B8;font-size:.93rem;line-height:1.7;margin-bottom:12px;}
+    .ref-box{
+      background:#060D16;border:1px solid rgba(245,158,11,.3);border-radius:12px;
+      padding:16px;margin:18px 0;
+    }
+    .ref-lbl{font-size:.7rem;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:1px;}
+    .ref-code{font-size:1.5rem;font-weight:900;color:#F59E0B;letter-spacing:5px;font-family:Consolas,monospace;margin-top:8px;word-break:break-all;}
+    .btn-row{margin-top:22px;display:flex;flex-direction:column;gap:9px;}
+    .lnk{
+      display:block;padding:12px;border-radius:11px;font-size:.92rem;font-weight:700;
+      text-decoration:none;background:linear-gradient(90deg,#059669,#34D399);color:#022c22;
+    }
+    .lnk.sec{background:rgba(255,255,255,.07);color:#CBD5E1;border:1px solid rgba(255,255,255,.1);}
+    .lnk:hover{opacity:.9;}
+    .muted{font-size:.78rem;color:#475569;margin-top:18px;}
+    .spin{
+      width:34px;height:34px;border:3px solid rgba(52,211,153,.18);
+      border-top-color:#34D399;border-radius:50%;margin:0 auto 14px;
+      animation:sp .8s linear infinite;
+    }
+    @keyframes sp{to{transform:rotate(360deg);}}
+    .hide{display:none;}
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="brand"><img src="logo-email.png" width="26" height="26" alt=""><span>CloakAI</span></div>
+
+  <!-- Recording. Shown until the backend answers. -->
+  <div id="s-load">
+    <div class="spin"></div>
+    <p>Recording your answer...</p>
+  </div>
+
+  <!-- Recorded. Copy is filled in by JS per outcome. -->
+  <div id="s-done" class="hide">
+    <div class="icon" id="d-icon">✓</div>
+    <h1 id="d-head"></h1>
+    <p id="d-msg"></p>
+    <div id="d-extra"></div>
+    <div class="btn-row">
+      <a href="https://cloakai.in/#pricing" class="lnk" id="d-cta">Back to CloakAI</a>
+      <a href="https://cloakai.in/license-info.html" class="lnk sec">Check License Balance</a>
+    </div>
+  </div>
+
+  <!-- Could not record. Never a dead end: the reply-to-email route still works. -->
+  <div id="s-err" class="hide">
+    <div class="icon" style="background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);">!</div>
+    <h1 style="color:#EF4444;">Could not save your answer</h1>
+    <p id="e-msg">Something went wrong on our side.</p>
+    <p>You can just reply to the survey email instead and tell us there. It reaches the same place.</p>
+    <div class="btn-row">
+      <a href="https://cloakai.in" class="lnk sec">Back to CloakAI</a>
+    </div>
+  </div>
+
+  <p class="muted">Questions? <a href="mailto:support@cloakai.in" style="color:#34D399;">support@cloakai.in</a></p>
+</div>
+
+<script>
+// Account A (ops/web), the same deployment every other page on this site calls.
+// Do NOT point this at the app deployment: website traffic must stay off the quota
+// the installed app depends on. See CLAUDE.md, "TWO Apps Script accounts".
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz5QOE5ROXK3h-mkF2tN_KAlNrQZ2SLY94hUjsIoyUfJenIsTWG3WZavgdPFu0jYqsRQ/exec';
+
+var COPY = {
+  hired: {
+    icon: '🎉',
+    head: 'Congratulations!',
+    msg:  'That is genuinely great news, and thank you for telling us. We built CloakAI for exactly this.',
+    cta:  'Back to CloakAI',
+    href: 'https://cloakai.in'
+  },
+  not_yet: {
+    icon: '⏳',
+    head: 'Thanks, and good luck',
+    msg:  'Still in the running is a fine place to be. Your remaining hours never expire, so they will be waiting whenever the next round comes.',
+    cta:  'Top Up Your Hours',
+    href: 'https://cloakai.in/#pricing'
+  },
+  no: {
+    icon: '💬',
+    head: 'Thank you for telling us',
+    msg:  'Sorry to hear it. Interviews are brutal and often have nothing to do with how good you are. If CloakAI fell short in any way, reply to our email and tell us plainly. That feedback is what we act on.',
+    cta:  'Back to CloakAI',
+    href: 'https://cloakai.in'
+  }
+};
+
+(function(){
+  var q = new URLSearchParams(location.search);
+  var key = (q.get('key') || '').trim();
+  var outcome = (q.get('outcome') || '').trim().toLowerCase();
+
+  function show(id){
+    ['s-load','s-done','s-err'].forEach(function(s){
+      document.getElementById(s).classList.add('hide');
+    });
+    document.getElementById(id).classList.remove('hide');
+  }
+  function fail(msg){
+    document.getElementById('e-msg').textContent = msg;
+    show('s-err');
+  }
+
+  if (!key || !COPY[outcome]) {
+    fail('That link looks incomplete. Please use one of the buttons in the email.');
+    return;
+  }
+
+  // 20s ceiling. Apps Script can be slow under load and a spinner that never
+  // resolves is worse than an honest error, because the user has no idea whether
+  // their answer was counted.
+  var ctrl = new AbortController();
+  var timer = setTimeout(function(){ ctrl.abort(); }, 20000);
+
+  fetch(SCRIPT_URL + '?' + new URLSearchParams({
+    action: 'job_outcome', key: key, outcome: outcome, ajax: '1'
+  }), { signal: ctrl.signal })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      clearTimeout(timer);
+      if (!d || !d.success) { fail((d && d.error) || 'We could not record that answer.'); return; }
+      var c = COPY[outcome];
+      document.getElementById('d-icon').textContent = c.icon;
+      document.getElementById('d-head').textContent = c.head;
+      document.getElementById('d-msg').textContent  = c.msg;
+      var cta = document.getElementById('d-cta');
+      cta.textContent = c.cta;
+      cta.href = c.href;
+
+      // Someone who just got hired is at peak goodwill, which is the only moment a
+      // testimonial or referral ask lands as welcome rather than annoying. Everyone
+      // else gets nothing extra on purpose.
+      if (outcome === 'hired') {
+        var extra = '<p>Two small things, only if you feel like it. Reply to our email with a line about how it went, we would love to share your story (anonymously if you prefer).</p>';
+        if (d.referral_code) {
+          extra += '<p>Know someone else job hunting? Share your referral code and you both benefit:</p>' +
+                   '<div class="ref-box"><div class="ref-lbl">Your referral code</div>' +
+                   '<div class="ref-code"></div></div>';
+        }
+        var box = document.getElementById('d-extra');
+        box.innerHTML = extra;
+        // Set as TEXT, never interpolated into the HTML string above: the code comes
+        // back from the backend and must not be able to inject markup here.
+        var el = box.querySelector('.ref-code');
+        if (el) el.textContent = d.referral_code;
+      }
+      show('s-done');
+      if (window.gtag) gtag('event', 'job_outcome', { outcome: outcome });
+    })
+    .catch(function(err){
+      clearTimeout(timer);
+      fail(err && err.name === 'AbortError'
+        ? 'Our servers are busy right now. Nothing is wrong with your license.'
+        : 'We could not reach our servers. Please check your connection and try the link again.');
+    });
+})();
+</script>
+
+</body>
+</html>

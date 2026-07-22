@@ -216,7 +216,7 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
     <h1 style="color:#EF4444;">Payment Failed</h1>
     <p class="sub">Your payment was not completed. No charges have been made to your account.</p>
     <a href="https://cloakai.in/#pricing" class="btn">Try Again</a>
-    <a href="mailto:support@cloakai.in" class="btn secondary" style="margin-top:8px;">Contact Support</a>
+    <a href="https://cloakai.in/?support=1" id="failed-support" class="btn secondary" style="margin-top:8px;">Contact Support</a>
     <small>If money was deducted from your account, email us immediately at<br>
     <a href="mailto:support@cloakai.in">support@cloakai.in</a> with your bank transaction reference.</small>
   </div>
@@ -227,6 +227,7 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
     <h1 style="color:#EF4444;">Something Went Wrong</h1>
     <p class="sub" id="error-message">We could not retrieve your payment status.</p>
     <a href="https://cloakai.in/#pricing" class="btn">Back to Pricing</a>
+    <a href="https://cloakai.in/?support=1" id="error-support" class="btn secondary" style="margin-top:8px;">Contact Support</a>
     <small>If your payment went through, email us at<br>
     <a href="mailto:support@cloakai.in">support@cloakai.in</a> with your PhonePe transaction reference.</small>
   </div>
@@ -254,6 +255,18 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
       });
     } catch(e){ return isoStr; }
   }
+
+  // Point the Contact Support buttons at the ticket form on the homepage and carry
+  // the Order ID into the subject. This page has no ticket form of its own, and the
+  // mailto: link these buttons used to carry does nothing at all on a device with
+  // no mail client, so the button read as broken. Runs before the no-orderId return
+  // below so the error state gets a working button too.
+  ['failed-support','error-support'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.href = 'https://cloakai.in/?support=1&subject=' +
+      encodeURIComponent(orderId ? 'Payment failed - order ' + orderId : 'Payment issue');
+  });
 
   if (!orderId) {
     document.getElementById('error-message').textContent =
@@ -294,6 +307,9 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
         if (status === 'PAID') {
           renderSuccess(data);
         } else if (status === 'FAILED') {
+          // Pairs with 'purchase' so the checkout success RATE is visible. A sudden
+          // spike here means the gateway is misbehaving, not that demand dropped.
+          if (window.gtag) gtag('event', 'payment_failed', { transaction_id: data.order_id || orderId, plan: data.plan || 'unknown' });
           showState('state-failed');
         } else {
           // PENDING — keep polling
@@ -339,6 +355,42 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
     if (detailEl) detailEl.innerHTML = html;
 
     showState('state-success');
+    trackPurchase(data, planName);
+  }
+
+  // THE revenue event. Nothing on this site reported a purchase to GA4 before, so
+  // every report showed traffic with no money attached to it. 'purchase' is a GA4
+  // recommended event, which is what turns on the Monetisation reports and lets a
+  // channel or campaign be judged on revenue instead of clicks.
+  //
+  // Fired HERE, on a confirmed PAID order read back from the backend, not on the
+  // checkout button. A click is not a sale.
+  //
+  // Deduped on transaction_id in sessionStorage: this page polls, and a refresh
+  // while the order is already PAID would otherwise book the same sale twice.
+  // GA4 does some de-duplication of its own but does not promise it, and inflated
+  // revenue is worse than no revenue because it looks credible.
+  function trackPurchase(data, planName) {
+    if (!window.gtag) return;
+    var txn = data.order_id || orderId;
+    if (!txn) return;
+    try {
+      var seen = 'ck_purch_' + txn;
+      if (sessionStorage.getItem(seen)) return;
+      sessionStorage.setItem(seen, '1');
+    } catch (e) { /* private mode: fall through and still report once */ }
+    var value = Number(data.amount) || 0;
+    gtag('event', 'purchase', {
+      transaction_id: txn,
+      value: value,
+      currency: 'INR',
+      items: [{
+        item_id:   data.plan || 'unknown',
+        item_name: planName,
+        price:     value,
+        quantity:  1
+      }]
+    });
   }
 
   window.copyKey = function() {

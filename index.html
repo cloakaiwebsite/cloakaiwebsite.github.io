@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <!-- theme.css is declared FIRST, before analytics. The browser can only paint
+       once it has the stylesheet, so it must be the first thing discovered in the
+       document. Analytics used to sit above it and competed for the same connection
+       on a slow mobile link, delaying first paint for no benefit. gtag is async, so
+       moving it down costs nothing: it still loads, just not ahead of the paint. -->
+  <link rel="stylesheet" href="theme.css">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E78JBBWJQW');</script>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="theme.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0f3d2e">
@@ -124,6 +129,16 @@
     .demo-wrap{max-width:900px;margin:40px auto 0;padding:22px;background:linear-gradient(180deg,rgba(15,61,46,.6),rgba(5,10,7,.8));border-radius:20px;border:1px solid rgba(46,204,113,.4);box-shadow:0 0 36px rgba(46,204,113,.12);backdrop-filter:blur(10px);}
     .demo-vid{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#000;}
     .demo-vid iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+    /* Click-to-play facade. The YouTube embed pulls ~600KB of JS on page load even
+       if nobody presses play, which was the single biggest cause of the slow mobile
+       LCP. This is a thumbnail plus a play button that swaps in the REAL iframe on
+       click, so the player is identical once started and costs nothing until then. */
+    .yt-facade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:none;background:#000;cursor:pointer;display:block;}
+    .yt-facade img{width:100%;height:100%;object-fit:cover;display:block;opacity:.82;transition:opacity .25s;}
+    .yt-facade:hover img{opacity:1;}
+    .yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:74px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--pg),var(--ag));border:1px solid var(--gg);box-shadow:0 6px 26px rgba(46,204,113,.4);display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;}
+    .yt-facade:hover .yt-play{transform:translate(-50%,-50%) scale(1.09);box-shadow:0 8px 34px rgba(46,204,113,.6);}
+    .yt-play svg{width:24px;height:24px;fill:#fff;margin-left:3px;}
     .demo-cap{margin-top:18px;color:#888;font-size:.88rem;line-height:1.6;}
     .demo-cap span{color:var(--gg);font-weight:600;}
     /* Steps */
@@ -159,6 +174,15 @@
     .pc-feats{flex:1;list-style:none;margin:14px 0 22px;text-align:left;}
     .pc-feats li{font-size:.83rem;color:#aaa;padding:4px 0;display:flex;align-items:center;gap:8px;}
     .pc-feats li::before{content:'✓';color:var(--gg);font-weight:700;flex-shrink:0;}
+    /* Support level is the ONLY thing that differs between plans, so it is the only
+       thing highlighted. Every plan lists the full product as included: a card with
+       greyed-out or missing features reads as "this tier is crippled", which is both
+       untrue here and the fastest way to lose a cheap-tier buyer who would otherwise
+       have upgraded later. */
+    .pc-feats li.feat-up{color:#d7dbe0;font-weight:600;}
+    .pc-feats li.feat-up::before{content:'★';color:#F59E0B;}
+    .pc .pc-feats li.feat-up::before{color:var(--gg);}
+    .pc[data-tier="pro"] .pc-feats li.feat-up::before{color:#A78BFA;}
     .btn-buy{margin-top:auto;width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(46,204,113,.2);position:relative;overflow:hidden;}
     .btn-buy::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
     .btn-buy:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(46,204,113,.35);}
@@ -300,12 +324,41 @@
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz5QOE5ROXK3h-mkF2tN_KAlNrQZ2SLY94hUjsIoyUfJenIsTWG3WZavgdPFu0jYqsRQ/exec';
   const BYPASS = false;
   const PLANS = {
-    mini:   {name:'1 Hour Pack',oldPrice:'₹899',price:'₹499',period:'1 hour of AI time',rate:'₹499/hr',label:'Get 1 Hour Pack'},
+    mini:   {name:'1 Hour Pack',oldPrice:'₹699',price:'₹499',period:'1 hour of AI time',rate:'₹499/hr',label:'Get 1 Hour Pack'},
     starter:{name:'3 Hour Pack',oldPrice:'₹1,799',price:'₹999',period:'3 hours of AI time',rate:'₹333/hr',label:'Get 3 Hour Pack'},
     basic:  {name:'6 Hour Pack',oldPrice:'₹3,799',price:'₹1,899',period:'6 Hours of AI time',rate:'₹317/hr',label:'Get 6 Hour Pack'},
     pro:    {name:'9 Hour Pack',oldPrice:'₹5,999',price:'₹2,699',period:'9 hours of AI time',rate:'₹300/hr',label:'Get 9 Hour Pack'},
   };
-  window.trackEvent=function(c,a,l){console.log('[Track] '+c+':'+a+(l?' / '+l:''));};
+  // Sends the homepage funnel to GA4. This was a console.log stub, so every CTA,
+  // download and checkout step on this page recorded NOTHING for the whole life of
+  // the site. The call sites keep their (category, action, label) shape so none of
+  // them had to change; the mapping below turns that into GA4's event-name +
+  // parameters model, since GA4 has no category/action/label concept at all.
+  //
+  // Event names are snake_case because GA4 silently ignores events that are not,
+  // and 'begin_checkout' is spelled exactly that way on purpose: it is a GA4
+  // recommended event, so it lights up the built-in funnel reports for free.
+  //
+  // Everything is guarded on window.gtag. An ad blocker stops gtag from loading and
+  // an unguarded call would throw, which on an onclick handler would cancel the
+  // navigation and break the Download button for those users.
+  window.trackEvent=function(category,action,label){
+    if(!window.gtag)return;
+    var NAME={
+      'CTA':'cta_click',
+      'Download':'download_click',
+      'Play':'demo_play',
+      'Open':'begin_checkout',
+      'OTPSent':'otp_sent',
+      'OTPVerified':'otp_verified'
+    };
+    var name=NAME[action]||('web_'+String(action).toLowerCase());
+    var p={cta_location:category};
+    if(action==='Download')p.platform=label;        // Win / Mac
+    else if(category==='Checkout')p.plan=label;     // mini / starter / basic / pro
+    else if(label)p.detail=label;
+    gtag('event',name,p);
+  };
 </script>
 <header>
   <div class="header-inner">
@@ -395,12 +448,33 @@
   <div class="sh"><h2>See CloakAI in Action</h2><p>Watch it stay completely invisible while delivering instant answers. This is what you see. The interviewer sees nothing.</p></div>
   <div class="demo-wrap">
     <div class="demo-vid">
-      <iframe src="https://www.youtube.com/embed/eMxxfDCACKk?si=2Y_29Tx7D4Q-Dwt7" title="CloakAI Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <button class="yt-facade" id="yt-facade" aria-label="Play the CloakAI demo video">
+        <img src="https://i.ytimg.com/vi/eMxxfDCACKk/maxresdefault.jpg" alt="CloakAI demo: the overlay stays invisible during a screen share" width="1280" height="720" loading="lazy" decoding="async" onerror="this.src='https://i.ytimg.com/vi/eMxxfDCACKk/hqdefault.jpg';">
+        <span class="yt-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
     </div>
     <div class="demo-cap"><span>Highlights:</span> Transparent overlay · Ctrl+Shift+H toggle · Auto-listens · Instant AI responses · Zero screenshare visibility</div>
     <div style="margin-top:22px;text-align:center;"><a href="#pricing" class="btn">Get Access Now</a></div>
   </div>
 </section>
+<script>
+  // Swap the facade for the real player on click. autoplay=1 means the user's click
+  // still starts playback, so it is one tap exactly as before. Nothing from YouTube
+  // is requested until this runs.
+  (function(){
+    var f=document.getElementById('yt-facade');
+    if(!f)return;
+    f.addEventListener('click',function(){
+      var i=document.createElement('iframe');
+      i.src='https://www.youtube.com/embed/eMxxfDCACKk?si=2Y_29Tx7D4Q-Dwt7&autoplay=1';
+      i.title='CloakAI Demo';
+      i.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      i.setAttribute('allowfullscreen','');
+      f.parentNode.replaceChild(i,f);
+      if(window.trackEvent)trackEvent('Demo','Play','Homepage');
+    });
+  })();
+</script>
 <!-- COMPANY LOGOS -->
 <div class="company-strip">
   <div class="company-strip-inner">
@@ -476,14 +550,22 @@
   <div class="pricing-grid">
     <div class="pc">
       <h3>Mini</h3>
-      <div class="pc-old">&#8377;899 <span class="pc-discount">44% OFF</span></div>
+      <!-- 699 > 499 is a 200 saving, i.e. 28.6%, which rounds to 29 and NOT to 30.
+           Every other badge on this page rounds by half a point or less (1799>999 is
+           44.5, shown as 45). The discount is the one number a buyer can check with
+           their own arithmetic, so this card is not the place to be the outlier.
+           A round 30% would need an anchor of 713 or 714, which is not a round price:
+           you can have a round anchor or a round percentage here, not both. -->
+      <div class="pc-old">&#8377;699 <span class="pc-discount">29% OFF</span></div>
       <div class="pc-price"><sup>&#8377;</sup>499</div>
       <div class="pc-rate">&#8377;499 per AI hour</div>
       <div class="pc-per">1 hour of AI time</div>
       <ul class="pc-feats">
-        <li>All features unlocked</li>
+        <li>Every feature unlocked, nothing held back</li>
+        <li>Browse your last 100 answers mid-interview</li>
+        <li>Transcript auto-save &amp; screen scan</li>
         <li>Best for a single interview</li>
-        <li>Timer pauses when app is closed</li>
+        <li>Standard email support, reply within 48 hours</li>
       </ul>
       <button class="btn-buy" onclick="openPay('mini')">Get 1 Hour Pack</button>
     </div>
@@ -494,10 +576,11 @@
       <div class="pc-rate">₹333 per AI hour</div>
       <div class="pc-per">3 hours of AI time</div>
       <ul class="pc-feats">
-        <li>All features unlocked</li>
-        <li>Session transcript saved</li>
-        <li>Screen capture &amp; analyse</li>
+        <li>Every feature unlocked, nothing held back</li>
+        <li>Browse your last 100 answers mid-interview</li>
+        <li>Transcript auto-save &amp; screen scan</li>
         <li>Timer pauses when app is closed</li>
+        <li>Standard email support, reply within 48 hours</li>
       </ul>
       <button class="btn-buy" onclick="openPay('starter')">Get 3 Hour Pack</button>
     </div>
@@ -509,14 +592,15 @@
       <div class="pc-rate">₹317 per AI hour</div>
       <div class="pc-per">6 Hours of AI time</div>
       <ul class="pc-feats">
-        <li>All features unlocked</li>
-        <li>Session transcript saved</li>
-        <li>5-answer history browse</li>
-        <li>Email support</li>
+        <li>Every feature unlocked, nothing held back</li>
+        <li>Browse your last 100 answers mid-interview</li>
+        <li>Transcript auto-save &amp; screen scan</li>
+        <li class="feat-up">Google Meet setup help when you need it</li>
+        <li class="feat-up">Priority email support, reply within 24 hours</li>
       </ul>
       <button class="btn-buy" onclick="openPay('basic')">Get 6 Hour Pack</button>
     </div>
-    <div class="pc pop" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
+    <div class="pc pop" data-tier="pro" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
       <div class="pc-badge-pop" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);color:#fff;">POWER USER</div>
       <h3>Pro</h3>
       <div class="pc-old">₹5,999 <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">55% OFF</span></div>
@@ -525,12 +609,21 @@
       <div class="pc-per">9 hours of AI time</div>
       <div class="pc-rounds" style="color:#A78BFA;background:rgba(167,139,250,.1);">Enough for 9 full interview rounds</div>
       <ul class="pc-feats">
-        <li>All features unlocked</li>
-        <li>Unlimited interview sessions</li>
-        <li>Full session history export</li>
-        <li>Priority email support</li>
+        <li>Every feature unlocked, nothing held back</li>
+        <li>Browse your last 100 answers mid-interview</li>
+        <li>Transcript auto-save &amp; screen scan</li>
+        <li class="feat-up">1-on-1 Google Meet walkthrough with an expert</li>
+        <li class="feat-up">Priority email support, reply within 12 hours</li>
       </ul>
       <button class="btn-buy" onclick="openPay('pro')" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);">Get 9 Hour Pack</button>
+    </div>
+  </div>
+  <!-- Says out loud what the cards imply, because a buyer scanning four lists will
+       assume the shortest one is missing something. Nothing is gated by tier. -->
+  <div style="text-align:center;margin:22px 0 4px;">
+    <div style="display:inline-block;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.18);border-radius:10px;padding:11px 22px;font-size:.83rem;color:#64748B;line-height:1.7;max-width:660px;">
+      <strong style="color:#34D399;">Every plan is the full app.</strong> No feature is locked to a higher tier, ever.
+      Plans differ only in how many AI hours you get and how quickly we can support you.
     </div>
   </div>
   <div class="pricing-note">
@@ -877,6 +970,20 @@
       .catch(function(err){btn.disabled=false;resp.textContent=_apiErrMsg(err)+' You can also email support@cloakai.in directly.';resp.className='sup-msg err';});
   }
   document.getElementById('sup-msg').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.ctrlKey)sendTicket();});
+  // Let another page hand a user straight into the ticket form: cloakai.in/?support=1
+  // Other pages (payment-result.html) have no ticket form of their own, and a bare
+  // mailto: link silently does nothing on a device with no mail client configured,
+  // which is exactly how "Contact Support" ended up being a dead button. Sending
+  // them here keeps ONE ticket form on the site instead of duplicating it.
+  (function(){
+    var q=new URLSearchParams(location.search);
+    if(q.get('support')!=='1')return;
+    var subj=(q.get('subject')||'').slice(0,120);
+    if(subj)document.getElementById('sup-subj').value=subj;
+    openSup();
+    // Drop the query string so a refresh or a shared link does not reopen the form.
+    history.replaceState(null,'',location.pathname+location.hash);
+  })();
 </script>
 <script src="layout.js"></script>
 </body>
