@@ -27,7 +27,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="favicon-180.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CloakAI","description":"Invisible AI interview assistant for Windows. Hidden from screenshare. Real-time AI answers only you can see.","applicationCategory":"BusinessApplication","operatingSystem":"Windows 10, Windows 11","offers":[{"@type":"Offer","price":"999","priceCurrency":"INR","name":"3 Hour Pack"},{"@type":"Offer","price":"1899","priceCurrency":"INR","name":"6 Hour Pack"},{"@type":"Offer","price":"2699","priceCurrency":"INR","name":"9 Hour Pack"}],"url":"https://cloakai.in","screenshot":"https://cloakai.in/og-image.png","featureList":"Invisible to screenshare, Real-time AI answers, Auto-listens, Session transcript, Screen capture analysis"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CloakAI","description":"Invisible AI interview assistant for Windows. Hidden from screenshare. Real-time AI answers only you can see.","applicationCategory":"BusinessApplication","operatingSystem":"Windows 10, Windows 11","offers":[{"@type":"Offer","price":"499","priceCurrency":"INR","name":"1 Hour Pack"},{"@type":"Offer","price":"999","priceCurrency":"INR","name":"3 Hour Pack"},{"@type":"Offer","price":"1899","priceCurrency":"INR","name":"6 Hour Pack"},{"@type":"Offer","price":"2699","priceCurrency":"INR","name":"9 Hour Pack"}],"url":"https://cloakai.in","screenshot":"https://cloakai.in/og-image.png","featureList":"Invisible to screenshare, Real-time AI answers, Auto-listens, Session transcript, Screen capture analysis"}</script>
   <style>
     :root{--cb:rgba(15,61,46,.6);--gb:1px solid rgba(46,204,113,.3);}
     body{background:var(--bg);color:var(--tc);overflow-x:hidden;min-height:100vh;}
@@ -79,7 +79,21 @@
     .pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 15px;font-size:.82rem;color:#bbb;display:flex;align-items:center;gap:6px;}
     .pill .dot{width:7px;height:7px;background:var(--gg);border-radius:50%;flex-shrink:0;}
     .pill svg{flex-shrink:0;}
-    .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px;}
+    .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px;align-items:flex-end;}
+    /* "Try for free" label sits above the download button. The wrapper keeps the
+       label and its button together as one flex item; align-items:flex-end above
+       keeps every button on the same baseline. The mobile rule below re-centres. */
+    .dl-stack{display:flex;flex-direction:column;align-items:center;gap:7px;}
+    .dl-tag{font-size:.68rem;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--gg);
+      display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+    /* Repeating "Try for free" CTA placed between sections. Deliberately NOT given
+       the .reveal class: reveal starts at opacity:0 and needs JS to add .on, so a
+       failed observer would leave the primary CTA invisible. An unanimated button
+       beats a missing one. */
+    .cta-band{text-align:center;max-width:780px;margin:0 auto;padding:34px 20px 6px;}
+    .cta-band p{color:#9aa5b8;font-size:.95rem;line-height:1.7;margin-bottom:16px;}
+    .cta-band .btn{display:inline-flex;align-items:center;gap:9px;}
+    .cta-band .cb-sub{display:block;margin-top:12px;font-size:.78rem;color:#5a6577;}
     .btn{display:inline-block;padding:14px 34px;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;text-decoration:none;border-radius:30px;font-weight:700;font-size:1.05rem;box-shadow:0 0 20px rgba(46,204,113,.4);transition:transform .3s,box-shadow .3s;border:1px solid var(--gg);position:relative;overflow:hidden;cursor:pointer;}
     .btn:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 0 36px rgba(46,204,113,.6);}
     .btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
@@ -286,6 +300,7 @@
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz5QOE5ROXK3h-mkF2tN_KAlNrQZ2SLY94hUjsIoyUfJenIsTWG3WZavgdPFu0jYqsRQ/exec';
   const BYPASS = false;
   const PLANS = {
+    mini:   {name:'1 Hour Pack',oldPrice:'₹899',price:'₹499',period:'1 hour of AI time',rate:'₹499/hr',label:'Get 1 Hour Pack'},
     starter:{name:'3 Hour Pack',oldPrice:'₹1,799',price:'₹999',period:'3 hours of AI time',rate:'₹333/hr',label:'Get 3 Hour Pack'},
     basic:  {name:'6 Hour Pack',oldPrice:'₹3,799',price:'₹1,899',period:'6 Hours of AI time',rate:'₹317/hr',label:'Get 6 Hour Pack'},
     pro:    {name:'9 Hour Pack',oldPrice:'₹5,999',price:'₹2,699',period:'9 hours of AI time',rate:'₹300/hr',label:'Get 9 Hour Pack'},
@@ -316,7 +331,19 @@
 <div class="wrap">
 <!-- HERO -->
 <section class="hero">
-  <div class="badge">🇮🇳 India's #1 AI Interview Answers Generator &nbsp;·&nbsp; 20-Min Free Trial - No card needed</div>
+  <div class="badge" style="display:inline-flex;align-items:center;justify-content:center;gap:4px 8px;flex-wrap:wrap;">
+    <span>🇮🇳 India's #1 AI Interview Answers Generator</span>
+    <span style="opacity:.4">·</span>
+    <span style="display:inline-flex;align-items:center;gap:5px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+      20-Min Free Trial
+    </span>
+    <span style="opacity:.4">·</span>
+    <span style="display:inline-flex;align-items:center;gap:5px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
+      No card needed
+    </span>
+  </div>
   <div class="glitch-wrap">
     <h1 class="glitch" data-text="The AI Only You Can See">The AI Only You Can See</h1>
   </div>
@@ -332,18 +359,36 @@
     <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg> Windows 10 &amp; 11 </div>
   </div>
   <div class="cta-group">
-    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from ₹999</a>
-    <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn-outline" onclick="trackEvent('Hero','Download','Win')">
-      <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
-      Download for Windows
-    </a>
+    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from ₹499</a>
+    <div class="dl-stack">
+      <span class="dl-tag">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Try for free
+      </span>
+      <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn-outline" onclick="trackEvent('Hero','Download','Win')">
+        <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+        Download for Windows
+      </a>
+    </div>
     <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.dmg" class="btn-outline-blue" onclick="trackEvent('Hero','Download','Mac')">
       <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="#60a5fa"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       Download for Mac
     </a>
   </div>
   <p class="hero-note" style="line-height:1.7;margin-top:12px;">Latest version <strong style="color:var(--gg)">v16.0.2</strong> &nbsp;·&nbsp; Windows 10 &amp; 11</p>
-  <p class="hero-note" style="line-height:1.7;">Plans from <strong style="color:var(--gg)">₹999</strong> &nbsp;·&nbsp; 20-min free trial, no card &nbsp;·&nbsp; Windows </p>
+  <p class="hero-note" style="line-height:1.9;display:flex;align-items:center;justify-content:center;gap:6px 14px;flex-wrap:wrap;">
+    <span style="display:inline-flex;align-items:center;gap:6px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+      <strong style="color:var(--gg)">20-min free trial</strong>
+    </span>
+    <span style="opacity:.35">·</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
+      NO CREDIT CARD REQUIRED
+    </span>
+    <span style="opacity:.35">·</span>
+    <span>Plans from <strong style="color:var(--gg)">₹499</strong></span>
+  </p>
 </section>
 <!-- DEMO (moved up - users see proof before reading features) -->
 <section id="demo" class="reveal">
@@ -405,6 +450,15 @@
     <div class="card"><div class="card-ico">🕹</div><h3>Stealth Controls</h3><p>Ctrl+Shift+H instantly hides or shows the window. Hold Alt for push-to-talk. Arrow keys browse history. Adjust transparency with the slider in real time.</p></div>
   </div>
 </section>
+<!-- INLINE CTA -->
+<div class="cta-band">
+  <p>Not ready to buy? Test every one of those features free for 20 minutes first.</p>
+  <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="trackEvent('Inline','Download','AfterFeatures')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+    Try for free
+  </a>
+  <span class="cb-sub">20-minute free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Windows 10 &amp; 11</span>
+</div>
 <!-- PRICING -->
 <section id="pricing" class="reveal">
   <div style="text-align:center;margin-bottom:28px;">
@@ -420,6 +474,19 @@
     </div>
   </div>
   <div class="pricing-grid">
+    <div class="pc">
+      <h3>Mini</h3>
+      <div class="pc-old">&#8377;899 <span class="pc-discount">44% OFF</span></div>
+      <div class="pc-price"><sup>&#8377;</sup>499</div>
+      <div class="pc-rate">&#8377;499 per AI hour</div>
+      <div class="pc-per">1 hour of AI time</div>
+      <ul class="pc-feats">
+        <li>All features unlocked</li>
+        <li>Best for a single interview</li>
+        <li>Timer pauses when app is closed</li>
+      </ul>
+      <button class="btn-buy" onclick="openPay('mini')">Get 1 Hour Pack</button>
+    </div>
     <div class="pc">
       <h3>Starter</h3>
       <div class="pc-old">₹1,799 <span class="pc-discount">45% OFF</span></div>
@@ -513,6 +580,15 @@
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"I saved the session after my first interview with it. Went through the questions that came up, the answers it gave, and how I actually responded. Best prep material I've had."</p><div class="rev-author">Riya M.</div><div class="rev-role">Software Engineer, Delhi</div></div>
   </div>
 </section>
+<!-- INLINE CTA -->
+<div class="cta-band">
+  <p>Join the users above. Try CloakAI free on your own machine before you spend anything.</p>
+  <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="trackEvent('Inline','Download','AfterReviews')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+    Try for free
+  </a>
+  <span class="cb-sub">20-minute free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Windows 10 &amp; 11</span>
+</div>
 <!-- FAQ -->
 <section id="faq" class="reveal">
   <div class="sh" style="margin-bottom:36px;"><h2>Frequently Asked Questions</h2></div>

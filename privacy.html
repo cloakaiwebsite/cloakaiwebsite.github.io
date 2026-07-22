@@ -27,6 +27,8 @@
     .bc ul{margin:8px 0 14px 20px;color:#9aa5b8;font-size:.88rem;line-height:1.8;}.bc li{margin-bottom:4px;}
     .bc a{color:var(--gg);}.bc strong{color:#e2e8f0;}
     .good{background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.2);border-radius:8px;padding:12px 16px;color:#34D399;font-size:.86rem;margin:14px 0;}
+    .note{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.22);border-radius:8px;padding:12px 16px;color:#93c5fd;font-size:.86rem;margin:14px 0;line-height:1.7;}
+    .warn{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:12px 16px;color:#fbbf24;font-size:.86rem;margin:14px 0;line-height:1.7;}
     table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.86rem;}
     th{background:rgba(46,204,113,.12);color:var(--gg);padding:10px 14px;text-align:left;border:1px solid rgba(46,204,113,.15);}
     td{color:#9aa5b8;padding:9px 14px;border:1px solid rgba(255,255,255,.05);vertical-align:top;}
@@ -81,7 +83,7 @@
   <div class="ph">
     <div class="tag">Legal</div>
     <h1>Privacy Policy</h1>
-    <p>Last Updated: January 2026 &nbsp;·&nbsp; Governs all data associated with CloakAI services.</p>
+    <p>Last Updated: July 2026 &nbsp;·&nbsp; Governs all data associated with CloakAI services.</p>
   </div>
   <div class="bc">
     <div class="good">CloakAI is built on a privacy-first principle. We collect the absolute minimum data necessary to operate the service. Your audio, conversations, and AI responses are never stored by us.</div>
@@ -101,13 +103,14 @@
 
     <h2>3. Data We Do NOT Collect</h2>
     <ul>
-      <li>Audio recordings captured locally, processed in real-time, immediately discarded.</li>
-      <li>AI-generated responses or transcriptions all processing is ephemeral.</li>
+      <li><strong>We never store your audio.</strong> It is captured locally, streamed for transcription, and discarded. No copy is kept on our servers.</li>
+      <li><strong>We never store transcriptions, questions or AI answers.</strong> They are passed through in real time and never written to our database. Your session transcript is saved only on your own computer, if you choose to save it.</li>
       <li>Keystrokes, screen content, or browsing history.</li>
       <li>Credit card or banking credentials handled entirely by PhonePe.</li>
       <li>Cookies for tracking, advertising, or profiling purposes.</li>
-      <li>IP addresses or geolocation data.</li>
     </ul>
+    <div class="note"><strong>Important: what OpenAI does retain.</strong> Although <em>we</em> store none of the above, your audio and text are processed by OpenAI to produce transcriptions and answers. Under OpenAI's API terms, this data may be retained by OpenAI for <strong>up to 30 days</strong> for abuse and misuse monitoring, and is then deleted. OpenAI does not use data submitted through its API to train its models. We have no access to that copy. Please read <a href="https://openai.com/enterprise-privacy" target="_blank">OpenAI's API data usage policy</a> if this matters to you.</div>
+    <div class="warn"><strong>Audio of other people, and your responsibility.</strong> When you run CloakAI in interviewer-listening mode, the audio captured and sent for transcription includes <strong>the other people on your call</strong>, who are not CloakAI users and have not agreed to our terms. You are solely responsible for ensuring your use of CloakAI is lawful where you are, including any obligation to notify or obtain consent from other participants before a call is captured or transcribed. Recording and consent laws vary by country and by state. If you are unsure, do not use the interviewer-listening mode.</div>
 
     <h2>4. How We Use Your Data</h2>
     <ul>
@@ -126,9 +129,11 @@
 
     <h2>6. Third-Party Services</h2>
     <ul>
-      <li><strong>OpenAI API</strong> Audio is sent to Whisper for transcription and to Chat Completions for answers. Processed in transit, not stored by us. Refer to <a href="https://openai.com/privacy" target="_blank">OpenAI's Privacy Policy</a>. We do not share your personal information (email, hardware fingerprint) with OpenAI.</li>
+      <li><strong>OpenAI API</strong> Audio is sent to Whisper for transcription and to Chat Completions for answers. We store none of it, but OpenAI may retain it for <strong>up to 30 days</strong> for abuse monitoring before deleting it, and does not use API data to train its models. We do not send your email address or any payment information to OpenAI. See <a href="https://openai.com/enterprise-privacy" target="_blank">OpenAI's API data usage policy</a>.</li>
+      <li><strong>Cloudflare</strong> All AI requests are routed through our own proxy at api.cloakai.in, running on Cloudflare Workers. This exists so the application never has to carry an AI provider credential. The proxy passes your audio and text straight through without storing them, and receives your licence key and device identifier in order to verify your subscription and meter usage. Subject to <a href="https://www.cloudflare.com/privacypolicy/" target="_blank">Cloudflare's privacy policy</a>.</li>
+      <li><strong>Google Analytics (GA4)</strong> The application reports anonymous usage events so we can understand which features are used and detect errors. These carry your anonymous device identifier, plan name, app version, feature names, a count of questions asked, and error types. <strong>They never include your questions, the AI's answers, any transcription, your resume, or your email address.</strong></li>
       <li><strong>PhonePe</strong> Payment processing. We do not receive or store card details. Subject to PhonePe's own privacy policy.</li>
-      <li><strong>Database Server</strong> License records are stored in Database Server accessible only to CloakAI. Subject to Google's privacy policy. We do not use Google Analytics or any Google advertising services.</li>
+      <li><strong>Google Firestore</strong> Licence records are stored in a database accessible only to CloakAI. Subject to Google's privacy policy. We do not use Google advertising services and we do not sell or share your data with advertisers.</li>
     </ul>
 
     <h2>7. Data Retention</h2>
