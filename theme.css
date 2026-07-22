@@ -47,8 +47,19 @@ header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter
 .logo{font-size:1.6rem;font-weight:800;color:var(--gg);text-shadow:0 0 10px var(--ag);display:flex;align-items:center;gap:8px;text-decoration:none;}
 .logo img{width:30px;height:30px;border-radius:5px;}
 #mnav{display:flex;align-items:center;}
-#mnav a{color:var(--tc);text-decoration:none;margin-left:16px;font-size:.9rem;font-weight:500;transition:color .3s;}
+#mnav a{color:var(--tc);text-decoration:none;margin-left:15px;font-size:.9rem;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:7px;}
 #mnav a:hover{color:var(--gg);}
+/* Nav icons: outline only (fill:none), always brand green, never white or grey.
+   A CSS `stroke` beats the inline stroke="currentColor" presentation attribute, so
+   the colour is set here in one place rather than on 126 SVG tags across 18 pages.
+   Sized in em, not px, so they track the two font sizes the nav uses (.9rem desktop,
+   .95rem mobile) and stay proportional to the label instead of drifting.
+   flex-shrink:0 stops the icon squashing when a label wraps. */
+#mnav a svg{width:1.2em;height:1.2em;flex-shrink:0;stroke:var(--gg);opacity:.8;transition:opacity .3s;}
+#mnav a:hover svg{opacity:1;}
+/* EXCEPTION, and it has to be one: .nav-cta is a solid green gradient pill, so a
+   green icon on it would be invisible. This single icon is white for contrast. */
+#mnav a.nav-cta svg{stroke:#fff;opacity:1;}
 .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
 .nav-cta:hover{box-shadow:0 0 14px rgba(46,204,113,.45);}
 .ham{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
@@ -62,7 +73,10 @@ header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter
   #mnav.open{display:flex;}
   #mnav a{margin:0;padding:12px 14px;border-radius:9px;font-size:.95rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.05);}
   #mnav a:last-child{border-bottom:none;}
-  .nav-cta{margin-top:10px!important;text-align:center;display:block;padding:12px 16px!important;}
+  /* display:flex, not block: the CTA now contains an icon plus a label, and block
+     would leave them left-aligned inside a full-width button while text-align
+     centred only the text. */
+  .nav-cta{margin-top:10px!important;display:flex;justify-content:center;padding:12px 16px!important;}
   .header-inner{flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:0!important;}}
 
 /* ═══ FOOTER ════════════════════════════════════════════════════ */
