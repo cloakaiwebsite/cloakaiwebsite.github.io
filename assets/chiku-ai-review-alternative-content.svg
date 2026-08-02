@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="Browser-based Chiku AI versus native CloakAI on screenshare visibility">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0b2418"/></linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#bg2)"/>
+  <text x="600" y="66" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="36" font-weight="900" fill="#ffffff">Why <tspan fill="#2ecc71">native</tspan> beats a browser tab on screenshare</text>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g transform="translate(70,120)">
+      <rect width="500" height="340" rx="16" fill="#ffffff" fill-opacity="0.03" stroke="#f59e0b" stroke-opacity="0.35"/>
+      <text x="30" y="50" font-size="22" font-weight="800" fill="#f59e0b">Browser-based (Chiku AI)</text>
+      <rect x="30" y="76" width="440" height="30" rx="6" fill="#0a1f15" stroke="#ffffff" stroke-opacity="0.1"/>
+      <circle cx="46" cy="91" r="5" fill="#ff5f56"/><circle cx="64" cy="91" r="5" fill="#ffbd2e"/><circle cx="82" cy="91" r="5" fill="#27c93f"/>
+      <text x="110" y="96" font-size="13" fill="#7f9488">interview tab · assistant tab</text>
+      <text x="30" y="150" font-size="17" fill="#c9d6cf">•  Runs inside a Chrome tab</text>
+      <text x="30" y="188" font-size="17" fill="#c9d6cf">•  Tab is captured on screenshare</text>
+      <text x="30" y="226" font-size="17" fill="#c9d6cf">•  Tab-switching can be noticed</text>
+      <text x="30" y="264" font-size="17" fill="#c9d6cf">•  No OS-level protection possible</text>
+      <text x="30" y="308" font-size="17" font-weight="700" fill="#f59e0b">Visibility risk if you share screen</text>
+    </g>
+    <g transform="translate(630,120)">
+      <rect width="500" height="340" rx="16" fill="#2ecc71" fill-opacity="0.07" stroke="#2ecc71" stroke-opacity="0.4"/>
+      <text x="30" y="50" font-size="22" font-weight="800" fill="#2ecc71">Native app (CloakAI)</text>
+      <rect x="30" y="76" width="440" height="30" rx="6" fill="#0d2b1d" stroke="#00ff88" stroke-opacity="0.4"/>
+      <text x="46" y="96" font-size="13" fill="#00ff88">overlay · content-protected</text>
+      <text x="30" y="150" font-size="17" fill="#eaf3ee">•  Runs as its own window</text>
+      <text x="30" y="188" font-size="17" fill="#eaf3ee">•  Removed from screen capture</text>
+      <text x="30" y="226" font-size="17" fill="#eaf3ee">•  Nothing to switch to or reveal</text>
+      <text x="30" y="264" font-size="17" fill="#eaf3ee">•  Windows content protection</text>
+      <text x="30" y="308" font-size="17" font-weight="700" fill="#00ff88">Invisible even when you share</text>
+    </g>
+  </g>
+</svg>

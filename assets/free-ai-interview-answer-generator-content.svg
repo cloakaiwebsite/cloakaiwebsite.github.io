@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="How a real-time AI interview answer generator works, step by step">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0b2418"/></linearGradient>
+    <linearGradient id="tile2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.05"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.01"/></linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#bg2)"/>
+  <text x="600" y="70" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="900" fill="#ffffff">From spoken question to <tspan fill="#2ecc71">your answer</tspan>, in seconds</text>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g transform="translate(60,150)">
+      <rect width="240" height="250" rx="18" fill="url(#tile2)" stroke="#2ecc71" stroke-opacity="0.2"/>
+      <text x="120" y="86" text-anchor="middle" font-size="50">🎙</text>
+      <text x="120" y="150" text-anchor="middle" font-size="21" font-weight="800" fill="#ffffff">1. Listens</text>
+      <text x="120" y="188" text-anchor="middle" font-size="15" fill="#9fb3a8">Picks up the question</text>
+      <text x="120" y="210" text-anchor="middle" font-size="15" fill="#9fb3a8">by voice, live.</text>
+    </g>
+    <text x="322" y="285" text-anchor="middle" font-size="34" fill="#2ecc71">→</text>
+    <g transform="translate(360,150)">
+      <rect width="240" height="250" rx="18" fill="url(#tile2)" stroke="#2ecc71" stroke-opacity="0.2"/>
+      <text x="120" y="86" text-anchor="middle" font-size="50">🧠</text>
+      <text x="120" y="150" text-anchor="middle" font-size="21" font-weight="800" fill="#ffffff">2. Understands</text>
+      <text x="120" y="188" text-anchor="middle" font-size="15" fill="#9fb3a8">Reads it against your</text>
+      <text x="120" y="210" text-anchor="middle" font-size="15" fill="#9fb3a8">resume and the role.</text>
+    </g>
+    <text x="622" y="285" text-anchor="middle" font-size="34" fill="#2ecc71">→</text>
+    <g transform="translate(660,150)">
+      <rect width="240" height="250" rx="18" fill="url(#tile2)" stroke="#2ecc71" stroke-opacity="0.2"/>
+      <text x="120" y="86" text-anchor="middle" font-size="50">✍</text>
+      <text x="120" y="150" text-anchor="middle" font-size="21" font-weight="800" fill="#ffffff">3. Generates</text>
+      <text x="120" y="188" text-anchor="middle" font-size="15" fill="#9fb3a8">Streams an answer in</text>
+      <text x="120" y="210" text-anchor="middle" font-size="15" fill="#9fb3a8">your own voice.</text>
+    </g>
+    <text x="922" y="285" text-anchor="middle" font-size="34" fill="#2ecc71">→</text>
+    <g transform="translate(960,150)">
+      <rect width="180" height="250" rx="18" fill="#2ecc71" fill-opacity="0.08" stroke="#2ecc71" stroke-opacity="0.35"/>
+      <text x="90" y="86" text-anchor="middle" font-size="50">🛡</text>
+      <text x="90" y="150" text-anchor="middle" font-size="21" font-weight="800" fill="#ffffff">Only you</text>
+      <text x="90" y="176" text-anchor="middle" font-size="21" font-weight="800" fill="#ffffff">see it</text>
+      <text x="90" y="214" text-anchor="middle" font-size="15" fill="#9fb3a8">Hidden on</text>
+      <text x="90" y="234" text-anchor="middle" font-size="15" fill="#9fb3a8">screenshare.</text>
+    </g>
+  </g>
+</svg>

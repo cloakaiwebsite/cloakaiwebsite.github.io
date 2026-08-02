@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="ChatGPT vs Claude for interview prep">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0d2b1d"/></linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.2" r="0.55"><stop offset="0" stop-color="#00ff88" stop-opacity="0.28"/><stop offset="1" stop-color="#00ff88" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g stroke="#2ecc71" stroke-opacity="0.06" stroke-width="1"><path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200"/><path d="M150 0V630M350 0V630M550 0V630M750 0V630M950 0V630"/></g>
+  <g transform="translate(80,80)">
+    <rect x="0" y="0" width="204" height="34" rx="17" fill="#2ecc71" fill-opacity="0.12" stroke="#2ecc71" stroke-opacity="0.4"/>
+    <circle cx="22" cy="17" r="5" fill="#00ff88"/>
+    <text x="40" y="22" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#00ff88" letter-spacing="1">PREP COMPARISON</text>
+  </g>
+  <text x="80" y="252" font-family="Segoe UI, Arial, sans-serif" font-size="70" font-weight="900" fill="#ffffff" letter-spacing="-1">ChatGPT <tspan fill="#7f9488">vs</tspan> Claude</text>
+  <text x="80" y="328" font-family="Segoe UI, Arial, sans-serif" font-size="70" font-weight="900" fill="#ffffff" letter-spacing="-1">for <tspan fill="#2ecc71">Interview Prep</tspan></text>
+  <text x="80" y="390" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="500" fill="#9fb3a8">Which writes more natural answers, and</text>
+  <text x="80" y="426" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="500" fill="#9fb3a8">what to actually use in the live interview.</text>
+  <!-- two chat bubbles vs illustration -->
+  <g transform="translate(880,300)" font-family="Segoe UI, Arial, sans-serif">
+    <circle cx="90" cy="0" r="150" fill="#2ecc71" fill-opacity="0.04" stroke="#2ecc71" stroke-opacity="0.16"/>
+    <g transform="translate(-30,-70)">
+      <path d="M0 0 h130 a14 14 0 0 1 14 14 v56 a14 14 0 0 1 -14 14 h-96 l-22 22 v-22 a14 14 0 0 1 -12 -14 v-56 a14 14 0 0 1 14 -14 Z" fill="#0a1f15" stroke="#ffffff" stroke-opacity="0.14"/>
+      <text x="24" y="44" font-size="19" font-weight="700" fill="#c9d6cf">ChatGPT</text>
+    </g>
+    <g transform="translate(66,42)">
+      <path d="M0 0 h116 a14 14 0 0 1 14 14 v52 a14 14 0 0 1 -14 14 h-80 l-20 20 v-20 a14 14 0 0 1 -16 -14 v-52 a14 14 0 0 1 14 -14 Z" fill="#0d2b1d" stroke="#2ecc71" stroke-opacity="0.5"/>
+      <text x="22" y="42" font-size="19" font-weight="700" fill="#2ecc71">Claude</text>
+    </g>
+    <circle cx="70" cy="0" r="28" fill="#07130d" stroke="#7f9488" stroke-width="2"/>
+    <text x="70" y="8" text-anchor="middle" font-size="20" font-weight="800" fill="#9fb3a8">vs</text>
+  </g>
+  <g transform="translate(80,562)">
+    <path d="M0 -12 L15 -4 V10 C15 20 8 28 0 31 C-8 28 -15 20 -15 10 V-4 Z" transform="translate(10,0)" fill="#2ecc71"/>
+    <text x="34" y="6" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="800" fill="#ffffff">CloakAI</text>
+    <text x="150" y="6" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#6f8378">The AI only you can see</text>
+  </g>
+</svg>

@@ -32,10 +32,10 @@
   <meta name="twitter:image" content="https://cloakai.in/og-image.png">
 
   <link rel="canonical" href="https://cloakai.in/which-ai-is-best-for-interview.html">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="alternate icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/favicon-180.png">
-  <link rel="stylesheet" href="/theme.css?v=20260723">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon-180.png">
+  <link rel="stylesheet" href="theme.css?v=20260723">
 
   <!-- Schema: Article + FAQ -->
   <script type="application/ld+json">{
@@ -128,8 +128,8 @@
     .article-body ol{margin:0 0 18px 22px;}
     .article-body li{margin-bottom:8px;}
     .article-body strong{color:#fff;}
-    .article-body a{color:var(--ag);text-decoration:none;border-bottom:1px solid rgba(46,204,113,.3);}
-    .article-body a:hover{border-bottom-color:var(--ag);}
+    .article-body a:not(.btn){color:var(--ag);text-decoration:none;border-bottom:1px solid rgba(46,204,113,.3);}
+    .article-body a:not(.btn):hover{border-bottom-color:var(--ag);}
     .article-body blockquote{border-left:3px solid var(--ag);margin:24px 0;padding:14px 20px;background:rgba(46,204,113,.05);border-radius:0 10px 10px 0;font-style:italic;color:var(--t2);}
 
     /* Comparison table */
@@ -153,9 +153,22 @@
     .cta-box p{color:var(--t2);margin-bottom:20px;font-size:.95rem;}
     .cta-btn{display:inline-block;background:linear-gradient(135deg,var(--pg),var(--ag));color:#022c22;font-weight:800;padding:14px 32px;border-radius:10px;text-decoration:none;font-size:1rem;transition:.2s;border:none;}
     .cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,204,113,.3);border-bottom:none;}
+    .cta-btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+    .cta-btn-dl{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);color:#fff;font-weight:700;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:1rem;border:1px solid rgba(46,204,113,.4);transition:.2s;}
+    .cta-btn-dl:hover{background:rgba(46,204,113,.12);border-color:var(--ag);transform:translateY(-2px);border-bottom:1px solid var(--ag);}
+
     .cta-sub{font-size:.75rem;color:var(--t3);margin-top:10px;}
 
     /* FAQ */
+    .cta-band{text-align:center;max-width:780px;margin:40px auto;padding:34px 20px 6px;}
+    .cta-band p{color:#9aa5b8;font-size:.95rem;line-height:1.7;margin-bottom:16px;}
+    .cta-band .btn{display:inline-flex;align-items:center;gap:9px;}
+    .cta-band .cb-sub{display:block;margin-top:12px;font-size:.78rem;color:#5a6577;}
+    .btn{display:inline-block;padding:14px 34px;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;text-decoration:none;border-radius:30px;font-weight:700;font-size:1.05rem;box-shadow:0 0 20px rgba(46,204,113,.4);transition:transform .3s,box-shadow .3s;border:1px solid var(--gg);position:relative;overflow:hidden;cursor:pointer;}
+    .btn:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 0 36px rgba(46,204,113,.6);}
+    .btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
+    @keyframes shine{0%{transform:translateX(-100%) rotate(45deg);}100%{transform:translateX(100%) rotate(45deg);}}
+
     .faq-section{margin:48px 0;}
     .faq-section h2{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:20px;}
     .faq-item{border-bottom:1px solid rgba(255,255,255,.07);padding:16px 0;cursor:pointer;}
@@ -187,18 +200,18 @@
 
 <header>
   <div class="header-inner">
-    <a href="/index.html" class="logo">
-      <img src="/logo-email.png" width="30" height="30" alt="CloakAI" style="border-radius:5px;">
+    <a href="index.html" class="logo">
+      <img src="logo-email.png" width="30" height="30" alt="CloakAI" style="border-radius:5px;">
       CloakAI
     </a>
     <nav id="mnav">
-      <a href="/index.html#demo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10.5 8.5l5.5 3.5-5.5 3.5z"/></svg>Demo</a>
-      <a href="/index.html#features"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.3L19.5 10l-5.3 2.2L12 17.5l-2.2-5.3L4.5 10l5.3-1.7z"/></svg>Features</a>
-      <a href="/index.html#pricing"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/></svg>Pricing</a>
-      <a href="/how-to-use.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.8 9.4a2.3 2.3 0 114 1.8c-.7.7-1.8 1.1-1.8 2.1"/><path d="M12 17h.01"/></svg>How to use?</a>
-      <a href="/license-info.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg>License &amp; Referral</a>
+      <a href="index.html#demo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10.5 8.5l5.5 3.5-5.5 3.5z"/></svg>Demo</a>
+      <a href="index.html#features"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.3L19.5 10l-5.3 2.2L12 17.5l-2.2-5.3L4.5 10l5.3-1.7z"/></svg>Features</a>
+      <a href="index.html#pricing"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/></svg>Pricing</a>
+      <a href="how-to-use.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.8 9.4a2.3 2.3 0 114 1.8c-.7.7-1.8 1.1-1.8 2.1"/><path d="M12 17h.01"/></svg>How to use?</a>
+      <a href="license-info.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg>License &amp; Referral</a>
       <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" onclick="window.trackEvent&amp;&amp;trackEvent('Nav','Download','Win')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11"/><path d="M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4 19.5h16"/></svg>Desktop App</a>
-      <a href="/index.html#pricing" class="nav-cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="M12.5 6l6 6-6 6"/></svg>Get Access</a>
+      <a href="index.html#pricing" class="nav-cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="M12.5 6l6 6-6 6"/></svg>Get Access</a>
     </nav>
     <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
@@ -207,7 +220,7 @@
 <main>
   <div class="blog-hero">
     <div class="blog-wrap">
-      <a href="/blog.html" class="blog-category">AI Interview Guide</a>
+      <a href="blog.html" class="blog-category">AI Interview Guide</a>
       <h1>Which AI is Best for Interview? Complete 2026 Comparison</h1>
       <div class="blog-meta">
         <span>✍ CloakAI Team</span>
@@ -221,7 +234,7 @@
     <article class="article-body">
 
       
-      <img src="/assets/which-ai-is-best-for-interview-hero.webp" alt="Which AI assistant is better for interviews" style="width:100%;border-radius:14px;margin:28px 0;" loading="lazy">
+      <img src="assets/which-ai-is-best-for-interview-hero.webp" alt="Which AI assistant is better for interviews" style="width:100%;border-radius:14px;margin:28px 0;" loading="lazy">
 
       <p>Every job seeker today is asking the same question: <strong>which AI is best for interview preparation — and which one actually works when it counts most?</strong> With dozens of tools flooding the market in 2024 and 2026, the answer is not as obvious as it seems. This guide breaks down every major option so you can make the right call before your next interview.</p>
 
@@ -246,7 +259,7 @@
       <p>With that framework in mind, let us compare every major option.</p>
 
       
-      <img src="/assets/which-ai-is-best-for-interview-content.webp" alt="General vs specialist AI assistants comparison" style="width:100%;border-radius:14px;margin:28px 0;" loading="lazy">
+      <img src="assets/which-ai-is-best-for-interview-content.webp" alt="General vs specialist AI assistants comparison" style="width:100%;border-radius:14px;margin:28px 0;" loading="lazy">
 
       <h2>AI Tool-by-Tool Comparison for Interviews</h2>
 
@@ -275,7 +288,7 @@
       <p>CloakAI is purpose-built for one specific moment: the live interview. It runs as a floating overlay on your screen that <strong>your interviewer cannot see</strong> — it is invisible to all screen recording software and screenshare tools including Zoom, Teams, Google Meet, and OBS. The AI listens to the conversation, detects when a question is asked, and generates a personalised answer based on your resume and the role you are applying for.</p>
 
       
-      <img src="/assets/which-ai-is-best-for-interview-content-2.webp" alt="Screenshare Hidden Software" style="width:100%;border-radius:14px;margin:28px 0;" loading="lazy">
+      <img src="assets/which-ai-is-best-for-interview-content-2.webp" alt="Screenshare Hidden Software" style="width:100%;border-radius:14px;margin:28px 0;" loading="lazy">
 
       <p>Key features that make CloakAI stand apart:</p>
       <ul>
@@ -287,6 +300,15 @@
         <li><strong>Works on any call:</strong> Zoom, Teams, Google Meet, any platform</li>
         <li><strong>₹999 for 3 hours</strong> — enough for multiple interviews</li>
       </ul>
+
+      <div class="cta-band">
+        <p>New here? Try every feature free for 20 minutes, no signup and no card needed.</p>
+        <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="window.trackEvent&amp;&amp;trackEvent('Blog','Download','Win')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+          Try CloakAI for free
+        </a>
+        <span class="cb-sub">20-minute free trial &nbsp;&#183;&nbsp; No credit card required &nbsp;&#183;&nbsp; Windows 10 &amp; 11</span>
+      </div>
 
       <h2>Head-to-Head Comparison Table</h2>
 
@@ -321,14 +343,17 @@
 
       <p>The best AI for interviews is not one tool but a combination: use general AI for preparation, and use CloakAI for the live interview itself. If you can only choose one, and you have an interview coming up, CloakAI is the only tool that actually works when the camera is on and the pressure is real. Every other tool either requires you to be visible about using it, only works in practice mode, or does not generate real-time answers at all.</p>
 
-      <div class="cta-box">
-        <h3>Try CloakAI Free — 20 Minutes, No Credit Card</h3>
-        <p>See exactly how it works before your next interview. The trial gives you 20 full minutes of active AI use — enough to test every feature.</p>
-        <a href="/index.html#pricing" class="cta-btn">Start Free Trial →</a>
-        <div class="cta-sub">Works on Windows 10 &amp; 11 · Zoom, Teams, Google Meet · Invisible to screenshare</div>
-      </div>
 
     
+      <div class="cta-band">
+        <p>Not ready to buy? Test every one of those features free for 20 minutes first.</p>
+        <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="window.trackEvent&amp;&amp;trackEvent('Blog','Download','Win')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+          Try CloakAI for free
+        </a>
+        <span class="cb-sub">20-minute free trial &nbsp;&#183;&nbsp; No credit card required &nbsp;&#183;&nbsp; Windows 10 &amp; 11</span>
+      </div>
+
       <h2>CloakAI vs the Current Market Leaders: Parakeet AI, Chiku AI &amp; LockedIn AI</h2>
 
       <p>The AI interview tool market has grown significantly in the past year. Three names have emerged as the most discussed alternatives in 2026 — Parakeet AI, Chiku AI, and LockedIn AI. Here is an honest breakdown of each, and how CloakAI compares on the things that actually matter.</p>
@@ -425,6 +450,15 @@
         <p>Parakeet AI is the most expensive option for Indian candidates. Chiku AI is well-priced for India but browser-based screenshare protection is unreliable. LockedIn AI is broad but expensive and has reported visibility issues. <strong>CloakAI offers the most affordable entry price, genuine OS-level screenshare invisibility, a 20-minute free trial, and UPI payment support</strong> — making it the strongest choice for Indian job seekers who want real-time AI help during live interviews.</p>
       </div>
 
+      <div class="cta-band">
+        <p>Line it up for your next interview and try the whole thing free for 20 minutes.</p>
+        <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="window.trackEvent&amp;&amp;trackEvent('Blog','Download','Win')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+          Try CloakAI for free
+        </a>
+        <span class="cb-sub">20-minute free trial &nbsp;&#183;&nbsp; No credit card required &nbsp;&#183;&nbsp; Windows 10 &amp; 11</span>
+      </div>
+
     </article>
 
     <div class="faq-section">
@@ -481,28 +515,28 @@
 
 <footer>
   <div class="footer-logo">
-    <img src="/logo-email.png" width="22" height="22" alt="CloakAI" style="border-radius:4px;">
+    <img src="logo-email.png" width="22" height="22" alt="CloakAI" style="border-radius:4px;">
     CloakAI
   </div>
   <p class="footer-tagline">The AI that only you can see.</p>
   <div class="footer-links">
-    <a href="/index.html">Home</a>
-    <a href="/blog.html">Blog</a>
-    <a href="/about.html">About</a>
-    <a href="/how-to-use.html">How to use?</a>
-    <a href="/license-info.html">License &amp; Referral</a>
-    <a href="/index.html#pricing">Pricing</a>
-    <a href="/contact.html">Contact</a>
-    <a href="/terms.html">Terms</a>
-    <a href="/privacy.html">Privacy</a>
-    <a href="/refund.html">Refund</a>
-    <a href="/dmca.html">DMCA</a>
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="about.html">About</a>
+    <a href="how-to-use.html">How to use?</a>
+    <a href="license-info.html">License &amp; Referral</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="contact.html">Contact</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="refund.html">Refund</a>
+    <a href="dmca.html">DMCA</a>
   </div>
   <div class="footer-copy">© 2026 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
   <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation.</div>
 </footer>
 
-<script src="/layout.js"></script>
+<script src="layout.js"></script>
 <script>
 document.querySelectorAll('.faq-item').forEach(function(item){
   item.addEventListener('click',function(){this.classList.toggle('open');});

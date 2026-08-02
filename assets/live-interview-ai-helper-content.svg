@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="A live interview AI helper versus a practice tool">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0b2418"/></linearGradient>
+  </defs>
+  <rect width="1200" height="520" fill="url(#bg2)"/>
+  <text x="600" y="70" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="900" fill="#ffffff">A <tspan fill="#2ecc71">live</tspan> helper vs a practice tool</text>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g transform="translate(70,130)">
+      <rect width="500" height="330" rx="18" fill="#ffffff" fill-opacity="0.03" stroke="#ef4444" stroke-opacity="0.3"/>
+      <text x="30" y="56" font-size="24" font-weight="800" fill="#ef4444">Practice tool</text>
+      <text x="30" y="112" font-size="19" fill="#c9d6cf">✗  Only works before the call</text>
+      <text x="30" y="156" font-size="19" fill="#c9d6cf">✗  You rehearse, then you are alone</text>
+      <text x="30" y="200" font-size="19" fill="#c9d6cf">✗  No help when you freeze</text>
+      <text x="30" y="244" font-size="19" fill="#c9d6cf">✗  Generic feedback</text>
+      <text x="30" y="288" font-size="19" fill="#c9d6cf">✗  Visible if shared on screen</text>
+    </g>
+    <g transform="translate(630,130)">
+      <rect width="500" height="330" rx="18" fill="#2ecc71" fill-opacity="0.07" stroke="#2ecc71" stroke-opacity="0.4"/>
+      <text x="30" y="56" font-size="24" font-weight="800" fill="#2ecc71">Live AI helper</text>
+      <text x="30" y="112" font-size="19" fill="#eaf3ee">✓  Works during the real interview</text>
+      <text x="30" y="156" font-size="19" fill="#eaf3ee">✓  Answers the second you need it</text>
+      <text x="30" y="200" font-size="19" fill="#eaf3ee">✓  Catches you when you blank</text>
+      <text x="30" y="244" font-size="19" fill="#eaf3ee">✓  Grounded in your resume</text>
+      <text x="30" y="288" font-size="19" fill="#eaf3ee">✓  Invisible on screenshare</text>
+    </g>
+  </g>
+</svg>

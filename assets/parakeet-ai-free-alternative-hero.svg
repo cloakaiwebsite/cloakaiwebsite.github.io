@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="A free alternative to Parakeet AI for interviews">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0d2b1d"/></linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.2" r="0.55"><stop offset="0" stop-color="#00ff88" stop-opacity="0.28"/><stop offset="1" stop-color="#00ff88" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g stroke="#2ecc71" stroke-opacity="0.06" stroke-width="1"><path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200"/><path d="M150 0V630M350 0V630M550 0V630M750 0V630M950 0V630"/></g>
+  <g transform="translate(80,80)">
+    <rect x="0" y="0" width="176" height="34" rx="17" fill="#2ecc71" fill-opacity="0.12" stroke="#2ecc71" stroke-opacity="0.4"/>
+    <circle cx="22" cy="17" r="5" fill="#00ff88"/>
+    <text x="40" y="22" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#00ff88" letter-spacing="1">COMPARISON</text>
+  </g>
+  <text x="80" y="250" font-family="Segoe UI, Arial, sans-serif" font-size="66" font-weight="900" fill="#ffffff" letter-spacing="-1">AI Like Parakeet AI,</text>
+  <text x="80" y="324" font-family="Segoe UI, Arial, sans-serif" font-size="66" font-weight="900" fill="#ffffff" letter-spacing="-1">but <tspan fill="#2ecc71">Actually Free</tspan></text>
+  <text x="80" y="386" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="500" fill="#9fb3a8">Parakeet AI vs CloakAI: real-time answers</text>
+  <text x="80" y="422" font-family="Segoe UI, Arial, sans-serif" font-size="27" font-weight="500" fill="#9fb3a8">at a fraction of the cost.</text>
+  <!-- price face-off illustration -->
+  <g transform="translate(870,300)" font-family="Segoe UI, Arial, sans-serif">
+    <circle cx="90" cy="0" r="150" fill="#2ecc71" fill-opacity="0.04" stroke="#2ecc71" stroke-opacity="0.16"/>
+    <rect x="-30" y="-96" width="120" height="192" rx="14" fill="#ffffff" fill-opacity="0.03" stroke="#ef4444" stroke-opacity="0.35"/>
+    <text x="30" y="-58" text-anchor="middle" font-size="17" fill="#c9d6cf">Parakeet</text>
+    <text x="30" y="-12" text-anchor="middle" font-size="30" font-weight="800" fill="#ef4444">$29.50</text>
+    <text x="30" y="16" text-anchor="middle" font-size="14" fill="#7f9488">~₹2,650</text>
+    <text x="30" y="66" text-anchor="middle" font-size="14" fill="#7f9488">no free plan</text>
+    <rect x="110" y="-96" width="120" height="192" rx="14" fill="#2ecc71" fill-opacity="0.08" stroke="#2ecc71" stroke-opacity="0.5"/>
+    <text x="170" y="-58" text-anchor="middle" font-size="17" fill="#eaf3ee">CloakAI</text>
+    <text x="170" y="-12" text-anchor="middle" font-size="30" font-weight="800" fill="#00ff88">₹999</text>
+    <text x="170" y="16" text-anchor="middle" font-size="14" fill="#9fb3a8">for 3 hours</text>
+    <text x="170" y="66" text-anchor="middle" font-size="14" fill="#9fb3a8">20-min free</text>
+  </g>
+  <g transform="translate(80,562)">
+    <path d="M0 -12 L15 -4 V10 C15 20 8 28 0 31 C-8 28 -15 20 -15 10 V-4 Z" transform="translate(10,0)" fill="#2ecc71"/>
+    <text x="34" y="6" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="800" fill="#ffffff">CloakAI</text>
+    <text x="150" y="6" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#6f8378">The AI only you can see</text>
+  </g>
+</svg>
