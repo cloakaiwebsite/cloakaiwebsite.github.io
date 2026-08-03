@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Practice before the interview versus real-time help during it">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0d2b1d"/></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.2" r="0.55"><stop offset="0" stop-color="#00ff88" stop-opacity="0.28"/><stop offset="1" stop-color="#00ff88" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g stroke="#2ecc71" stroke-opacity="0.06" stroke-width="1"><path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200"/><path d="M150 0V630M350 0V630M550 0V630M750 0V630M950 0V630"/></g>
+  <text x="80" y="92" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Where each tool works</text>
+  <line x1="120" y1="330" x2="1080" y2="330" stroke="#2ecc71" stroke-opacity="0.3" stroke-width="3"/>
+  <circle cx="360" cy="330" r="10" fill="#7f9488"/><circle cx="820" cy="330" r="10" fill="#00ff88"/>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <rect x="220" y="200" width="280" height="90" rx="12" fill="#0a1f15" stroke="#7f9488" stroke-opacity="0.4"/>
+    <text x="360" y="235" text-anchor="middle" font-size="20" font-weight="800" fill="#c9d6cf">Yoodli</text>
+    <text x="360" y="264" text-anchor="middle" font-size="15" fill="#7f9488">practice, feedback, delivery</text>
+    <text x="360" y="372" text-anchor="middle" font-size="16" fill="#9fb3a8">BEFORE the interview</text>
+    <rect x="680" y="200" width="280" height="90" rx="12" fill="#0d2b1d" stroke="#00ff88" stroke-opacity="0.6"/>
+    <text x="820" y="235" text-anchor="middle" font-size="20" font-weight="800" fill="#eaf3ee">CloakAI</text>
+    <text x="820" y="264" text-anchor="middle" font-size="15" fill="#9fb3a8">real-time answers on screen</text>
+    <text x="820" y="372" text-anchor="middle" font-size="16" fill="#9fb3a8">DURING the interview</text>
+  </g>
+  <text x="80" y="560" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#6f8378">The best-prepared candidates often use one to prepare and the other to perform.</text>
+</svg>

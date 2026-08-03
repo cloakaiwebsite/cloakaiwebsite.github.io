@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="LockedIn AI premium cost versus CloakAI">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0d2b1d"/></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.2" r="0.55"><stop offset="0" stop-color="#00ff88" stop-opacity="0.28"/><stop offset="1" stop-color="#00ff88" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g stroke="#2ecc71" stroke-opacity="0.06" stroke-width="1"><path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200"/><path d="M150 0V630M350 0V630M550 0V630M750 0V630M950 0V630"/></g>
+  <text x="80" y="92" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Premium cost, roughly compared</text>
+  <text x="80" y="200" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#c9d6cf">LockedIn AI premium</text>
+  <rect x="360" y="170" width="680" height="44" rx="10" fill="#ffffff" fill-opacity="0.04"/>
+  <rect x="360" y="170" width="680" height="44" rx="10" fill="#f59e0b"/>
+  <text x="1056" y="200" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="800" fill="#eaf3ee">~Rs 4,200/mo</text>
+  <text x="80" y="286" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" fill="#c9d6cf">CloakAI</text>
+  <rect x="360" y="256" width="680" height="44" rx="10" fill="#ffffff" fill-opacity="0.04"/>
+  <rect x="360" y="256" width="163" height="44" rx="10" fill="#00ff88"/>
+  <text x="539" y="286" font-family="Segoe UI, Arial, sans-serif" font-size="19" font-weight="800" fill="#eaf3ee">Rs 999 (3 hr, pay-per-use)</text>
+  <text x="80" y="560" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#6f8378">LockedIn AI has a free tier; live use sits behind premium. CloakAI charges only for the hours you use.</text>
+</svg>

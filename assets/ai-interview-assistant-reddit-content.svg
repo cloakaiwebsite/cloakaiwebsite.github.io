@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="The checklist Reddit threads keep repeating">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#07130d"/><stop offset="1" stop-color="#0d2b1d"/></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.2" r="0.55"><stop offset="0" stop-color="#00ff88" stop-opacity="0.28"/><stop offset="1" stop-color="#00ff88" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g stroke="#2ecc71" stroke-opacity="0.06" stroke-width="1"><path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200"/><path d="M150 0V630M350 0V630M550 0V630M750 0V630M950 0V630"/></g>
+  <text x="80" y="92" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="800" fill="#ffffff">Test these before you trust a tool</text>
+  <g transform="translate(80,190)" font-family="Segoe UI, Arial, sans-serif">
+    <circle cx="16" cy="0" r="16" fill="#2ecc71" fill-opacity="0.15" stroke="#00ff88" stroke-opacity="0.6"/>
+    <path d="M9 0 l5 5 l9 -11" fill="none" stroke="#00ff88" stroke-width="3"/>
+    <text x="48" y="6" font-size="21" font-weight="600" fill="#c9d6cf">Invisible on screen share (share your screen and check)</text>
+  </g>
+  <g transform="translate(80,250)" font-family="Segoe UI, Arial, sans-serif">
+    <circle cx="16" cy="0" r="16" fill="#2ecc71" fill-opacity="0.15" stroke="#00ff88" stroke-opacity="0.6"/>
+    <path d="M9 0 l5 5 l9 -11" fill="none" stroke="#00ff88" stroke-width="3"/>
+    <text x="48" y="6" font-size="21" font-weight="600" fill="#c9d6cf">Fast: a usable answer in under two seconds</text>
+  </g>
+  <g transform="translate(80,310)" font-family="Segoe UI, Arial, sans-serif">
+    <circle cx="16" cy="0" r="16" fill="#2ecc71" fill-opacity="0.15" stroke="#00ff88" stroke-opacity="0.6"/>
+    <path d="M9 0 l5 5 l9 -11" fill="none" stroke="#00ff88" stroke-width="3"/>
+    <text x="48" y="6" font-size="21" font-weight="600" fill="#c9d6cf">Personalised to your resume, not generic filler</text>
+  </g>
+  <g transform="translate(80,370)" font-family="Segoe UI, Arial, sans-serif">
+    <circle cx="16" cy="0" r="16" fill="#2ecc71" fill-opacity="0.15" stroke="#00ff88" stroke-opacity="0.6"/>
+    <path d="M9 0 l5 5 l9 -11" fill="none" stroke="#00ff88" stroke-width="3"/>
+    <text x="48" y="6" font-size="21" font-weight="600" fill="#c9d6cf">Pay-per-use, not a monthly subscription</text>
+  </g>
+  <g transform="translate(80,430)" font-family="Segoe UI, Arial, sans-serif">
+    <circle cx="16" cy="0" r="16" fill="#2ecc71" fill-opacity="0.15" stroke="#00ff88" stroke-opacity="0.6"/>
+    <path d="M9 0 l5 5 l9 -11" fill="none" stroke="#00ff88" stroke-width="3"/>
+    <text x="48" y="6" font-size="21" font-weight="600" fill="#c9d6cf">A free trial with full features to verify claims</text>
+  </g>
+  <text x="80" y="560" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#6f8378">The most useful thing about Reddit is the complaints: they tell you exactly what to test.</text>
+</svg>
