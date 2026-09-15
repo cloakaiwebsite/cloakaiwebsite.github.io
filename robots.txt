@@ -8,6 +8,7 @@ Allow: /
 Disallow: /payment-result.html
 Disallow: /success.html
 Disallow: /thank-you.html
+Disallow: /account.html
 
 # Block common exploit scan paths
 Disallow: /admin/

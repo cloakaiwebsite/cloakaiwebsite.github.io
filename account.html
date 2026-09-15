@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="theme.css?v=20260723">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account - CloakAI</title>
+  <meta name="description" content="Sign in to manage your CloakAI license keys, see hours used and remaining, top up, and remove keys.">
+  <!-- Account pages must never be indexed: they are per-user and gated behind sign-in. -->
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body{background:var(--bg);color:var(--tc);min-height:100vh;padding:0;}
+    main{max-width:900px;margin:0 auto;padding:48px 20px 80px;}
+    .page-title{font-size:2rem;font-weight:800;color:#fff;margin-bottom:8px;}
+    .page-sub{color:#64748B;font-size:.95rem;line-height:1.6;margin-bottom:36px;}
+
+    /* Signed-out */
+    .signin-card{background:rgba(255,255,255,.03);border:1px solid rgba(46,204,113,.2);border-radius:16px;padding:40px 28px;text-align:center;max-width:460px;margin:0 auto;}
+    .signin-card h2{font-size:1.15rem;color:#E2E8F0;margin-bottom:8px;}
+    .signin-card p{color:#64748B;font-size:.9rem;line-height:1.6;margin-bottom:24px;}
+    #gbtn{display:flex;justify-content:center;min-height:44px;}
+    .signin-note{margin-top:18px;font-size:.78rem;color:#334155;line-height:1.6;}
+
+    /* Signed-in header row */
+    .acct-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
+    .acct-who{display:flex;align-items:center;gap:12px;min-width:0;}
+    .acct-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(45deg,var(--pg),var(--ag));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:1.1rem;flex-shrink:0;}
+    .acct-name{font-size:1rem;font-weight:700;color:#E2E8F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .acct-email{font-size:.82rem;color:#64748B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .btn-ghost{padding:9px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#94A3B8;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;}
+    .btn-ghost:hover{border-color:rgba(255,255,255,.25);color:#E2E8F0;}
+
+    .summary{background:rgba(10,15,26,.7);border:1px solid rgba(46,204,113,.16);border-radius:14px;padding:18px 22px;margin:22px 0 30px;display:flex;gap:32px;flex-wrap:wrap;}
+    .summary .s-num{font-size:1.5rem;font-weight:800;color:#34D399;}
+    .summary .s-lbl{font-size:.72rem;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+
+    /* Key cards */
+    .keys{display:grid;gap:16px;}
+    .k-card{background:rgba(10,15,26,.9);border:1px solid rgba(46,204,113,.2);border-radius:14px;padding:22px;}
+    .k-card.expired{border-color:rgba(239,68,68,.22);}
+    .k-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+    .k-key{font-family:'Consolas',monospace;font-size:.95rem;color:#E2E8F0;font-weight:700;letter-spacing:.5px;}
+    .k-copy{background:none;border:none;color:#475569;cursor:pointer;font-size:.75rem;padding:2px 6px;transition:color .2s;}
+    .k-copy:hover{color:var(--gg);}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.5px;}
+    .badge.active{background:rgba(52,211,153,.12);color:#34D399;border:1px solid rgba(52,211,153,.3);}
+    .badge.expired{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.25);}
+    .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+    .k-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 20px;margin-bottom:16px;}
+    @media(max-width:560px){.k-grid{grid-template-columns:1fr 1fr;}}
+    .k-cell .l{font-size:.66rem;color:#334155;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+    .k-cell .v{font-size:.9rem;color:#E2E8F0;font-weight:600;margin-top:2px;}
+    .k-cell .v.green{color:#34D399;}
+    .k-cell .v.amber{color:#F59E0B;}
+    .pbar{height:6px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden;margin:4px 0 16px;}
+    .pbar > i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--pg),var(--ag));}
+    .k-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .btn-topup{padding:9px 20px;border-radius:10px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+    .btn-topup:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(46,204,113,.3);}
+    .btn-del{padding:9px 18px;border-radius:10px;border:1px solid rgba(239,68,68,.3);background:transparent;color:#EF4444;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;}
+    .btn-del:hover{background:rgba(239,68,68,.1);}
+
+    .empty{background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.1);border-radius:14px;padding:40px 24px;text-align:center;color:#64748B;font-size:.92rem;line-height:1.7;}
+    .empty a{color:var(--gg);text-decoration:none;font-weight:600;}
+    .msg{padding:12px 16px;border-radius:10px;font-size:.85rem;margin-bottom:20px;display:none;}
+    .msg.err{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.25);display:block;}
+    .msg.inf{background:rgba(46,204,113,.08);color:#34D399;border:1px solid rgba(46,204,113,.2);display:block;}
+    .loader-dots{text-align:center;color:#475569;padding:40px;font-size:.9rem;}
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cg"></div>
+<div class="bg-anim"><div class="fog"></div></div>
+<div id="particles"></div>
+<script>var NEWSBAR_ENABLED = false;</script>
+<div id="news-bar" style="display:none"></div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="logo-email.png" width="30" height="30" alt="CloakAI" style="border-radius:5px;">
+      CloakAI
+    </a>
+    <nav id="mnav">
+      <a href="index.html#demo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10.5 8.5l5.5 3.5-5.5 3.5z"/></svg>Demo</a>
+      <a href="index.html#features"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.3L19.5 10l-5.3 2.2L12 17.5l-2.2-5.3L4.5 10l5.3-1.7z"/></svg>Features</a>
+      <a href="index.html#pricing"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/></svg>Pricing</a>
+      <a href="how-to-use.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.8 9.4a2.3 2.3 0 114 1.8c-.7.7-1.8 1.1-1.8 2.1"/><path d="M12 17h.01"/></svg>How to use?</a>
+      <a href="license-info.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg>License &amp; Referral</a>
+      <a href="account.html" class="nav-cta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>My Account</a>
+    </nav>
+    <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">My Account</div>
+  <div class="page-sub">Sign in with the Google account whose email you used at purchase to see your license keys, hours used and remaining, top them up, or remove one.</div>
+
+  <div id="msg" class="msg"></div>
+
+  <!-- Signed out -->
+  <div id="signed-out" class="signin-card">
+    <h2>Sign in to manage your keys</h2>
+    <p>We match your Google email to the keys bought with it. We only use your email to find your keys - nothing is posted to Google.</p>
+    <div id="gbtn"></div>
+    <div id="gbtn-fallback" class="signin-note" style="display:none;color:#EF4444;">Google sign-in is not configured yet. Please email support@cloakai.in and we will look up your keys for you.</div>
+    <div class="signin-note">By signing in you agree to our <a href="terms.html" style="color:var(--gg);">Terms</a> and <a href="privacy.html" style="color:var(--gg);">Privacy Policy</a>.</div>
+  </div>
+
+  <!-- Signed in -->
+  <div id="signed-in" style="display:none;">
+    <div class="acct-top">
+      <div class="acct-who">
+        <div class="acct-avatar" id="acct-avatar">?</div>
+        <div style="min-width:0;">
+          <div class="acct-name" id="acct-name"></div>
+          <div class="acct-email" id="acct-email"></div>
+        </div>
+      </div>
+      <button class="btn-ghost" onclick="signOut()">Sign out</button>
+    </div>
+    <div class="summary">
+      <div><div class="s-num" id="sum-keys">0</div><div class="s-lbl">Keys</div></div>
+      <div><div class="s-num" id="sum-hours">0</div><div class="s-lbl">Hours remaining</div></div>
+    </div>
+    <div id="keys" class="keys"></div>
+  </div>
+
+  <div id="loading" class="loader-dots" style="display:none;">Loading your account...</div>
+</main>
+
+<footer>
+  <div class="footer-logo">
+    <img src="logo-email.png" width="22" height="22" alt="CloakAI" style="border-radius:4px;">
+    CloakAI
+  </div>
+  <p class="footer-tagline">The AI that only you can see.</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="about.html">About</a>
+    <a href="how-to-use.html">How to use?</a>
+    <a href="license-info.html">License &amp; Referral</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="contact.html">Contact</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="refund.html">Refund</a>
+    <a href="dmca.html">DMCA</a>
+  </div>
+  <div class="footer-copy">© 2026 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
+  <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
+</footer>
+
+<script>
+  // Ops/web deployment (Account A), same as the rest of the site.
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz5QOE5ROXK3h-mkF2tN_KAlNrQZ2SLY94hUjsIoyUfJenIsTWG3WZavgdPFu0jYqsRQ/exec';
+
+  // PUBLIC Google OAuth client id (client ids are not secrets). Replace the
+  // placeholder with the real "Web application" client id from Google Cloud Console
+  // (Authorized JavaScript origin: https://cloakai.in). The SAME id must be set as
+  // the GOOGLE_CLIENT_ID Script Property on BOTH Apps Script accounts, or the
+  // backend will reject every sign-in.
+  const GOOGLE_CLIENT_ID = '699977930283-dusu1csjuo3rfa7r9l0jgf4teosn5hsd.apps.googleusercontent.com';
+
+  var idToken = '';
+
+  function showMsg(text, cls){var m=document.getElementById('msg');m.textContent=text;m.className='msg '+(cls||'inf');}
+  function clearMsg(){var m=document.getElementById('msg');m.textContent='';m.className='msg';}
+
+  // ── JWT expiry check (client-side, only to avoid a doomed call) ──
+  function tokenExpired(tok){
+    try{
+      var p=JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+      return (Number(p.exp||0)*1000) < Date.now();
+    }catch(_){return true;}
+  }
+
+  // ── Google Identity Services ──
+  function onCredential(resp){
+    idToken = resp.credential || '';
+    if(!idToken){showMsg('Sign-in failed. Please try again.','err');return;}
+    try{sessionStorage.setItem('cloakai_gtok', idToken);}catch(_){}
+    loadAccount();
+  }
+
+  var _gInit=false;
+  function initGoogle(){
+    if(_gInit)return;
+    if(GOOGLE_CLIENT_ID.indexOf('REPLACE_WITH')===0){document.getElementById('gbtn-fallback').style.display='block';_gInit=true;return;}
+    if(typeof google==='undefined' || !google.accounts || !google.accounts.id)return; // library not ready yet
+    _gInit=true;
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onCredential, auto_select: false });
+    google.accounts.id.renderButton(document.getElementById('gbtn'),
+      { theme:'filled_black', size:'large', text:'signin_with', shape:'pill', width:280 });
+  }
+  // GSI calls this when its library has finished loading (it is loaded async).
+  window.onGoogleLibraryLoad = initGoogle;
+
+  function signOut(){
+    idToken='';
+    try{sessionStorage.removeItem('cloakai_gtok');}catch(_){}
+    try{ if(typeof google!=='undefined'&&google.accounts) google.accounts.id.disableAutoSelect(); }catch(_){}
+    document.getElementById('signed-in').style.display='none';
+    document.getElementById('signed-out').style.display='';
+    clearMsg();
+  }
+
+  // ── Data ──
+  function loadAccount(){
+    if(!idToken){signOut();return;}
+    document.getElementById('signed-out').style.display='none';
+    document.getElementById('signed-in').style.display='none';
+    document.getElementById('loading').style.display='block';
+    clearMsg();
+    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'account_data',id_token:idToken}))
+      .then(function(r){return r.json();})
+      .then(function(d){
+        document.getElementById('loading').style.display='none';
+        if(!d||!d.success){
+          // Verification failed or token stale: send them back to sign-in.
+          showMsg((d&&d.error)||'Could not load your account. Please sign in again.','err');
+          signOut();
+          return;
+        }
+        renderAccount(d);
+      })
+      .catch(function(){
+        document.getElementById('loading').style.display='none';
+        showMsg('Our servers are busy right now. Please try again in a minute.','err');
+        document.getElementById('signed-out').style.display='';
+      });
+  }
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function fmtHrs(sec){return (Math.max(0,sec)/3600).toFixed(1);}
+  function fmtDate(iso){ if(!iso)return '-'; var d=new Date(iso); if(isNaN(d))return '-'; return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+  function fmtSeen(ts){ if(!ts)return 'Not yet'; var d=new Date(Number(ts)*1000); if(isNaN(d))return '-'; return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})+', '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  function planName(p){p=(p||'').toLowerCase();return ({mini:'Mini',starter:'Starter',basic:'Basic',pro:'Pro',max:'Max'}[p])||(p?p.charAt(0).toUpperCase()+p.slice(1):'Plan');}
+
+  function renderAccount(d){
+    document.getElementById('signed-in').style.display='';
+    var name=d.name||d.email||'';
+    document.getElementById('acct-name').textContent=name;
+    document.getElementById('acct-email').textContent=d.email||'';
+    document.getElementById('acct-avatar').textContent=(name.charAt(0)||'?').toUpperCase();
+    document.getElementById('sum-keys').textContent=(d.keys||[]).length;
+    document.getElementById('sum-hours').textContent=d.total_hours_remaining||'0';
+
+    var box=document.getElementById('keys');
+    if(!d.keys||!d.keys.length){
+      box.innerHTML='<div class="empty">No active keys on this account yet.<br>Bought with a different email? Sign in with that one.<br><br><a href="index.html#pricing">Get a plan &rarr;</a></div>';
+      return;
+    }
+    box.innerHTML=d.keys.map(function(k){
+      var used=Number(k.seconds_used||0), total=Number(k.hours_purchased||0)*3600;
+      var pct=total>0?Math.min(100,Math.round(used/total*100)):0;
+      var isActive=k.status==='active';
+      var remCls=k.seconds_remaining>1800?'green':(k.seconds_remaining>0?'amber':'');
+      return '<div class="k-card'+(isActive?'':' expired')+'">'+
+        '<div class="k-head">'+
+          '<div><span class="k-key">'+esc(k.key)+'</span> <button class="k-copy" onclick="copyKey(\''+esc(k.key)+'\',this)">Copy</button></div>'+
+          '<span class="badge '+(isActive?'active':'expired')+'"><span class="dot"></span>'+(isActive?'Active':'Expired')+'</span>'+
+        '</div>'+
+        '<div class="k-grid">'+
+          '<div class="k-cell"><div class="l">Plan</div><div class="v">'+esc(planName(k.plan))+'</div></div>'+
+          '<div class="k-cell"><div class="l">Purchased</div><div class="v">'+esc(String(k.hours_purchased))+' hrs</div></div>'+
+          '<div class="k-cell"><div class="l">Remaining</div><div class="v '+remCls+'">'+fmtHrs(k.seconds_remaining)+' hrs</div></div>'+
+          '<div class="k-cell"><div class="l">Last used</div><div class="v">'+esc(fmtSeen(k.last_seen_ts))+'</div></div>'+
+        '</div>'+
+        '<div class="pbar"><i style="width:'+pct+'%"></i></div>'+
+        '<div class="k-actions">'+
+          '<a class="btn-topup" href="index.html?topup='+encodeURIComponent(k.key)+'#pricing">Top up hours</a>'+
+          '<button class="btn-del" onclick="deleteKey(\''+esc(k.key)+'\')">Delete key</button>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  function copyKey(key,btn){
+    try{navigator.clipboard.writeText(key);btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy';},1500);}catch(_){}
+  }
+
+  function deleteKey(key){
+    if(!idToken){signOut();return;}
+    if(!confirm('Delete '+key+'?\n\nThis permanently deactivates the key. It will stop working on any device and cannot be reactivated. This does not refund unused hours.'))return;
+    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'revoke_key',id_token:idToken,license_key:key}))
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(d&&d.success){showMsg('Key '+key+' deleted.','inf');loadAccount();}
+        else{showMsg((d&&d.error)||'Could not delete the key. Please try again.','err');}
+      })
+      .catch(function(){showMsg('Our servers are busy right now. Please try again in a minute.','err');});
+  }
+
+  // ── Boot ──
+  window.onload=function(){
+    initGoogle(); // in case the GSI library loaded before onGoogleLibraryLoad was set
+    // If sign-in never becomes available (library blocked/offline), show the fallback note.
+    setTimeout(function(){ if(!_gInit) document.getElementById('gbtn-fallback').style.display='block'; }, 3500);
+    var stored='';
+    try{stored=sessionStorage.getItem('cloakai_gtok')||'';}catch(_){}
+    if(stored && !tokenExpired(stored)){ idToken=stored; loadAccount(); }
+  };
+</script>
+<script src="layout.js"></script>
+</body>
+</html>
