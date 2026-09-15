@@ -8,6 +8,9 @@
        on a slow mobile link, delaying first paint for no benefit. gtag is async, so
        moving it down costs nothing: it still loads, just not ahead of the paint. -->
   <link rel="stylesheet" href="theme.css?v=20260723">
+  <!-- Google Identity Services for the optional "Continue with Google" checkout. Async,
+       so if it fails to load the email + OTP flow below is completely unaffected. -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E78JBBWJQW');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -744,21 +747,41 @@
       <div><div class="plan-prev-name" id="pm-name">Loading...</div><div class="plan-prev-dur" id="pm-dur"></div></div>
       <div class="plan-prev-price" id="pm-price"></div>
     </div>
-    <!-- Step 1: Email + Phone -->
+    <!-- Step 1: Continue with Google (primary) OR email + OTP (fallback) -->
     <div id="pm-step1">
-      <label class="flabel">Email Address</label>
-      <input type="text" inputmode="email" id="pm-email" class="finput" placeholder="you@email.com" autocomplete="email">
-      <label class="flabel">Phone Number</label>
-      <input type="tel" id="pm-phone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
-      <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:.77rem;color:#34D399;line-height:1.6;">
-        We will send a 6-digit code to your email to verify it before payment.
+      <!-- Google: one tap, verified email, no OTP. If the library is blocked this
+           simply stays empty and the email form below still works. -->
+      <div id="pm-gbtn" style="display:flex;justify-content:center;"></div>
+      <!-- After Google sign-in: just phone, then pay. -->
+      <div id="pm-gsigned" style="display:none;">
+        <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:12px;font-size:.8rem;color:#34D399;">&#x2713; Signed in as <strong id="pm-gemail" style="color:#fff;"></strong></div>
+        <label class="flabel">Phone Number</label>
+        <input type="tel" id="pm-gphone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
+        <button class="btn-pay" id="pm-gpay-btn" onclick="payWithGoogle()">
+          <span id="pm-gpay-txt">Continue to Payment</span>
+          <div class="spin" id="pm-gpay-spin"></div>
+        </button>
+        <div class="pm-msg" id="pm-gmsg" style="margin-top:12px;"></div>
+        <div style="text-align:center;margin-top:6px;"><a href="#" onclick="cancelGoogle();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">&#x2190; Use a different method</a></div>
       </div>
-      <button class="btn-pay" id="pm-otp-btn" onclick="sendOTP()">
-        <span id="pm-otp-btxt">Send Verification Code</span>
-        <div class="spin" id="pm-otp-spin"></div>
-      </button>
-      <div style="text-align:center;margin-top:12px;font-size:.78rem;color:#64748B;">
-        Not ready to buy? <a href="how-to-use.html" style="color:#34D399;text-decoration:none;font-weight:600;">Try 20 minutes free &rarr;</a>
+      <div id="pm-or" style="display:flex;align-items:center;gap:10px;margin:16px 0;color:#475569;font-size:.75rem;">
+        <span style="flex:1;height:1px;background:rgba(255,255,255,.08);"></span>or use email<span style="flex:1;height:1px;background:rgba(255,255,255,.08);"></span>
+      </div>
+      <div id="pm-emailform">
+        <label class="flabel">Email Address</label>
+        <input type="text" inputmode="email" id="pm-email" class="finput" placeholder="you@email.com" autocomplete="email">
+        <label class="flabel">Phone Number</label>
+        <input type="tel" id="pm-phone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
+        <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:.77rem;color:#34D399;line-height:1.6;">
+          We will send a 6-digit code to your email to verify it before payment.
+        </div>
+        <button class="btn-pay" id="pm-otp-btn" onclick="sendOTP()">
+          <span id="pm-otp-btxt">Send Verification Code</span>
+          <div class="spin" id="pm-otp-spin"></div>
+        </button>
+        <div style="text-align:center;margin-top:12px;font-size:.78rem;color:#64748B;">
+          Not ready to buy? <a href="how-to-use.html" style="color:#34D399;text-decoration:none;font-weight:600;">Try 20 minutes free &rarr;</a>
+        </div>
       </div>
     </div>
     <!-- Step 2: OTP entry - spam hint moved below verify button -->
@@ -860,8 +883,68 @@
     return 'Something went wrong on our side. Please try again in a minute, or email support@cloakai.in.';
   }
 
+  // ── Continue with Google (optional; email + OTP below stays as the fallback) ──
+  const GOOGLE_CLIENT_ID='699977930283-dusu1csjuo3rfa7r9l0jgf4teosn5hsd.apps.googleusercontent.com';
+  var _pmGToken='', _pmGEmail='', _pmGInit=false;
+  function _gMsg(t,c){var e=document.getElementById('pm-gmsg');if(e){e.textContent=t;e.className='pm-msg'+(c?' '+c:'');}}
+  function _initPmGoogle(){
+    if(_pmGInit)return true;
+    if(typeof google==='undefined'||!google.accounts||!google.accounts.id)return false;
+    _pmGInit=true;
+    google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:onPmCredential,auto_select:false});
+    return true;
+  }
+  function renderPmGoogleBtn(){
+    if(!_initPmGoogle())return;
+    var el=document.getElementById('pm-gbtn');
+    if(el){el.innerHTML='';google.accounts.id.renderButton(el,{theme:'filled_black',size:'large',text:'continue_with',shape:'pill',width:300});}
+  }
+  window.onGoogleLibraryLoad=renderPmGoogleBtn;
+  function onPmCredential(resp){
+    _pmGToken=(resp&&resp.credential)||'';
+    if(!_pmGToken)return;
+    try{var p=JSON.parse(atob(_pmGToken.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));_pmGEmail=p.email||'';}catch(_){_pmGEmail='';}
+    document.getElementById('pm-gemail').textContent=_pmGEmail;
+    document.getElementById('pm-gbtn').style.display='none';
+    document.getElementById('pm-or').style.display='none';
+    document.getElementById('pm-emailform').style.display='none';
+    document.getElementById('pm-gsigned').style.display='';
+    _gMsg('','');
+    setTimeout(function(){document.getElementById('pm-gphone').focus();},120);
+    trackEvent('Checkout','GoogleSignIn',curPlan);
+  }
+  function cancelGoogle(){ resetGoogleCheckout(); }
+  function resetGoogleCheckout(){
+    _pmGToken='';_pmGEmail='';
+    var g=document.getElementById('pm-gsigned');if(g)g.style.display='none';
+    var b=document.getElementById('pm-gbtn');if(b)b.style.display='flex';
+    var o=document.getElementById('pm-or');if(o)o.style.display='flex';
+    var f=document.getElementById('pm-emailform');if(f)f.style.display='';
+    var gp=document.getElementById('pm-gphone');if(gp)gp.value='';
+    _gMsg('','');_resetGPayBtn();renderPmGoogleBtn();
+  }
+  function _resetGPayBtn(){var b=document.getElementById('pm-gpay-btn');if(!b)return;b.disabled=false;document.getElementById('pm-gpay-txt').style.display='inline';document.getElementById('pm-gpay-spin').style.display='none';}
+  function payWithGoogle(){
+    if(!_pmGToken){_gMsg('Please sign in with Google again.','err');resetGoogleCheckout();return;}
+    var phone=(document.getElementById('pm-gphone').value||'').trim();
+    if(!phone||phone.replace(/[^0-9]/g,'').length<10){_gMsg('Please enter a valid 10-digit phone number.','err');return;}
+    var btn=document.getElementById('pm-gpay-btn'),txt=document.getElementById('pm-gpay-txt'),spin=document.getElementById('pm-gpay-spin');
+    btn.disabled=true;txt.style.display='none';spin.style.display='block';_gMsg('Creating your order...','inf');
+    var oparams={action:'create_order',id_token:_pmGToken,plan:curPlan,phone:phone,ajax:'1'};
+    if(_topupKey)oparams.topup_key=_topupKey;
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams))
+      .then(function(data){
+        if(!data)return;
+        if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
+        else if(data.payment_url){trackEvent('Checkout','GooglePay',curPlan);window.location.replace(data.payment_url);}
+        else{_resetGPayBtn();_gMsg(data.error||'Something went wrong. Please try again.','err');}
+      })
+      .catch(function(err){_resetGPayBtn();_gMsg(_apiErrMsg(err),'err');});
+  }
+
   function openPay(plan){
     curPlan=plan;_verifiedEmail='';
+    resetGoogleCheckout();
     var m=PLANS[plan];if(!m)return;
     document.getElementById('pm-name').textContent=m.name;
     document.getElementById('pm-price').innerHTML=m.price;

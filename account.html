@@ -68,6 +68,29 @@
     .msg.err{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.25);display:block;}
     .msg.inf{background:rgba(46,204,113,.08);color:#34D399;border:1px solid rgba(46,204,113,.2);display:block;}
     .loader-dots{text-align:center;color:#475569;padding:40px;font-size:.9rem;}
+
+    /* Top-up modal (in-page, no redirect) */
+    .tu-modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;z-index:400;padding:20px;}
+    .tu-modal.hidden{display:none;}
+    .tu-card{background:#0A1018;border:1px solid rgba(46,204,113,.25);border-radius:16px;padding:28px;max-width:480px;width:100%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+    .tu-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#475569;font-size:22px;cursor:pointer;line-height:1;}
+    .tu-close:hover{color:#E2E8F0;}
+    .tu-title{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:4px;}
+    .tu-sub{font-size:.85rem;color:#64748B;margin-bottom:20px;}
+    .tu-sub span{font-family:'Consolas',monospace;color:#34D399;font-weight:700;}
+    .tu-plans{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:440px){.tu-plans{grid-template-columns:1fr;}}
+    .tu-plan{background:rgba(255,255,255,.03);border:1px solid rgba(46,204,113,.2);border-radius:12px;padding:16px;cursor:pointer;text-align:center;transition:.15s;color:#E2E8F0;}
+    .tu-plan:hover{border-color:rgba(46,204,113,.5);transform:translateY(-2px);background:rgba(46,204,113,.06);}
+    .tu-plan:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .tu-plan-h{font-size:.9rem;font-weight:700;color:#E2E8F0;}
+    .tu-plan-p{font-size:1.4rem;font-weight:800;color:#34D399;margin:6px 0 2px;}
+    .tu-plan-r{font-size:.72rem;color:#64748B;}
+    .tu-loading{grid-column:1/-1;text-align:center;color:#475569;padding:20px;font-size:.9rem;}
+    .tu-msg{font-size:.85rem;margin-top:14px;min-height:18px;}
+    .tu-msg.err{color:#EF4444;}
+    .tu-msg.inf{color:#34D399;}
+    .tu-foot{font-size:.72rem;color:#334155;margin-top:16px;line-height:1.6;text-align:center;}
   </style>
 </head>
 <body>
@@ -132,6 +155,18 @@
 
   <div id="loading" class="loader-dots" style="display:none;">Loading your account...</div>
 </main>
+
+<!-- Top-up modal: pick a pack and pay, right here, for the selected key -->
+<div id="topup-modal" class="tu-modal hidden" onclick="if(event.target===this)closeTopup()">
+  <div class="tu-card">
+    <button class="tu-close" onclick="closeTopup()" aria-label="Close">&times;</button>
+    <div class="tu-title">Top up hours</div>
+    <div class="tu-sub">Adding hours to <span id="tu-key"></span></div>
+    <div id="tu-plans" class="tu-plans"><div class="tu-loading">Loading packs...</div></div>
+    <div id="tu-msg" class="tu-msg"></div>
+    <div class="tu-foot">Secured by PhonePe &nbsp;·&nbsp; Pay by UPI, cards or wallets &nbsp;·&nbsp; The hours are added to this key right after payment.</div>
+  </div>
+</div>
 
 <footer>
   <div class="footer-logo">
@@ -274,7 +309,7 @@
         '</div>'+
         '<div class="pbar"><i style="width:'+pct+'%"></i></div>'+
         '<div class="k-actions">'+
-          '<a class="btn-topup" href="index.html?topup='+encodeURIComponent(k.key)+'#pricing">Top up hours</a>'+
+          '<button class="btn-topup" onclick="openTopup(\''+esc(k.key)+'\')">Top up hours</button>'+
           '<button class="btn-del" onclick="deleteKey(\''+esc(k.key)+'\')">Delete key</button>'+
         '</div>'+
       '</div>';
@@ -295,6 +330,69 @@
         else{showMsg((d&&d.error)||'Could not delete the key. Please try again.','err');}
       })
       .catch(function(){showMsg('Our servers are busy right now. Please try again in a minute.','err');});
+  }
+
+  // ── Top-up (in-page, no redirect to the homepage) ──
+  var currentTopupKey='';
+  var PLANS_CACHE=null;
+
+  function openTopup(key){
+    if(!idToken){signOut();return;}
+    currentTopupKey=key;
+    document.getElementById('tu-key').textContent=key;
+    var m=document.getElementById('tu-msg'); m.textContent=''; m.className='tu-msg';
+    document.getElementById('topup-modal').classList.remove('hidden');
+    loadPlans();
+  }
+  function closeTopup(){ document.getElementById('topup-modal').classList.add('hidden'); }
+
+  function loadPlans(){
+    var box=document.getElementById('tu-plans');
+    if(PLANS_CACHE){ renderPlans(PLANS_CACHE); return; }
+    box.innerHTML='<div class="tu-loading">Loading packs...</div>';
+    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'plans'}))
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(!d||!d.success||!d.plans){box.innerHTML='<div class="tu-loading">Could not load packs. Please try again.</div>';return;}
+        PLANS_CACHE=d.plans; renderPlans(d.plans);
+      })
+      .catch(function(){box.innerHTML='<div class="tu-loading">Our servers are busy. Please try again in a minute.</div>';});
+  }
+
+  function renderPlans(plans){
+    // Show the four current packs (skip legacy 'max'), cheapest first.
+    var order=['mini','starter','basic','pro'];
+    var box=document.getElementById('tu-plans');
+    box.innerHTML=order.filter(function(k){return plans[k];}).map(function(k){
+      var p=plans[k];
+      return '<button class="tu-plan" onclick="payTopup(\''+k+'\')">'+
+        '<div class="tu-plan-h">'+esc(p.name)+'</div>'+
+        '<div class="tu-plan-p">&#8377;'+esc(String(p.price_inr))+'</div>'+
+        '<div class="tu-plan-r">&#8377;'+esc(String(p.per_hr))+'/hr</div>'+
+      '</button>';
+    }).join('');
+  }
+
+  function payTopup(planKey){
+    if(!idToken){signOut();return;}
+    if(!currentTopupKey)return;
+    var m=document.getElementById('tu-msg');
+    m.className='tu-msg inf'; m.textContent='Creating your order...';
+    document.querySelectorAll('#tu-plans .tu-plan').forEach(function(b){b.disabled=true;});
+    // The backend takes the email from the verified id_token and tops up currentTopupKey
+    // (it re-checks the key belongs to this email, so a wrong key can never be topped up).
+    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_order',id_token:idToken,plan:planKey,topup_key:currentTopupKey,ajax:'1'}))
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(d&&d.payment_url){ window.location.href=d.payment_url; return; }
+        if(d&&d.success&&d.key){ m.className='tu-msg inf'; m.textContent='Done. Hours added to your key.'; setTimeout(function(){closeTopup();loadAccount();},1500); return; }
+        m.className='tu-msg err'; m.textContent=(d&&d.error)||'Could not start payment. Please try again.';
+        document.querySelectorAll('#tu-plans .tu-plan').forEach(function(b){b.disabled=false;});
+      })
+      .catch(function(){
+        m.className='tu-msg err'; m.textContent='Our servers are busy. Please try again in a minute.';
+        document.querySelectorAll('#tu-plans .tu-plan').forEach(function(b){b.disabled=false;});
+      });
   }
 
   // ── Boot ──
