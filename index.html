@@ -753,11 +753,9 @@
       <!-- Google: one tap, verified email, no OTP. If the library is blocked this
            simply stays empty and the email form below still works. -->
       <div id="pm-gbtn" style="display:flex;justify-content:center;"></div>
-      <!-- After Google sign-in: just phone, then pay. -->
+      <!-- After Google sign-in: email is already verified by Google, so pay directly. -->
       <div id="pm-gsigned" style="display:none;">
-        <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:12px;font-size:.8rem;color:#34D399;">&#x2713; Signed in as <strong id="pm-gemail" style="color:#fff;"></strong></div>
-        <label class="flabel">Phone Number</label>
-        <input type="tel" id="pm-gphone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
+        <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:.8rem;color:#34D399;">&#x2713; Signed in as <strong id="pm-gemail" style="color:#fff;"></strong></div>
         <button class="btn-pay" id="pm-gpay-btn" onclick="payWithGoogle()">
           <span id="pm-gpay-txt">Continue to Payment</span>
           <div class="spin" id="pm-gpay-spin"></div>
@@ -771,8 +769,6 @@
       <div id="pm-emailform">
         <label class="flabel">Email Address</label>
         <input type="text" inputmode="email" id="pm-email" class="finput" placeholder="you@email.com" autocomplete="email">
-        <label class="flabel">Phone Number</label>
-        <input type="tel" id="pm-phone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
         <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:.77rem;color:#34D399;line-height:1.6;">
           We will send a 6-digit code to your email to verify it before payment.
         </div>
@@ -914,7 +910,6 @@
     document.getElementById('pm-emailform').style.display='none';
     document.getElementById('pm-gsigned').style.display='';
     _gMsg('','');
-    setTimeout(function(){document.getElementById('pm-gphone').focus();},120);
     trackEvent('Checkout','GoogleSignIn',curPlan);
   }
   function cancelGoogle(){ resetGoogleCheckout(); }
@@ -924,17 +919,14 @@
     var b=document.getElementById('pm-gbtn');if(b)b.style.display='flex';
     var o=document.getElementById('pm-or');if(o)o.style.display='flex';
     var f=document.getElementById('pm-emailform');if(f)f.style.display='';
-    var gp=document.getElementById('pm-gphone');if(gp)gp.value='';
     _gMsg('','');_resetGPayBtn();renderPmGoogleBtn();
   }
   function _resetGPayBtn(){var b=document.getElementById('pm-gpay-btn');if(!b)return;b.disabled=false;document.getElementById('pm-gpay-txt').style.display='inline';document.getElementById('pm-gpay-spin').style.display='none';}
   function payWithGoogle(){
     if(!_pmGToken){_gMsg('Please sign in with Google again.','err');resetGoogleCheckout();return;}
-    var phone=(document.getElementById('pm-gphone').value||'').trim();
-    if(!phone||phone.replace(/[^0-9]/g,'').length<10){_gMsg('Please enter a valid 10-digit phone number.','err');return;}
     var btn=document.getElementById('pm-gpay-btn'),txt=document.getElementById('pm-gpay-txt'),spin=document.getElementById('pm-gpay-spin');
     btn.disabled=true;txt.style.display='none';spin.style.display='block';_gMsg('Creating your order...','inf');
-    var oparams={action:'create_order',id_token:_pmGToken,plan:curPlan,phone:phone,ajax:'1'};
+    var oparams={action:'create_order',id_token:_pmGToken,plan:curPlan,ajax:'1'};
     if(_topupKey)oparams.topup_key=_topupKey;
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams))
       .then(function(data){
@@ -954,7 +946,7 @@
     document.getElementById('pm-price').innerHTML=m.price;
     document.getElementById('pm-dur').textContent=m.period+' · '+m.rate;
     document.getElementById('pm-msg').textContent='';
-    document.getElementById('pm-email').value='';document.getElementById('pm-phone').value='';document.getElementById('pm-otp').value='';
+    document.getElementById('pm-email').value='';document.getElementById('pm-otp').value='';
     document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';
     _resetOTPBtn();_resetPayBtn();_clearResendCooldown();
     openMo('pay-mo');setTimeout(function(){document.getElementById('pm-email').focus();},180);
@@ -970,16 +962,14 @@
   function handleResend(){if(_resendTimer)return;sendOTP(true);}
   function sendOTP(isResend){
     var email=document.getElementById('pm-email').value.trim().toLowerCase();
-    var phone=document.getElementById('pm-phone').value.trim();
     var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(isResend){email=_verifiedEmail||email;}
     if(!email||!emailRe.test(email)){_pmMsg('Please enter a valid email address.','err');return;}
-    if(!phone||phone.replace(/[^0-9]/g,'').length<10){_pmMsg('Please enter a valid 10-digit phone number.','err');return;}
     if(SCRIPT_URL.includes('REPLACE')){_pmMsg('Payment system not yet active. Email support@cloakai.in','err');return;}
     var btn=document.getElementById('pm-otp-btn'),btxt=document.getElementById('pm-otp-btxt'),spin=document.getElementById('pm-otp-spin');
     btn.disabled=true;btxt.style.display='none';spin.style.display='block';
     _pmMsg('Sending code to '+email+'...','inf');
-    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,phone:phone,ajax:'1'}))
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,ajax:'1'}))
       .then(function(data){
         btn.disabled=false;btxt.style.display='inline';spin.style.display='none';
         if(!data.success){_pmMsg(data.error||'Could not send code. Please try again.','err');return;}
@@ -1017,8 +1007,7 @@
       })
       .catch(function(err){console.error('Payment error:',err);_resetPayBtn();_pmMsg(_apiErrMsg(err),'err');});
   }
-  document.getElementById('pm-email').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('pm-phone').focus();});
-  document.getElementById('pm-phone').addEventListener('keydown',function(e){if(e.key==='Enter')sendOTP();});
+  document.getElementById('pm-email').addEventListener('keydown',function(e){if(e.key==='Enter')sendOTP();});
   document.getElementById('pm-otp').addEventListener('keydown',function(e){if(e.key==='Enter')doPay();});
   document.getElementById('pm-otp').addEventListener('input',function(e){var v=e.target.value.replace(/\D/g,'').slice(0,6);e.target.value=v;if(v.length===6)setTimeout(doPay,80);});
   // Account-driven top-up: the account page sends the user here as
