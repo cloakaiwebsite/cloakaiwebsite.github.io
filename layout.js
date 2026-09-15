@@ -44,6 +44,28 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   });
 });
 
+/* ── Account link in the top nav, on EVERY page ──────────────────────
+   Injected here so all pages get it without editing each file. The label is
+   "My Account" when a valid Google session token is present (set by the account
+   page, or by a "Continue with Google" checkout), otherwise "Sign in". Both link
+   to the account page, which handles the actual sign-in. The label text is a fixed
+   string, never user data, so building it with innerHTML is safe. */
+(function(){
+  var nav=document.getElementById('mnav');
+  if(!nav||nav.querySelector('[data-account-link]'))return;
+  var signedIn=false;
+  try{
+    var t=sessionStorage.getItem('cloakai_gtok')||'';
+    if(t){var p=JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));signedIn=(Number(p.exp||0)*1000)>Date.now();}
+  }catch(e){signedIn=false;}
+  var a=document.createElement('a');
+  a.href='account.html';
+  a.setAttribute('data-account-link','');
+  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>'+(signedIn?'My Account':'Sign in');
+  var cta=nav.querySelector('.nav-cta');
+  if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
+})();
+
 /* ── News bar dismiss ────────────────────────── */
 (function(){
   var btn=document.getElementById('news-bar-close');
