@@ -70,12 +70,29 @@
     .msg.inf{background:rgba(46,204,113,.08);color:#34D399;border:1px solid rgba(46,204,113,.2);display:block;}
     .loader-dots{text-align:center;color:#475569;padding:40px;font-size:.9rem;}
 
-    /* Section titles + order history */
-    .sec-title{font-size:.78rem;font-weight:700;color:#8CA3B0;text-transform:uppercase;letter-spacing:.8px;margin:0 0 14px;}
+    /* Loading progress bar (indeterminate) */
+    .load-wrap{max-width:520px;margin:30px auto 0;text-align:center;}
+    .load-bar{height:6px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden;position:relative;}
+    .load-bar > i{position:absolute;top:0;height:100%;width:38%;border-radius:6px;background:linear-gradient(90deg,var(--pg),var(--ag));animation:loadslide 1.15s cubic-bezier(.65,0,.35,1) infinite;}
+    @keyframes loadslide{0%{left:-40%;}100%{left:100%;}}
+    .load-txt{margin-top:16px;color:#64748B;font-size:.88rem;}
+
+    /* Sections (panels) */
+    .panel{background:linear-gradient(165deg,rgba(255,255,255,.022),rgba(255,255,255,.006));border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:24px;margin-bottom:22px;}
+    .panel-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+    .panel-ico{width:34px;height:34px;border-radius:10px;background:rgba(0,230,118,.1);border:1px solid rgba(52,211,153,.22);display:flex;align-items:center;justify-content:center;color:#34D399;flex-shrink:0;}
+    .panel-title{font-size:1rem;font-weight:800;color:#E2E8F0;letter-spacing:-.2px;}
+    .panel-count{margin-left:auto;font-size:.72rem;font-weight:700;color:#8CA3B0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:4px 12px;border-radius:20px;}
+
+    /* Order history rows */
     .orders{display:flex;flex-direction:column;gap:8px;}
     .o-row{display:flex;align-items:center;justify-content:space-between;gap:14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 18px;}
     .o-plan{font-size:.92rem;font-weight:700;color:#E2E8F0;}
-    .o-meta{font-size:.72rem;color:#5b6b78;margin-top:3px;font-family:'Consolas',monospace;}
+    .o-meta{font-size:.75rem;color:#7C93A1;margin-top:3px;}
+    .o-id{font-size:.72rem;color:#5b6b78;margin-top:6px;font-family:'Consolas',monospace;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .o-id b{color:#94A3B8;font-weight:700;font-family:inherit;letter-spacing:.3px;}
+    .o-id .oid-copy{background:none;border:none;color:#475569;cursor:pointer;font-size:.7rem;padding:0 4px;transition:color .2s;}
+    .o-id .oid-copy:hover{color:var(--gg);}
     .o-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
     .o-amt{font-size:.95rem;font-weight:800;color:#E2E8F0;}
     .o-status{font-size:.68rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap;}
@@ -134,7 +151,7 @@
 
 <main>
   <div class="page-title">My Account</div>
-  <div class="page-sub">Sign in with the Google account whose email you used at purchase to see your license keys, hours used and remaining, top them up, or remove one.</div>
+  <div class="page-sub" id="page-sub">Sign in with the Google account whose email you used at purchase to see your license keys, hours used and remaining, top them up, or remove one.</div>
 
   <div id="msg" class="msg"></div>
 
@@ -163,15 +180,32 @@
       <div><div class="s-num" id="sum-keys">0</div><div class="s-lbl">Keys</div></div>
       <div><div class="s-num" id="sum-hours">0</div><div class="s-lbl">Hours remaining</div></div>
     </div>
-    <div class="sec-title">Your license keys</div>
-    <div id="keys" class="keys"></div>
-    <div id="orders-wrap" style="display:none;">
-      <div class="sec-title" style="margin-top:34px;">Order history</div>
+
+    <!-- Section: license keys -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg></div>
+        <div class="panel-title">License keys</div>
+        <span class="panel-count" id="keys-count">0</span>
+      </div>
+      <div id="keys" class="keys"></div>
+    </div>
+
+    <!-- Section: order history (kept separate from license keys) -->
+    <div class="panel" id="orders-wrap" style="display:none;">
+      <div class="panel-head">
+        <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h10"/></svg></div>
+        <div class="panel-title">Order history</div>
+        <span class="panel-count" id="orders-count">0</span>
+      </div>
       <div id="orders" class="orders"></div>
     </div>
   </div>
 
-  <div id="loading" class="loader-dots" style="display:none;">Loading your account...</div>
+  <div id="loading" class="load-wrap" style="display:none;">
+    <div class="load-bar"><i></i></div>
+    <div class="load-txt">Loading your account...</div>
+  </div>
 </main>
 
 <!-- Top-up modal: pick a pack and pay, right here, for the selected key -->
@@ -260,6 +294,7 @@
     try{ if(typeof google!=='undefined'&&google.accounts) google.accounts.id.disableAutoSelect(); }catch(_){}
     document.getElementById('signed-in').style.display='none';
     document.getElementById('signed-out').style.display='';
+    document.getElementById('page-sub').style.display='';
     clearMsg();
   }
 
@@ -268,6 +303,7 @@
     if(!idToken){signOut();return;}
     document.getElementById('signed-out').style.display='none';
     document.getElementById('signed-in').style.display='none';
+    document.getElementById('page-sub').style.display='none';
     document.getElementById('loading').style.display='block';
     clearMsg();
     fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'account_data',id_token:idToken}))
@@ -286,6 +322,7 @@
         document.getElementById('loading').style.display='none';
         showMsg('Our servers are busy right now. Please try again in a minute.','err');
         document.getElementById('signed-out').style.display='';
+        document.getElementById('page-sub').style.display='';
       });
   }
 
@@ -299,16 +336,20 @@
     var wrap=document.getElementById('orders-wrap');
     if(!orders||!orders.length){wrap.style.display='none';return;}
     wrap.style.display='';
+    document.getElementById('orders-count').textContent=orders.length;
     document.getElementById('orders').innerHTML=orders.map(function(o){
       var st=(o.status||'').toUpperCase();
       var cls=st==='PAID'?'paid':(st==='PENDING'?'pending':'failed');
       var label=st==='PAID'?'Paid':(st==='PENDING'?'Pending':(st==='FAILED'?'Failed':(st||'-')));
       var when=fmtDate(o.paid_at||o.created_at);
       var topup=o.topup_key?(' &middot; Top-up '+esc(o.topup_key)):'';
-      var oid=esc(String(o.order_id||'').replace(/^CL-/,'').slice(0,14));
+      // Show the real order / transaction id in full. This is the merchant
+      // transaction id (CL-...) the user can quote to support, not a random number.
+      var oid=esc(String(o.order_id||''));
+      var idRow=oid?('<div class="o-id"><b>Order ID</b> '+oid+' <button class="oid-copy" onclick="copyKey(\''+oid+'\',this)">Copy</button></div>'):'';
       return '<div class="o-row">'+
         '<div style="min-width:0;"><div class="o-plan">'+esc(planName(o.plan))+' pack'+topup+'</div>'+
-          '<div class="o-meta">'+esc(when)+' &middot; #'+oid+'</div></div>'+
+          '<div class="o-meta">'+esc(when)+'</div>'+idRow+'</div>'+
         '<div class="o-right"><div class="o-amt">&#8377;'+esc(String(o.amount_inr||0))+'</div>'+
           '<div class="o-status '+cls+'">'+esc(label)+'</div></div>'+
       '</div>';
@@ -323,6 +364,7 @@
     document.getElementById('acct-avatar').textContent=(name.charAt(0)||'?').toUpperCase();
     document.getElementById('sum-keys').textContent=(d.keys||[]).length;
     document.getElementById('sum-hours').textContent=d.total_hours_remaining||'0';
+    document.getElementById('keys-count').textContent=(d.keys||[]).length;
 
     renderOrders(d.orders||[]);
 
