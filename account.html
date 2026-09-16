@@ -93,6 +93,20 @@
     .o-id b{color:#94A3B8;font-weight:700;font-family:inherit;letter-spacing:.3px;}
     .o-id .oid-copy{background:none;border:none;color:#475569;cursor:pointer;font-size:.7rem;padding:0 4px;transition:color .2s;}
     .o-id .oid-copy:hover{color:var(--gg);}
+    /* Referrals */
+    .ref-intro{font-size:.8rem;color:#8CA3B0;line-height:1.65;margin-bottom:16px;}
+    .ref-intro b{font-weight:800;}
+    .ref-row{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 18px;margin-bottom:10px;}
+    .ref-row:last-child{margin-bottom:0;}
+    .ref-row-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .ref-code{font-family:'Consolas',monospace;font-size:1rem;font-weight:800;color:#00e676;letter-spacing:1px;}
+    .ref-for{font-size:.68rem;color:#5b6b78;font-family:'Consolas',monospace;margin-top:4px;}
+    .ref-copy{background:none;border:1px solid rgba(52,211,153,.3);color:#34D399;cursor:pointer;font-size:.72rem;font-weight:700;padding:6px 13px;border-radius:16px;transition:.2s;flex-shrink:0;}
+    .ref-copy:hover{background:rgba(52,211,153,.1);}
+    .ref-stats{display:flex;gap:26px;margin-top:13px;}
+    .ref-stat .n{font-size:1.3rem;font-weight:900;color:#E2E8F0;line-height:1;}
+    .ref-stat .l{font-size:.66rem;color:#8CA3B0;margin-top:4px;text-transform:uppercase;letter-spacing:.5px;}
+    .ref-cap{font-size:.7rem;color:#F59E0B;margin-top:9px;}
     .o-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
     .o-amt{font-size:.95rem;font-weight:800;color:#E2E8F0;}
     .o-status{font-size:.68rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap;}
@@ -191,6 +205,17 @@
       <div id="keys" class="keys"></div>
     </div>
 
+    <!-- Section: referrals (per key: shareable code + earnings) -->
+    <div class="panel" id="referrals-wrap" style="display:none;">
+      <div class="panel-head">
+        <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <div class="panel-title">Referrals</div>
+        <span class="panel-count" id="ref-count">0</span>
+      </div>
+      <div class="ref-intro" id="ref-intro"></div>
+      <div id="referrals" class="referrals"></div>
+    </div>
+
     <!-- Section: order history (kept separate from license keys) -->
     <div class="panel" id="orders-wrap" style="display:none;">
       <div class="panel-head">
@@ -205,6 +230,11 @@
   <div id="loading" class="load-wrap" style="display:none;">
     <div class="load-bar"><i></i></div>
     <div class="load-txt">Loading your account...</div>
+  </div>
+
+  <div id="retry" class="load-wrap" style="display:none;">
+    <div class="load-txt" id="retry-txt"></div>
+    <button class="btn-ghost" onclick="loadAccount()" style="margin-top:14px;">Try again</button>
   </div>
 </main>
 
@@ -259,6 +289,37 @@
   function showMsg(text, cls){var m=document.getElementById('msg');m.textContent=text;m.className='msg '+(cls||'inf');}
   function clearMsg(){var m=document.getElementById('msg');m.textContent='';m.className='msg';}
 
+  // Timeout-aware fetch, same shape the rest of the site uses. A bare fetch with no
+  // timeout is what let the account page spin forever when Apps Script was slow to
+  // answer (cold start, quota, or a stalled redirect): nothing ever settled, so the
+  // loading bar never cleared. This aborts after 25s and reports the failure instead.
+  var ACCT_TIMEOUT_MS=25000;
+  function _acctFetch(url){
+    if(typeof AbortController==='undefined') return fetch(url).then(_acctParse);
+    var ctrl=new AbortController();
+    var timer=setTimeout(function(){ctrl.abort();},ACCT_TIMEOUT_MS);
+    return fetch(url,{signal:ctrl.signal}).then(function(r){clearTimeout(timer);return _acctParse(r);},
+      function(err){clearTimeout(timer);throw err;});
+  }
+  function _acctParse(r){
+    if(!r.ok){var e=new Error('HTTP '+r.status);e.busy=(r.status===429||r.status>=500);throw e;}
+    return r.text().then(function(t){try{return JSON.parse(t);}catch(_){var e=new Error('Non-JSON');e.busy=true;throw e;}});
+  }
+  function _acctErrMsg(err){
+    if(typeof navigator!=='undefined'&&navigator.onLine===false) return 'You appear to be offline. Check your connection and try again.';
+    if(err&&(err.name==='AbortError'||err.busy)) return 'Our servers are busy right now. Please try again in a minute.';
+    return 'Could not load your account right now. Please try again.';
+  }
+  // Transient load failure: keep the user signed in (their token is likely still
+  // valid) and offer a retry, rather than spinning forever or forcing re-sign-in.
+  function showRetry(text){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('signed-out').style.display='none';
+    document.getElementById('signed-in').style.display='none';
+    document.getElementById('retry-txt').textContent=text;
+    document.getElementById('retry').style.display='block';
+  }
+
   // ── JWT expiry check (client-side, only to avoid a doomed call) ──
   function tokenExpired(tok){
     try{
@@ -303,26 +364,27 @@
     if(!idToken){signOut();return;}
     document.getElementById('signed-out').style.display='none';
     document.getElementById('signed-in').style.display='none';
+    document.getElementById('retry').style.display='none';
     document.getElementById('page-sub').style.display='none';
     document.getElementById('loading').style.display='block';
     clearMsg();
-    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'account_data',id_token:idToken}))
-      .then(function(r){return r.json();})
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'account_data',id_token:idToken}))
       .then(function(d){
         document.getElementById('loading').style.display='none';
         if(!d||!d.success){
-          // Verification failed or token stale: send them back to sign-in.
+          // The server answered but rejected the token (verification failed or it
+          // went stale). That genuinely needs a fresh sign-in.
           showMsg((d&&d.error)||'Could not load your account. Please sign in again.','err');
           signOut();
           return;
         }
         renderAccount(d);
       })
-      .catch(function(){
-        document.getElementById('loading').style.display='none';
-        showMsg('Our servers are busy right now. Please try again in a minute.','err');
-        document.getElementById('signed-out').style.display='';
-        document.getElementById('page-sub').style.display='';
+      .catch(function(err){
+        // The call never completed (timeout, busy, offline). The token is probably
+        // still fine, so keep the user signed in and let them retry, rather than
+        // spinning forever or bouncing them to the sign-in screen.
+        showRetry(_acctErrMsg(err));
       });
   }
 
@@ -356,6 +418,36 @@
     }).join('');
   }
 
+  function renderReferrals(keys,d){
+    var wrap=document.getElementById('referrals-wrap');
+    var withCode=(keys||[]).filter(function(k){return k.referral_code;});
+    if(!withCode.length){wrap.style.display='none';return;}
+    wrap.style.display='';
+    var totalRef=Number(d.total_referrals||0);
+    var totalHrs=Number(d.total_referral_hours||0);
+    document.getElementById('ref-count').textContent=totalRef+(totalRef===1?' referral':' referrals');
+    var cap=Number((withCode[0]&&withCode[0].referral_cap)||0);
+    document.getElementById('ref-intro').innerHTML='Share your code with friends. When a friend activates a license or starts a trial with it, you get <b style="color:#34D399;">+1 hour</b> of AI time'+(cap?', up to '+cap+' hours per key':'')+'. You have earned <b style="color:#34D399;">'+totalHrs+' hour'+(totalHrs===1?'':'s')+'</b> so far.';
+    document.getElementById('referrals').innerHTML=withCode.map(function(k){
+      var n=Number(k.referrals||0), hrs=Number(k.referral_hours||0), cp=Number(k.referral_cap||0);
+      var code=esc(k.referral_code);
+      var capNote=(cp&&n>=cp)?'<div class="ref-cap">This code has reached its '+cp+'-hour limit.</div>':'';
+      return '<div class="ref-row">'+
+        '<div class="ref-row-top">'+
+          '<div style="min-width:0;"><div class="ref-code">'+code+'</div><div class="ref-for">for key '+esc(k.key)+'</div></div>'+
+          '<button class="ref-copy" onclick="copyRef(\''+code+'\',this)">Copy code</button>'+
+        '</div>'+
+        '<div class="ref-stats">'+
+          '<div class="ref-stat"><div class="n">'+n+'</div><div class="l">Successful referrals</div></div>'+
+          '<div class="ref-stat"><div class="n">'+hrs+' hr'+(hrs===1?'':'s')+'</div><div class="l">Hours earned</div></div>'+
+        '</div>'+capNote+
+      '</div>';
+    }).join('');
+  }
+  function copyRef(code,btn){
+    try{navigator.clipboard.writeText(code);btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy code';},1500);}catch(_){}
+  }
+
   function renderAccount(d){
     document.getElementById('signed-in').style.display='';
     var name=d.name||d.email||'';
@@ -367,6 +459,7 @@
     document.getElementById('keys-count').textContent=(d.keys||[]).length;
 
     renderOrders(d.orders||[]);
+    renderReferrals(d.keys||[], d);
 
     var box=document.getElementById('keys');
     if(!d.keys||!d.keys.length){
@@ -405,13 +498,12 @@
   function deleteKey(key){
     if(!idToken){signOut();return;}
     if(!confirm('Delete '+key+'?\n\nThis permanently deactivates the key. It will stop working on any device and cannot be reactivated. This does not refund unused hours.'))return;
-    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'revoke_key',id_token:idToken,license_key:key}))
-      .then(function(r){return r.json();})
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'revoke_key',id_token:idToken,license_key:key}))
       .then(function(d){
         if(d&&d.success){showMsg('Key '+key+' deleted.','inf');loadAccount();}
         else{showMsg((d&&d.error)||'Could not delete the key. Please try again.','err');}
       })
-      .catch(function(){showMsg('Our servers are busy right now. Please try again in a minute.','err');});
+      .catch(function(err){showMsg(_acctErrMsg(err),'err');});
   }
 
   // ── Top-up (in-page, no redirect to the homepage) ──
@@ -432,8 +524,7 @@
     var box=document.getElementById('tu-plans');
     if(PLANS_CACHE){ renderPlans(PLANS_CACHE); return; }
     box.innerHTML='<div class="tu-loading">Loading packs...</div>';
-    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'plans'}))
-      .then(function(r){return r.json();})
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'plans'}))
       .then(function(d){
         if(!d||!d.success||!d.plans){box.innerHTML='<div class="tu-loading">Could not load packs. Please try again.</div>';return;}
         PLANS_CACHE=d.plans; renderPlans(d.plans);
@@ -463,8 +554,7 @@
     document.querySelectorAll('#tu-plans .tu-plan').forEach(function(b){b.disabled=true;});
     // The backend takes the email from the verified id_token and tops up currentTopupKey
     // (it re-checks the key belongs to this email, so a wrong key can never be topped up).
-    fetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_order',id_token:idToken,plan:planKey,topup_key:currentTopupKey,ajax:'1'}))
-      .then(function(r){return r.json();})
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_order',id_token:idToken,plan:planKey,topup_key:currentTopupKey,ajax:'1'}))
       .then(function(d){
         if(d&&d.payment_url){ window.location.href=d.payment_url; return; }
         if(d&&d.success&&d.key){ m.className='tu-msg inf'; m.textContent='Done. Hours added to your key.'; setTimeout(function(){closeTopup();loadAccount();},1500); return; }

@@ -301,6 +301,44 @@
     .sup-btn:disabled{opacity:.45;cursor:not-allowed;}
     .sup-msg{text-align:center;font-size:.8rem;margin-top:8px;min-height:16px;}
     .sup-msg.err{color:#EF4444;}.sup-msg.ok{color:#34D399;}.sup-msg.inf{color:#94A3B8;}
+    /* Mobile sticky buy bar + quick plan picker. Desktop hides the bar entirely; the
+       header already has a Get Access CTA there. On mobile the bar is fixed to the
+       bottom, so the FAB is nudged up and the body gets bottom padding to keep the
+       footer clear of it. */
+    #buy-bar{display:none;}
+    .quick-list{display:flex;flex-direction:column;gap:10px;}
+    .quick-row{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:13px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#fff;cursor:pointer;font-family:inherit;transition:border-color .18s,background .18s;}
+    .quick-row:hover,.quick-row:active{border-color:var(--gg);background:rgba(0,230,118,.06);}
+    .quick-row-pop{border-color:rgba(0,230,118,.4);background:rgba(0,230,118,.05);}
+    .quick-row-l{display:flex;flex-direction:column;min-width:0;}
+    .quick-row-name{font-size:.98rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:7px;}
+    .quick-tag{font-size:.6rem;font-weight:800;letter-spacing:.3px;text-transform:uppercase;background:var(--ag);color:#04170f;padding:2px 7px;border-radius:8px;}
+    .quick-row-dur{font-size:.74rem;color:#94A3B8;margin-top:3px;}
+    .quick-row-r{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+    .quick-row-old{font-size:.72rem;color:#475569;text-decoration:line-through;margin-right:2px;}
+    .quick-row-price{font-size:1.25rem;font-weight:900;color:#00e676;letter-spacing:-.5px;}
+    .quick-row-go{color:var(--gg);font-size:1.1rem;font-weight:700;}
+    /* Review form star picker */
+    .rv-stars{display:flex;gap:8px;margin:0 0 15px;font-size:2rem;line-height:1;}
+    .rv-star{cursor:pointer;color:#334155;transition:color .12s,transform .12s;user-select:none;}
+    .rv-star:hover{transform:scale(1.12);}
+    .rv-star.on{color:#F59E0B;}
+    @media(max-width:768px){
+      #buy-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:1900;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:linear-gradient(180deg,rgba(8,16,11,.98),rgba(4,10,7,.99));border-top:1px solid rgba(46,204,113,.4);box-shadow:0 -8px 28px rgba(0,0,0,.55);backdrop-filter:blur(10px);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:buyBarUp .45s cubic-bezier(.4,0,.2,1) .35s both;}
+      #buy-bar:active{background:linear-gradient(180deg,rgba(10,20,14,1),rgba(6,12,9,1));}
+      /* Children are pointer-events:none so every tap lands on #buy-bar's single
+         handler: the whole bar is one big tap target, and there is no double-fire. */
+      .buy-bar-info{display:flex;flex-direction:column;line-height:1.2;min-width:0;pointer-events:none;}
+      .buy-bar-title{font-size:.96rem;font-weight:800;color:#fff;letter-spacing:-.2px;}
+      .buy-bar-sub{font-size:.72rem;color:#9fb2a8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .buy-bar-sub b{color:#00e676;font-weight:800;}
+      .buy-bar-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:26px;border:1px solid var(--gg);background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;font-weight:800;font-size:.95rem;font-family:inherit;box-shadow:0 4px 18px rgba(0,230,118,.4);position:relative;overflow:hidden;white-space:nowrap;pointer-events:none;}
+      .buy-bar-btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.28),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
+      body{padding-bottom:70px;}
+      .sup-fab{bottom:84px;}
+      .sup-fab-label{bottom:88px;}
+    }
+    @keyframes buyBarUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   html{overflow-x:hidden;}
   </style>
 </head>
@@ -667,13 +705,20 @@
 <!-- REVIEWS -->
 <section class="reveal">
   <div class="sh"><h2>Early Users Are Saying</h2><p>Real feedback from our early access users across India.</p></div>
-  <div class="grid-3">
+  <div class="grid-3" id="reviews-grid">
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"I'll be honest I was skeptical. Tested it on a Google Meet call with a friend first. He shared his screen, I had CloakAI open. He saw nothing. Not even a flash. That was enough for me."</p><div class="rev-author">Karthik N.</div><div class="rev-role">SDE-2 candidate, Bengaluru</div></div>
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"Got asked a SQL joins question mid-interview. Held Alt, interviewer asked, released. Answer appeared in about 2 seconds. I typed it out like it was mine. Second round cleared."</p><div class="rev-author">Neha P.</div><div class="rev-role">Data Engineer, Pune</div></div>
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"I set the context to my exact profile 3 years Python, targeting BFSI roles and the answers came out using the right jargon. Didn't sound generic at all. Actually impressed the interviewer."</p><div class="rev-author">Arjun V.</div><div class="rev-role">Backend Engineer, Mumbai</div></div>
     <div class="review-card"><div class="stars">★★★★☆</div><p class="rev-text">"The screen capture is a lifesaver when they paste code in a shared doc and you can't copy it. Takes 2 seconds and gives a full breakdown. Make sure your mic sensitivity is tuned or it picks up background noise."</p><div class="rev-author">Divya R.</div><div class="rev-role">Product Analyst, Hyderabad</div></div>
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"Used the trial for 20 minutes during a practice mock. Was so comfortable with it that I bought the 8-hour pack the same evening. Already used 3 hours across two real interviews this week."</p><div class="rev-author">Mihir S.</div><div class="rev-role">Full Stack Developer, Ahmedabad</div></div>
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"I saved the session after my first interview with it. Went through the questions that came up, the answers it gave, and how I actually responded. Best prep material I've had."</p><div class="rev-author">Riya M.</div><div class="rev-role">Software Engineer, Delhi</div></div>
+  </div>
+  <div style="text-align:center;margin-top:26px;">
+    <p style="color:#64748B;font-size:.86rem;margin-bottom:12px;">Used CloakAI in a real interview? We would love to hear how it went.</p>
+    <button type="button" class="btn-outline" onclick="openReview()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6z"/></svg>
+      Write a review
+    </button>
   </div>
 </section>
 <!-- INLINE CTA -->
@@ -813,9 +858,67 @@
     </div>
     <div class="pm-footer">
       🔒 Secured by PhonePe &nbsp;·&nbsp; Pay by UPI, cards or wallets &nbsp;·&nbsp; Nothing is charged until you confirm<br>
-      License key emailed instantly &nbsp;·&nbsp; By continuing you agree to our <a href="terms.html">Terms</a> and <a href="refund.html">Refund Policy</a>
+      License key emailed instantly &nbsp;·&nbsp; By continuing you agree to our <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a> and <a href="refund.html">Refund Policy</a>
     </div>
   </div>
+</div>
+<!-- QUICK PLAN PICKER - fast checkout entry from the mobile sticky bar. Tapping a
+     plan opens the normal pay modal, so there is one checkout code path, not two.
+     The rows are rendered from PLANS in openQuick() so prices never drift. -->
+<div id="quick-mo" class="mo" onclick="closeMo(event,'quick-mo')">
+  <div class="mc pm-card" style="max-width:420px;">
+    <button class="close-mc" onclick="closeMo(null,'quick-mo')">&times;</button>
+    <div class="mt">Choose Your Plan</div>
+    <div class="quick-list" id="quick-list"></div>
+    <div class="pm-footer" style="margin-top:16px;">
+      🔒 Secured by PhonePe &nbsp;·&nbsp; License key emailed instantly<br>
+      Not ready? <a href="how-to-use.html">Try 20 minutes free &rarr;</a>
+    </div>
+  </div>
+</div>
+<!-- WRITE A REVIEW - submits to the backend as 'pending'. It is NOT shown on the
+     site until an admin approves it by email. Only verified customers are accepted. -->
+<div id="review-mo" class="mo" onclick="closeMo(event,'review-mo')">
+  <div class="mc pm-card" style="max-width:460px;">
+    <button class="close-mc" onclick="closeMo(null,'review-mo')">&times;</button>
+    <div class="mt">Write a Review</div>
+    <div id="rv-form">
+      <label class="flabel">Your Rating</label>
+      <div class="rv-stars" id="rv-stars" role="radiogroup" aria-label="Your rating">
+        <span class="rv-star" role="radio" aria-label="1 star" tabindex="0" onclick="setRvRating(1)" onkeydown="if(event.key==='Enter'||event.key===' '){setRvRating(1);event.preventDefault();}">&#9733;</span>
+        <span class="rv-star" role="radio" aria-label="2 stars" tabindex="0" onclick="setRvRating(2)" onkeydown="if(event.key==='Enter'||event.key===' '){setRvRating(2);event.preventDefault();}">&#9733;</span>
+        <span class="rv-star" role="radio" aria-label="3 stars" tabindex="0" onclick="setRvRating(3)" onkeydown="if(event.key==='Enter'||event.key===' '){setRvRating(3);event.preventDefault();}">&#9733;</span>
+        <span class="rv-star" role="radio" aria-label="4 stars" tabindex="0" onclick="setRvRating(4)" onkeydown="if(event.key==='Enter'||event.key===' '){setRvRating(4);event.preventDefault();}">&#9733;</span>
+        <span class="rv-star" role="radio" aria-label="5 stars" tabindex="0" onclick="setRvRating(5)" onkeydown="if(event.key==='Enter'||event.key===' '){setRvRating(5);event.preventDefault();}">&#9733;</span>
+      </div>
+      <label class="flabel">Name (shown publicly)</label>
+      <input type="text" id="rv-name" class="finput" maxlength="40" placeholder="e.g. Karthik N." autocomplete="name">
+      <label class="flabel">Role &amp; City (optional)</label>
+      <input type="text" id="rv-role" class="finput" maxlength="60" placeholder="e.g. Backend Engineer, Pune">
+      <label class="flabel">Email (the one you purchased or trialed with)</label>
+      <input type="text" inputmode="email" id="rv-email" class="finput" placeholder="you@email.com" autocomplete="email">
+      <label class="flabel">Your Review</label>
+      <textarea id="rv-text" class="finput" maxlength="600" rows="4" style="resize:vertical;min-height:92px;" placeholder="What was your experience like? What worked well for you?"></textarea>
+      <button class="btn-pay" id="rv-btn" onclick="submitReview()">
+        <span id="rv-btxt">Submit Review</span>
+        <div class="spin" id="rv-spin"></div>
+      </button>
+      <div class="pm-msg" id="rv-msg" style="margin-top:10px;"></div>
+      <div class="pm-footer" style="margin-top:8px;">Reviews are checked before they appear. Only customers can leave one, so use the email you bought a plan or started your trial with.</div>
+    </div>
+  </div>
+</div>
+<!-- MOBILE STICKY BUY BAR - shown only under 768px (see CSS). The whole bar is one
+     tap target (role=button); the green pill is the visual CTA. -->
+<div id="buy-bar" role="button" tabindex="0" aria-label="Get CloakAI, view plans"
+     onclick="openQuick()" onkeydown="if(event.key==='Enter'||event.key===' '){openQuick();event.preventDefault();}">
+  <div class="buy-bar-info">
+    <span class="buy-bar-title">Get CloakAI</span>
+    <span class="buy-bar-sub">Plans starting at <b>₹499</b></span>
+  </div>
+  <span class="buy-bar-btn">Get Access
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="M12.5 6l6 6-6 6"/></svg>
+  </span>
 </div>
 <script>
   // Particles and cursor glow are created by layout.js (loaded at the bottom of this
@@ -832,6 +935,93 @@
   function closeMo(e,id){if(e&&e.target!==e.currentTarget)return;document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
   document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;document.querySelectorAll('.mo.open').forEach(function(m){m.classList.remove('open');});document.body.style.overflow='';});
   function toggleNav(){var b=document.getElementById('ham-btn'),n=document.getElementById('mnav');b.classList.toggle('open');n.classList.toggle('open');}
+  // Quick plan picker for the mobile sticky bar. Rows are built from PLANS so the
+  // prices stay in sync with the pricing cards automatically.
+  function openQuick(){
+    var order=['mini','starter','basic','pro'],html='';
+    order.forEach(function(k){
+      var m=PLANS[k];if(!m)return;
+      var pop=(k==='starter');
+      html+='<button type="button" class="quick-row'+(pop?' quick-row-pop':'')+'" onclick="quickPick(\''+k+'\')">'
+        +'<span class="quick-row-l"><span class="quick-row-name">'+m.name+(pop?' <span class="quick-tag">Popular</span>':'')+'</span>'
+        +'<span class="quick-row-dur">'+m.period+' &middot; '+m.rate+'</span></span>'
+        +'<span class="quick-row-r"><span class="quick-row-old">'+m.oldPrice+'</span><span class="quick-row-price">'+m.price+'</span><span class="quick-row-go">&rarr;</span></span>'
+        +'</button>';
+    });
+    document.getElementById('quick-list').innerHTML=html;
+    openMo('quick-mo');
+    // Not 'Open' on purpose: that action maps to begin_checkout, which openPay fires
+    // for real once a plan is picked. Using a distinct action avoids double-counting.
+    trackEvent('QuickBar','QuickOpen','mobile');
+  }
+  function quickPick(plan){closeMo(null,'quick-mo');openPay(plan);}
+  // ── Write a review (moderated: submits as pending, shown only after approval) ──
+  var _rvRating=0,_rvFormHTML=null;
+  function setRvRating(v){_rvRating=Math.max(0,Math.min(5,v|0));_rvPaintStars();}
+  function _rvPaintStars(){
+    var els=document.querySelectorAll('#rv-stars .rv-star');
+    for(var i=0;i<els.length;i++){var v=i+1;els[i].classList.toggle('on',v<=_rvRating);els[i].setAttribute('aria-checked',v===_rvRating?'true':'false');}
+  }
+  function _rvMsg(t,c){var el=document.getElementById('rv-msg');if(el){el.textContent=t;el.className='pm-msg'+(c?' '+c:'');}}
+  function _resetRvBtn(){var b=document.getElementById('rv-btn');if(!b)return;b.disabled=false;document.getElementById('rv-btxt').style.display='inline';document.getElementById('rv-spin').style.display='none';}
+  function openReview(){
+    // Restore a fresh form: a prior successful submit replaces it with a thank-you.
+    var form=document.getElementById('rv-form');
+    if(_rvFormHTML===null){_rvFormHTML=form.innerHTML;}else{form.innerHTML=_rvFormHTML;}
+    _rvRating=0;
+    ['rv-name','rv-role','rv-email','rv-text'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+    _rvMsg('','');_rvPaintStars();_resetRvBtn();
+    openMo('review-mo');
+    trackEvent('Review','WriteOpen','homepage');
+  }
+  function submitReview(){
+    var name=document.getElementById('rv-name').value.trim();
+    var role=document.getElementById('rv-role').value.trim();
+    var email=document.getElementById('rv-email').value.trim().toLowerCase();
+    var text=document.getElementById('rv-text').value.trim();
+    var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!_rvRating){_rvMsg('Please pick a star rating.','err');return;}
+    if(!name){_rvMsg('Please enter your name.','err');return;}
+    if(!email||!emailRe.test(email)){_rvMsg('Please enter a valid email address.','err');return;}
+    if(text.length<20){_rvMsg('Please write a little more about your experience.','err');return;}
+    if(SCRIPT_URL.includes('REPLACE')){_rvMsg('Reviews are not available right now. Email support@cloakai.in','err');return;}
+    var b=document.getElementById('rv-btn');b.disabled=true;document.getElementById('rv-btxt').style.display='none';document.getElementById('rv-spin').style.display='block';
+    _rvMsg('Submitting...','inf');
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'submit_review',name:name,role:role,email:email,rating:String(_rvRating),text:text,ajax:'1'}))
+      .then(function(data){
+        _resetRvBtn();
+        if(!data.success){_rvMsg(data.error||'Could not submit. Please try again.','err');return;}
+        _rvMsg('','');
+        document.getElementById('rv-form').innerHTML='<div style="text-align:center;padding:16px 6px;"><div style="font-size:2.4rem;">&#127881;</div><p style="color:#34D399;font-weight:700;font-size:1.05rem;margin:10px 0 6px;">Thank you!</p><p style="color:#94A3B8;font-size:.88rem;line-height:1.6;">Your review has been submitted and will appear on the site after a quick check.</p></div>';
+        trackEvent('Review','Submitted','homepage');
+      })
+      .catch(function(err){_resetRvBtn();_rvMsg(_apiErrMsg(err),'err');});
+  }
+  // Prepend approved reviews (from the backend) ahead of the built-in ones. All
+  // fields are escaped via textContent so review text can never inject markup. If
+  // the fetch fails or returns nothing, the static cards remain, so the section is
+  // never empty.
+  (function loadReviews(){
+    var grid=document.getElementById('reviews-grid');
+    if(!grid||typeof SCRIPT_URL!=='string'||SCRIPT_URL.includes('REPLACE'))return;
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'list_reviews',ajax:'1'}))
+      .then(function(data){
+        if(!data||!data.success||!data.reviews||!data.reviews.length)return;
+        var esc=function(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML;};
+        var stars=function(n){n=Math.max(0,Math.min(5,parseInt(n,10)||0));var s='';for(var i=0;i<5;i++)s+=(i<n?'★':'☆');return s;};
+        var frag=document.createDocumentFragment();
+        data.reviews.forEach(function(r){
+          var card=document.createElement('div');card.className='review-card';
+          card.innerHTML='<div class="stars">'+esc(stars(r.rating))+'</div>'+
+            '<p class="rev-text">"'+esc(r.text)+'"</p>'+
+            '<div class="rev-author">'+esc(r.name)+'</div>'+
+            (r.role?'<div class="rev-role">'+esc(r.role)+'</div>':'');
+          frag.appendChild(card);
+        });
+        grid.insertBefore(frag,grid.firstChild);
+      })
+      .catch(function(){});
+  })();
   document.addEventListener('click',function(e){var n=document.getElementById('mnav'),b=document.getElementById('ham-btn');if(n&&n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target)){n.classList.remove('open');b.classList.remove('open');}});
   document.querySelectorAll('#mnav a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('mnav').classList.remove('open');document.getElementById('ham-btn').classList.remove('open');});});
   var curPlan=null,_verifiedEmail='',_resendTimer=null;
