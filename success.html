@@ -19,11 +19,13 @@
   <style>
 body{
       background:var(--bg);color:var(--tc);min-height:100vh;
-      display:flex;flex-direction:column;align-items:center;
-      justify-content:flex-start;padding:16px 16px 40px;
+      display:flex;flex-direction:column;
       background:radial-gradient(circle at 50% 30%,rgba(15,61,46,.4) 0%,transparent 60%),
                  linear-gradient(0deg,#050a07 0%,#0a1410 100%);
     }
+    /* Centering wrapper so the newsbar/header/footer stay full-width (touching the
+       page edges, in sync with the rest of the site) while the card stays centred. */
+    .card-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:20px 16px 40px;}
 
     .card{
       background:linear-gradient(165deg,#0b1410,#050d08);
@@ -190,12 +192,14 @@ body{
     <button class="ham" id="ham-btn" onclick="toggleNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </header>
+<div class="card-wrap">
 <div class="card" id="card">
   <div class="logo">
     <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
     CloakAI
   </div>
   <div id="content"></div>
+</div>
 </div>
 
 <footer>
