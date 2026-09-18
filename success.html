@@ -26,10 +26,10 @@ body{
     }
 
     .card{
-      background:linear-gradient(160deg,#0A0F1A,#060C16);
-      border:1px solid rgba(52,211,153,.25);border-radius:22px;
+      background:linear-gradient(165deg,#0b1410,#050d08);
+      border:1px solid rgba(52,211,153,.28);border-radius:22px;
       padding:32px 24px;max-width:520px;width:100%;text-align:center;
-      box-shadow:0 0 60px rgba(52,211,153,.07),0 24px 64px rgba(0,0,0,.6);
+      box-shadow:0 0 60px rgba(0,230,118,.09),0 24px 64px rgba(0,0,0,.62);
       position:relative;overflow:hidden;margin-top:16px;
     }
     .card::before{
@@ -71,12 +71,13 @@ body{
     }
 
     .btn-copy{
-      width:100%;padding:13px;border-radius:11px;border:none;
-      background:linear-gradient(135deg,#059669,#34D399);
-      color:#022c22;font-size:.97rem;font-weight:800;cursor:pointer;
-      transition:.2s;margin-bottom:18px;display:block;
+      width:100%;padding:14px;border-radius:12px;border:none;
+      background:linear-gradient(90deg,#00e676,#00c853);
+      color:#04170f;font-size:.97rem;font-weight:800;cursor:pointer;
+      transition:transform .18s,box-shadow .18s,filter .18s;margin-bottom:18px;display:block;
+      box-shadow:0 8px 22px rgba(0,230,118,.28);
     }
-    .btn-copy:hover{opacity:.9;transform:translateY(-1px);}
+    .btn-copy:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 11px 30px rgba(0,230,118,.42);}
     .btn-copy.copied{background:linear-gradient(135deg,#065f46,#10b981);}
 
     /* Steps */
@@ -95,7 +96,7 @@ body{
     .step-text{font-size:.85rem;color:#94A3B8;line-height:1.55;}
     .step-text strong{color:#cbd5e1;}
 
-    /* Email note — plain block layout, no flex, no columns, mobile-safe */
+    /* Email note - plain block layout, no flex, no columns, mobile-safe */
     .email-note{
       background:rgba(56,189,248,.05);
       border:1px solid rgba(56,189,248,.12);
@@ -115,15 +116,15 @@ body{
     small a{color:#2ecc71;text-decoration:none;}
 
     /* Action buttons */
+    /* Secondary: the Copy button is the hero, so Back to Home is a quieter action. */
     .btn-home{
-      display:block;width:100%;padding:13px;border-radius:11px;
-      font-size:.97rem;font-weight:700;cursor:pointer;text-decoration:none;
+      display:block;width:100%;padding:12px;border-radius:12px;
+      font-size:.92rem;font-weight:600;cursor:pointer;text-decoration:none;
       text-align:center;transition:.2s;margin-bottom:10px;
-      background:linear-gradient(45deg,var(--pg),var(--ag));
-      color:#fff;border:1px solid var(--gg);
-      box-shadow:0 0 14px rgba(46,204,113,.2);
+      background:rgba(0,230,118,.06);color:#34D399;
+      border:1px solid rgba(52,211,153,.28);
     }
-    .btn-home:hover{box-shadow:0 0 22px rgba(46,204,113,.35);transform:translateY(-1px);}
+    .btn-home:hover{background:rgba(0,230,118,.12);border-color:rgba(52,211,153,.45);}
 
     .btn-sec{
       display:block;width:100%;padding:11px;border-radius:11px;
@@ -158,7 +159,7 @@ body{
 <div class="bg-anim"><div class="fog"></div></div>
 <div id="particles"></div>
 <!-- ═══════════════════════════════════════════════════════
-     NEWS BAR — set NEWSBAR_ENABLED = true to show
+     NEWS BAR - set NEWSBAR_ENABLED = true to show
                 set NEWSBAR_ENABLED = false to hide
      Edit the .news-bar-text span to change the message.
      ═══════════════════════════════════════════════════════ -->
@@ -260,7 +261,7 @@ body{
   var bypassBanner = bypass
     ? '<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);' +
       'color:#F59E0B;padding:8px 12px;border-radius:8px;font-size:.77rem;' +
-      'font-weight:600;margin-bottom:16px;">Testing mode — payment bypass active</div>'
+      'font-weight:600;margin-bottom:16px;">Testing mode - payment bypass active</div>'
     : '';
 
   // ── Main success content ──────────────────────────────────────────────────
@@ -327,7 +328,7 @@ body{
         document.body.removeChild(ta);
         onCopied();
       } catch(e) {
-        btn.textContent = 'Copy failed — select key manually';
+        btn.textContent = 'Copy failed - select key manually';
       }
     }
   };
