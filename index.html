@@ -827,6 +827,7 @@
           <span id="pm-otp-btxt">Send Verification Code</span>
           <div class="spin" id="pm-otp-spin"></div>
         </button>
+        <div class="pm-msg" id="pm-otp-msg" style="margin-top:10px;min-height:16px;"></div>
         <div style="text-align:center;margin-top:12px;font-size:.78rem;color:#64748B;">
           Not ready to buy? <a href="how-to-use.html" style="color:#34D399;text-decoration:none;font-weight:600;">Try 20 minutes free &rarr;</a>
         </div>
@@ -1145,7 +1146,7 @@
     document.getElementById('pm-name').textContent=m.name;
     document.getElementById('pm-price').innerHTML=m.price;
     document.getElementById('pm-dur').textContent=m.period+' · '+m.rate;
-    document.getElementById('pm-msg').textContent='';
+    document.getElementById('pm-msg').textContent='';_otpMsg('','');
     document.getElementById('pm-email').value='';document.getElementById('pm-phone').value='';document.getElementById('pm-otp').value='';
     document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';
     _resetOTPBtn();_resetPayBtn();_clearResendCooldown();
@@ -1153,10 +1154,13 @@
     if(_topupKey)_pmMsg('Adding hours to your existing key '+_topupKey+'. Use the email it was bought with.','inf');
     trackEvent('Checkout','Open',plan);
   }
-  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';document.getElementById('pm-otp').value='';_resetOTPBtn();}
+  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
   function _resetOTPBtn(){document.getElementById('pm-otp-btn').disabled=false;document.getElementById('pm-otp-btxt').style.display='inline';document.getElementById('pm-otp-btxt').textContent='Send Verification Code';document.getElementById('pm-otp-spin').style.display='none';}
   function _resetPayBtn(){document.getElementById('pm-btn').disabled=false;document.getElementById('pm-btxt').style.display='inline';document.getElementById('pm-btxt').textContent='Verify & Continue to Payment';document.getElementById('pm-spin').style.display='none';}
   function _pmMsg(text,cls){var el=document.getElementById('pm-msg');el.textContent=text;el.className='pm-msg'+(cls?' '+cls:'');}
+  // Step-1 message target. sendOTP used to write to #pm-msg, which lives inside the
+  // HIDDEN step 2, so any send failure was invisible and the modal just looked frozen.
+  function _otpMsg(text,cls){var el=document.getElementById('pm-otp-msg');if(el){el.textContent=text;el.className='pm-msg'+(cls?' '+cls:'');}}
   function _startResendCooldown(){var link=document.getElementById('pm-resend-link'),secs=30;link.style.pointerEvents='none';link.style.color='#2D3748';link.textContent='Resend code ('+secs+'s)';_resendTimer=setInterval(function(){secs--;if(secs<=0){clearInterval(_resendTimer);_resendTimer=null;link.style.pointerEvents='';link.style.color='#475569';link.textContent='Resend code';}else{link.textContent='Resend code ('+secs+'s)';}},1000);}
   function _clearResendCooldown(){if(_resendTimer){clearInterval(_resendTimer);_resendTimer=null;}var link=document.getElementById('pm-resend-link');if(link){link.style.pointerEvents='';link.style.color='#475569';link.textContent='Resend code';}}
   function handleResend(){if(_resendTimer)return;sendOTP(true);}
@@ -1165,27 +1169,43 @@
     var phone=document.getElementById('pm-phone').value.trim();
     var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(isResend){email=_verifiedEmail||email;}
-    if(!email||!emailRe.test(email)){_pmMsg('Please enter a valid email address.','err');return;}
-    if(!phone||phone.replace(/[^0-9]/g,'').length<10){_pmMsg('Please enter a valid 10-digit phone number.','err');return;}
-    if(SCRIPT_URL.includes('REPLACE')){_pmMsg('Payment system not yet active. Email support@cloakai.in','err');return;}
+    if(!email||!emailRe.test(email)){_otpMsg('Please enter a valid email address.','err');return;}
+    if(!phone||phone.replace(/[^0-9]/g,'').length<10){_otpMsg('Please enter a valid 10-digit phone number.','err');return;}
+    if(SCRIPT_URL.includes('REPLACE')){_otpMsg('Payment system not yet active. Email support@cloakai.in','err');return;}
     var btn=document.getElementById('pm-otp-btn'),btxt=document.getElementById('pm-otp-btxt'),spin=document.getElementById('pm-otp-spin');
     btn.disabled=true;btxt.style.display='none';spin.style.display='block';
-    _pmMsg('Sending code to '+email+'...','inf');
+    _otpMsg('Sending code to '+email+'...','inf');
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,phone:phone,ajax:'1'}))
       .then(function(data){
         btn.disabled=false;btxt.style.display='inline';spin.style.display='none';
-        if(!data.success){_pmMsg(data.error||'Could not send code. Please try again.','err');return;}
-        _verifiedEmail=email;
-        document.getElementById('pm-email-show').textContent=email;
-        document.getElementById('pm-step1').style.display='none';
-        document.getElementById('pm-step2').style.display='';
-        document.getElementById('pm-otp').value='';
-        _resetPayBtn();_startResendCooldown();
-        _pmMsg(isResend?'New code sent to '+email:'','');
-        setTimeout(function(){document.getElementById('pm-otp').focus();},120);
-        trackEvent('Checkout','OTPSent',curPlan);
+        if(!data.success){_otpMsg(data.error||'Could not send code. Please try again.','err');return;}
+        _otpMsg('','');
+        _gotoOtpStep(email,isResend?'New code sent to '+email:'');
       })
-      .catch(function(err){btn.disabled=false;btxt.style.display='inline';spin.style.display='none';_pmMsg(_apiErrMsg(err),'err');});
+      .catch(function(err){
+        console.error('[sendOTP] could not read send_otp response:',err);
+        btn.disabled=false;btxt.style.display='inline';spin.style.display='none';
+        // The OTP email is sent server-side even when the browser fails to read the
+        // reply (a transient network/redirect hiccup: the request reaches Apps Script
+        // and the mail goes out, but the response never lands). Rather than freeze on
+        // step 1, advance to code entry so a user who DID receive a code can still
+        // finish checkout. If nothing arrived, Resend is right there.
+        _otpMsg('','');
+        _gotoOtpStep(email,'If you received a 6-digit code by email, enter it below. If not, tap Resend code.');
+      });
+  }
+  // Shared transition into the OTP step, used by BOTH the success path and the
+  // could-not-read-the-response path so the two never drift out of sync.
+  function _gotoOtpStep(email,msg){
+    _verifiedEmail=email;
+    document.getElementById('pm-email-show').textContent=email;
+    document.getElementById('pm-step1').style.display='none';
+    document.getElementById('pm-step2').style.display='';
+    document.getElementById('pm-otp').value='';
+    _resetPayBtn();_startResendCooldown();
+    _pmMsg(msg||'',msg?'inf':'');
+    setTimeout(function(){document.getElementById('pm-otp').focus();},120);
+    trackEvent('Checkout','OTPSent',curPlan);
   }
   function doPay(){
     var otp=(document.getElementById('pm-otp').value||'').trim();
