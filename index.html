@@ -1037,7 +1037,7 @@
      invites immediate retries that make the overload worse.
      _apiFetch adds a hard timeout and classifies the failure so we can
      tell the user to wait rather than to check their wifi. */
-  var API_TIMEOUT_MS=25000;   /* Apps Script cold starts can legitimately take 10-20s */
+  var API_TIMEOUT_MS=60000;   /* Apps Script COLD starts (after ~15-30 min idle) can take 30s+; 25s was too tight and aborted mid-request, which is what left checkout stuck. Warm calls are 2-3s, so this ceiling only bites on the rare cold hit. The real fix is the keep-warm cron in the Cloudflare Worker (scheduled ping to this deployment), which stops cold starts happening at all. */
   function _apiFetch(url){
     /* AbortController is supported in every browser we target. If it is
        somehow missing, fall through to a plain fetch rather than break. */
