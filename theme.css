@@ -103,3 +103,45 @@ a[href*="CloakAI-macOS.dmg"]{display:none !important;}
    rule already hides, leaving a card with instructions and no way to act on them. */
 .install-card.mac{display:none !important;}
 .install-grid{grid-template-columns:1fr !important;}
+
+/* ═══ BLOG / ARTICLE LIGHT THEME  (opt-in via <body class="blog">) ═════
+   Blog and SEO article pages render light: white background, dark text, for
+   easy reading and fast, clean pages. Nothing else on the site is affected;
+   a page opts in with class="blog" on its <body>. The shared menu, news bar
+   and footer are deliberately kept exactly as they are (dark): the light
+   palette is set on body.blog, then the header restores the dark palette so
+   the nav text stays readable, and the header is given a solid dark base
+   because its normal state is transparent (invisible-on-white otherwise).
+   The footer already carries its own dark background and hardcoded colors, so
+   it needs nothing here. Higher specificity lets these rules override each
+   page's inline dark styles without editing any page's own <style>. */
+body.blog{--bg:#ffffff;--tc:#242424;--t2:#55606a;--t3:#8a8a8a;--ag:#0b7a3f;background:#ffffff;color:#242424;}
+/* Menu keeps the dark palette so it looks and reads exactly as before. */
+body.blog header{background:#0a1712;--tc:#e0e0e0;--ag:#2ecc71;}
+/* Dark decorative layers do not belong on a white page. */
+body.blog #particles,body.blog #cg,body.blog .bg-anim,body.blog .cursor-glow{display:none!important;}
+/* Text hardcoded to white in the page styles, flipped dark for white pages. */
+body.blog .blog-hero h1,
+body.blog .article-body h2,
+body.blog .article-body strong,
+body.blog .faq-section h2,
+body.blog .faq-q,
+body.blog .related h2,
+body.blog .rel-card h4,
+body.blog .verdict p{color:#0f1a15;}
+/* Fills and hairlines built for a dark page that vanish on white. */
+body.blog .rel-card{background:#f6f9f7;border-color:rgba(0,0,0,.08);}
+body.blog .rel-card:hover{background:#eef7f1;border-color:rgba(46,204,113,.45);}
+body.blog .comp-table tbody td{border-bottom-color:rgba(0,0,0,.08);}
+body.blog .comp-table tbody tr:hover td{background:rgba(0,0,0,.02);}
+body.blog .faq-item{border-bottom-color:rgba(0,0,0,.08);}
+body.blog .cta-band p{color:#41506a;}
+/* The CTA box stays a dark green callout, so pin its inner text light. */
+body.blog .cta-box h3{color:#ffffff;}
+body.blog .cta-box p{color:#c7d2cc;}
+body.blog .cta-box .cta-sub{color:#8fa89a;}
+/* blog.html index: hero title and post cards */
+body.blog .blog-page-hero h1,body.blog .blog-card h2{color:#0f1a15;}
+body.blog .blog-card{background:#f6f9f7;border-color:rgba(0,0,0,.08);}
+body.blog .blog-card:hover{border-color:rgba(46,204,113,.45);box-shadow:0 12px 32px rgba(0,0,0,.10);}
+body.blog .blog-card-thumb{border-bottom-color:rgba(0,0,0,.06);}
