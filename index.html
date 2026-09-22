@@ -331,6 +331,21 @@
     .quick-row-old{font-size:.72rem;color:#475569;text-decoration:line-through;margin-right:2px;}
     .quick-row-price{font-size:1.25rem;font-weight:900;color:#00e676;letter-spacing:-.5px;}
     .quick-row-go{color:var(--gg);font-size:1.1rem;font-weight:700;}
+    /* Payment method modal: region segmented control + gateway tiles */
+    .mm-seg{display:flex;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:5px;margin:2px 0 16px;}
+    .mm-seg-btn{flex:1;padding:9px 8px;border:none;border-radius:8px;background:transparent;color:#94A3B8;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .16s,color .16s;white-space:nowrap;}
+    .mm-seg-btn:hover{color:#CBD5E1;}
+    .mm-seg-btn.on{background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;box-shadow:0 3px 12px rgba(0,230,118,.28);}
+    .mm-opts{display:flex;flex-direction:column;gap:11px;}
+    .mm-tile{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:15px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#fff;cursor:pointer;font-family:inherit;transition:border-color .18s,background .18s,transform .12s;}
+    .mm-tile:hover,.mm-tile:active{border-color:var(--gg);background:rgba(0,230,118,.06);transform:translateY(-1px);}
+    .mm-tile-ic{flex-shrink:0;width:44px;height:44px;border-radius:11px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);display:flex;align-items:center;justify-content:center;color:#00e676;}
+    .mm-tile-ic svg{width:23px;height:23px;}
+    .mm-tile-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+    .mm-tile-t{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .mm-tile-badge{font-size:.58rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;background:var(--ag);color:#04170f;padding:2px 7px;border-radius:7px;}
+    .mm-tile-s{font-size:.76rem;color:#94A3B8;}
+    .mm-tile-go{flex-shrink:0;color:var(--gg);font-size:1.25rem;font-weight:700;}
     /* Review form star picker */
     .rv-stars{display:flex;gap:8px;margin:0 0 15px;font-size:2rem;line-height:1;}
     .rv-star{cursor:pointer;color:#334155;transition:color .12s,transform .12s;user-select:none;}
@@ -354,6 +369,8 @@
     @keyframes buyBarUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   html{overflow-x:hidden;}
   </style>
+  <!-- Razorpay Standard Checkout (international card payments) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 <div class="cursor-glow" id="cg"></div>
@@ -381,10 +398,10 @@
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz5QOE5ROXK3h-mkF2tN_KAlNrQZ2SLY94hUjsIoyUfJenIsTWG3WZavgdPFu0jYqsRQ/exec';
   const BYPASS = false;
   const PLANS = {
-    mini:   {name:'1 Hour Pack',oldPrice:'₹699',price:'₹499',period:'1 hour of AI time',rate:'₹499/hr',label:'Get 1 Hour Pack'},
-    starter:{name:'3 Hour Pack',oldPrice:'₹1,799',price:'₹999',period:'3 hours of AI time',rate:'₹333/hr',label:'Get 3 Hour Pack'},
-    basic:  {name:'6 Hour Pack',oldPrice:'₹3,799',price:'₹1,899',period:'6 Hours of AI time',rate:'₹317/hr',label:'Get 6 Hour Pack'},
-    pro:    {name:'9 Hour Pack',oldPrice:'₹5,999',price:'₹2,699',period:'9 hours of AI time',rate:'₹300/hr',label:'Get 9 Hour Pack'},
+    mini:   {name:'1 Hour Pack',oldPrice:'₹699',price:'₹499',period:'1 hour of AI time',rate:'₹499/hr',label:'Get 1 Hour Pack',usdOld:'$21',usd:'$15',usdRate:'$15/hr'},
+    starter:{name:'3 Hour Pack',oldPrice:'₹1,799',price:'₹999',period:'3 hours of AI time',rate:'₹333/hr',label:'Get 3 Hour Pack',usdOld:'$45',usd:'$25',usdRate:'$8/hr'},
+    basic:  {name:'6 Hour Pack',oldPrice:'₹3,799',price:'₹1,899',period:'6 Hours of AI time',rate:'₹317/hr',label:'Get 6 Hour Pack',usdOld:'$90',usd:'$45',usdRate:'$8/hr'},
+    pro:    {name:'9 Hour Pack',oldPrice:'₹5,999',price:'₹2,699',period:'9 hours of AI time',rate:'₹300/hr',label:'Get 9 Hour Pack',usdOld:'$144',usd:'$65',usdRate:'$7/hr'},
   };
   // Sends the homepage funnel to GA4. This was a console.log stub, so every CTA,
   // download and checkout step on this page recorded NOTHING for the whole life of
@@ -602,7 +619,7 @@
     </div>
   </div>
   <div class="pricing-grid">
-    <div class="pc">
+    <div class="pc" data-plan="mini">
       <h3>Mini</h3>
       <!-- 699 > 499 is a 200 saving, i.e. 28.6%, which rounds to 29 and NOT to 30.
            Every other badge on this page rounds by half a point or less (1799>999 is
@@ -610,7 +627,7 @@
            their own arithmetic, so this card is not the place to be the outlier.
            A round 30% would need an anchor of 713 or 714, which is not a round price:
            you can have a round anchor or a round percentage here, not both. -->
-      <div class="pc-old">&#8377;699 <span class="pc-discount">29% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">&#8377;699</span> <span class="pc-discount">29% OFF</span></div>
       <div class="pc-price"><sup>&#8377;</sup>499</div>
       <div class="pc-rate">&#8377;499 per AI hour</div>
       <div class="pc-per">1 hour of AI time</div>
@@ -623,9 +640,9 @@
       </ul>
       <button class="btn-buy" onclick="openPay('mini')">Get 1 Hour Pack</button>
     </div>
-    <div class="pc">
+    <div class="pc" data-plan="starter">
       <h3>Starter</h3>
-      <div class="pc-old">₹1,799 <span class="pc-discount">45% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">₹1,799</span> <span class="pc-discount">45% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>999</div>
       <div class="pc-rate">₹333 per AI hour</div>
       <div class="pc-per">3 hours of AI time</div>
@@ -638,10 +655,10 @@
       </ul>
       <button class="btn-buy" onclick="openPay('starter')">Get 3 Hour Pack</button>
     </div>
-    <div class="pc pop">
+    <div class="pc pop" data-plan="basic">
       <div class="pc-badge-pop">MOST USERS BUY BASIC</div>
       <h3>Basic</h3>
-      <div class="pc-old">₹3,799 <span class="pc-discount">50% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">₹3,799</span> <span class="pc-discount">50% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>1,899</div>
       <div class="pc-rate">₹317 per AI hour</div>
       <div class="pc-per">6 Hours of AI time</div>
@@ -654,10 +671,10 @@
       </ul>
       <button class="btn-buy" onclick="openPay('basic')">Get 6 Hour Pack</button>
     </div>
-    <div class="pc pop" data-tier="pro" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
+    <div class="pc pop" data-tier="pro" data-plan="pro" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
       <div class="pc-badge-pop" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);color:#fff;">POWER USER</div>
       <h3>Pro</h3>
-      <div class="pc-old">₹5,999 <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">55% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">₹5,999</span> <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">55% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>2,699</div>
       <div class="pc-rate">₹300 per AI hour</div>
       <div class="pc-per">9 hours of AI time</div>
@@ -821,6 +838,28 @@
   <div class="footer-copy">© 2026 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
   <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
+<!-- PAYMENT METHOD MODAL - first step of checkout: pick region + gateway, then
+     openPayForm() opens the email/OTP/payment modal below. Tiles are rendered by
+     mmRender() from PLANS so prices never drift. -->
+<div id="method-mo" class="mo" onclick="closeMo(event,'method-mo')">
+  <div class="mc pm-card" style="max-width:440px;">
+    <button class="close-mc" onclick="closeMo(null,'method-mo')">&times;</button>
+    <div class="mt">How would you like to pay?</div>
+    <div class="plan-prev">
+      <div><div class="plan-prev-name" id="mm-name">Loading...</div><div class="plan-prev-dur" id="mm-dur"></div></div>
+      <div class="plan-prev-price" id="mm-price"></div>
+    </div>
+    <div class="mm-seg" role="tablist" aria-label="Region">
+      <button type="button" class="mm-seg-btn on" id="mm-seg-in" onclick="mmSetRegion('IN')">🇮🇳 India &middot; ₹</button>
+      <button type="button" class="mm-seg-btn" id="mm-seg-intl" onclick="mmSetRegion('INTL')">🌍 International &middot; $</button>
+    </div>
+    <div class="mm-opts" id="mm-opts"></div>
+    <div class="pm-footer" style="margin-top:16px;">
+      🔒 256-bit secured checkout &nbsp;·&nbsp; Nothing is charged until you confirm<br>
+      License key emailed instantly &nbsp;·&nbsp; Hours never expire
+    </div>
+  </div>
+</div>
 <!-- PAYMENT MODAL -->
 <div id="pay-mo" class="mo" onclick="closeMo(event,'pay-mo')">
   <div class="mc pm-card" style="max-width:460px;">
@@ -829,6 +868,11 @@
     <div class="plan-prev">
       <div><div class="plan-prev-name" id="pm-name">Loading...</div><div class="plan-prev-dur" id="pm-dur"></div></div>
       <div class="plan-prev-price" id="pm-price"></div>
+    </div>
+    <!-- Chosen in the method modal; this just echoes it with a way back to change. -->
+    <div id="pm-summary" style="display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0 14px;font-size:.78rem;color:#94A3B8;">
+      <span id="pm-summary-txt">Paying by PhonePe / UPI in ₹</span>
+      <a href="#" onclick="changeMethod();return false;" style="color:#34D399;text-decoration:underline;white-space:nowrap;">Change</a>
     </div>
     <!-- Step 1: Continue with Google (primary) OR email + OTP (fallback) -->
     <div id="pm-step1">
@@ -894,7 +938,7 @@
       </div>
     </div>
     <div class="pm-footer">
-      🔒 Secured by PhonePe &nbsp;·&nbsp; Pay by UPI, cards or wallets &nbsp;·&nbsp; Nothing is charged until you confirm<br>
+      🔒 Secured by <span id="pm-foot-gw">PhonePe</span> &nbsp;·&nbsp; Nothing is charged until you confirm<br>
       License key emailed instantly &nbsp;·&nbsp; By continuing you agree to our <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a> and <a href="refund.html">Refund Policy</a>
     </div>
   </div>
@@ -951,7 +995,7 @@
      onclick="openQuick()" onkeydown="if(event.key==='Enter'||event.key===' '){openQuick();event.preventDefault();}">
   <div class="buy-bar-info">
     <span class="buy-bar-title">Get CloakAI</span>
-    <span class="buy-bar-sub">Plans starting at <b>₹499</b></span>
+    <span class="buy-bar-sub">Plans starting at <b id="sticky-from">₹499</b></span>
   </div>
   <span class="buy-bar-btn">Get Access
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="M12.5 6l6 6-6 6"/></svg>
@@ -978,11 +1022,11 @@
     var order=['mini','starter','basic','pro'],html='';
     order.forEach(function(k){
       var m=PLANS[k];if(!m)return;
-      var pop=(k==='starter');
+      var pop=(k==='starter'),intl=_isIntl();
       html+='<button type="button" class="quick-row'+(pop?' quick-row-pop':'')+'" onclick="quickPick(\''+k+'\')">'
         +'<span class="quick-row-l"><span class="quick-row-name">'+m.name+(pop?' <span class="quick-tag">Popular</span>':'')+'</span>'
-        +'<span class="quick-row-dur">'+m.period+' &middot; '+m.rate+'</span></span>'
-        +'<span class="quick-row-r"><span class="quick-row-old">'+m.oldPrice+'</span><span class="quick-row-price">'+m.price+'</span><span class="quick-row-go">&rarr;</span></span>'
+        +'<span class="quick-row-dur">'+m.period+' &middot; '+(intl?m.usdRate:m.rate)+'</span></span>'
+        +'<span class="quick-row-r"><span class="quick-row-old">'+(intl?m.usdOld:m.oldPrice)+'</span><span class="quick-row-price">'+(intl?m.usd:m.price)+'</span><span class="quick-row-go">&rarr;</span></span>'
         +'</button>';
     });
     document.getElementById('quick-list').innerHTML=html;
@@ -1162,11 +1206,13 @@
     if(!phone||phone.replace(/[^0-9]/g,'').length<10){_gMsg('Please enter a valid 10-digit phone number.','err');return;}
     var btn=document.getElementById('pm-gpay-btn'),txt=document.getElementById('pm-gpay-txt'),spin=document.getElementById('pm-gpay-spin');
     btn.disabled=true;txt.style.display='none';spin.style.display='block';_gMsg('Creating your order...','inf');
-    var oparams={action:'create_order',id_token:_pmGToken,plan:curPlan,phone:phone,ajax:'1'};
+    var oparams={action:(_useRzp()?'razorpay_create_order':'create_order'),id_token:_pmGToken,plan:curPlan,phone:phone,ajax:'1'};
+    if(_useRzp())oparams.intl=_intlParam();
     if(_topupKey)oparams.topup_key=_topupKey;
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams))
       .then(function(data){
         if(!data)return;
+        if(_useRzp()){_resetGPayBtn();if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);openRazorpay(data);}else{_gMsg(data.error||'Could not start card payment.','err');}return;}
         if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
         else if(data.payment_url){trackEvent('Checkout','GooglePay',curPlan);window.location.replace(data.payment_url);}
         else{_resetGPayBtn();_gMsg(data.error||'Something went wrong. Please try again.','err');}
@@ -1174,20 +1220,138 @@
       .catch(function(err){_resetGPayBtn();_gMsg(_apiErrMsg(err),'err');});
   }
 
+  // ── Region + payment method ─────────────────────────────────────────────
+  //   _region : 'IN' shows INR prices, 'INTL' shows USD prices (charged ~2x).
+  //   _gateway: which gateway to use. India can pick PhonePe or Razorpay, both
+  //             in INR; international is always Razorpay, in USD.
+  // Both are chosen in the dedicated method modal (#method-mo). Region is
+  // auto-detected from the browser timezone on load and switchable there.
+  var _region='IN',_gateway='phonepe';
+  function _isIntl(){return _region==='INTL';}
+  function _useRzp(){return _region==='INTL'||_gateway==='razorpay';}
+  function _intlParam(){return _region==='INTL'?'1':'0';}
+  // Asia/Kolkata (and the legacy Asia/Calcutta) is India. An unknown or empty
+  // timezone defaults to India, since that is the large majority of traffic and
+  // an Indian must never be shown the doubled USD price by mistake.
+  function _detectRegion(){
+    try{
+      var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||'');
+      if(!tz||tz==='Asia/Kolkata'||tz==='Asia/Calcutta')return 'IN';
+      return 'INTL';
+    }catch(e){return 'IN';}
+  }
+  // Repaint every price on the page (cards + mobile sticky) for the current region.
+  function renderPrices(){
+    var intl=_isIntl();
+    Object.keys(PLANS).forEach(function(k){
+      var p=PLANS[k],card=document.querySelector('.pc[data-plan="'+k+'"]');
+      if(!card)return;
+      var oldEl=card.querySelector('.pc-old-amt'),priceEl=card.querySelector('.pc-price'),rateEl=card.querySelector('.pc-rate');
+      if(oldEl)oldEl.textContent=intl?p.usdOld:p.oldPrice;
+      if(priceEl)priceEl.innerHTML=intl?('<sup>$</sup>'+p.usd.replace('$','')):('<sup>&#8377;</sup>'+p.price.replace('₹',''));
+      if(rateEl)rateEl.textContent=(intl?p.usdRate.replace('/hr',''):p.rate.replace('/hr',''))+' per AI hour';
+    });
+    _renderSticky();
+  }
+  // Mobile sticky bar "starting at" price (the cheapest plan, mini).
+  function _renderSticky(){
+    var el=document.getElementById('sticky-from');if(!el)return;
+    el.textContent=_isIntl()?PLANS.mini.usd:PLANS.mini.price;
+  }
+
+  // ── Payment method modal (#method-mo) ───────────────────────────────────
+  // Inline SVGs so the tiles need no external asset and paint instantly.
+  var _SVG_UPI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.6"/><path d="M11 18h2"/></svg>';
+  var _SVG_CARD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.4"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>';
+  var _SVG_GLOBE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8c2.6 2.5 4 5.8 4 9.2s-1.4 6.7-4 9.2c-2.6-2.5-4-5.8-4-9.2s1.4-6.7 4-9.2z"/></svg>';
+  function _mmTile(g,title,sub,badge,svg){
+    return '<button type="button" class="mm-tile" onclick="mmPick(\''+g+'\')">'
+      +'<span class="mm-tile-ic">'+svg+'</span>'
+      +'<span class="mm-tile-body"><span class="mm-tile-t">'+title+(badge?' <span class="mm-tile-badge">'+badge+'</span>':'')+'</span>'
+      +'<span class="mm-tile-s">'+sub+'</span></span>'
+      +'<span class="mm-tile-go">&rarr;</span></button>';
+  }
+  function mmRender(){
+    var m=PLANS[curPlan];if(!m)return;
+    var intl=_isIntl();
+    var nm=document.getElementById('mm-name'),pr=document.getElementById('mm-price'),du=document.getElementById('mm-dur');
+    if(nm)nm.textContent=m.name;
+    if(pr)pr.innerHTML=intl?m.usd:m.price;
+    if(du)du.textContent=m.period+' · '+(intl?m.usdRate:m.rate);
+    var bIn=document.getElementById('mm-seg-in'),bX=document.getElementById('mm-seg-intl');
+    if(bIn)bIn.classList.toggle('on',!intl);
+    if(bX)bX.classList.toggle('on',intl);
+    var opts=document.getElementById('mm-opts');if(!opts)return;
+    var html='';
+    if(!intl){
+      html+=_mmTile('phonepe','PhonePe &amp; UPI','Any UPI app, cards or wallets','Recommended',_SVG_UPI);
+      html+=_mmTile('razorpay','Debit / Credit Card','Visa, Mastercard, RuPay, Amex','',_SVG_CARD);
+    }else{
+      html+=_mmTile('razorpay','International Card','Visa, Mastercard, Amex &middot; billed in USD','Secure global checkout',_SVG_GLOBE);
+    }
+    opts.innerHTML=html;
+  }
+  function mmSetRegion(r){
+    _region=(r==='INTL')?'INTL':'IN';
+    _gateway=_isIntl()?'razorpay':'phonepe';
+    renderPrices();mmRender();
+  }
+  function mmPick(g){
+    _gateway=_isIntl()?'razorpay':((g==='razorpay')?'razorpay':'phonepe');
+    closeMo(null,'method-mo');
+    openPayForm();
+  }
+  // "Change" link on the checkout form hops back to the method modal.
+  function changeMethod(){closeMo(null,'pay-mo');mmRender();openMo('method-mo');}
+  function _methodSummary(){
+    return 'Paying by '+(_useRzp()?'Card (Razorpay)':'PhonePe / UPI')+' in '+(_isIntl()?'$':'₹');
+  }
+  // Open the Razorpay modal for an order created by razorpay_create_order, then verify
+  // the signature on OUR server before treating the payment as complete.
+  function openRazorpay(o){
+    if(typeof Razorpay==='undefined'){alert('The payment library did not load. Please refresh and try again.');return;}
+    var opts={
+      key:o.key_id,order_id:o.razorpay_order_id,amount:o.amount,currency:o.currency,
+      name:'CloakAI',description:(o.plan_name||'CloakAI license'),
+      prefill:{email:o.email||'',name:o.name||''},
+      theme:{color:'#00e676'},
+      handler:function(resp){
+        var vp={action:'razorpay_verify',order_id:o.order_id,razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature};
+        _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(vp))
+          .then(function(d){
+            if(d&&d.success){trackEvent('Checkout','RazorpaySuccess',curPlan);window.location.replace(window.location.origin+'/payment-result.html?order='+encodeURIComponent(o.order_id));}
+            else{alert((d&&d.error)||'We could not verify your payment. If you were charged, email support@cloakai.in with your payment id.');}
+          })
+          .catch(function(){alert('Payment verification could not reach our server. If you were charged, email support@cloakai.in.');});
+      },
+      modal:{ondismiss:function(){}}
+    };
+    try{var rzp=new Razorpay(opts);rzp.on('payment.failed',function(r){alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again or use a different card.'));});rzp.open();}
+    catch(e){alert('Could not open the payment window. Please try again.');}
+  }
+  // Buying starts at the method modal: pick region + gateway, then the form opens.
   function openPay(plan){
-    curPlan=plan;_verifiedEmail='';
-    resetGoogleCheckout();
     var m=PLANS[plan];if(!m)return;
+    curPlan=plan;_verifiedEmail='';
+    _gateway=_isIntl()?'razorpay':'phonepe';   // default for the detected region
+    mmRender();openMo('method-mo');
+    trackEvent('Checkout','Open',plan);
+  }
+  // The email / OTP / payment form, opened once a method has been chosen.
+  function openPayForm(){
+    var m=PLANS[curPlan];if(!m)return;
+    resetGoogleCheckout();
     document.getElementById('pm-name').textContent=m.name;
-    document.getElementById('pm-price').innerHTML=m.price;
-    document.getElementById('pm-dur').textContent=m.period+' · '+m.rate;
+    document.getElementById('pm-price').innerHTML=_isIntl()?m.usd:m.price;
+    document.getElementById('pm-dur').textContent=m.period+' · '+(_isIntl()?m.usdRate:m.rate);
+    var sm=document.getElementById('pm-summary-txt');if(sm)sm.textContent=_methodSummary();
+    var fg=document.getElementById('pm-foot-gw');if(fg)fg.textContent=_useRzp()?'Razorpay':'PhonePe';
     document.getElementById('pm-msg').textContent='';_otpMsg('','');
     document.getElementById('pm-email').value='';document.getElementById('pm-phone').value='';document.getElementById('pm-otp').value='';
     document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';
     _resetOTPBtn();_resetPayBtn();_clearResendCooldown();
     openMo('pay-mo');setTimeout(function(){document.getElementById('pm-email').focus();},180);
     if(_topupKey)_pmMsg('Adding hours to your existing key '+_topupKey+'. Use the email it was bought with.','inf');
-    trackEvent('Checkout','Open',plan);
   }
   function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
   function _resetOTPBtn(){document.getElementById('pm-otp-btn').disabled=false;document.getElementById('pm-otp-btxt').style.display='inline';document.getElementById('pm-otp-btxt').textContent='Send Verification Code';document.getElementById('pm-otp-spin').style.display='none';}
@@ -1252,12 +1416,14 @@
       .then(function(data){
         if(!data.success){btn.disabled=false;btxt.style.display='inline';spin.style.display='none';_pmMsg(data.error||'Incorrect code. Please try again.','err');return;}
         _pmMsg('Verified! Creating your order...','inf');trackEvent('Checkout','OTPVerified',curPlan);
-        var oparams={action:'create_order',email:_verifiedEmail,plan:curPlan,ajax:'1'};
+        var oparams={action:(_useRzp()?'razorpay_create_order':'create_order'),email:_verifiedEmail,plan:curPlan,ajax:'1'};
+        if(_useRzp())oparams.intl=_intlParam();
         if(_topupKey)oparams.topup_key=_topupKey;
         return _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams));
       })
       .then(function(data){
         if(!data)return;
+        if(_useRzp()){_resetPayBtn();if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);openRazorpay(data);}else{_pmMsg(data.error||'Could not start card payment.','err');}return;}
         if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
         else if(data.payment_url){window.location.replace(data.payment_url);}
         else{_resetPayBtn();_pmMsg(data.error||'Something went wrong. Please try again.','err');}
@@ -1279,6 +1445,14 @@
     var q=new URLSearchParams(location.search);
     var t=(q.get('topup')||'').trim().toUpperCase();
     if(/^CLAI-[A-Z0-9-]{5,}$/.test(t)){_topupKey=t;history.replaceState(null,'',location.pathname+location.hash);}
+    // Detect region once and paint every price for it. India sees INR, everyone
+    // else sees USD (charged double). A ?region=in / ?region=intl override is
+    // honoured for testing and for anyone the timezone guess got wrong.
+    var forced=(q.get('region')||'').toLowerCase();
+    if(forced==='in'||forced==='intl'){_region=(forced==='intl')?'INTL':'IN';}
+    else{_region=_detectRegion();}
+    if(_isIntl())_gateway='razorpay';
+    renderPrices();
   })();
 </script>
 <button class="sup-fab" onclick="openSup()" aria-label="Support">
