@@ -194,8 +194,8 @@
     /* Payment methods */
     .pay-methods{margin-top:24px;padding:16px 18px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;text-align:center;}
     .pay-methods-label{font-size:.68rem;color:#475569;font-weight:600;letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px;}
-    .pay-badges{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;}
-    .pay-badge{font-size:.6rem;font-weight:800;padding:4px 8px;border-radius:4px;letter-spacing:.2px;}
+    .pay-badges{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;}
+    .pay-badge{font-size:.62rem;font-weight:800;padding:5px 10px;border-radius:6px;letter-spacing:.3px;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.28);}
     /* Process box */
     .proc-box{margin-top:48px;background:rgba(255,255,255,.02);padding:36px;border-radius:20px;border:1px solid rgba(255,255,255,.05);}
     .proc-box h3{text-align:center;margin-bottom:28px;font-size:2.5rem;font-weight:800;color:#fff;letter-spacing:-1px;}
@@ -331,21 +331,14 @@
     .quick-row-old{font-size:.72rem;color:#475569;text-decoration:line-through;margin-right:2px;}
     .quick-row-price{font-size:1.25rem;font-weight:900;color:#00e676;letter-spacing:-.5px;}
     .quick-row-go{color:var(--gg);font-size:1.1rem;font-weight:700;}
-    /* Payment method modal: region segmented control + gateway tiles */
-    .mm-seg{display:flex;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:5px;margin:2px 0 16px;}
-    .mm-seg-btn{flex:1;padding:9px 8px;border:none;border-radius:8px;background:transparent;color:#94A3B8;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .16s,color .16s;white-space:nowrap;}
-    .mm-seg-btn:hover{color:#CBD5E1;}
-    .mm-seg-btn.on{background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;box-shadow:0 3px 12px rgba(0,230,118,.28);}
-    .mm-opts{display:flex;flex-direction:column;gap:11px;}
-    .mm-tile{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:15px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#fff;cursor:pointer;font-family:inherit;transition:border-color .18s,background .18s,transform .12s;}
-    .mm-tile:hover,.mm-tile:active{border-color:var(--gg);background:rgba(0,230,118,.06);transform:translateY(-1px);}
-    .mm-tile-ic{flex-shrink:0;width:44px;height:44px;border-radius:11px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);display:flex;align-items:center;justify-content:center;color:#00e676;}
-    .mm-tile-ic svg{width:23px;height:23px;}
-    .mm-tile-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
-    .mm-tile-t{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-    .mm-tile-badge{font-size:.58rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;background:var(--ag);color:#04170f;padding:2px 7px;border-radius:7px;}
-    .mm-tile-s{font-size:.76rem;color:#94A3B8;}
-    .mm-tile-go{flex-shrink:0;color:var(--gg);font-size:1.25rem;font-weight:700;}
+    /* Checkout gateway buttons (final step), each in its brand colour */
+    .pm-gw-list{display:flex;flex-direction:column;gap:11px;}
+    .pm-gw{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 18px;border-radius:13px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .12s,box-shadow .16s,filter .16s;}
+    .pm-gw:hover,.pm-gw:active{transform:translateY(-1px);filter:brightness(1.05);box-shadow:0 8px 22px rgba(0,0,0,.45);}
+    .pm-gw-l{display:flex;flex-direction:column;min-width:0;gap:2px;}
+    .pm-gw-t{font-size:1.02rem;font-weight:800;letter-spacing:-.2px;}
+    .pm-gw-s{font-size:.74rem;font-weight:600;opacity:.82;}
+    .pm-gw-go{flex-shrink:0;font-size:1.25rem;font-weight:800;}
     /* Review form star picker */
     .rv-stars{display:flex;gap:8px;margin:0 0 15px;font-size:2rem;line-height:1;}
     .rv-star{cursor:pointer;color:#334155;transition:color .12s,transform .12s;user-select:none;}
@@ -709,10 +702,11 @@
       <span class="pay-badge" style="background:#1A56DB;color:#fff;">VISA</span>
       <span class="pay-badge" style="background:#EB001B;color:#fff;">MASTERCARD</span>
       <span class="pay-badge" style="background:#016FD0;color:#fff;">AMEX</span>
+      <span class="pay-badge" style="background:#003087;color:#fff;">PayPal</span>
+      <span class="pay-badge" style="background:#0C2451;color:#fff;">Razorpay</span>
       <span class="pay-badge" style="background:#111;color:#fff;">Apple Pay</span>
       <span class="pay-badge" style="background:#4285F4;color:#fff;">Google Pay</span>
       <span class="pay-badge" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;">UPI</span>
-      <span class="pay-badge" style="background:#5046E4;color:#fff;">GPay</span>
       <span class="pay-badge" style="background:#5F259F;color:#fff;">PhonePe</span>
     </div>
   </div>
@@ -838,28 +832,6 @@
   <div class="footer-copy">© 2026 CloakAI. All rights reserved. &nbsp;·&nbsp; support@cloakai.in</div>
   <div class="footer-disc">CloakAI is an assistive productivity tool. Users are solely responsible for complying with the rules and policies of any interview, assessment, or organisation. CloakAI does not endorse misrepresentation of any kind.</div>
 </footer>
-<!-- PAYMENT METHOD MODAL - first step of checkout: pick region + gateway, then
-     openPayForm() opens the email/OTP/payment modal below. Tiles are rendered by
-     mmRender() from PLANS so prices never drift. -->
-<div id="method-mo" class="mo" onclick="closeMo(event,'method-mo')">
-  <div class="mc pm-card" style="max-width:440px;">
-    <button class="close-mc" onclick="closeMo(null,'method-mo')">&times;</button>
-    <div class="mt">How would you like to pay?</div>
-    <div class="plan-prev">
-      <div><div class="plan-prev-name" id="mm-name">Loading...</div><div class="plan-prev-dur" id="mm-dur"></div></div>
-      <div class="plan-prev-price" id="mm-price"></div>
-    </div>
-    <div class="mm-seg" role="tablist" aria-label="Region">
-      <button type="button" class="mm-seg-btn on" id="mm-seg-in" onclick="mmSetRegion('IN')">🇮🇳 India &middot; ₹</button>
-      <button type="button" class="mm-seg-btn" id="mm-seg-intl" onclick="mmSetRegion('INTL')">🌍 International &middot; $</button>
-    </div>
-    <div class="mm-opts" id="mm-opts"></div>
-    <div class="pm-footer" style="margin-top:16px;">
-      🔒 256-bit secured checkout &nbsp;·&nbsp; Nothing is charged until you confirm<br>
-      License key emailed instantly &nbsp;·&nbsp; Hours never expire
-    </div>
-  </div>
-</div>
 <!-- PAYMENT MODAL -->
 <div id="pay-mo" class="mo" onclick="closeMo(event,'pay-mo')">
   <div class="mc pm-card" style="max-width:460px;">
@@ -868,11 +840,6 @@
     <div class="plan-prev">
       <div><div class="plan-prev-name" id="pm-name">Loading...</div><div class="plan-prev-dur" id="pm-dur"></div></div>
       <div class="plan-prev-price" id="pm-price"></div>
-    </div>
-    <!-- Chosen in the method modal; this just echoes it with a way back to change. -->
-    <div id="pm-summary" style="display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0 14px;font-size:.78rem;color:#94A3B8;">
-      <span id="pm-summary-txt">Paying by PhonePe / UPI in ₹</span>
-      <a href="#" onclick="changeMethod();return false;" style="color:#34D399;text-decoration:underline;white-space:nowrap;">Change</a>
     </div>
     <!-- Step 1: Continue with Google (primary) OR email + OTP (fallback) -->
     <div id="pm-step1">
@@ -885,7 +852,7 @@
         <label class="flabel">Phone Number</label>
         <input type="tel" id="pm-gphone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
         <button class="btn-pay" id="pm-gpay-btn" onclick="payWithGoogle()">
-          <span id="pm-gpay-txt">Continue to Payment</span>
+          <span id="pm-gpay-txt">Continue to Payment &rarr;</span>
           <div class="spin" id="pm-gpay-spin"></div>
         </button>
         <div class="pm-msg" id="pm-gmsg" style="margin-top:12px;"></div>
@@ -927,7 +894,7 @@
         <a href="#" id="pm-resend-link" onclick="handleResend();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">Resend code</a>
       </div>
       <button class="btn-pay" id="pm-btn" onclick="doPay()">
-        <span id="pm-btxt">Verify &amp; Continue to Payment</span>
+        <span id="pm-btxt">Verify Email</span>
         <div class="spin" id="pm-spin"></div>
       </button>
       <div class="pm-msg" id="pm-msg"></div>
@@ -937,8 +904,15 @@
         <span>Can't find the code? Check <strong style="color:#64748B;">Spam</strong>, <strong style="color:#64748B;">Promotions</strong>, Updates &amp; All Mail. Valid 10 min.</span>
       </div>
     </div>
+    <!-- Step 3: pick a payment gateway (rendered by renderGateways per region) -->
+    <div id="pm-step3" style="display:none;">
+      <div style="text-align:center;color:#34D399;font-size:.86rem;font-weight:700;margin-bottom:14px;">&#x2713; Email verified. Choose how to pay:</div>
+      <div id="pm-gateways" class="pm-gw-list"></div>
+      <div class="pm-msg" id="pm-g3msg" style="margin-top:12px;"></div>
+      <div style="text-align:center;margin-top:10px;"><a href="#" onclick="backToVerify();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">&#x2190; Back</a></div>
+    </div>
     <div class="pm-footer">
-      🔒 Secured by <span id="pm-foot-gw">PhonePe</span> &nbsp;·&nbsp; Nothing is charged until you confirm<br>
+      🔒 256-bit secured checkout &nbsp;·&nbsp; Nothing is charged until you confirm<br>
       License key emailed instantly &nbsp;·&nbsp; By continuing you agree to our <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a> and <a href="refund.html">Refund Policy</a>
     </div>
   </div>
@@ -1200,35 +1174,23 @@
     _gMsg('','');_resetGPayBtn();renderPmGoogleBtn();
   }
   function _resetGPayBtn(){var b=document.getElementById('pm-gpay-btn');if(!b)return;b.disabled=false;document.getElementById('pm-gpay-txt').style.display='inline';document.getElementById('pm-gpay-spin').style.display='none';}
+  // Google already proves the email, so this only validates the phone and moves
+  // on to the gateway step; the order is created once a gateway is chosen.
   function payWithGoogle(){
     if(!_pmGToken){_gMsg('Please sign in with Google again.','err');resetGoogleCheckout();return;}
     var phone=(document.getElementById('pm-gphone').value||'').trim();
     if(!phone||phone.replace(/[^0-9]/g,'').length<10){_gMsg('Please enter a valid 10-digit phone number.','err');return;}
-    var btn=document.getElementById('pm-gpay-btn'),txt=document.getElementById('pm-gpay-txt'),spin=document.getElementById('pm-gpay-spin');
-    btn.disabled=true;txt.style.display='none';spin.style.display='block';_gMsg('Creating your order...','inf');
-    var oparams={action:(_useRzp()?'razorpay_create_order':'create_order'),id_token:_pmGToken,plan:curPlan,phone:phone,ajax:'1'};
-    if(_useRzp())oparams.intl=_intlParam();
-    if(_topupKey)oparams.topup_key=_topupKey;
-    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams))
-      .then(function(data){
-        if(!data)return;
-        if(_useRzp()){_resetGPayBtn();if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);openRazorpay(data);}else{_gMsg(data.error||'Could not start card payment.','err');}return;}
-        if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
-        else if(data.payment_url){trackEvent('Checkout','GooglePay',curPlan);window.location.replace(data.payment_url);}
-        else{_resetGPayBtn();_gMsg(data.error||'Something went wrong. Please try again.','err');}
-      })
-      .catch(function(err){_resetGPayBtn();_gMsg(_apiErrMsg(err),'err');});
+    _authMode='google';_authPhone=phone;_verifiedEmail=_pmGEmail;
+    _gMsg('','');
+    showGatewayStep();
   }
 
-  // ── Region + payment method ─────────────────────────────────────────────
+  // ── Region ──────────────────────────────────────────────────────────────
   //   _region : 'IN' shows INR prices, 'INTL' shows USD prices (charged ~2x).
-  //   _gateway: which gateway to use. India can pick PhonePe or Razorpay, both
-  //             in INR; international is always Razorpay, in USD.
-  // Both are chosen in the dedicated method modal (#method-mo). Region is
-  // auto-detected from the browser timezone on load and switchable there.
+  // Auto-detected from the browser timezone on load; switchable on the checkout
+  // form. The gateway is chosen at the final checkout step (see chooseGateway).
   var _region='IN',_gateway='phonepe';
   function _isIntl(){return _region==='INTL';}
-  function _useRzp(){return _region==='INTL'||_gateway==='razorpay';}
   function _intlParam(){return _region==='INTL'?'1':'0';}
   // Asia/Kolkata (and the legacy Asia/Calcutta) is India. An unknown or empty
   // timezone defaults to India, since that is the large majority of traffic and
@@ -1259,52 +1221,89 @@
     el.textContent=_isIntl()?PLANS.mini.usd:PLANS.mini.price;
   }
 
-  // ── Payment method modal (#method-mo) ───────────────────────────────────
-  // Inline SVGs so the tiles need no external asset and paint instantly.
-  var _SVG_UPI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.6"/><path d="M11 18h2"/></svg>';
-  var _SVG_CARD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.4"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>';
-  var _SVG_GLOBE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8c2.6 2.5 4 5.8 4 9.2s-1.4 6.7-4 9.2c-2.6-2.5-4-5.8-4-9.2s1.4-6.7 4-9.2z"/></svg>';
-  function _mmTile(g,title,sub,badge,svg){
-    return '<button type="button" class="mm-tile" onclick="mmPick(\''+g+'\')">'
-      +'<span class="mm-tile-ic">'+svg+'</span>'
-      +'<span class="mm-tile-body"><span class="mm-tile-t">'+title+(badge?' <span class="mm-tile-badge">'+badge+'</span>':'')+'</span>'
-      +'<span class="mm-tile-s">'+sub+'</span></span>'
-      +'<span class="mm-tile-go">&rarr;</span></button>';
+  // ── Payment gateway step (final checkout step, after email is verified) ──
+  // The buyer picks a gateway right before paying. Availability is region-based:
+  // PayPal charges in USD (it has no domestic India rail), PhonePe is India/UPI
+  // only, Razorpay serves both. Buttons render in the order PayPal, Razorpay,
+  // PhonePe, filtered to what the region supports, each in its brand colour.
+  var _gateway='',_authMode='',_authPhone='';
+  function _gwBtn(g){
+    var C={
+      paypal:  {bg:'#ffc439',fg:'#0a2540',label:'PayPal',sub:'PayPal balance, card or bank'},
+      razorpay:{bg:'#0b2b57',fg:'#ffffff',label:(_isIntl()?'Debit / Credit Card':'Card, Netbanking or UPI'),sub:'Visa, Mastercard, Amex'+(_isIntl()?'':', RuPay')+' via Razorpay'},
+      phonepe: {bg:'#5f259f',fg:'#ffffff',label:'PhonePe / UPI',sub:'Any UPI app, card or wallet'}
+    }[g];
+    return '<button type="button" class="pm-gw" style="background:'+C.bg+';color:'+C.fg+';" onclick="chooseGateway(\''+g+'\')">'
+      +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.label+'</span><span class="pm-gw-s">'+C.sub+'</span></span>'
+      +'<span class="pm-gw-go">&rarr;</span></button>';
   }
-  function mmRender(){
-    var m=PLANS[curPlan];if(!m)return;
-    var intl=_isIntl();
-    var nm=document.getElementById('mm-name'),pr=document.getElementById('mm-price'),du=document.getElementById('mm-dur');
-    if(nm)nm.textContent=m.name;
-    if(pr)pr.innerHTML=intl?m.usd:m.price;
-    if(du)du.textContent=m.period+' · '+(intl?m.usdRate:m.rate);
-    var bIn=document.getElementById('mm-seg-in'),bX=document.getElementById('mm-seg-intl');
-    if(bIn)bIn.classList.toggle('on',!intl);
-    if(bX)bX.classList.toggle('on',intl);
-    var opts=document.getElementById('mm-opts');if(!opts)return;
-    var html='';
-    if(!intl){
-      html+=_mmTile('phonepe','PhonePe &amp; UPI','Any UPI app, cards or wallets','Recommended',_SVG_UPI);
-      html+=_mmTile('razorpay','Debit / Credit Card','Visa, Mastercard, RuPay, Amex','',_SVG_CARD);
-    }else{
-      html+=_mmTile('razorpay','International Card','Visa, Mastercard, Amex &middot; billed in USD','Secure global checkout',_SVG_GLOBE);
-    }
-    opts.innerHTML=html;
+  function renderGateways(){
+    var box=document.getElementById('pm-gateways');if(!box)return;
+    var list=_isIntl()?['paypal','razorpay']:['razorpay','phonepe'];
+    box.innerHTML=list.map(_gwBtn).join('');
   }
-  function mmSetRegion(r){
-    _region=(r==='INTL')?'INTL':'IN';
-    _gateway=_isIntl()?'razorpay':'phonepe';
-    renderPrices();mmRender();
+  function _g3msg(t,c){var el=document.getElementById('pm-g3msg');if(el){el.textContent=t;el.className='pm-msg'+(c?' '+c:'');}}
+  // Reveal the gateway step. Both verification paths (Google, OTP) land here.
+  function showGatewayStep(){
+    document.getElementById('pm-step1').style.display='none';
+    document.getElementById('pm-step2').style.display='none';
+    document.getElementById('pm-step3').style.display='';
+    renderGateways();_g3msg('','');_pmMsg('','');
+    trackEvent('Checkout','GatewayStep',curPlan);
   }
-  function mmPick(g){
-    _gateway=_isIntl()?'razorpay':((g==='razorpay')?'razorpay':'phonepe');
-    closeMo(null,'method-mo');
-    openPayForm();
+  function backToVerify(){
+    document.getElementById('pm-step3').style.display='none';
+    if(_authMode==='google'){document.getElementById('pm-step1').style.display='';}
+    else{document.getElementById('pm-step2').style.display='';}
   }
-  // "Change" link on the checkout form hops back to the method modal.
-  function changeMethod(){closeMo(null,'pay-mo');mmRender();openMo('method-mo');}
-  function _methodSummary(){
-    return 'Paying by '+(_useRzp()?'Card (Razorpay)':'PhonePe / UPI')+' in '+(_isIntl()?'$':'₹');
+  // Region toggle on the checkout form: repaints prices and, if the gateway step
+  // is open, its buttons (the available gateways change with the region).
+  function toggleRegionPay(){
+    _region=_isIntl()?'IN':'INTL';
+    renderPrices();_paintPayRegion();
+    var s3=document.getElementById('pm-step3');
+    if(s3&&s3.style.display!=='none')renderGateways();
+  }
+  function _paintPayRegion(){
+    var m=PLANS[curPlan];
+    var pe=document.getElementById('pm-price'),de=document.getElementById('pm-dur');
+    if(m&&pe)pe.innerHTML=_isIntl()?m.usd:m.price;
+    if(m&&de)de.textContent=m.period+' · '+(_isIntl()?m.usdRate:m.rate);
+    var lbl=document.getElementById('pm-region-label'),tog=document.getElementById('pm-region-toggle');
+    if(lbl)lbl.textContent=_isIntl()?'Prices in $ (International)':'Prices in ₹ (India)';
+    if(tog)tog.textContent=_isIntl()?'In India? Pay in ₹':'Outside India? Pay in $';
+  }
+  // Create the order with the chosen gateway and route to its payment surface.
+  function chooseGateway(g){
+    _gateway=g;
+    var box=document.getElementById('pm-gateways');if(box)box.style.pointerEvents='none';
+    _g3msg('Starting secure checkout...','inf');
+    var params={plan:curPlan,ajax:'1'};
+    if(_authMode==='google'){params.id_token=_pmGToken;params.phone=_authPhone;}
+    else{params.email=_verifiedEmail;}
+    if(_topupKey)params.topup_key=_topupKey;
+    if(g==='phonepe'){params.action='create_order';}
+    else if(g==='razorpay'){params.action='razorpay_create_order';params.intl=_intlParam();}
+    else if(g==='paypal'){params.action='paypal_create_order';}
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(params))
+      .then(function(data){
+        if(box)box.style.pointerEvents='';
+        if(!data){_g3msg('Something went wrong. Please try again.','err');return;}
+        if(g==='razorpay'){
+          if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);_g3msg('','');openRazorpay(data);}
+          else _g3msg(data.error||'Could not start card payment.','err');
+          return;
+        }
+        if(g==='paypal'){
+          if(data.success&&data.approve_url){trackEvent('Checkout','PayPalRedirect',curPlan);window.location.replace(data.approve_url);}
+          else _g3msg(data.error||'Could not start PayPal checkout.','err');
+          return;
+        }
+        if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
+        else if(data.payment_url){trackEvent('Checkout','PhonePeRedirect',curPlan);window.location.replace(data.payment_url);}
+        else _g3msg(data.error||'Something went wrong. Please try again.','err');
+      })
+      .catch(function(err){if(box)box.style.pointerEvents='';_g3msg(_apiErrMsg(err),'err');});
   }
   // Open the Razorpay modal for an order created by razorpay_create_order, then verify
   // the signature on OUR server before treating the payment as complete.
@@ -1329,33 +1328,25 @@
     try{var rzp=new Razorpay(opts);rzp.on('payment.failed',function(r){alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again or use a different card.'));});rzp.open();}
     catch(e){alert('Could not open the payment window. Please try again.');}
   }
-  // Buying starts at the method modal: pick region + gateway, then the form opens.
+  // Buying opens the checkout form directly. Verify email (Google or OTP), then
+  // the gateway step (step 3) offers the region-appropriate payment buttons.
   function openPay(plan){
     var m=PLANS[plan];if(!m)return;
-    curPlan=plan;_verifiedEmail='';
-    _gateway=_isIntl()?'razorpay':'phonepe';   // default for the detected region
-    mmRender();openMo('method-mo');
-    trackEvent('Checkout','Open',plan);
-  }
-  // The email / OTP / payment form, opened once a method has been chosen.
-  function openPayForm(){
-    var m=PLANS[curPlan];if(!m)return;
+    curPlan=plan;_verifiedEmail='';_authMode='';_authPhone='';_gateway='';
     resetGoogleCheckout();
     document.getElementById('pm-name').textContent=m.name;
-    document.getElementById('pm-price').innerHTML=_isIntl()?m.usd:m.price;
-    document.getElementById('pm-dur').textContent=m.period+' · '+(_isIntl()?m.usdRate:m.rate);
-    var sm=document.getElementById('pm-summary-txt');if(sm)sm.textContent=_methodSummary();
-    var fg=document.getElementById('pm-foot-gw');if(fg)fg.textContent=_useRzp()?'Razorpay':'PhonePe';
-    document.getElementById('pm-msg').textContent='';_otpMsg('','');
+    _paintPayRegion();
+    document.getElementById('pm-msg').textContent='';_otpMsg('','');_g3msg('','');
     document.getElementById('pm-email').value='';document.getElementById('pm-phone').value='';document.getElementById('pm-otp').value='';
-    document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';
+    document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-step3').style.display='none';
     _resetOTPBtn();_resetPayBtn();_clearResendCooldown();
     openMo('pay-mo');setTimeout(function(){document.getElementById('pm-email').focus();},180);
     if(_topupKey)_pmMsg('Adding hours to your existing key '+_topupKey+'. Use the email it was bought with.','inf');
+    trackEvent('Checkout','Open',plan);
   }
-  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
+  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';var s3=document.getElementById('pm-step3');if(s3)s3.style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
   function _resetOTPBtn(){document.getElementById('pm-otp-btn').disabled=false;document.getElementById('pm-otp-btxt').style.display='inline';document.getElementById('pm-otp-btxt').textContent='Send Verification Code';document.getElementById('pm-otp-spin').style.display='none';}
-  function _resetPayBtn(){document.getElementById('pm-btn').disabled=false;document.getElementById('pm-btxt').style.display='inline';document.getElementById('pm-btxt').textContent='Verify & Continue to Payment';document.getElementById('pm-spin').style.display='none';}
+  function _resetPayBtn(){document.getElementById('pm-btn').disabled=false;document.getElementById('pm-btxt').style.display='inline';document.getElementById('pm-btxt').textContent='Verify Email';document.getElementById('pm-spin').style.display='none';}
   function _pmMsg(text,cls){var el=document.getElementById('pm-msg');el.textContent=text;el.className='pm-msg'+(cls?' '+cls:'');}
   // Step-1 message target. sendOTP used to write to #pm-msg, which lives inside the
   // HIDDEN step 2, so any send failure was invisible and the modal just looked frozen.
@@ -1406,6 +1397,8 @@
     setTimeout(function(){document.getElementById('pm-otp').focus();},120);
     trackEvent('Checkout','OTPSent',curPlan);
   }
+  // Verifies the OTP only, then reveals the gateway step. The order is created
+  // when the buyer picks a gateway there.
   function doPay(){
     var otp=(document.getElementById('pm-otp').value||'').trim();
     if(!otp||otp.length!==6||!/^\d+$/.test(otp)){_pmMsg('Please enter the 6-digit code sent to your email.','err');return;}
@@ -1414,19 +1407,12 @@
     btn.disabled=true;btxt.style.display='none';spin.style.display='block';_pmMsg('Verifying...','inf');
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:_verifiedEmail,otp:otp,ajax:'1'}))
       .then(function(data){
-        if(!data.success){btn.disabled=false;btxt.style.display='inline';spin.style.display='none';_pmMsg(data.error||'Incorrect code. Please try again.','err');return;}
-        _pmMsg('Verified! Creating your order...','inf');trackEvent('Checkout','OTPVerified',curPlan);
-        var oparams={action:(_useRzp()?'razorpay_create_order':'create_order'),email:_verifiedEmail,plan:curPlan,ajax:'1'};
-        if(_useRzp())oparams.intl=_intlParam();
-        if(_topupKey)oparams.topup_key=_topupKey;
-        return _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams));
-      })
-      .then(function(data){
-        if(!data)return;
-        if(_useRzp()){_resetPayBtn();if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);openRazorpay(data);}else{_pmMsg(data.error||'Could not start card payment.','err');}return;}
-        if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
-        else if(data.payment_url){window.location.replace(data.payment_url);}
-        else{_resetPayBtn();_pmMsg(data.error||'Something went wrong. Please try again.','err');}
+        _resetPayBtn();
+        if(!data||!data.success){_pmMsg((data&&data.error)||'Incorrect code. Please try again.','err');return;}
+        trackEvent('Checkout','OTPVerified',curPlan);
+        _authMode='otp';_authPhone='';
+        _pmMsg('','');
+        showGatewayStep();
       })
       .catch(function(err){console.error('Payment error:',err);_resetPayBtn();_pmMsg(_apiErrMsg(err),'err');});
   }
