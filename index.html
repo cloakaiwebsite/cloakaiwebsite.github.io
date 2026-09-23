@@ -345,11 +345,12 @@
     .pm-gw-radio{flex-shrink:0;width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;position:relative;transition:border-color .16s;}
     .pm-gw.sel .pm-gw-radio{border-color:var(--brand);}
     .pm-gw.sel .pm-gw-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--brand);}
-    /* Uniform logo slot: every brand logo is contained in the SAME size box, so
-       PayPal, Razorpay and PhonePe line up in equal proportions regardless of
-       their source aspect ratio or file type (svg/png/webp). */
-    .pm-gw-logo{flex-shrink:0;width:62px;height:36px;display:flex;align-items:center;justify-content:center;}
-    .pm-gw-logo img{max-width:58px;max-height:30px;width:auto;height:auto;object-fit:contain;display:block;}
+    /* Uniform circular logo badge: every brand logo sits in the SAME size circle,
+       so PayPal, Razorpay and PhonePe line up in equal proportions regardless of
+       their source aspect ratio or file type. Light fill so it reads on the white
+       card, and overflow clipped to the circle. */
+    .pm-gw-logo{flex-shrink:0;width:46px;height:46px;border-radius:50%;background:#f1f5f9;border:1px solid rgba(15,23,42,.08);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .pm-gw-logo img{max-width:34px;max-height:24px;width:auto;height:auto;object-fit:contain;display:block;}
     .pm-gw-l{flex:1;display:flex;flex-direction:column;min-width:0;gap:2px;}
     .pm-gw-t{font-size:1rem;font-weight:800;letter-spacing:-.2px;color:#0f172a;}
     .pm-gw-s{font-size:.76rem;font-weight:600;color:#64748B;}
@@ -1250,7 +1251,7 @@
   function _gwCard(g,ctx,sel){
     var C={
       paypal:  {brand:'#0070ba',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
-      razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.png', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI')},
+      razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.svg', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI')},
       phonepe: {brand:'#5f259f',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets'}
     }[g];
     return '<button type="button" class="pm-gw'+(sel?' sel':'')+'" data-g="'+g+'" style="--brand:'+C.brand+';" onclick="selectGateway(\''+g+'\',\''+ctx+'\')">'
