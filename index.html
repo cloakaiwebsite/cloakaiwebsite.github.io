@@ -255,6 +255,7 @@
     .btn-pay{width:100%;padding:14px 16px;border-radius:11px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-family:inherit;font-size:1rem;font-weight:700;letter-spacing:.2px;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:4px;box-shadow:0 4px 14px rgba(46,204,113,.25);display:flex;align-items:center;justify-content:center;gap:9px;-webkit-font-smoothing:antialiased;position:relative;overflow:hidden;}
     .btn-pay:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(46,204,113,.45);}
     .btn-pay:disabled{opacity:.75;cursor:default;transform:none;}
+    .btn-pay::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;pointer-events:none;}
     .btn-pay:active{transform:translateY(0);box-shadow:0 5px 16px rgba(0,230,118,.30);}
     .btn-pay:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;filter:none;}
     .pm-msg{text-align:center;font-size:.85rem;margin-top:9px;min-height:18px;}
@@ -311,8 +312,9 @@
     .sup-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 13px;font-size:.9rem;color:#F1F5F9;outline:none;font-family:inherit;resize:none;transition:border-color .18s,background .18s,box-shadow .18s;}
     .sup-input::placeholder{color:#5b6b78;}
     .sup-input:focus{border-color:rgba(0,230,118,.55);background:rgba(0,230,118,.05);box-shadow:0 0 0 3px rgba(0,230,118,.13);}
-    .sup-btn{width:100%;padding:14px;border-radius:11px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 4px 14px rgba(46,204,113,.25);transition:transform .2s,box-shadow .2s;}
+    .sup-btn{position:relative;overflow:hidden;width:100%;padding:14px;border-radius:11px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 4px 14px rgba(46,204,113,.25);transition:transform .2s,box-shadow .2s;}
     .sup-btn:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(46,204,113,.45);}
+    .sup-btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;pointer-events:none;}
     .sup-btn:hover{transform:translateY(-1px);filter:brightness(1.04);box-shadow:0 11px 30px rgba(0,230,118,.4);}
     .sup-btn:disabled{opacity:.45;cursor:not-allowed;}
     .sup-msg{text-align:center;font-size:.8rem;margin-top:8px;min-height:16px;}
@@ -348,12 +350,13 @@
     .pm-gw-radio{flex-shrink:0;width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;position:relative;transition:border-color .16s;}
     .pm-gw.sel .pm-gw-radio{border-color:var(--brand);}
     .pm-gw.sel .pm-gw-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--brand);}
-    /* Uniform circular logo badge: every brand logo sits in the SAME size circle,
-       so PayPal, Razorpay and PhonePe line up in equal proportions regardless of
-       their source aspect ratio or file type. Light fill so it reads on the white
-       card, and overflow clipped to the circle. */
-    .pm-gw-logo{flex-shrink:0;width:46px;height:46px;border-radius:50%;background:#f1f5f9;border:1px solid rgba(15,23,42,.08);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-    .pm-gw-logo img{max-width:34px;max-height:24px;width:auto;height:auto;object-fit:contain;display:block;}
+    /* Logo slot: shows each brand logo at its natural size on the white card.
+       Razorpay is the exception (.circle): its logo is itself a coloured circular
+       mark, so it gets a circular badge that fills edge to edge. */
+    .pm-gw-logo{flex-shrink:0;width:66px;height:40px;display:flex;align-items:center;justify-content:center;}
+    .pm-gw-logo img{max-width:62px;max-height:32px;width:auto;height:auto;object-fit:contain;display:block;}
+    .pm-gw-logo.circle{width:44px;height:44px;border-radius:50%;overflow:hidden;}
+    .pm-gw-logo.circle img{width:44px;height:44px;max-width:none;max-height:none;object-fit:cover;}
     .pm-gw-l{flex:1;display:flex;flex-direction:column;min-width:0;gap:2px;}
     .pm-gw-t{font-size:1rem;font-weight:800;letter-spacing:-.2px;color:#0f172a;}
     .pm-gw-s{font-size:.76rem;font-weight:600;color:#64748B;}
@@ -1254,12 +1257,12 @@
   function _gwCard(g,ctx,sel){
     var C={
       paypal:  {brand:'#0070ba',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
-      razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.svg', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI')},
+      razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.svg', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI'),circ:true},
       phonepe: {brand:'#5f259f',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets'}
     }[g];
     return '<button type="button" class="pm-gw'+(sel?' sel':'')+'" data-g="'+g+'" style="--brand:'+C.brand+';" onclick="selectGateway(\''+g+'\',\''+ctx+'\')">'
       +'<span class="pm-gw-radio"></span>'
-      +'<span class="pm-gw-logo"><img src="'+C.logo+'" alt="'+C.alt+'" loading="lazy"></span>'
+      +'<span class="pm-gw-logo'+(C.circ?' circle':'')+'"><img src="'+C.logo+'" alt="'+C.alt+'" loading="lazy"></span>'
       +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.alt+'</span><span class="pm-gw-s">'+C.desc+'</span></span>'
       +'</button>';
   }
