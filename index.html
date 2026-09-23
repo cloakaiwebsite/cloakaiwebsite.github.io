@@ -1242,8 +1242,8 @@
     // Light brand-tinted buttons: pale background, brand-coloured text and border.
     var C={
       paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',label:'PayPal',sub:'Balance or card'},
-      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',label:(_isIntl()?'Debit / Credit Card':'Cards & UPI'),sub:'via Razorpay'},
-      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',label:'PhonePe / UPI',sub:'UPI & wallets'}
+      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',label:(_isIntl()?'Debit / Credit Card':'Razorpay'),sub:(_isIntl()?'via Razorpay':'Cards & UPI')},
+      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',label:'PhonePe',sub:'Cards, UPI & Wallets'}
     }[g];
     return '<button type="button" class="pm-gw" style="background:'+C.bg+';color:'+C.fg+';border:1px solid '+C.bd+';" onclick="chooseGateway(\''+g+'\')">'
       +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.label+'</span><span class="pm-gw-s">'+C.sub+'</span></span>'
