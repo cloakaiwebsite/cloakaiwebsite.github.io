@@ -449,7 +449,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="badge" style="display:inline-flex;align-items:center;justify-content:center;gap:4px 8px;flex-wrap:wrap;">
-    <span>🇮🇳 India's #1 AI Interview Answers Generator</span>
+    <span>🇮🇳 India's #1 AI Interview, Meeting & Call Assistant</span>
     <span style="opacity:.4">·</span>
     <span style="display:inline-flex;align-items:center;gap:5px;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
@@ -981,7 +981,7 @@
   // ran two 16ms setIntervals against the same #cg element. Do not re-add them.
   var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08});
   document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
-  var TXT="Your invisible AI copilot for interviews. Hear the question. See the answer. Only you can see it.";
+  var TXT="Your invisible AI copilot for interviews, meetings and calls. Hear the question. See the answer. Only you can see it.";
   var tEl=document.getElementById('tt'),ti=0;
   var typer=function(){if(ti<TXT.length){tEl.textContent+=TXT[ti++];setTimeout(typer,30);}};
   setTimeout(typer,1000);
