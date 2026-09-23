@@ -332,19 +332,23 @@
     .quick-row-price{font-size:1.25rem;font-weight:900;color:#00e676;letter-spacing:-.5px;}
     .quick-row-go{color:var(--gg);font-size:1.1rem;font-weight:700;}
     /* Checkout gateway buttons (final step), each in its brand colour */
-    .pm-pay-head{font-size:.72rem;font-weight:700;color:#94A3B8;letter-spacing:.4px;text-transform:uppercase;text-align:center;margin:16px 0 10px;}
-    .pm-gw-list{display:flex;flex-direction:column;gap:11px;}
-    .pm-gw{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:12px 16px;border-radius:13px;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .12s,box-shadow .16s,filter .16s;}
-    .pm-gw:hover,.pm-gw:active{transform:translateY(-1px);filter:brightness(.98);box-shadow:0 6px 16px rgba(0,0,0,.28);}
+    .pm-pay-head{font-size:.72rem;font-weight:700;color:#94A3B8;letter-spacing:.4px;text-transform:uppercase;text-align:center;margin:16px 0 12px;}
+    .pm-gw-list{display:flex;flex-direction:column;gap:12px;}
+    /* Bold white payment cards: a coloured brand accent bar on the left, big brand
+       logo, dark readable text, and a filled brand arrow. Pops on the dark modal. */
+    .pm-gw{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 16px 14px 20px;border-radius:14px;cursor:pointer;font-family:inherit;background:#fff;border:1px solid rgba(15,23,42,.08);box-shadow:0 4px 14px rgba(0,0,0,.28);transition:transform .14s ease,box-shadow .18s ease;}
+    .pm-gw:hover,.pm-gw:active{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.4);}
+    .pm-gw-accent{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--brand);}
     /* Uniform logo slot: every brand logo is contained in the SAME size box, so
        PayPal, Razorpay and PhonePe line up in equal proportions regardless of
        their source aspect ratio or file type (svg/png/webp). */
-    .pm-gw-logo{flex-shrink:0;width:58px;height:34px;background:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.12);}
-    .pm-gw-logo img{max-width:46px;max-height:22px;width:auto;height:auto;object-fit:contain;display:block;}
+    .pm-gw-logo{flex-shrink:0;width:64px;height:40px;display:flex;align-items:center;justify-content:center;}
+    .pm-gw-logo img{max-width:60px;max-height:32px;width:auto;height:auto;object-fit:contain;display:block;}
     .pm-gw-l{flex:1;display:flex;flex-direction:column;min-width:0;gap:2px;}
-    .pm-gw-t{font-size:.98rem;font-weight:800;letter-spacing:-.2px;}
-    .pm-gw-s{font-size:.74rem;font-weight:600;opacity:.82;}
-    .pm-gw-go{flex-shrink:0;font-size:1.25rem;font-weight:800;}
+    .pm-gw-t{font-size:1rem;font-weight:800;letter-spacing:-.2px;color:#0f172a;}
+    .pm-gw-s{font-size:.76rem;font-weight:600;color:#64748B;}
+    .pm-gw-go{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;line-height:1;transition:transform .14s ease;}
+    .pm-gw:hover .pm-gw-go{transform:translateX(3px);}
     /* Review form star picker */
     .rv-stars{display:flex;gap:8px;margin:0 0 15px;font-size:2rem;line-height:1;}
     .rv-star{cursor:pointer;color:#334155;transition:color .12s,transform .12s;user-select:none;}
@@ -1231,12 +1235,13 @@
   var _authMode='',_authPhone='';
   function _gwBtn(g,ctx){
     var C={
-      paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
-      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',logo:'assets/razorpay-logo.png', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI')},
-      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets'}
+      paypal:  {brand:'#0070ba',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
+      razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.png', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI')},
+      phonepe: {brand:'#5f259f',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets'}
     }[g];
     var fn=(ctx==='google')?'payGoogle':'payOtp';
-    return '<button type="button" class="pm-gw" style="background:'+C.bg+';border:1px solid '+C.bd+';color:'+C.fg+';" onclick="'+fn+'(\''+g+'\')">'
+    return '<button type="button" class="pm-gw" style="--brand:'+C.brand+';" onclick="'+fn+'(\''+g+'\')">'
+      +'<span class="pm-gw-accent"></span>'
       +'<span class="pm-gw-logo"><img src="'+C.logo+'" alt="'+C.alt+'" loading="lazy"></span>'
       +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.alt+'</span><span class="pm-gw-s">'+C.desc+'</span></span>'
       +'<span class="pm-gw-go">&rarr;</span></button>';
