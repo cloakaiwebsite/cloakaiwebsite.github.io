@@ -400,7 +400,8 @@
   }
 
   // ── Data ──
-  function loadAccount(){
+  function loadAccount(){ _loadAccount(false); }
+  function _loadAccount(isRetry){
     if(!idToken){signOut();return;}
     document.getElementById('signed-out').style.display='none';
     document.getElementById('signed-in').style.display='none';
@@ -421,9 +422,14 @@
         renderAccount(d);
       })
       .catch(function(err){
-        // The call never completed (timeout, busy, offline). The token is probably
-        // still fine, so keep the user signed in and let them retry, rather than
-        // spinning forever or bouncing them to the sign-in screen.
+        // A "busy" result is usually a transient Apps Script blip (a non-JSON
+        // interstitial or a 5xx while cold/under load), not a real failure. This
+        // is a read-only call, so retry ONCE silently before showing the retry
+        // screen. A genuine problem still surfaces on the second miss.
+        if(!isRetry && err && (err.busy || err.name==='AbortError')){
+          setTimeout(function(){ _loadAccount(true); }, 900);
+          return;
+        }
         showRetry(_acctErrMsg(err));
       });
   }
@@ -548,7 +554,15 @@
 
   // ── Top-up (in-page, no redirect to the homepage) ──
   var currentTopupKey='';
-  var PLANS_CACHE=null;
+  // Plan display data, hardcoded to avoid a slow Apps Script 'plans' round trip in
+  // the top-up flow (this is display only; the amount charged always comes from
+  // CONFIG.PLANS on the backend). Keep in sync with the homepage PLANS and the .gs.
+  var PLANS_CACHE={
+    mini:   {name:'1 Hour',  hours:1, price_inr:499,  per_hr:499, price_usd_cents:1500},
+    starter:{name:'3 Hours', hours:3, price_inr:999,  per_hr:333, price_usd_cents:2500},
+    basic:  {name:'6 Hours', hours:6, price_inr:1899, per_hr:317, price_usd_cents:4500},
+    pro:    {name:'9 Hours', hours:9, price_inr:2699, per_hr:300, price_usd_cents:6500}
+  };
 
   function openTopup(key){
     if(!idToken){signOut();return;}
@@ -560,17 +574,7 @@
   }
   function closeTopup(){ document.getElementById('topup-modal').classList.add('hidden'); }
 
-  function loadPlans(){
-    var box=document.getElementById('tu-plans');
-    if(PLANS_CACHE){ renderPlans(PLANS_CACHE); return; }
-    box.innerHTML='<div class="tu-loading">Loading packs...</div>';
-    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'plans'}))
-      .then(function(d){
-        if(!d||!d.success||!d.plans){box.innerHTML='<div class="tu-loading">Could not load packs. Please try again.</div>';return;}
-        PLANS_CACHE=d.plans; renderPlans(d.plans);
-      })
-      .catch(function(){box.innerHTML='<div class="tu-loading">Our servers are busy. Please try again in a minute.</div>';});
-  }
+  function loadPlans(){ renderPlans(PLANS_CACHE); }
 
   function renderPlans(plans){
     // Show the four current packs (skip legacy 'max'), cheapest first. Prices show
