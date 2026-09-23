@@ -251,8 +251,10 @@
     .finput{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:13px 15px;font-size:15px;color:#F1F5F9;outline:none;transition:.18s;font-family:inherit;margin-bottom:15px;}
     .finput::placeholder{color:#5b6b78;}
     .finput:focus{border-color:rgba(0,230,118,.55);background:rgba(0,230,118,.05);box-shadow:0 0 0 3px rgba(0,230,118,.13);}
-    .btn-pay{width:100%;padding:15px 16px;border-radius:12px;border:none;background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;font-family:inherit;font-size:1.02rem;font-weight:700;letter-spacing:.2px;cursor:pointer;transition:transform .18s,box-shadow .18s,filter .18s;margin-top:4px;box-shadow:0 8px 22px rgba(0,230,118,.24);display:flex;align-items:center;justify-content:center;gap:9px;-webkit-font-smoothing:antialiased;}
-    .btn-pay:hover{transform:translateY(-1px);filter:brightness(1.04);box-shadow:0 11px 30px rgba(0,230,118,.40);}
+    /* Matches the site CTA buttons (.btn / .btn-buy) for consistency. */
+    .btn-pay{width:100%;padding:14px 16px;border-radius:11px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-family:inherit;font-size:1rem;font-weight:700;letter-spacing:.2px;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:4px;box-shadow:0 4px 14px rgba(46,204,113,.25);display:flex;align-items:center;justify-content:center;gap:9px;-webkit-font-smoothing:antialiased;position:relative;overflow:hidden;}
+    .btn-pay:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(46,204,113,.45);}
+    .btn-pay:disabled{opacity:.75;cursor:default;transform:none;}
     .btn-pay:active{transform:translateY(0);box-shadow:0 5px 16px rgba(0,230,118,.30);}
     .btn-pay:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;filter:none;}
     .pm-msg{text-align:center;font-size:.85rem;margin-top:9px;min-height:18px;}
@@ -309,7 +311,8 @@
     .sup-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:11px 13px;font-size:.9rem;color:#F1F5F9;outline:none;font-family:inherit;resize:none;transition:border-color .18s,background .18s,box-shadow .18s;}
     .sup-input::placeholder{color:#5b6b78;}
     .sup-input:focus{border-color:rgba(0,230,118,.55);background:rgba(0,230,118,.05);box-shadow:0 0 0 3px rgba(0,230,118,.13);}
-    .sup-btn{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:6px;box-shadow:0 8px 22px rgba(0,230,118,.26);transition:transform .18s,box-shadow .18s,filter .18s;}
+    .sup-btn{width:100%;padding:14px;border-radius:11px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 4px 14px rgba(46,204,113,.25);transition:transform .2s,box-shadow .2s;}
+    .sup-btn:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(46,204,113,.45);}
     .sup-btn:hover{transform:translateY(-1px);filter:brightness(1.04);box-shadow:0 11px 30px rgba(0,230,118,.4);}
     .sup-btn:disabled{opacity:.45;cursor:not-allowed;}
     .sup-msg{text-align:center;font-size:.8rem;margin-top:8px;min-height:16px;}
