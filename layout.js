@@ -1,6 +1,6 @@
-/* CloakAI layout.js — shared nav, particles, cursor glow */
+/* CloakAI layout.js - shared nav, particles, cursor glow */
 
-/* ── Particle dots — EXACT same as homepage ─── */
+/* ── Particle dots - EXACT same as homepage ─── */
 (function(){
   var c=document.getElementById('particles');
   if(!c)return;
@@ -73,4 +73,107 @@ document.querySelectorAll('#mnav a').forEach(function(a){
     var bar=document.getElementById('news-bar');
     if(bar)bar.style.display='none';
   });
+})();
+
+/* ── Region + currency, shared across EVERY page ──────────────────────────
+   India sees INR (default), everyone else sees USD (roughly double). Detection,
+   in order: ?region= override, a decision already made this session, browser
+   timezone, then an async IP-country refinement. The result is cached in
+   sessionStorage so it stays consistent as the visitor moves between pages, and
+   is exposed as window.cloakRegion.
+
+   For USD visitors, convertPrices() swaps OUR known INR prices to their USD
+   equivalents in the page text. It is intentionally keyed to our EXACT price
+   tokens (bounded so a price is never matched inside a longer number), so
+   competitor/example prices like Rs1,199 or Rs2,650 are left untouched, and
+   JSON-LD scripts are skipped. The homepage runs its own richer pricing logic
+   for the cards and checkout modal; it reads window.cloakRegion and listens for
+   the 'cloakregion' event, so the two never disagree. */
+(function(){
+  function fromTZ(){
+    try{
+      var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||'');
+      if(!tz||tz==='Asia/Kolkata'||tz==='Asia/Calcutta')return 'IN';
+      return 'INTL';
+    }catch(e){return 'IN';}
+  }
+  var forced='';
+  try{
+    var q=(new URLSearchParams(location.search).get('region')||'').toLowerCase();
+    if(q==='in')forced='IN';else if(q==='intl')forced='INTL';
+  }catch(e){}
+  var cached='';
+  try{var s=sessionStorage.getItem('cloak_region');if(s==='IN'||s==='INTL')cached=s;}catch(e){}
+  var region=forced||cached||fromTZ();
+  window.cloakRegion=region;
+  try{sessionStorage.setItem('cloak_region',region);}catch(e){}
+
+  // OUR prices only. Each key is matched with a "not followed by a digit" guard
+  // so, e.g., 499 never matches inside 4999, and 4-digit prices always carry the
+  // comma exactly as written on the pages.
+  var MAP={
+    '5,999':'144','3,799':'90','2,699':'65','1,899':'45','1,799':'45',
+    '999':'25','699':'21','499':'15','333':'8','317':'8','300':'7'
+  };
+  var RULES=Object.keys(MAP).map(function(k){
+    return { re:new RegExp('(₹|Rs\\.?\\s?)'+k.replace(/[.,]/g,'\\$&')+'(?!\\d)','g'), usd:'$'+MAP[k] };
+  });
+  // Named competitors are cited in USD with an "(approximately Rs X)" note for
+  // Indian readers. For USD visitors that note is redundant, so drop it. This only
+  // removes the parenthetical; it never invents or alters a competitor's price.
+  var APPROX=/\s*\((?:approximately|approx\.?|about|roughly|around|≈|~)\s*(?:₹|Rs\.?\s?)[^)]*\)/gi;
+  function convertText(t){
+    if(t.indexOf('₹')<0 && t.indexOf('Rs')<0) return t;
+    t=t.replace(APPROX,'');
+    // Function replacement, never a string: a string like "$15" would be read as
+    // the "$1" backreference (the captured currency prefix) plus "5", corrupting
+    // the amount. A function returns the literal USD text verbatim.
+    RULES.forEach(function(r){ t=t.replace(r.re, function(){ return r.usd; }); });
+    return t;
+  }
+  function convertPrices(){
+    if(window.cloakRegion!=='INTL'||!document.body)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;if(!p)return NodeFilter.FILTER_REJECT;
+        var tag=p.nodeName;
+        if(tag==='SCRIPT'||tag==='STYLE'||tag==='NOSCRIPT'||tag==='TEXTAREA')return NodeFilter.FILTER_REJECT;
+        if(p.closest&&p.closest('[data-no-convert]'))return NodeFilter.FILTER_REJECT;
+        var v=n.nodeValue;
+        return (v.indexOf('₹')>=0||v.indexOf('Rs')>=0)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+      }
+    });
+    var nodes=[],x;while(x=walker.nextNode())nodes.push(x);
+    nodes.forEach(function(n){var c=convertText(n.nodeValue);if(c!==n.nodeValue)n.nodeValue=c;});
+  }
+  window.cloakConvertPrices=convertPrices;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',convertPrices);
+  else convertPrices();
+
+  // Async IP-country refinement (once per session, only when not forced). Timezone
+  // is the instant default; if the IP country disagrees we correct, cache, convert,
+  // and fire 'cloakregion' so the homepage can repaint its cards/modal. Any failure
+  // leaves the timezone decision in place.
+  if(!forced){
+    var resolved=false;try{resolved=sessionStorage.getItem('cloak_region_ip')==='1';}catch(e){}
+    if(!resolved){
+      try{
+        fetch('https://ipapi.co/country/',{cache:'no-store'})
+          .then(function(r){return r.ok?r.text():'';})
+          .then(function(cc){
+            cc=(cc||'').trim().toUpperCase();
+            if(cc.length!==2)return;
+            var ipRegion=(cc==='IN')?'IN':'INTL';
+            try{sessionStorage.setItem('cloak_region_ip','1');}catch(e){}
+            if(ipRegion!==window.cloakRegion){
+              window.cloakRegion=ipRegion;
+              try{sessionStorage.setItem('cloak_region',ipRegion);}catch(e){}
+              if(ipRegion==='INTL')convertPrices();
+              try{window.dispatchEvent(new CustomEvent('cloakregion',{detail:ipRegion}));}catch(e){}
+            }
+          })
+          .catch(function(){});
+      }catch(e){}
+    }
+  }
 })();

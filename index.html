@@ -476,7 +476,7 @@
     <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg> Windows 10 &amp; 11 </div>
   </div>
   <div class="cta-group">
-    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from ₹499</a>
+    <a href="#pricing" class="btn" onclick="trackEvent('Hero','CTA','Pricing')">Get Access from <span id="hero-from">₹499</span></a>
     <div class="dl-stack">
       <span class="dl-tag">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -504,7 +504,7 @@
       NO CREDIT CARD REQUIRED
     </span>
     <span style="opacity:.35">·</span>
-    <span>Plans from <strong style="color:var(--gg)">₹499</strong></span>
+    <span>Plans from <strong style="color:var(--gg)" id="hero-from2">₹499</strong></span>
   </p>
 </section>
 <!-- DEMO (moved up - users see proof before reading features) -->
@@ -606,9 +606,9 @@
   </div>
   <div class="sh"><h2>Pay Only for AI Time You Actually Use</h2><p>Hours count down only when CloakAI is open. Close the app, timer pauses. No calendar expiry.</p></div>
   <div style="text-align:center;margin-bottom:28px;">
-    <div style="display:inline-block;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 20px;font-size:.82rem;color:#64748B;line-height:1.65;">
-      Competitors charge <span style="color:#EF4444;text-decoration:line-through;font-weight:600;">₹400/hr+</span> for similar AI time &nbsp;&middot;&nbsp;
-      <strong style="color:#34D399;">CloakAI offers from ₹300/hr</strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
+    <div data-no-convert style="display:inline-block;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 20px;font-size:.82rem;color:#64748B;line-height:1.65;">
+      Competitors charge <span style="color:#EF4444;text-decoration:line-through;font-weight:600;" id="cmp-rate">₹400/hr+</span> for similar AI time &nbsp;&middot;&nbsp;
+      <strong style="color:#34D399;">CloakAI offers from <span id="cmp-ours">₹300/hr</span></strong> &nbsp;&middot;&nbsp; Timer pauses when app is closed
     </div>
   </div>
   <div class="pricing-grid">
@@ -1213,6 +1213,17 @@
       if(priceEl)priceEl.innerHTML=intl?('<sup>$</sup>'+p.usd.replace('$','')):('<sup>&#8377;</sup>'+p.price.replace('₹',''));
       if(rateEl)rateEl.textContent=(intl?p.usdRate.replace('/hr',''):p.rate.replace('/hr',''))+' per AI hour';
     });
+    // Hero CTA + "Plans from" strip: cheapest plan (mini) in the region's currency.
+    var from=_isIntl()?PLANS.mini.usd:PLANS.mini.price;
+    var hf=document.getElementById('hero-from'),hf2=document.getElementById('hero-from2');
+    if(hf)hf.textContent=from;
+    if(hf2)hf2.textContent=from;
+    // Competitor comparison strip: a generic (unnamed) anchor, so it can carry a
+    // rounded USD figure for international visitors. Named-competitor prices on the
+    // comparison pages are researched facts and are NOT rewritten.
+    var cr=document.getElementById('cmp-rate'),co=document.getElementById('cmp-ours');
+    if(cr)cr.textContent=_isIntl()?'$30/hr+':'₹400/hr+';
+    if(co)co.textContent=_isIntl()?'$7/hr':'₹300/hr';
     _renderSticky();
   }
   // Mobile sticky bar "starting at" price (the cheapest plan, mini).
@@ -1230,9 +1241,9 @@
   function _gwBtn(g){
     // Light brand-tinted buttons: pale background, brand-coloured text and border.
     var C={
-      paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',label:'PayPal',sub:'PayPal balance, card or bank'},
-      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',label:(_isIntl()?'Debit / Credit Card':'Card, Netbanking or UPI'),sub:'Visa, Mastercard, Amex'+(_isIntl()?'':', RuPay')+' via Razorpay'},
-      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',label:'PhonePe / UPI',sub:'Any UPI app, card or wallet'}
+      paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',label:'PayPal',sub:'Balance or card'},
+      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',label:(_isIntl()?'Debit / Credit Card':'Cards & UPI'),sub:'via Razorpay'},
+      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',label:'PhonePe / UPI',sub:'UPI & wallets'}
     }[g];
     return '<button type="button" class="pm-gw" style="background:'+C.bg+';color:'+C.fg+';border:1px solid '+C.bd+';" onclick="chooseGateway(\''+g+'\')">'
       +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.label+'</span><span class="pm-gw-s">'+C.sub+'</span></span>'
@@ -1432,14 +1443,23 @@
     var q=new URLSearchParams(location.search);
     var t=(q.get('topup')||'').trim().toUpperCase();
     if(/^CLAI-[A-Z0-9-]{5,}$/.test(t)){_topupKey=t;history.replaceState(null,'',location.pathname+location.hash);}
-    // Detect region once and paint every price for it. India sees INR, everyone
-    // else sees USD (charged double). A ?region=in / ?region=intl override is
-    // honoured for testing and for anyone the timezone guess got wrong.
+    // Region for the cards + checkout. Share the decision layout.js already made
+    // (override -> session -> timezone -> IP) via window.cloakRegion so this page
+    // and every other page always agree. Fall back to local detection if layout.js
+    // has not run yet. A ?region=in|intl override still wins.
     var forced=(q.get('region')||'').toLowerCase();
     if(forced==='in'||forced==='intl'){_region=(forced==='intl')?'INTL':'IN';}
+    else if(window.cloakRegion==='IN'||window.cloakRegion==='INTL'){_region=window.cloakRegion;}
     else{_region=_detectRegion();}
     if(_isIntl())_gateway='razorpay';
     renderPrices();
+    // If the async IP lookup in layout.js later corrects the region, repaint.
+    window.addEventListener('cloakregion',function(ev){
+      var r=(ev&&ev.detail);if(r!=='IN'&&r!=='INTL'||forced)return;
+      _region=r;if(_isIntl())_gateway='razorpay';
+      renderPrices();_paintPayRegion();
+      var s3=document.getElementById('pm-step3');if(s3&&s3.style.display!=='none')renderGateways();
+    });
   })();
 </script>
 <button class="sup-fab" onclick="openSup()" aria-label="Support">
