@@ -355,8 +355,8 @@
        mark, so it gets a circular badge that fills edge to edge. */
     .pm-gw-logo{flex-shrink:0;width:66px;height:40px;display:flex;align-items:center;justify-content:center;}
     .pm-gw-logo img{max-width:62px;max-height:32px;width:auto;height:auto;object-fit:contain;display:block;}
-    .pm-gw-logo.circle{width:44px;height:44px;border-radius:50%;overflow:hidden;}
-    .pm-gw-logo.circle img{width:44px;height:44px;max-width:none;max-height:none;object-fit:cover;}
+    .pm-gw-logo.circle{width:38px;height:38px;border-radius:50%;overflow:hidden;}
+    .pm-gw-logo.circle img{width:38px;height:38px;max-width:none;max-height:none;object-fit:cover;}
     .pm-gw-l{flex:1;display:flex;flex-direction:column;min-width:0;gap:2px;}
     .pm-gw-t{font-size:1rem;font-weight:800;letter-spacing:-.2px;color:#0f172a;}
     .pm-gw-s{font-size:.76rem;font-weight:600;color:#64748B;}
@@ -1258,7 +1258,7 @@
     var C={
       paypal:  {brand:'#0070ba',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
       razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.svg', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI'),circ:true},
-      phonepe: {brand:'#5f259f',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets'}
+      phonepe: {brand:'#5f259f',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets',circ:true}
     }[g];
     return '<button type="button" class="pm-gw'+(sel?' sel':'')+'" data-g="'+g+'" style="--brand:'+C.brand+';" onclick="selectGateway(\''+g+'\',\''+ctx+'\')">'
       +'<span class="pm-gw-radio"></span>'
