@@ -333,8 +333,8 @@
     .quick-row-go{color:var(--gg);font-size:1.1rem;font-weight:700;}
     /* Checkout gateway buttons (final step), each in its brand colour */
     .pm-gw-list{display:flex;flex-direction:column;gap:11px;}
-    .pm-gw{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 18px;border-radius:13px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .12s,box-shadow .16s,filter .16s;}
-    .pm-gw:hover,.pm-gw:active{transform:translateY(-1px);filter:brightness(1.05);box-shadow:0 8px 22px rgba(0,0,0,.45);}
+    .pm-gw{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 18px;border-radius:13px;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .12s,box-shadow .16s,filter .16s;}
+    .pm-gw:hover,.pm-gw:active{transform:translateY(-1px);filter:brightness(.98);box-shadow:0 6px 16px rgba(0,0,0,.28);}
     .pm-gw-l{display:flex;flex-direction:column;min-width:0;gap:2px;}
     .pm-gw-t{font-size:1.02rem;font-weight:800;letter-spacing:-.2px;}
     .pm-gw-s{font-size:.74rem;font-weight:600;opacity:.82;}
@@ -1228,12 +1228,13 @@
   // PhonePe, filtered to what the region supports, each in its brand colour.
   var _gateway='',_authMode='',_authPhone='';
   function _gwBtn(g){
+    // Light brand-tinted buttons: pale background, brand-coloured text and border.
     var C={
-      paypal:  {bg:'#ffc439',fg:'#0a2540',label:'PayPal',sub:'PayPal balance, card or bank'},
-      razorpay:{bg:'#0b2b57',fg:'#ffffff',label:(_isIntl()?'Debit / Credit Card':'Card, Netbanking or UPI'),sub:'Visa, Mastercard, Amex'+(_isIntl()?'':', RuPay')+' via Razorpay'},
-      phonepe: {bg:'#5f259f',fg:'#ffffff',label:'PhonePe / UPI',sub:'Any UPI app, card or wallet'}
+      paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',label:'PayPal',sub:'PayPal balance, card or bank'},
+      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',label:(_isIntl()?'Debit / Credit Card':'Card, Netbanking or UPI'),sub:'Visa, Mastercard, Amex'+(_isIntl()?'':', RuPay')+' via Razorpay'},
+      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',label:'PhonePe / UPI',sub:'Any UPI app, card or wallet'}
     }[g];
-    return '<button type="button" class="pm-gw" style="background:'+C.bg+';color:'+C.fg+';" onclick="chooseGateway(\''+g+'\')">'
+    return '<button type="button" class="pm-gw" style="background:'+C.bg+';color:'+C.fg+';border:1px solid '+C.bd+';" onclick="chooseGateway(\''+g+'\')">'
       +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.label+'</span><span class="pm-gw-s">'+C.sub+'</span></span>'
       +'<span class="pm-gw-go">&rarr;</span></button>';
   }
