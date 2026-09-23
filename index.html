@@ -1253,7 +1253,7 @@
   // PhonePe, filtered to the region. Each button carries the brand logo and, when
   // clicked, verifies (OTP path) or validates the phone (Google path) and goes
   // straight to that gateway, so there is no separate "choose payment" step.
-  var _authMode='',_authPhone='',_selGateway='';
+  var _authMode='',_authPhone='',_selGateway='',_otpVerified=false;
   // A selectable (radio-style) method card with the brand logo. Choosing it just
   // highlights it; the separate "Continue to Payment" button submits.
   function _gwCard(g,ctx,sel){
@@ -1320,17 +1320,24 @@
     _authMode='google';_authPhone=phone;_verifiedEmail=_pmGEmail;
     createOrderVia(_selGateway,_gMsg,document.getElementById('pm-g-continue'));
   }
-  // OTP path: "Continue to Payment" verifies the code, then pays by the SELECTED method.
+  // OTP path: "Continue to Payment" verifies the code ONCE, then pays by the
+  // selected method. The backend's verify_otp counts attempts and locks after 5,
+  // so we must not re-verify on every gateway attempt: once the code is accepted
+  // we set _otpVerified and later attempts (e.g. trying a different gateway after
+  // cancelling) skip straight to order creation. The create endpoints still
+  // re-check the verified OTP session server-side, so this stays secure.
   function payOtp(){
     if(!_selGateway){_pmMsg('Please choose a payment method.','err');return;}
-    var otp=(document.getElementById('pm-otp').value||'').trim();
-    if(!otp||otp.length!==6||!/^\d+$/.test(otp)){_pmMsg('Please enter the 6-digit code sent to your email.','err');return;}
     if(!_verifiedEmail){resetToStep1();return;}
     var btn=document.getElementById('pm-otp-continue');
+    if(_otpVerified){_authMode='otp';createOrderVia(_selGateway,_pmMsg,btn);return;}
+    var otp=(document.getElementById('pm-otp').value||'').trim();
+    if(!otp||otp.length!==6||!/^\d+$/.test(otp)){_pmMsg('Please enter the 6-digit code sent to your email.','err');return;}
     _btnLoading(btn,true);_pmMsg('Verifying...','inf');
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:_verifiedEmail,otp:otp,ajax:'1'}))
       .then(function(data){
         if(!data||!data.success){_btnLoading(btn,false);_pmMsg((data&&data.error)||'Incorrect code. Please try again.','err');return;}
+        _otpVerified=true;
         trackEvent('Checkout','OTPVerified',curPlan);
         _authMode='otp';
         createOrderVia(_selGateway,_pmMsg,btn);
@@ -1395,7 +1402,7 @@
   // and goes straight to payment: no separate "choose payment" step.
   function openPay(plan){
     var m=PLANS[plan];if(!m)return;
-    curPlan=plan;_verifiedEmail='';_authMode='';_authPhone='';
+    curPlan=plan;_verifiedEmail='';_authMode='';_authPhone='';_otpVerified=false;
     resetGoogleCheckout();
     document.getElementById('pm-name').textContent=m.name;
     _paintPayRegion();renderGateways();
@@ -1408,7 +1415,7 @@
     if(_topupKey)_pmMsg('Adding hours to your existing key '+_topupKey+'. Use the email it was bought with.','inf');
     trackEvent('Checkout','Open',plan);
   }
-  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
+  function resetToStep1(){_verifiedEmail='';_otpVerified=false;_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
   function _resetOTPBtn(){document.getElementById('pm-otp-btn').disabled=false;document.getElementById('pm-otp-btxt').style.display='inline';document.getElementById('pm-otp-btxt').textContent='Send Verification Code';document.getElementById('pm-otp-spin').style.display='none';}
   function _pmMsg(text,cls){var el=document.getElementById('pm-msg');el.textContent=text;el.className='pm-msg'+(cls?' '+cls:'');}
   // Step-1 message target. sendOTP used to write to #pm-msg, which lives inside the
@@ -1450,7 +1457,7 @@
   // Shared transition into the OTP step, used by BOTH the success path and the
   // could-not-read-the-response path so the two never drift out of sync.
   function _gotoOtpStep(email,msg){
-    _verifiedEmail=email;
+    _verifiedEmail=email;_otpVerified=false;
     document.getElementById('pm-email-show').textContent=email;
     document.getElementById('pm-step1').style.display='none';
     document.getElementById('pm-step2').style.display='';
