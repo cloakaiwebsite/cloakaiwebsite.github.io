@@ -332,11 +332,17 @@
     .quick-row-price{font-size:1.25rem;font-weight:900;color:#00e676;letter-spacing:-.5px;}
     .quick-row-go{color:var(--gg);font-size:1.1rem;font-weight:700;}
     /* Checkout gateway buttons (final step), each in its brand colour */
+    .pm-pay-head{font-size:.72rem;font-weight:700;color:#94A3B8;letter-spacing:.4px;text-transform:uppercase;text-align:center;margin:16px 0 10px;}
     .pm-gw-list{display:flex;flex-direction:column;gap:11px;}
-    .pm-gw{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 18px;border-radius:13px;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .12s,box-shadow .16s,filter .16s;}
+    .pm-gw{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:12px 16px;border-radius:13px;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .12s,box-shadow .16s,filter .16s;}
     .pm-gw:hover,.pm-gw:active{transform:translateY(-1px);filter:brightness(.98);box-shadow:0 6px 16px rgba(0,0,0,.28);}
-    .pm-gw-l{display:flex;flex-direction:column;min-width:0;gap:2px;}
-    .pm-gw-t{font-size:1.02rem;font-weight:800;letter-spacing:-.2px;}
+    /* Uniform logo slot: every brand logo is contained in the SAME size box, so
+       PayPal, Razorpay and PhonePe line up in equal proportions regardless of
+       their source aspect ratio or file type (svg/png/webp). */
+    .pm-gw-logo{flex-shrink:0;width:58px;height:34px;background:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.12);}
+    .pm-gw-logo img{max-width:46px;max-height:22px;width:auto;height:auto;object-fit:contain;display:block;}
+    .pm-gw-l{flex:1;display:flex;flex-direction:column;min-width:0;gap:2px;}
+    .pm-gw-t{font-size:.98rem;font-weight:800;letter-spacing:-.2px;}
     .pm-gw-s{font-size:.74rem;font-weight:600;opacity:.82;}
     .pm-gw-go{flex-shrink:0;font-size:1.25rem;font-weight:800;}
     /* Review form star picker */
@@ -851,10 +857,8 @@
         <div style="background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.15);border-radius:8px;padding:9px 13px;margin-bottom:12px;font-size:.8rem;color:#34D399;">&#x2713; Signed in as <strong id="pm-gemail" style="color:#fff;"></strong></div>
         <label class="flabel">Phone Number</label>
         <input type="tel" id="pm-gphone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
-        <button class="btn-pay" id="pm-gpay-btn" onclick="payWithGoogle()">
-          <span id="pm-gpay-txt">Continue to Payment &rarr;</span>
-          <div class="spin" id="pm-gpay-spin"></div>
-        </button>
+        <div class="pm-pay-head">Pay securely with</div>
+        <div id="pm-g-gateways" class="pm-gw-list"></div>
         <div class="pm-msg" id="pm-gmsg" style="margin-top:12px;"></div>
         <div style="text-align:center;margin-top:6px;"><a href="#" onclick="cancelGoogle();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">&#x2190; Use a different method</a></div>
       </div>
@@ -893,23 +897,14 @@
         <a href="#" onclick="resetToStep1();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">&#x2190; Wrong email?</a>
         <a href="#" id="pm-resend-link" onclick="handleResend();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">Resend code</a>
       </div>
-      <button class="btn-pay" id="pm-btn" onclick="doPay()">
-        <span id="pm-btxt">Verify Email</span>
-        <div class="spin" id="pm-spin"></div>
-      </button>
-      <div class="pm-msg" id="pm-msg"></div>
-      <!-- Spam hint: small, dark-themed, below verify button -->
+      <div class="pm-pay-head">Enter the code, then pay with</div>
+      <div id="pm-otp-gateways" class="pm-gw-list"></div>
+      <div class="pm-msg" id="pm-msg" style="margin-top:12px;"></div>
+      <!-- Spam hint: small, dark-themed, below the gateway buttons -->
       <div class="spam-hint">
         <span class="spam-hint-icon">📬</span>
         <span>Can't find the code? Check <strong style="color:#64748B;">Spam</strong>, <strong style="color:#64748B;">Promotions</strong>, Updates &amp; All Mail. Valid 10 min.</span>
       </div>
-    </div>
-    <!-- Step 3: pick a payment gateway (rendered by renderGateways per region) -->
-    <div id="pm-step3" style="display:none;">
-      <div style="text-align:center;color:#34D399;font-size:.86rem;font-weight:700;margin-bottom:14px;">&#x2713; Email verified. Choose how to pay:</div>
-      <div id="pm-gateways" class="pm-gw-list"></div>
-      <div class="pm-msg" id="pm-g3msg" style="margin-top:12px;"></div>
-      <div style="text-align:center;margin-top:10px;"><a href="#" onclick="backToVerify();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">&#x2190; Back</a></div>
     </div>
     <div class="pm-footer">
       🔒 256-bit secured checkout &nbsp;·&nbsp; Nothing is charged until you confirm<br>
@@ -1171,25 +1166,20 @@
     var o=document.getElementById('pm-or');if(o)o.style.display='flex';
     var f=document.getElementById('pm-emailform');if(f)f.style.display='';
     var gp=document.getElementById('pm-gphone');if(gp)gp.value='';
-    _gMsg('','');_resetGPayBtn();renderPmGoogleBtn();
+    _gMsg('','');
+    var gg=document.getElementById('pm-g-gateways');if(gg)gg.style.pointerEvents='';
+    renderPmGoogleBtn();
   }
-  function _resetGPayBtn(){var b=document.getElementById('pm-gpay-btn');if(!b)return;b.disabled=false;document.getElementById('pm-gpay-txt').style.display='inline';document.getElementById('pm-gpay-spin').style.display='none';}
   // Google already proves the email, so this only validates the phone and moves
   // on to the gateway step; the order is created once a gateway is chosen.
-  function payWithGoogle(){
-    if(!_pmGToken){_gMsg('Please sign in with Google again.','err');resetGoogleCheckout();return;}
-    var phone=(document.getElementById('pm-gphone').value||'').trim();
-    if(!phone||phone.replace(/[^0-9]/g,'').length<10){_gMsg('Please enter a valid 10-digit phone number.','err');return;}
-    _authMode='google';_authPhone=phone;_verifiedEmail=_pmGEmail;
-    _gMsg('','');
-    showGatewayStep();
-  }
+  // payWithGoogle/doPay were merged into payGoogle/payOtp: the gateway buttons now
+  // do verify-then-pay directly, so there is no separate confirm step.
 
   // ── Region ──────────────────────────────────────────────────────────────
   //   _region : 'IN' shows INR prices, 'INTL' shows USD prices (charged ~2x).
   // Auto-detected from the browser timezone on load; switchable on the checkout
-  // form. The gateway is chosen at the final checkout step (see chooseGateway).
-  var _region='IN',_gateway='phonepe';
+  // form. The gateway buttons live on the verify step (see payGoogle/payOtp).
+  var _region='IN';
   function _isIntl(){return _region==='INTL';}
   function _intlParam(){return _region==='INTL'?'1':'0';}
   // Asia/Kolkata (and the legacy Asia/Calcutta) is India. An unknown or empty
@@ -1232,49 +1222,39 @@
     el.textContent=_isIntl()?PLANS.mini.usd:PLANS.mini.price;
   }
 
-  // ── Payment gateway step (final checkout step, after email is verified) ──
-  // The buyer picks a gateway right before paying. Availability is region-based:
-  // PayPal charges in USD (it has no domestic India rail), PhonePe is India/UPI
-  // only, Razorpay serves both. Buttons render in the order PayPal, Razorpay,
-  // PhonePe, filtered to what the region supports, each in its brand colour.
-  var _gateway='',_authMode='',_authPhone='';
-  function _gwBtn(g){
-    // Light brand-tinted buttons: pale background, brand-coloured text and border.
+  // ── Payment gateways (shown right on the verification step) ──────────────
+  // Availability is region-based: PayPal charges USD (no domestic India rail),
+  // PhonePe is India/UPI only, Razorpay serves both. Order: PayPal, Razorpay,
+  // PhonePe, filtered to the region. Each button carries the brand logo and, when
+  // clicked, verifies (OTP path) or validates the phone (Google path) and goes
+  // straight to that gateway, so there is no separate "choose payment" step.
+  var _authMode='',_authPhone='';
+  function _gwBtn(g,ctx){
     var C={
-      paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',label:'PayPal',sub:'Balance or card'},
-      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',label:(_isIntl()?'Debit / Credit Card':'Razorpay'),sub:(_isIntl()?'via Razorpay':'Cards & UPI')},
-      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',label:'PhonePe',sub:'Cards, UPI & Wallets'}
+      paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
+      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',logo:'assets/razorpay-logo.png', alt:'Razorpay',desc:(_isIntl()?'Debit / Credit Card':'Cards & UPI')},
+      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets'}
     }[g];
-    return '<button type="button" class="pm-gw" style="background:'+C.bg+';color:'+C.fg+';border:1px solid '+C.bd+';" onclick="chooseGateway(\''+g+'\')">'
-      +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.label+'</span><span class="pm-gw-s">'+C.sub+'</span></span>'
+    var fn=(ctx==='google')?'payGoogle':'payOtp';
+    return '<button type="button" class="pm-gw" style="background:'+C.bg+';border:1px solid '+C.bd+';color:'+C.fg+';" onclick="'+fn+'(\''+g+'\')">'
+      +'<span class="pm-gw-logo"><img src="'+C.logo+'" alt="'+C.alt+'" loading="lazy"></span>'
+      +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.alt+'</span><span class="pm-gw-s">'+C.desc+'</span></span>'
       +'<span class="pm-gw-go">&rarr;</span></button>';
   }
-  function renderGateways(){
-    var box=document.getElementById('pm-gateways');if(!box)return;
+  function _gwList(ctx){
     var list=_isIntl()?['paypal','razorpay']:['razorpay','phonepe'];
-    box.innerHTML=list.map(_gwBtn).join('');
+    return list.map(function(g){return _gwBtn(g,ctx);}).join('');
   }
-  function _g3msg(t,c){var el=document.getElementById('pm-g3msg');if(el){el.textContent=t;el.className='pm-msg'+(c?' '+c:'');}}
-  // Reveal the gateway step. Both verification paths (Google, OTP) land here.
-  function showGatewayStep(){
-    document.getElementById('pm-step1').style.display='none';
-    document.getElementById('pm-step2').style.display='none';
-    document.getElementById('pm-step3').style.display='';
-    renderGateways();_g3msg('','');_pmMsg('','');
-    trackEvent('Checkout','GatewayStep',curPlan);
+  // Render the gateway buttons into BOTH surfaces: the Google phone step and the
+  // OTP step. Each carries the right verify-then-pay handler for its context.
+  function renderGateways(){
+    var g=document.getElementById('pm-g-gateways');if(g)g.innerHTML=_gwList('google');
+    var o=document.getElementById('pm-otp-gateways');if(o)o.innerHTML=_gwList('otp');
   }
-  function backToVerify(){
-    document.getElementById('pm-step3').style.display='none';
-    if(_authMode==='google'){document.getElementById('pm-step1').style.display='';}
-    else{document.getElementById('pm-step2').style.display='';}
-  }
-  // Region toggle on the checkout form: repaints prices and, if the gateway step
-  // is open, its buttons (the available gateways change with the region).
+  // Region toggle on the checkout form: repaints prices, plan preview and buttons.
   function toggleRegionPay(){
     _region=_isIntl()?'IN':'INTL';
-    renderPrices();_paintPayRegion();
-    var s3=document.getElementById('pm-step3');
-    if(s3&&s3.style.display!=='none')renderGateways();
+    renderPrices();_paintPayRegion();renderGateways();
   }
   function _paintPayRegion(){
     var m=PLANS[curPlan];
@@ -1285,11 +1265,35 @@
     if(lbl)lbl.textContent=_isIntl()?'Prices in $ (International)':'Prices in ₹ (India)';
     if(tog)tog.textContent=_isIntl()?'In India? Pay in ₹':'Outside India? Pay in $';
   }
+  // Google path: email already proven by sign-in, so just validate the phone and
+  // go straight to the chosen gateway.
+  function payGoogle(g){
+    if(!_pmGToken){_gMsg('Please sign in with Google again.','err');resetGoogleCheckout();return;}
+    var phone=(document.getElementById('pm-gphone').value||'').trim();
+    if(!phone||phone.replace(/[^0-9]/g,'').length<10){_gMsg('Please enter a valid 10-digit phone number.','err');return;}
+    _authMode='google';_authPhone=phone;_verifiedEmail=_pmGEmail;
+    createOrderVia(g,_gMsg,document.getElementById('pm-g-gateways'));
+  }
+  // OTP path: the gateway button verifies the code first, then goes to that gateway.
+  function payOtp(g){
+    var otp=(document.getElementById('pm-otp').value||'').trim();
+    if(!otp||otp.length!==6||!/^\d+$/.test(otp)){_pmMsg('Please enter the 6-digit code sent to your email.','err');return;}
+    if(!_verifiedEmail){resetToStep1();return;}
+    var box=document.getElementById('pm-otp-gateways');if(box)box.style.pointerEvents='none';
+    _pmMsg('Verifying...','inf');
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:_verifiedEmail,otp:otp,ajax:'1'}))
+      .then(function(data){
+        if(!data||!data.success){if(box)box.style.pointerEvents='';_pmMsg((data&&data.error)||'Incorrect code. Please try again.','err');return;}
+        trackEvent('Checkout','OTPVerified',curPlan);
+        _authMode='otp';
+        createOrderVia(g,_pmMsg,box);
+      })
+      .catch(function(err){if(box)box.style.pointerEvents='';_pmMsg(_apiErrMsg(err),'err');});
+  }
   // Create the order with the chosen gateway and route to its payment surface.
-  function chooseGateway(g){
-    _gateway=g;
-    var box=document.getElementById('pm-gateways');if(box)box.style.pointerEvents='none';
-    _g3msg('Starting secure checkout...','inf');
+  function createOrderVia(g,msg,box){
+    if(box)box.style.pointerEvents='none';
+    msg('Starting secure checkout...','inf');
     var params={plan:curPlan,ajax:'1'};
     if(_authMode==='google'){params.id_token=_pmGToken;params.phone=_authPhone;}
     else{params.email=_verifiedEmail;}
@@ -1300,22 +1304,22 @@
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(params))
       .then(function(data){
         if(box)box.style.pointerEvents='';
-        if(!data){_g3msg('Something went wrong. Please try again.','err');return;}
+        if(!data){msg('Something went wrong. Please try again.','err');return;}
         if(g==='razorpay'){
-          if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);_g3msg('','');openRazorpay(data);}
-          else _g3msg(data.error||'Could not start card payment.','err');
+          if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);msg('','');openRazorpay(data);}
+          else msg(data.error||'Could not start card payment.','err');
           return;
         }
         if(g==='paypal'){
           if(data.success&&data.approve_url){trackEvent('Checkout','PayPalRedirect',curPlan);window.location.replace(data.approve_url);}
-          else _g3msg(data.error||'Could not start PayPal checkout.','err');
+          else msg(data.error||'Could not start PayPal checkout.','err');
           return;
         }
         if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
         else if(data.payment_url){trackEvent('Checkout','PhonePeRedirect',curPlan);window.location.replace(data.payment_url);}
-        else _g3msg(data.error||'Something went wrong. Please try again.','err');
+        else msg(data.error||'Something went wrong. Please try again.','err');
       })
-      .catch(function(err){if(box)box.style.pointerEvents='';_g3msg(_apiErrMsg(err),'err');});
+      .catch(function(err){if(box)box.style.pointerEvents='';msg(_apiErrMsg(err),'err');});
   }
   // Open the Razorpay modal for an order created by razorpay_create_order, then verify
   // the signature on OUR server before treating the payment as complete.
@@ -1340,25 +1344,26 @@
     try{var rzp=new Razorpay(opts);rzp.on('payment.failed',function(r){alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again or use a different card.'));});rzp.open();}
     catch(e){alert('Could not open the payment window. Please try again.');}
   }
-  // Buying opens the checkout form directly. Verify email (Google or OTP), then
-  // the gateway step (step 3) offers the region-appropriate payment buttons.
+  // Buying opens the checkout form directly. The gateway buttons live on both the
+  // Google phone step and the OTP step, so a click verifies (or validates phone)
+  // and goes straight to payment: no separate "choose payment" step.
   function openPay(plan){
     var m=PLANS[plan];if(!m)return;
-    curPlan=plan;_verifiedEmail='';_authMode='';_authPhone='';_gateway='';
+    curPlan=plan;_verifiedEmail='';_authMode='';_authPhone='';
     resetGoogleCheckout();
     document.getElementById('pm-name').textContent=m.name;
-    _paintPayRegion();
-    document.getElementById('pm-msg').textContent='';_otpMsg('','');_g3msg('','');
+    _paintPayRegion();renderGateways();
+    document.getElementById('pm-msg').textContent='';_otpMsg('','');
     document.getElementById('pm-email').value='';document.getElementById('pm-phone').value='';document.getElementById('pm-otp').value='';
-    document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-step3').style.display='none';
-    _resetOTPBtn();_resetPayBtn();_clearResendCooldown();
+    document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';
+    var og=document.getElementById('pm-otp-gateways');if(og)og.style.pointerEvents='';
+    _resetOTPBtn();_clearResendCooldown();
     openMo('pay-mo');setTimeout(function(){document.getElementById('pm-email').focus();},180);
     if(_topupKey)_pmMsg('Adding hours to your existing key '+_topupKey+'. Use the email it was bought with.','inf');
     trackEvent('Checkout','Open',plan);
   }
-  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';var s3=document.getElementById('pm-step3');if(s3)s3.style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
+  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
   function _resetOTPBtn(){document.getElementById('pm-otp-btn').disabled=false;document.getElementById('pm-otp-btxt').style.display='inline';document.getElementById('pm-otp-btxt').textContent='Send Verification Code';document.getElementById('pm-otp-spin').style.display='none';}
-  function _resetPayBtn(){document.getElementById('pm-btn').disabled=false;document.getElementById('pm-btxt').style.display='inline';document.getElementById('pm-btxt').textContent='Verify Email';document.getElementById('pm-spin').style.display='none';}
   function _pmMsg(text,cls){var el=document.getElementById('pm-msg');el.textContent=text;el.className='pm-msg'+(cls?' '+cls:'');}
   // Step-1 message target. sendOTP used to write to #pm-msg, which lives inside the
   // HIDDEN step 2, so any send failure was invisible and the modal just looked frozen.
@@ -1404,34 +1409,15 @@
     document.getElementById('pm-step1').style.display='none';
     document.getElementById('pm-step2').style.display='';
     document.getElementById('pm-otp').value='';
-    _resetPayBtn();_startResendCooldown();
+    _startResendCooldown();
     _pmMsg(msg||'',msg?'inf':'');
     setTimeout(function(){document.getElementById('pm-otp').focus();},120);
     trackEvent('Checkout','OTPSent',curPlan);
   }
-  // Verifies the OTP only, then reveals the gateway step. The order is created
-  // when the buyer picks a gateway there.
-  function doPay(){
-    var otp=(document.getElementById('pm-otp').value||'').trim();
-    if(!otp||otp.length!==6||!/^\d+$/.test(otp)){_pmMsg('Please enter the 6-digit code sent to your email.','err');return;}
-    if(!_verifiedEmail){resetToStep1();return;}
-    var btn=document.getElementById('pm-btn'),btxt=document.getElementById('pm-btxt'),spin=document.getElementById('pm-spin');
-    btn.disabled=true;btxt.style.display='none';spin.style.display='block';_pmMsg('Verifying...','inf');
-    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:_verifiedEmail,otp:otp,ajax:'1'}))
-      .then(function(data){
-        _resetPayBtn();
-        if(!data||!data.success){_pmMsg((data&&data.error)||'Incorrect code. Please try again.','err');return;}
-        trackEvent('Checkout','OTPVerified',curPlan);
-        _authMode='otp';_authPhone='';
-        _pmMsg('','');
-        showGatewayStep();
-      })
-      .catch(function(err){console.error('Payment error:',err);_resetPayBtn();_pmMsg(_apiErrMsg(err),'err');});
-  }
   document.getElementById('pm-email').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('pm-phone').focus();});
   document.getElementById('pm-phone').addEventListener('keydown',function(e){if(e.key==='Enter')sendOTP();});
-  document.getElementById('pm-otp').addEventListener('keydown',function(e){if(e.key==='Enter')doPay();});
-  document.getElementById('pm-otp').addEventListener('input',function(e){var v=e.target.value.replace(/\D/g,'').slice(0,6);e.target.value=v;if(v.length===6)setTimeout(doPay,80);});
+  // Keep the OTP field digits-only; the gateway buttons below trigger verify+pay.
+  document.getElementById('pm-otp').addEventListener('input',function(e){e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);});
   // Account-driven top-up: the account page sends the user here as
   // cloakai.in/?topup=CLAI-...#pricing so a plan bought now ADDS hours to that
   // existing key instead of minting a new one. Only a well-formed key is honoured;
@@ -1451,14 +1437,13 @@
     if(forced==='in'||forced==='intl'){_region=(forced==='intl')?'INTL':'IN';}
     else if(window.cloakRegion==='IN'||window.cloakRegion==='INTL'){_region=window.cloakRegion;}
     else{_region=_detectRegion();}
-    if(_isIntl())_gateway='razorpay';
     renderPrices();
-    // If the async IP lookup in layout.js later corrects the region, repaint.
+    // If the async IP lookup in layout.js later corrects the region, repaint the
+    // cards, the plan preview and the gateway buttons (their currency/set changes).
     window.addEventListener('cloakregion',function(ev){
-      var r=(ev&&ev.detail);if(r!=='IN'&&r!=='INTL'||forced)return;
-      _region=r;if(_isIntl())_gateway='razorpay';
-      renderPrices();_paintPayRegion();
-      var s3=document.getElementById('pm-step3');if(s3&&s3.style.display!=='none')renderGateways();
+      var r=(ev&&ev.detail);if((r!=='IN'&&r!=='INTL')||forced)return;
+      _region=r;
+      renderPrices();_paintPayRegion();renderGateways();
     });
   })();
 </script>
