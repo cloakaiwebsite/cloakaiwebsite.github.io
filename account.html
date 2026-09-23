@@ -136,6 +136,28 @@
     .tu-msg.err{color:#EF4444;}
     .tu-msg.inf{color:#34D399;}
     .tu-foot{font-size:.72rem;color:#7C93A1;margin-top:16px;line-height:1.6;text-align:center;}
+    /* Top-up payment-method selection (mirrors the homepage checkout) */
+    .tu-pay-head{font-size:.72rem;font-weight:700;color:#8CA3B0;letter-spacing:.4px;text-transform:uppercase;text-align:center;margin:6px 0 12px;}
+    .tu-gw-list{display:flex;flex-direction:column;gap:9px;}
+    .tu-or{display:flex;align-items:center;gap:10px;color:#7C93A1;font-size:.66rem;font-weight:800;letter-spacing:1.5px;margin:1px 2px;}
+    .tu-or::before,.tu-or::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.12);}
+    .tu-gw{position:relative;display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:13px 16px;border-radius:14px;cursor:pointer;font-family:inherit;background:#fff;border:2px solid rgba(15,23,42,.10);box-shadow:0 3px 12px rgba(0,0,0,.22);transition:transform .12s,box-shadow .16s,border-color .16s;}
+    .tu-gw:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(0,0,0,.32);}
+    .tu-gw.sel{border-color:var(--brand);box-shadow:0 6px 18px rgba(0,0,0,.34);}
+    .tu-gw-radio{flex-shrink:0;width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;position:relative;transition:border-color .16s;}
+    .tu-gw.sel .tu-gw-radio{border-color:var(--brand);}
+    .tu-gw.sel .tu-gw-radio::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--brand);}
+    .tu-gw-logo{flex-shrink:0;width:66px;height:40px;display:flex;align-items:center;justify-content:center;}
+    .tu-gw-logo img{max-width:62px;max-height:32px;width:auto;height:auto;object-fit:contain;display:block;}
+    .tu-gw-logo.circle img{width:38px;height:38px;max-width:none;max-height:none;border-radius:50%;object-fit:cover;}
+    .tu-gw-l{flex:1;display:flex;flex-direction:column;min-width:0;gap:2px;}
+    .tu-gw-t{font-size:1rem;font-weight:800;letter-spacing:-.2px;color:#0f172a;}
+    .tu-gw-s{font-size:.76rem;font-weight:600;color:#64748B;}
+    .tu-continue-btn{position:relative;overflow:hidden;width:100%;margin-top:14px;padding:14px 16px;border-radius:11px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(46,204,113,.25);display:flex;align-items:center;justify-content:center;gap:9px;}
+    .tu-continue-btn:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(46,204,113,.45);}
+    .tu-continue-btn:disabled{opacity:.75;cursor:default;transform:none;}
+    .tu-cspin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:tuspin .7s linear infinite;}
+    @keyframes tuspin{to{transform:rotate(360deg);}}
   </style>
 </head>
 <body>
@@ -246,7 +268,25 @@
     <div class="tu-sub">Adding hours to <span id="tu-key"></span></div>
     <div id="tu-plans" class="tu-plans"><div class="tu-loading">Loading packs...</div></div>
     <div id="tu-msg" class="tu-msg"></div>
-    <div class="tu-foot">Secured by PhonePe &nbsp;·&nbsp; Pay by UPI, cards or wallets &nbsp;·&nbsp; The hours are added to this key right after payment.</div>
+    <div class="tu-foot">Pick a pack, then choose how to pay &nbsp;·&nbsp; Hours are added to this key right after payment.</div>
+  </div>
+</div>
+<!-- Top-up payment-method selection: opens after a pack is chosen. Region-based
+     (India: Razorpay + PhonePe, International: PayPal + Razorpay in USD). The
+     Google id_token already proves the user, so there is no OTP step. -->
+<div id="tu-pay-modal" class="tu-modal hidden" onclick="if(event.target===this)closeTopupPay()">
+  <div class="tu-card">
+    <button class="tu-close" onclick="closeTopupPay()" aria-label="Close">&times;</button>
+    <div class="tu-title">Complete top-up</div>
+    <div class="tu-sub">Adding <span id="tu-pay-plan"></span> to <span id="tu-pay-key"></span></div>
+    <div class="tu-pay-head">Choose a payment method</div>
+    <div id="tu-gateways" class="tu-gw-list"></div>
+    <button class="tu-continue-btn" id="tu-continue" onclick="topupContinue()">
+      <span class="tu-btn-txt">Continue to Payment</span>
+      <span class="tu-cspin" style="display:none;"></span>
+    </button>
+    <div id="tu-pay-msg" class="tu-msg"></div>
+    <div class="tu-foot">256-bit secured checkout &nbsp;·&nbsp; Hours are added to this key right after payment.</div>
   </div>
 </div>
 
@@ -533,38 +573,131 @@
   }
 
   function renderPlans(plans){
-    // Show the four current packs (skip legacy 'max'), cheapest first.
+    // Show the four current packs (skip legacy 'max'), cheapest first. Prices show
+    // in the visitor's region currency (USD outside India), matching what will be
+    // charged.
     var order=['mini','starter','basic','pro'];
+    var intl=_tuIntl();
     var box=document.getElementById('tu-plans');
     box.innerHTML=order.filter(function(k){return plans[k];}).map(function(k){
       var p=plans[k];
-      return '<button class="tu-plan" onclick="payTopup(\''+k+'\')">'+
+      var price, rate;
+      if(intl){
+        var usd=Number(p.price_usd_cents||0)/100;
+        price='$'+usd;
+        rate='$'+Math.max(1,Math.round(usd/(Number(p.hours)||1)))+'/hr';
+      }else{
+        price='&#8377;'+esc(String(p.price_inr));
+        rate='&#8377;'+esc(String(p.per_hr))+'/hr';
+      }
+      return '<button class="tu-plan" onclick="selectTopupPlan(\''+k+'\')">'+
         '<div class="tu-plan-h">'+esc(p.name)+'</div>'+
-        '<div class="tu-plan-p">&#8377;'+esc(String(p.price_inr))+'</div>'+
-        '<div class="tu-plan-r">&#8377;'+esc(String(p.per_hr))+'/hr</div>'+
+        '<div class="tu-plan-p">'+price+'</div>'+
+        '<div class="tu-plan-r">'+rate+'</div>'+
       '</button>';
     }).join('');
   }
 
-  function payTopup(planKey){
+  // ── Top-up payment-method selection ──
+  var _tuPlan='', _tuSelGw='';
+  function _tuIntl(){ return window.cloakRegion==='INTL'; }
+
+  // Pack chosen -> open the payment-method modal (region-based gateways).
+  function selectTopupPlan(planKey){
     if(!idToken){signOut();return;}
     if(!currentTopupKey)return;
-    var m=document.getElementById('tu-msg');
-    m.className='tu-msg inf'; m.textContent='Creating your order...';
-    document.querySelectorAll('#tu-plans .tu-plan').forEach(function(b){b.disabled=true;});
-    // The backend takes the email from the verified id_token and tops up currentTopupKey
-    // (it re-checks the key belongs to this email, so a wrong key can never be topped up).
-    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'create_order',id_token:idToken,plan:planKey,topup_key:currentTopupKey,ajax:'1'}))
+    _tuPlan=planKey; _tuSelGw='';
+    var p=(PLANS_CACHE&&PLANS_CACHE[planKey])||{};
+    document.getElementById('tu-pay-plan').textContent=(p.name||planKey)+' pack';
+    document.getElementById('tu-pay-key').textContent=currentTopupKey;
+    var m=document.getElementById('tu-pay-msg'); m.textContent=''; m.className='tu-msg';
+    _tuContinueLoading(false);
+    renderTuGateways();
+    closeTopup();
+    document.getElementById('tu-pay-modal').classList.remove('hidden');
+  }
+  function closeTopupPay(){ document.getElementById('tu-pay-modal').classList.add('hidden'); }
+
+  function _tuGwCard(g,sel){
+    var C={
+      paypal:  {brand:'#0070ba',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
+      razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.svg', alt:'Razorpay',desc:(_tuIntl()?'Debit / Credit Card':'Cards & UPI'),circ:true},
+      phonepe: {brand:'#5f259f',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets',circ:true}
+    }[g];
+    return '<button type="button" class="tu-gw'+(sel?' sel':'')+'" data-g="'+g+'" style="--brand:'+C.brand+';" onclick="selectTuGw(\''+g+'\')">'
+      +'<span class="tu-gw-radio"></span>'
+      +'<span class="tu-gw-logo'+(C.circ?' circle':'')+'"><img src="'+C.logo+'" alt="'+C.alt+'" loading="lazy"></span>'
+      +'<span class="tu-gw-l"><span class="tu-gw-t">'+C.alt+'</span><span class="tu-gw-s">'+C.desc+'</span></span>'
+      +'</button>';
+  }
+  function renderTuGateways(){
+    var list=_tuIntl()?['paypal','razorpay']:['razorpay','phonepe'];
+    _tuSelGw=list[0];
+    document.getElementById('tu-gateways').innerHTML=list.map(function(g,i){return _tuGwCard(g,i===0);}).join('<div class="tu-or"><span>OR</span></div>');
+  }
+  function selectTuGw(g){
+    _tuSelGw=g;
+    var cards=document.querySelectorAll('#tu-gateways .tu-gw');
+    for(var i=0;i<cards.length;i++){cards[i].classList.toggle('sel',cards[i].getAttribute('data-g')===g);}
+  }
+  function _tuContinueLoading(on){
+    var b=document.getElementById('tu-continue');if(!b)return;
+    var t=b.querySelector('.tu-btn-txt'),s=b.querySelector('.tu-cspin');
+    b.disabled=on; if(t)t.style.display=on?'none':'inline'; if(s)s.style.display=on?'inline-block':'none';
+  }
+  // Create the top-up order with the chosen gateway and route to its payment
+  // surface. No OTP: the Google id_token already proves the buyer, so this is fast.
+  function topupContinue(){
+    if(!idToken){signOut();return;}
+    if(!currentTopupKey||!_tuPlan)return;
+    var m=document.getElementById('tu-pay-msg');
+    if(!_tuSelGw){ m.className='tu-msg err'; m.textContent='Please choose a payment method.'; return; }
+    var g=_tuSelGw;
+    _tuContinueLoading(true); m.className='tu-msg inf'; m.textContent='Starting secure checkout...';
+    var params={id_token:idToken,plan:_tuPlan,topup_key:currentTopupKey,ajax:'1'};
+    if(g==='phonepe'){ params.action='create_order'; }
+    else if(g==='razorpay'){ params.action='razorpay_create_order'; params.intl=_tuIntl()?'1':'0'; }
+    else if(g==='paypal'){ params.action='paypal_create_order'; }
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams(params))
       .then(function(d){
-        if(d&&d.payment_url){ window.location.href=d.payment_url; return; }
-        if(d&&d.success&&d.key){ m.className='tu-msg inf'; m.textContent='Done. Hours added to your key.'; setTimeout(function(){closeTopup();loadAccount();},1500); return; }
-        m.className='tu-msg err'; m.textContent=(d&&d.error)||'Could not start payment. Please try again.';
-        document.querySelectorAll('#tu-plans .tu-plan').forEach(function(b){b.disabled=false;});
+        if(!d){ _tuContinueLoading(false); m.className='tu-msg err'; m.textContent='Something went wrong. Please try again.'; return; }
+        if(g==='razorpay'){
+          if(d.success&&d.razorpay_order_id){ _tuContinueLoading(false); m.textContent=''; openTopupRazorpay(d); }
+          else { _tuContinueLoading(false); m.className='tu-msg err'; m.textContent=d.error||'Could not start card payment.'; }
+          return;
+        }
+        if(g==='paypal'){
+          if(d.success&&d.approve_url){ window.location.href=d.approve_url; }
+          else { _tuContinueLoading(false); m.className='tu-msg err'; m.textContent=d.error||'Could not start PayPal checkout.'; }
+          return;
+        }
+        if(d.payment_url){ window.location.href=d.payment_url; }
+        else if(d.success&&d.key){ m.className='tu-msg inf'; m.textContent='Done. Hours added to your key.'; setTimeout(function(){closeTopupPay();loadAccount();},1500); }
+        else { _tuContinueLoading(false); m.className='tu-msg err'; m.textContent=d.error||'Could not start payment. Please try again.'; }
       })
-      .catch(function(){
-        m.className='tu-msg err'; m.textContent='Our servers are busy. Please try again in a minute.';
-        document.querySelectorAll('#tu-plans .tu-plan').forEach(function(b){b.disabled=false;});
-      });
+      .catch(function(){ _tuContinueLoading(false); m.className='tu-msg err'; m.textContent='Our servers are busy. Please try again in a minute.'; });
+  }
+  // Razorpay checkout for a top-up order, verified server-side before it counts.
+  function openTopupRazorpay(o){
+    if(typeof Razorpay==='undefined'){ alert('The payment library did not load. Please refresh and try again.'); return; }
+    var opts={
+      key:o.key_id,order_id:o.razorpay_order_id,amount:o.amount,currency:o.currency,
+      name:'CloakAI',description:(o.plan_name||'CloakAI top-up'),
+      prefill:{email:o.email||''},
+      theme:{color:'#00e676'},
+      handler:function(resp){
+        var vp={action:'razorpay_verify',order_id:o.order_id,razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature};
+        _acctFetch(SCRIPT_URL+'?'+new URLSearchParams(vp))
+          .then(function(d){
+            if(d&&d.success){ window.location.href=window.location.origin+'/payment-result.html?order='+encodeURIComponent(o.order_id); }
+            else { alert((d&&d.error)||'We could not verify your payment. If you were charged, email support@cloakai.in.'); }
+          })
+          .catch(function(){ alert('Payment verification could not reach our server. If you were charged, email support@cloakai.in.'); });
+      },
+      modal:{ondismiss:function(){}}
+    };
+    try{ var rzp=new Razorpay(opts); rzp.on('payment.failed',function(r){ alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again.')); }); rzp.open(); }
+    catch(e){ alert('Could not open the payment window. Please try again.'); }
   }
 
   // ── Boot ──
@@ -577,6 +710,7 @@
     if(stored && !tokenExpired(stored)){ idToken=stored; loadAccount(); }
   };
 </script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="layout.js?v=20260915"></script>
 </body>
 </html>
