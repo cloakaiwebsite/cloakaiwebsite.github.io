@@ -338,10 +338,14 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
       day:'1 Day', week:'1 Week', month:'1 Month', quarter:'3 Months'
     };
     var planName = data.plan_name || PLAN_NAMES[data.plan] || data.plan || 'License';
+    // International orders are charged in USD; the backend returns the actual
+    // currency and amount it billed, so show that rather than assuming INR.
+    var payCur = data.charged_currency || 'INR';
+    var payAmt = (data.charged_amount != null) ? data.charged_amount : data.amount;
     var rows = [
       { label: 'Order ID',    value: data.order_id  || orderId },
       { label: 'Plan',        value: planName + (data.plan_days ? ' (' + data.plan_days + ' days)' : '') },
-      { label: 'Amount Paid', value: data.amount ? 'INR ' + data.amount : 'Paid' },
+      { label: 'Amount Paid', value: (payAmt != null && payAmt !== '') ? (payCur + ' ' + payAmt) : 'Paid' },
       { label: 'Payment Time',value: fmt(data.paid_at) },
     ];
     var html = rows.map(function(r){
@@ -376,11 +380,11 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
       if (sessionStorage.getItem(seen)) return;
       sessionStorage.setItem(seen, '1');
     } catch (e) { /* private mode: fall through and still report once */ }
-    var value = Number(data.amount) || 0;
+    var value = Number((data.charged_amount != null) ? data.charged_amount : data.amount) || 0;
     gtag('event', 'purchase', {
       transaction_id: txn,
       value: value,
-      currency: 'INR',
+      currency: data.charged_currency || 'INR',
       items: [{
         item_id:   data.plan || 'unknown',
         item_name: planName,
@@ -403,8 +407,33 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
     });
   };
 
-  // Start polling immediately
-  pollOrder();
+  // PayPal returns the buyer here after approval (pp=1 with a token) or on cancel
+  // (pp=cancel). The capture is server-side and is what creates the licence, so it
+  // must run before we poll; then the normal poll sees the order PAID and shows the
+  // key. PhonePe and Razorpay do not use pp, so they fall straight to pollOrder().
+  var _ppFlag  = new URLSearchParams(window.location.search).get('pp') || '';
+  var _ppToken = new URLSearchParams(window.location.search).get('token') || '';
+  if (_ppFlag === 'cancel') {
+    document.getElementById('error-message').textContent =
+      'Your PayPal payment was cancelled. Nothing has been charged - you can try again anytime.';
+    showState('state-error');
+  } else if (_ppFlag === '1' && _ppToken) {
+    fetch(SCRIPT_URL + '?' + new URLSearchParams({ action: 'paypal_capture', order_id: orderId, paypal_order_id: _ppToken, ajax: '1' }))
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (d && d.success) { pollOrder(); }
+        else {
+          document.getElementById('error-message').textContent =
+            (d && d.error) || 'We could not confirm your PayPal payment. If you were charged, email support@cloakai.in with your order id.';
+          showState('state-error');
+        }
+      })
+      // If the capture response never lands, the payment may still have completed
+      // server-side, so poll rather than declaring failure; a real capture shows PAID.
+      .catch(function(){ pollOrder(); });
+  } else {
+    pollOrder();
+  }
 })();
 </script>
 <footer>

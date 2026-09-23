@@ -194,8 +194,8 @@
     /* Payment methods */
     .pay-methods{margin-top:24px;padding:16px 18px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;text-align:center;}
     .pay-methods-label{font-size:.68rem;color:#475569;font-weight:600;letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px;}
-    .pay-badges{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;}
-    .pay-badge{font-size:.6rem;font-weight:800;padding:4px 8px;border-radius:4px;letter-spacing:.2px;}
+    .pay-badges{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;}
+    .pay-badge{font-size:.62rem;font-weight:800;padding:5px 10px;border-radius:6px;letter-spacing:.3px;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.28);}
     /* Process box */
     .proc-box{margin-top:48px;background:rgba(255,255,255,.02);padding:36px;border-radius:20px;border:1px solid rgba(255,255,255,.05);}
     .proc-box h3{text-align:center;margin-bottom:28px;font-size:2.5rem;font-weight:800;color:#fff;letter-spacing:-1px;}
@@ -331,6 +331,14 @@
     .quick-row-old{font-size:.72rem;color:#475569;text-decoration:line-through;margin-right:2px;}
     .quick-row-price{font-size:1.25rem;font-weight:900;color:#00e676;letter-spacing:-.5px;}
     .quick-row-go{color:var(--gg);font-size:1.1rem;font-weight:700;}
+    /* Checkout gateway buttons (final step), each in its brand colour */
+    .pm-gw-list{display:flex;flex-direction:column;gap:11px;}
+    .pm-gw{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:15px 18px;border-radius:13px;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .12s,box-shadow .16s,filter .16s;}
+    .pm-gw:hover,.pm-gw:active{transform:translateY(-1px);filter:brightness(.98);box-shadow:0 6px 16px rgba(0,0,0,.28);}
+    .pm-gw-l{display:flex;flex-direction:column;min-width:0;gap:2px;}
+    .pm-gw-t{font-size:1.02rem;font-weight:800;letter-spacing:-.2px;}
+    .pm-gw-s{font-size:.74rem;font-weight:600;opacity:.82;}
+    .pm-gw-go{flex-shrink:0;font-size:1.25rem;font-weight:800;}
     /* Review form star picker */
     .rv-stars{display:flex;gap:8px;margin:0 0 15px;font-size:2rem;line-height:1;}
     .rv-star{cursor:pointer;color:#334155;transition:color .12s,transform .12s;user-select:none;}
@@ -354,6 +362,8 @@
     @keyframes buyBarUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   html{overflow-x:hidden;}
   </style>
+  <!-- Razorpay Standard Checkout (international card payments) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 <div class="cursor-glow" id="cg"></div>
@@ -381,10 +391,10 @@
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz5QOE5ROXK3h-mkF2tN_KAlNrQZ2SLY94hUjsIoyUfJenIsTWG3WZavgdPFu0jYqsRQ/exec';
   const BYPASS = false;
   const PLANS = {
-    mini:   {name:'1 Hour Pack',oldPrice:'₹699',price:'₹499',period:'1 hour of AI time',rate:'₹499/hr',label:'Get 1 Hour Pack'},
-    starter:{name:'3 Hour Pack',oldPrice:'₹1,799',price:'₹999',period:'3 hours of AI time',rate:'₹333/hr',label:'Get 3 Hour Pack'},
-    basic:  {name:'6 Hour Pack',oldPrice:'₹3,799',price:'₹1,899',period:'6 Hours of AI time',rate:'₹317/hr',label:'Get 6 Hour Pack'},
-    pro:    {name:'9 Hour Pack',oldPrice:'₹5,999',price:'₹2,699',period:'9 hours of AI time',rate:'₹300/hr',label:'Get 9 Hour Pack'},
+    mini:   {name:'1 Hour Pack',oldPrice:'₹699',price:'₹499',period:'1 hour of AI time',rate:'₹499/hr',label:'Get 1 Hour Pack',usdOld:'$21',usd:'$15',usdRate:'$15/hr'},
+    starter:{name:'3 Hour Pack',oldPrice:'₹1,799',price:'₹999',period:'3 hours of AI time',rate:'₹333/hr',label:'Get 3 Hour Pack',usdOld:'$45',usd:'$25',usdRate:'$8/hr'},
+    basic:  {name:'6 Hour Pack',oldPrice:'₹3,799',price:'₹1,899',period:'6 Hours of AI time',rate:'₹317/hr',label:'Get 6 Hour Pack',usdOld:'$90',usd:'$45',usdRate:'$8/hr'},
+    pro:    {name:'9 Hour Pack',oldPrice:'₹5,999',price:'₹2,699',period:'9 hours of AI time',rate:'₹300/hr',label:'Get 9 Hour Pack',usdOld:'$144',usd:'$65',usdRate:'$7/hr'},
   };
   // Sends the homepage funnel to GA4. This was a console.log stub, so every CTA,
   // download and checkout step on this page recorded NOTHING for the whole life of
@@ -602,7 +612,7 @@
     </div>
   </div>
   <div class="pricing-grid">
-    <div class="pc">
+    <div class="pc" data-plan="mini">
       <h3>Mini</h3>
       <!-- 699 > 499 is a 200 saving, i.e. 28.6%, which rounds to 29 and NOT to 30.
            Every other badge on this page rounds by half a point or less (1799>999 is
@@ -610,7 +620,7 @@
            their own arithmetic, so this card is not the place to be the outlier.
            A round 30% would need an anchor of 713 or 714, which is not a round price:
            you can have a round anchor or a round percentage here, not both. -->
-      <div class="pc-old">&#8377;699 <span class="pc-discount">29% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">&#8377;699</span> <span class="pc-discount">29% OFF</span></div>
       <div class="pc-price"><sup>&#8377;</sup>499</div>
       <div class="pc-rate">&#8377;499 per AI hour</div>
       <div class="pc-per">1 hour of AI time</div>
@@ -623,9 +633,9 @@
       </ul>
       <button class="btn-buy" onclick="openPay('mini')">Get 1 Hour Pack</button>
     </div>
-    <div class="pc">
+    <div class="pc" data-plan="starter">
       <h3>Starter</h3>
-      <div class="pc-old">₹1,799 <span class="pc-discount">45% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">₹1,799</span> <span class="pc-discount">45% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>999</div>
       <div class="pc-rate">₹333 per AI hour</div>
       <div class="pc-per">3 hours of AI time</div>
@@ -638,10 +648,10 @@
       </ul>
       <button class="btn-buy" onclick="openPay('starter')">Get 3 Hour Pack</button>
     </div>
-    <div class="pc pop">
+    <div class="pc pop" data-plan="basic">
       <div class="pc-badge-pop">MOST USERS BUY BASIC</div>
       <h3>Basic</h3>
-      <div class="pc-old">₹3,799 <span class="pc-discount">50% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">₹3,799</span> <span class="pc-discount">50% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>1,899</div>
       <div class="pc-rate">₹317 per AI hour</div>
       <div class="pc-per">6 Hours of AI time</div>
@@ -654,10 +664,10 @@
       </ul>
       <button class="btn-buy" onclick="openPay('basic')">Get 6 Hour Pack</button>
     </div>
-    <div class="pc pop" data-tier="pro" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
+    <div class="pc pop" data-tier="pro" data-plan="pro" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
       <div class="pc-badge-pop" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);color:#fff;">POWER USER</div>
       <h3>Pro</h3>
-      <div class="pc-old">₹5,999 <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">55% OFF</span></div>
+      <div class="pc-old"><span class="pc-old-amt">₹5,999</span> <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">55% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>2,699</div>
       <div class="pc-rate">₹300 per AI hour</div>
       <div class="pc-per">9 hours of AI time</div>
@@ -692,10 +702,11 @@
       <span class="pay-badge" style="background:#1A56DB;color:#fff;">VISA</span>
       <span class="pay-badge" style="background:#EB001B;color:#fff;">MASTERCARD</span>
       <span class="pay-badge" style="background:#016FD0;color:#fff;">AMEX</span>
+      <span class="pay-badge" style="background:#003087;color:#fff;">PayPal</span>
+      <span class="pay-badge" style="background:#0C2451;color:#fff;">Razorpay</span>
       <span class="pay-badge" style="background:#111;color:#fff;">Apple Pay</span>
       <span class="pay-badge" style="background:#4285F4;color:#fff;">Google Pay</span>
       <span class="pay-badge" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;">UPI</span>
-      <span class="pay-badge" style="background:#5046E4;color:#fff;">GPay</span>
       <span class="pay-badge" style="background:#5F259F;color:#fff;">PhonePe</span>
     </div>
   </div>
@@ -841,7 +852,7 @@
         <label class="flabel">Phone Number</label>
         <input type="tel" id="pm-gphone" class="finput" placeholder="+91 98765 43210" autocomplete="tel">
         <button class="btn-pay" id="pm-gpay-btn" onclick="payWithGoogle()">
-          <span id="pm-gpay-txt">Continue to Payment</span>
+          <span id="pm-gpay-txt">Continue to Payment &rarr;</span>
           <div class="spin" id="pm-gpay-spin"></div>
         </button>
         <div class="pm-msg" id="pm-gmsg" style="margin-top:12px;"></div>
@@ -883,7 +894,7 @@
         <a href="#" id="pm-resend-link" onclick="handleResend();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">Resend code</a>
       </div>
       <button class="btn-pay" id="pm-btn" onclick="doPay()">
-        <span id="pm-btxt">Verify &amp; Continue to Payment</span>
+        <span id="pm-btxt">Verify Email</span>
         <div class="spin" id="pm-spin"></div>
       </button>
       <div class="pm-msg" id="pm-msg"></div>
@@ -893,8 +904,15 @@
         <span>Can't find the code? Check <strong style="color:#64748B;">Spam</strong>, <strong style="color:#64748B;">Promotions</strong>, Updates &amp; All Mail. Valid 10 min.</span>
       </div>
     </div>
+    <!-- Step 3: pick a payment gateway (rendered by renderGateways per region) -->
+    <div id="pm-step3" style="display:none;">
+      <div style="text-align:center;color:#34D399;font-size:.86rem;font-weight:700;margin-bottom:14px;">&#x2713; Email verified. Choose how to pay:</div>
+      <div id="pm-gateways" class="pm-gw-list"></div>
+      <div class="pm-msg" id="pm-g3msg" style="margin-top:12px;"></div>
+      <div style="text-align:center;margin-top:10px;"><a href="#" onclick="backToVerify();return false;" style="color:#475569;font-size:.76rem;text-decoration:none;">&#x2190; Back</a></div>
+    </div>
     <div class="pm-footer">
-      🔒 Secured by PhonePe &nbsp;·&nbsp; Pay by UPI, cards or wallets &nbsp;·&nbsp; Nothing is charged until you confirm<br>
+      🔒 256-bit secured checkout &nbsp;·&nbsp; Nothing is charged until you confirm<br>
       License key emailed instantly &nbsp;·&nbsp; By continuing you agree to our <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a> and <a href="refund.html">Refund Policy</a>
     </div>
   </div>
@@ -951,7 +969,7 @@
      onclick="openQuick()" onkeydown="if(event.key==='Enter'||event.key===' '){openQuick();event.preventDefault();}">
   <div class="buy-bar-info">
     <span class="buy-bar-title">Get CloakAI</span>
-    <span class="buy-bar-sub">Plans starting at <b>₹499</b></span>
+    <span class="buy-bar-sub">Plans starting at <b id="sticky-from">₹499</b></span>
   </div>
   <span class="buy-bar-btn">Get Access
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="M12.5 6l6 6-6 6"/></svg>
@@ -978,11 +996,11 @@
     var order=['mini','starter','basic','pro'],html='';
     order.forEach(function(k){
       var m=PLANS[k];if(!m)return;
-      var pop=(k==='starter');
+      var pop=(k==='starter'),intl=_isIntl();
       html+='<button type="button" class="quick-row'+(pop?' quick-row-pop':'')+'" onclick="quickPick(\''+k+'\')">'
         +'<span class="quick-row-l"><span class="quick-row-name">'+m.name+(pop?' <span class="quick-tag">Popular</span>':'')+'</span>'
-        +'<span class="quick-row-dur">'+m.period+' &middot; '+m.rate+'</span></span>'
-        +'<span class="quick-row-r"><span class="quick-row-old">'+m.oldPrice+'</span><span class="quick-row-price">'+m.price+'</span><span class="quick-row-go">&rarr;</span></span>'
+        +'<span class="quick-row-dur">'+m.period+' &middot; '+(intl?m.usdRate:m.rate)+'</span></span>'
+        +'<span class="quick-row-r"><span class="quick-row-old">'+(intl?m.usdOld:m.oldPrice)+'</span><span class="quick-row-price">'+(intl?m.usd:m.price)+'</span><span class="quick-row-go">&rarr;</span></span>'
         +'</button>';
     });
     document.getElementById('quick-list').innerHTML=html;
@@ -1156,42 +1174,180 @@
     _gMsg('','');_resetGPayBtn();renderPmGoogleBtn();
   }
   function _resetGPayBtn(){var b=document.getElementById('pm-gpay-btn');if(!b)return;b.disabled=false;document.getElementById('pm-gpay-txt').style.display='inline';document.getElementById('pm-gpay-spin').style.display='none';}
+  // Google already proves the email, so this only validates the phone and moves
+  // on to the gateway step; the order is created once a gateway is chosen.
   function payWithGoogle(){
     if(!_pmGToken){_gMsg('Please sign in with Google again.','err');resetGoogleCheckout();return;}
     var phone=(document.getElementById('pm-gphone').value||'').trim();
     if(!phone||phone.replace(/[^0-9]/g,'').length<10){_gMsg('Please enter a valid 10-digit phone number.','err');return;}
-    var btn=document.getElementById('pm-gpay-btn'),txt=document.getElementById('pm-gpay-txt'),spin=document.getElementById('pm-gpay-spin');
-    btn.disabled=true;txt.style.display='none';spin.style.display='block';_gMsg('Creating your order...','inf');
-    var oparams={action:'create_order',id_token:_pmGToken,plan:curPlan,phone:phone,ajax:'1'};
-    if(_topupKey)oparams.topup_key=_topupKey;
-    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams))
-      .then(function(data){
-        if(!data)return;
-        if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
-        else if(data.payment_url){trackEvent('Checkout','GooglePay',curPlan);window.location.replace(data.payment_url);}
-        else{_resetGPayBtn();_gMsg(data.error||'Something went wrong. Please try again.','err');}
-      })
-      .catch(function(err){_resetGPayBtn();_gMsg(_apiErrMsg(err),'err');});
+    _authMode='google';_authPhone=phone;_verifiedEmail=_pmGEmail;
+    _gMsg('','');
+    showGatewayStep();
   }
 
+  // ── Region ──────────────────────────────────────────────────────────────
+  //   _region : 'IN' shows INR prices, 'INTL' shows USD prices (charged ~2x).
+  // Auto-detected from the browser timezone on load; switchable on the checkout
+  // form. The gateway is chosen at the final checkout step (see chooseGateway).
+  var _region='IN',_gateway='phonepe';
+  function _isIntl(){return _region==='INTL';}
+  function _intlParam(){return _region==='INTL'?'1':'0';}
+  // Asia/Kolkata (and the legacy Asia/Calcutta) is India. An unknown or empty
+  // timezone defaults to India, since that is the large majority of traffic and
+  // an Indian must never be shown the doubled USD price by mistake.
+  function _detectRegion(){
+    try{
+      var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||'');
+      if(!tz||tz==='Asia/Kolkata'||tz==='Asia/Calcutta')return 'IN';
+      return 'INTL';
+    }catch(e){return 'IN';}
+  }
+  // Repaint every price on the page (cards + mobile sticky) for the current region.
+  function renderPrices(){
+    var intl=_isIntl();
+    Object.keys(PLANS).forEach(function(k){
+      var p=PLANS[k],card=document.querySelector('.pc[data-plan="'+k+'"]');
+      if(!card)return;
+      var oldEl=card.querySelector('.pc-old-amt'),priceEl=card.querySelector('.pc-price'),rateEl=card.querySelector('.pc-rate');
+      if(oldEl)oldEl.textContent=intl?p.usdOld:p.oldPrice;
+      if(priceEl)priceEl.innerHTML=intl?('<sup>$</sup>'+p.usd.replace('$','')):('<sup>&#8377;</sup>'+p.price.replace('₹',''));
+      if(rateEl)rateEl.textContent=(intl?p.usdRate.replace('/hr',''):p.rate.replace('/hr',''))+' per AI hour';
+    });
+    _renderSticky();
+  }
+  // Mobile sticky bar "starting at" price (the cheapest plan, mini).
+  function _renderSticky(){
+    var el=document.getElementById('sticky-from');if(!el)return;
+    el.textContent=_isIntl()?PLANS.mini.usd:PLANS.mini.price;
+  }
+
+  // ── Payment gateway step (final checkout step, after email is verified) ──
+  // The buyer picks a gateway right before paying. Availability is region-based:
+  // PayPal charges in USD (it has no domestic India rail), PhonePe is India/UPI
+  // only, Razorpay serves both. Buttons render in the order PayPal, Razorpay,
+  // PhonePe, filtered to what the region supports, each in its brand colour.
+  var _gateway='',_authMode='',_authPhone='';
+  function _gwBtn(g){
+    // Light brand-tinted buttons: pale background, brand-coloured text and border.
+    var C={
+      paypal:  {bg:'#f4f8ff',fg:'#003087',bd:'#a8c3ef',label:'PayPal',sub:'PayPal balance, card or bank'},
+      razorpay:{bg:'#eef3fc',fg:'#0b2b57',bd:'#9fb8e6',label:(_isIntl()?'Debit / Credit Card':'Card, Netbanking or UPI'),sub:'Visa, Mastercard, Amex'+(_isIntl()?'':', RuPay')+' via Razorpay'},
+      phonepe: {bg:'#f5eefc',fg:'#5f259f',bd:'#c9aee8',label:'PhonePe / UPI',sub:'Any UPI app, card or wallet'}
+    }[g];
+    return '<button type="button" class="pm-gw" style="background:'+C.bg+';color:'+C.fg+';border:1px solid '+C.bd+';" onclick="chooseGateway(\''+g+'\')">'
+      +'<span class="pm-gw-l"><span class="pm-gw-t">'+C.label+'</span><span class="pm-gw-s">'+C.sub+'</span></span>'
+      +'<span class="pm-gw-go">&rarr;</span></button>';
+  }
+  function renderGateways(){
+    var box=document.getElementById('pm-gateways');if(!box)return;
+    var list=_isIntl()?['paypal','razorpay']:['razorpay','phonepe'];
+    box.innerHTML=list.map(_gwBtn).join('');
+  }
+  function _g3msg(t,c){var el=document.getElementById('pm-g3msg');if(el){el.textContent=t;el.className='pm-msg'+(c?' '+c:'');}}
+  // Reveal the gateway step. Both verification paths (Google, OTP) land here.
+  function showGatewayStep(){
+    document.getElementById('pm-step1').style.display='none';
+    document.getElementById('pm-step2').style.display='none';
+    document.getElementById('pm-step3').style.display='';
+    renderGateways();_g3msg('','');_pmMsg('','');
+    trackEvent('Checkout','GatewayStep',curPlan);
+  }
+  function backToVerify(){
+    document.getElementById('pm-step3').style.display='none';
+    if(_authMode==='google'){document.getElementById('pm-step1').style.display='';}
+    else{document.getElementById('pm-step2').style.display='';}
+  }
+  // Region toggle on the checkout form: repaints prices and, if the gateway step
+  // is open, its buttons (the available gateways change with the region).
+  function toggleRegionPay(){
+    _region=_isIntl()?'IN':'INTL';
+    renderPrices();_paintPayRegion();
+    var s3=document.getElementById('pm-step3');
+    if(s3&&s3.style.display!=='none')renderGateways();
+  }
+  function _paintPayRegion(){
+    var m=PLANS[curPlan];
+    var pe=document.getElementById('pm-price'),de=document.getElementById('pm-dur');
+    if(m&&pe)pe.innerHTML=_isIntl()?m.usd:m.price;
+    if(m&&de)de.textContent=m.period+' · '+(_isIntl()?m.usdRate:m.rate);
+    var lbl=document.getElementById('pm-region-label'),tog=document.getElementById('pm-region-toggle');
+    if(lbl)lbl.textContent=_isIntl()?'Prices in $ (International)':'Prices in ₹ (India)';
+    if(tog)tog.textContent=_isIntl()?'In India? Pay in ₹':'Outside India? Pay in $';
+  }
+  // Create the order with the chosen gateway and route to its payment surface.
+  function chooseGateway(g){
+    _gateway=g;
+    var box=document.getElementById('pm-gateways');if(box)box.style.pointerEvents='none';
+    _g3msg('Starting secure checkout...','inf');
+    var params={plan:curPlan,ajax:'1'};
+    if(_authMode==='google'){params.id_token=_pmGToken;params.phone=_authPhone;}
+    else{params.email=_verifiedEmail;}
+    if(_topupKey)params.topup_key=_topupKey;
+    if(g==='phonepe'){params.action='create_order';}
+    else if(g==='razorpay'){params.action='razorpay_create_order';params.intl=_intlParam();}
+    else if(g==='paypal'){params.action='paypal_create_order';}
+    _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(params))
+      .then(function(data){
+        if(box)box.style.pointerEvents='';
+        if(!data){_g3msg('Something went wrong. Please try again.','err');return;}
+        if(g==='razorpay'){
+          if(data.success&&data.razorpay_order_id){trackEvent('Checkout','RazorpayOpen',curPlan);_g3msg('','');openRazorpay(data);}
+          else _g3msg(data.error||'Could not start card payment.','err');
+          return;
+        }
+        if(g==='paypal'){
+          if(data.success&&data.approve_url){trackEvent('Checkout','PayPalRedirect',curPlan);window.location.replace(data.approve_url);}
+          else _g3msg(data.error||'Could not start PayPal checkout.','err');
+          return;
+        }
+        if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
+        else if(data.payment_url){trackEvent('Checkout','PhonePeRedirect',curPlan);window.location.replace(data.payment_url);}
+        else _g3msg(data.error||'Something went wrong. Please try again.','err');
+      })
+      .catch(function(err){if(box)box.style.pointerEvents='';_g3msg(_apiErrMsg(err),'err');});
+  }
+  // Open the Razorpay modal for an order created by razorpay_create_order, then verify
+  // the signature on OUR server before treating the payment as complete.
+  function openRazorpay(o){
+    if(typeof Razorpay==='undefined'){alert('The payment library did not load. Please refresh and try again.');return;}
+    var opts={
+      key:o.key_id,order_id:o.razorpay_order_id,amount:o.amount,currency:o.currency,
+      name:'CloakAI',description:(o.plan_name||'CloakAI license'),
+      prefill:{email:o.email||'',name:o.name||''},
+      theme:{color:'#00e676'},
+      handler:function(resp){
+        var vp={action:'razorpay_verify',order_id:o.order_id,razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature};
+        _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(vp))
+          .then(function(d){
+            if(d&&d.success){trackEvent('Checkout','RazorpaySuccess',curPlan);window.location.replace(window.location.origin+'/payment-result.html?order='+encodeURIComponent(o.order_id));}
+            else{alert((d&&d.error)||'We could not verify your payment. If you were charged, email support@cloakai.in with your payment id.');}
+          })
+          .catch(function(){alert('Payment verification could not reach our server. If you were charged, email support@cloakai.in.');});
+      },
+      modal:{ondismiss:function(){}}
+    };
+    try{var rzp=new Razorpay(opts);rzp.on('payment.failed',function(r){alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again or use a different card.'));});rzp.open();}
+    catch(e){alert('Could not open the payment window. Please try again.');}
+  }
+  // Buying opens the checkout form directly. Verify email (Google or OTP), then
+  // the gateway step (step 3) offers the region-appropriate payment buttons.
   function openPay(plan){
-    curPlan=plan;_verifiedEmail='';
-    resetGoogleCheckout();
     var m=PLANS[plan];if(!m)return;
+    curPlan=plan;_verifiedEmail='';_authMode='';_authPhone='';_gateway='';
+    resetGoogleCheckout();
     document.getElementById('pm-name').textContent=m.name;
-    document.getElementById('pm-price').innerHTML=m.price;
-    document.getElementById('pm-dur').textContent=m.period+' · '+m.rate;
-    document.getElementById('pm-msg').textContent='';_otpMsg('','');
+    _paintPayRegion();
+    document.getElementById('pm-msg').textContent='';_otpMsg('','');_g3msg('','');
     document.getElementById('pm-email').value='';document.getElementById('pm-phone').value='';document.getElementById('pm-otp').value='';
-    document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';
+    document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-step3').style.display='none';
     _resetOTPBtn();_resetPayBtn();_clearResendCooldown();
     openMo('pay-mo');setTimeout(function(){document.getElementById('pm-email').focus();},180);
     if(_topupKey)_pmMsg('Adding hours to your existing key '+_topupKey+'. Use the email it was bought with.','inf');
     trackEvent('Checkout','Open',plan);
   }
-  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
+  function resetToStep1(){_verifiedEmail='';_clearResendCooldown();document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';var s3=document.getElementById('pm-step3');if(s3)s3.style.display='none';document.getElementById('pm-msg').textContent='';_otpMsg('','');document.getElementById('pm-otp').value='';_resetOTPBtn();}
   function _resetOTPBtn(){document.getElementById('pm-otp-btn').disabled=false;document.getElementById('pm-otp-btxt').style.display='inline';document.getElementById('pm-otp-btxt').textContent='Send Verification Code';document.getElementById('pm-otp-spin').style.display='none';}
-  function _resetPayBtn(){document.getElementById('pm-btn').disabled=false;document.getElementById('pm-btxt').style.display='inline';document.getElementById('pm-btxt').textContent='Verify & Continue to Payment';document.getElementById('pm-spin').style.display='none';}
+  function _resetPayBtn(){document.getElementById('pm-btn').disabled=false;document.getElementById('pm-btxt').style.display='inline';document.getElementById('pm-btxt').textContent='Verify Email';document.getElementById('pm-spin').style.display='none';}
   function _pmMsg(text,cls){var el=document.getElementById('pm-msg');el.textContent=text;el.className='pm-msg'+(cls?' '+cls:'');}
   // Step-1 message target. sendOTP used to write to #pm-msg, which lives inside the
   // HIDDEN step 2, so any send failure was invisible and the modal just looked frozen.
@@ -1242,6 +1398,8 @@
     setTimeout(function(){document.getElementById('pm-otp').focus();},120);
     trackEvent('Checkout','OTPSent',curPlan);
   }
+  // Verifies the OTP only, then reveals the gateway step. The order is created
+  // when the buyer picks a gateway there.
   function doPay(){
     var otp=(document.getElementById('pm-otp').value||'').trim();
     if(!otp||otp.length!==6||!/^\d+$/.test(otp)){_pmMsg('Please enter the 6-digit code sent to your email.','err');return;}
@@ -1250,17 +1408,12 @@
     btn.disabled=true;btxt.style.display='none';spin.style.display='block';_pmMsg('Verifying...','inf');
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:_verifiedEmail,otp:otp,ajax:'1'}))
       .then(function(data){
-        if(!data.success){btn.disabled=false;btxt.style.display='inline';spin.style.display='none';_pmMsg(data.error||'Incorrect code. Please try again.','err');return;}
-        _pmMsg('Verified! Creating your order...','inf');trackEvent('Checkout','OTPVerified',curPlan);
-        var oparams={action:'create_order',email:_verifiedEmail,plan:curPlan,ajax:'1'};
-        if(_topupKey)oparams.topup_key=_topupKey;
-        return _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(oparams));
-      })
-      .then(function(data){
-        if(!data)return;
-        if(data.key){window.location.replace(window.location.origin+'/success.html?'+new URLSearchParams({key:data.key,plan:data.plan||curPlan,bypass:data.bypass?'1':'0'}));}
-        else if(data.payment_url){window.location.replace(data.payment_url);}
-        else{_resetPayBtn();_pmMsg(data.error||'Something went wrong. Please try again.','err');}
+        _resetPayBtn();
+        if(!data||!data.success){_pmMsg((data&&data.error)||'Incorrect code. Please try again.','err');return;}
+        trackEvent('Checkout','OTPVerified',curPlan);
+        _authMode='otp';_authPhone='';
+        _pmMsg('','');
+        showGatewayStep();
       })
       .catch(function(err){console.error('Payment error:',err);_resetPayBtn();_pmMsg(_apiErrMsg(err),'err');});
   }
@@ -1279,6 +1432,14 @@
     var q=new URLSearchParams(location.search);
     var t=(q.get('topup')||'').trim().toUpperCase();
     if(/^CLAI-[A-Z0-9-]{5,}$/.test(t)){_topupKey=t;history.replaceState(null,'',location.pathname+location.hash);}
+    // Detect region once and paint every price for it. India sees INR, everyone
+    // else sees USD (charged double). A ?region=in / ?region=intl override is
+    // honoured for testing and for anyone the timezone guess got wrong.
+    var forced=(q.get('region')||'').toLowerCase();
+    if(forced==='in'||forced==='intl'){_region=(forced==='intl')?'INTL':'IN';}
+    else{_region=_detectRegion();}
+    if(_isIntl())_gateway='razorpay';
+    renderPrices();
   })();
 </script>
 <button class="sup-fab" onclick="openSup()" aria-label="Support">
