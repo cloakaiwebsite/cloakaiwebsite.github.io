@@ -698,7 +698,9 @@
           })
           .catch(function(){ alert('Payment verification could not reach our server. If you were charged, email support@cloakai.in.'); });
       },
-      modal:{ondismiss:function(){}}
+      // Closed without paying: land on the payment status page (which cancels the
+      // pending order and sends the recovery email), matching the other gateways.
+      modal:{ondismiss:function(){ window.location.href=window.location.origin+'/payment-result.html?order='+encodeURIComponent(o.order_id)+'&cancelled=1'; }}
     };
     try{ var rzp=new Razorpay(opts); rzp.on('payment.failed',function(r){ alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again.')); }); rzp.open(); }
     catch(e){ alert('Could not open the payment window. Please try again.'); }

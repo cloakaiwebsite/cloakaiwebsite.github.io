@@ -1392,7 +1392,10 @@
           })
           .catch(function(){alert('Payment verification could not reach our server. If you were charged, email support@cloakai.in.');});
       },
-      modal:{ondismiss:function(){}}
+      // Closed without paying: land on the payment status page like PhonePe. That
+      // page calls cancel_order, which fails the pending order and sends the
+      // "your license is waiting" recovery email.
+      modal:{ondismiss:function(){window.location.href=window.location.origin+'/payment-result.html?order='+encodeURIComponent(o.order_id)+'&cancelled=1';}}
     };
     try{var rzp=new Razorpay(opts);rzp.on('payment.failed',function(r){alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again or use a different card.'));});rzp.open();}
     catch(e){alert('Could not open the payment window. Please try again.');}

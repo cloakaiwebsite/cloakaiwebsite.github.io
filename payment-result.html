@@ -413,9 +413,15 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
   // key. PhonePe and Razorpay do not use pp, so they fall straight to pollOrder().
   var _ppFlag  = new URLSearchParams(window.location.search).get('pp') || '';
   var _ppToken = new URLSearchParams(window.location.search).get('token') || '';
-  if (_ppFlag === 'cancel') {
+  var _cancelled = new URLSearchParams(window.location.search).get('cancelled') === '1';
+  if (_ppFlag === 'cancel' || _cancelled) {
+    // PayPal cancel or Razorpay dismiss (cancelled=1): tell the backend to fail the
+    // still-pending order and send the "your license is waiting" recovery email -
+    // the same thing PhonePe does on cancel. Fire-and-forget (idempotent server-side)
+    // so the page shows the state immediately without waiting on Apps Script.
+    if (orderId) { fetch(SCRIPT_URL + '?' + new URLSearchParams({ action: 'cancel_order', order_id: orderId, ajax: '1' })).catch(function(){}); }
     document.getElementById('error-message').textContent =
-      'Your PayPal payment was cancelled. Nothing has been charged - you can try again anytime.';
+      'Your payment was not completed. Nothing has been charged - you can try again anytime, and we have emailed you a link to finish your purchase.';
     showState('state-error');
   } else if (_ppFlag === '1' && _ppToken) {
     fetch(SCRIPT_URL + '?' + new URLSearchParams({ action: 'paypal_capture', order_id: orderId, paypal_order_id: _ppToken, ajax: '1' }))
