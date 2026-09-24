@@ -1378,12 +1378,14 @@
   // the signature on OUR server before treating the payment as complete.
   function openRazorpay(o){
     if(typeof Razorpay==='undefined'){alert('The payment library did not load. Please refresh and try again.');return;}
+    var settled=false;   // set once the buyer pays, so ondismiss can't fire a cancel after success
     var opts={
       key:o.key_id,order_id:o.razorpay_order_id,amount:o.amount,currency:o.currency,
       name:'CloakAI',description:(o.plan_name||'CloakAI license'),
       prefill:{email:o.email||'',name:o.name||''},
       theme:{color:'#00e676'},
       handler:function(resp){
+        settled=true;
         var vp={action:'razorpay_verify',order_id:o.order_id,razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature};
         _apiFetch(SCRIPT_URL+'?'+new URLSearchParams(vp))
           .then(function(d){
@@ -1395,7 +1397,7 @@
       // Closed without paying: land on the payment status page like PhonePe. That
       // page calls cancel_order, which fails the pending order and sends the
       // "your license is waiting" recovery email.
-      modal:{ondismiss:function(){window.location.href=window.location.origin+'/payment-result.html?order='+encodeURIComponent(o.order_id)+'&cancelled=1';}}
+      modal:{ondismiss:function(){if(settled)return;window.location.href=window.location.origin+'/payment-result.html?order='+encodeURIComponent(o.order_id)+'&cancelled=1';}}
     };
     try{var rzp=new Razorpay(opts);rzp.on('payment.failed',function(r){alert('Payment failed: '+((r&&r.error&&r.error.description)||'Please try again or use a different card.'));});rzp.open();}
     catch(e){alert('Could not open the payment window. Please try again.');}
