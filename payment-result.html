@@ -145,7 +145,7 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
   <div id="state-checking" class="state active">
     <div class="spinner-wrap"><div class="spinner"></div></div>
     <h1 style="color:#fff;">Confirming Payment</h1>
-    <p class="sub">Please wait while we verify your payment with PhonePe.<br>This usually takes a few seconds.</p>
+    <p class="sub">Please wait while we verify your payment.<br>This usually takes a few seconds.</p>
     <div class="poll-bar">
       <div class="poll-label">Checking payment status...</div>
       <div class="poll-track"><div class="poll-fill"></div></div>
@@ -415,14 +415,18 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
   var _ppToken = new URLSearchParams(window.location.search).get('token') || '';
   var _cancelled = new URLSearchParams(window.location.search).get('cancelled') === '1';
   if (_ppFlag === 'cancel' || _cancelled) {
-    // PayPal cancel or Razorpay dismiss (cancelled=1): tell the backend to fail the
-    // still-pending order and send the "your license is waiting" recovery email -
-    // the same thing PhonePe does on cancel. Fire-and-forget (idempotent server-side)
-    // so the page shows the state immediately without waiting on Apps Script.
-    if (orderId) { fetch(SCRIPT_URL + '?' + new URLSearchParams({ action: 'cancel_order', order_id: orderId, ajax: '1' })).catch(function(){}); }
-    document.getElementById('error-message').textContent =
-      'Your payment was not completed. Nothing has been charged - you can try again anytime, and we have emailed you a link to finish your purchase.';
-    showState('state-error');
+    // PayPal cancel or Razorpay dismiss (cancelled=1). Match the PhonePe cancel UX
+    // exactly. PhonePe's check_order SELF-HEALS a pending order to FAILED, so its poll
+    // shows the "checking" spinner and then a clean "Payment Failed" card. Razorpay and
+    // PayPal orders are NOT self-healed by check_order, so we first ask the backend to
+    // fail the still-pending order (which also sends the "your license is waiting"
+    // recovery email), THEN poll. The first poll then reads FAILED and shows the same
+    // "Payment Failed" state, instead of the alarming "Something Went Wrong" error card.
+    // We poll even if cancel_order cannot reach the server, so the page is never stuck.
+    // orderId is guaranteed here: the no-orderId guard above already returned.
+    fetch(SCRIPT_URL + '?' + new URLSearchParams({ action: 'cancel_order', order_id: orderId, ajax: '1' }))
+      .then(function(){ pollOrder(); })
+      .catch(function(){ pollOrder(); });
   } else if (_ppFlag === '1' && _ppToken) {
     fetch(SCRIPT_URL + '?' + new URLSearchParams({ action: 'paypal_capture', order_id: orderId, paypal_order_id: _ppToken, ajax: '1' }))
       .then(function(r){ return r.json(); })
