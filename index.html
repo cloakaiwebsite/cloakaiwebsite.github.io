@@ -1437,26 +1437,23 @@
     if(!email||!emailRe.test(email)){_otpMsg('Please enter a valid email address.','err');return;}
     if(!phone||phone.replace(/[^0-9]/g,'').length<10){_otpMsg('Please enter a valid 10-digit phone number.','err');return;}
     if(SCRIPT_URL.includes('REPLACE')){_otpMsg('Payment system not yet active. Email support@cloakai.in','err');return;}
-    var btn=document.getElementById('pm-otp-btn'),btxt=document.getElementById('pm-otp-btxt'),spin=document.getElementById('pm-otp-spin');
-    btn.disabled=true;btxt.style.display='none';spin.style.display='block';
-    _otpMsg('Sending code to '+email+'...','inf');
+    // Advance to code entry IMMEDIATELY and send in the background. Apps Script can
+    // be slow to RETURN even though the OTP email goes out in ~2s, so blocking here
+    // made the Send button spin through one or two codes. The user can now type the
+    // code the moment it lands, independent of when the response comes back. verify
+    // still needs the session, but that exists before the email is ever delivered.
+    _gotoOtpStep(email,'Sending your 6-digit code to '+email+'...');
     _apiFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,phone:phone,ajax:'1'}))
       .then(function(data){
-        btn.disabled=false;btxt.style.display='inline';spin.style.display='none';
-        if(!data.success){_otpMsg(data.error||'Could not send code. Please try again.','err');return;}
-        _otpMsg('','');
-        _gotoOtpStep(email,isResend?'New code sent to '+email:'');
+        if(!data){_pmMsg('If the code did not arrive, tap Resend code.','inf');return;}
+        if(!data.success){_pmMsg(data.error||'Could not send the code. Tap Resend code to try again.','err');return;}
+        _pmMsg('Code sent to '+email+'. Enter it below.','inf');
       })
       .catch(function(err){
+        // The email is sent server-side even if the browser never reads the reply
+        // (a slow Apps Script response or redirect hiccup). Keep them on code entry.
         console.error('[sendOTP] could not read send_otp response:',err);
-        btn.disabled=false;btxt.style.display='inline';spin.style.display='none';
-        // The OTP email is sent server-side even when the browser fails to read the
-        // reply (a transient network/redirect hiccup: the request reaches Apps Script
-        // and the mail goes out, but the response never lands). Rather than freeze on
-        // step 1, advance to code entry so a user who DID receive a code can still
-        // finish checkout. If nothing arrived, Resend is right there.
-        _otpMsg('','');
-        _gotoOtpStep(email,'If you received a 6-digit code by email, enter it below. If not, tap Resend code.');
+        _pmMsg('If you received a 6-digit code by email, enter it below. If not, tap Resend code.','inf');
       });
   }
   // Shared transition into the OTP step, used by BOTH the success path and the
