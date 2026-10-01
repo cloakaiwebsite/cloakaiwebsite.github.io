@@ -1277,7 +1277,7 @@
   // Tiles for the region as a two-column grid (no divider). The first is preselected
   // so Continue works immediately, and _selGateway tracks the current choice.
   function _gwList(ctx){
-    var list=_isIntl()?['paypal','razorpay']:['razorpay','phonepe'];
+    var list=_isIntl()?['razorpay','paypal']:['phonepe','razorpay'];
     _selGateway=list[0];
     return list.map(function(g,i){return _gwCard(g,ctx,i===0);}).join('');
   }

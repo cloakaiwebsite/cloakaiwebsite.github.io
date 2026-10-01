@@ -635,7 +635,7 @@
       +'</button>';
   }
   function renderTuGateways(){
-    var list=_tuIntl()?['paypal','razorpay']:['razorpay','phonepe'];
+    var list=_tuIntl()?['razorpay','paypal']:['phonepe','razorpay'];
     _tuSelGw=list[0];
     document.getElementById('tu-gateways').innerHTML=list.map(function(g,i){return _tuGwCard(g,i===0);}).join('<div class="tu-or"><span>OR</span></div>');
   }
