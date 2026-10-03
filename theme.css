@@ -166,3 +166,7 @@ body.blog .blog-card-thumb{border-bottom-color:rgba(0,0,0,.06);}
   #ck-consent .ck-btns button{flex:1}
   #ck-consent.has-buybar{bottom:76px}
 }
+
+/* Footer "Cookie settings" link (injected by layout.js) - themed, not default blue */
+.ck-set-link{color:#64748b;text-decoration:underline;cursor:pointer;font:inherit;}
+.ck-set-link:hover{color:#34D399;}

@@ -223,7 +223,7 @@ document.querySelectorAll('#mnav a').forEach(function(a){
     try{
       var f=document.querySelector('footer'); if(!f||f.querySelector('[data-ck-settings]')) return;
       var a=document.createElement('a'); a.href='#'; a.setAttribute('data-ck-settings','');
-      a.textContent='Cookie settings';
+      a.className='ck-set-link'; a.textContent='Cookie settings';
       a.addEventListener('click',function(e){ e.preventDefault(); window.cloakCookieSettings(); });
       f.appendChild(document.createTextNode(' · ')); f.appendChild(a);
     }catch(e){}
