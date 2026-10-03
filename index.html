@@ -652,6 +652,74 @@
 </div>
 <!-- FEATURES -->
 <style>
+/* ── Live overlay walkthrough (replica of the v16.0.5 app window) ── */
+.cw-stage{max-width:640px;margin:0 auto;}
+.cw-win{--g1:#00e676;--t1:#eafff0;--t2:#9ecfa6;--t3:#45714d;--bd:rgba(0,230,118,.14);--bd2:rgba(0,230,118,.32);
+  position:relative;background:#030e06;border:1px solid var(--bd2);border-radius:14px;overflow:hidden;
+  box-shadow:0 28px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,230,118,.05),0 0 60px rgba(0,230,118,.06);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--t1);}
+.cw-hdr{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:rgba(0,38,16,.98);}
+.cw-brand{display:flex;align-items:center;gap:7px;font-size:16px;font-weight:900;color:var(--g1);}
+.cw-brand svg{width:17px;height:17px;filter:drop-shadow(0 0 6px rgba(0,230,118,.4));}
+.cw-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(0,0,0,.35);border:1px solid var(--bd);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--t2);}
+.cw-dot{width:7px;height:7px;border-radius:50%;background:var(--t3);}
+.cw-dot.live{background:var(--g1);box-shadow:0 0 8px var(--g1);animation:cwPulse 1s infinite;}
+@keyframes cwPulse{50%{opacity:.4}}
+.cw-time{color:#ffd740;}
+.cw-sp{flex:1;}
+.cw-ver{font-size:10px;color:var(--t3);border:1px solid var(--bd);border-radius:5px;padding:2px 6px;}
+.cw-x{color:var(--t3);font-size:14px;cursor:default;}
+.cw-ctrl{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--bd);background:rgba(0,20,8,.5);}
+.cw-b{display:inline-flex;align-items:center;gap:5px;background:rgba(0,230,118,.06);border:1px solid var(--bd);border-radius:8px;padding:6px 9px;color:var(--t2);font-size:11.5px;font-weight:600;}
+.cw-b svg{width:13px;height:13px;}
+.cw-b.on{background:rgba(0,230,118,.14);border-color:var(--bd2);color:var(--g1);}
+.cw-b.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5),0 0 16px rgba(0,230,118,.4);border-color:var(--g1);color:var(--g1);transition:box-shadow .2s;}
+.cw-auto{display:inline-flex;align-items:center;gap:6px;color:var(--g1);font-size:11px;font-weight:800;}
+.cw-track{width:30px;height:16px;border-radius:10px;background:rgba(0,230,118,.25);position:relative;}
+.cw-thumb{position:absolute;top:2px;left:16px;width:12px;height:12px;border-radius:50%;background:var(--g1);}
+.cw-sep{width:1px;height:18px;background:var(--bd);}
+.cw-gap{flex:1;}
+.cw-q{padding:9px 14px;font-size:12.5px;color:var(--t2);border-bottom:1px solid var(--bd);min-height:36px;display:flex;align-items:center;}
+.cw-q.idle{color:var(--t3);font-style:italic;}
+.cw-q .cwcur{display:inline-block;width:2px;height:14px;background:var(--g1);margin-left:1px;animation:cwBlink 1s steps(1) infinite;vertical-align:middle;}
+@keyframes cwBlink{50%{opacity:0}}
+.cw-ans{padding:16px 18px;min-height:150px;font-size:13px;line-height:1.7;color:var(--t1);}
+.cw-ans.idle{color:var(--t3);font-style:italic;}
+.cw-star{color:#ffd740;margin-right:5px;}
+.cw-ans b{color:var(--g1);font-weight:700;}
+.cw-ans .cw-line{opacity:0;transform:translateY(7px);}
+.cw-ans.go .cw-line{animation:cwLine .45s ease forwards;}
+.cw-ans.go .cw-line:nth-child(1){animation-delay:.05s}.cw-ans.go .cw-line:nth-child(2){animation-delay:.35s}.cw-ans.go .cw-line:nth-child(3){animation-delay:.6s}.cw-ans.go .cw-line:nth-child(4){animation-delay:.85s}.cw-ans.go .cw-line:nth-child(5){animation-delay:1.1s}
+@keyframes cwLine{to{opacity:1;transform:none}}
+.cw-bul{display:flex;gap:7px;margin-top:5px;}
+.cw-bul>span:first-child{color:var(--g1);}
+.cw-hint{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 14px;font-size:10px;color:var(--t3);border-top:1px solid var(--bd);background:rgba(0,16,6,.6);}
+.cw-hint kbd{background:rgba(0,230,118,.08);border:1px solid var(--bd);border-radius:4px;padding:1px 5px;color:var(--t2);font-size:9.5px;}
+.cw-model{margin-left:auto;color:var(--g1);background:rgba(0,230,118,.08);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;}
+.cw-panel{position:absolute;top:0;right:0;bottom:0;width:66%;max-width:330px;background:rgba(2,12,6,.99);border-left:1px solid var(--bd2);transform:translateX(105%);transition:transform .4s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.5);}
+.cw-panel.open{transform:translateX(0);}
+.cw-ph{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--bd);font-weight:800;color:var(--g1);font-size:13px;}
+.cw-ph .cw-x{color:var(--t3);}
+.cw-pbody{padding:14px;overflow:hidden;flex:1;}
+.cw-box{background:rgba(0,230,118,.04);border:1px solid var(--bd);border-radius:10px;padding:11px 12px;margin-bottom:10px;}
+.cw-lbl{font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:7px;font-weight:700;}
+.cw-seg{display:flex;background:rgba(0,0,0,.3);border-radius:8px;padding:3px;gap:3px;}
+.cw-seg button{flex:1;border:none;background:none;color:var(--t2);font-size:11px;font-weight:700;padding:6px;border-radius:6px;font-family:inherit;}
+.cw-seg button.active{background:var(--g1);color:#032410;}
+.cw-up{width:100%;border:1px dashed var(--bd2);background:rgba(0,230,118,.05);color:var(--g1);border-radius:8px;padding:10px;font-size:12px;font-weight:700;font-family:inherit;transition:.2s;}
+.cw-up.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5);}
+.cw-upst{font-size:11px;color:var(--g1);margin-top:8px;display:none;align-items:center;gap:6px;}
+.cw-upst.show{display:flex;}
+.cw-urow{display:flex;align-items:center;gap:9px;}
+.cw-av{width:30px;height:30px;border-radius:8px;background:rgba(0,230,118,.12);display:flex;align-items:center;justify-content:center;color:var(--g1);}
+.cw-tp{display:none;}
+.cw-tp.show{display:block;animation:cwLine .4s ease both;}
+.cw-tp .cw-tq{font-size:11px;color:var(--t2);border-left:2px solid var(--bd2);padding-left:8px;margin-bottom:5px;}
+.cw-tp .cw-ta{font-size:11px;color:var(--t1);background:rgba(0,230,118,.04);border-radius:8px;padding:8px 10px;margin-bottom:12px;line-height:1.5;}
+.cw-cap{text-align:center;margin-top:16px;font-size:.9rem;color:#9fb2a8;min-height:22px;transition:color .2s;}
+.cw-cap b{color:#00e676;}
+@media(max-width:560px){.cw-ans{font-size:12px;}.cw-ctrl{gap:5px;padding:8px;}.cw-b{padding:5px 7px;font-size:10.5px;}}
+
 /* ── Invisibility section ── */
 .inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1140px;margin:0 auto;}
 .inv-card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px 20px;text-align:center;transition:border-color .2s,transform .2s;}
@@ -702,6 +770,108 @@
 @media(max-width:760px){.ai-wrap{flex-direction:column;text-align:center;padding:30px 22px;gap:24px;}.ai-feat{text-align:left;}.ai-body h2{font-size:1.6rem;}}
 @media(max-width:460px){.inv-grid{grid-template-columns:1fr;}}
 </style>
+
+<section class="reveal">
+  <div class="sh"><h2>See the Overlay in Action</h2><p>This is the real CloakAI window. Scroll in and watch a full session play out, question to answer to settings, all on its own.</p></div>
+  <div class="cw-stage">
+    <div class="cw-win" id="cwWin">
+      <div class="cw-hdr">
+        <span class="cw-brand"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="currentColor"/></svg>CloakAI</span>
+        <span class="cw-pill"><span class="cw-dot" id="cwDot"></span><span id="cwStatus">Ready</span></span>
+        <span class="cw-pill cw-time">&#8987; 2h 41m</span>
+        <span class="cw-sp"></span>
+        <span class="cw-ver">v16.0.5</span>
+        <span class="cw-x">&times;</span>
+      </div>
+      <div class="cw-ctrl">
+        <span class="cw-b on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></span>
+        <span class="cw-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+        <span class="cw-sep"></span>
+        <span class="cw-auto"><span class="cw-track"><span class="cw-thumb"></span></span>AUTO</span>
+        <span class="cw-sep"></span>
+        <span class="cw-b" id="cwScan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8,21 12,17 16,21"/></svg>Scan</span>
+        <span class="cw-b" id="cwChat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Chat</span>
+        <span class="cw-b" id="cwTrBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="7" y1="9" x2="15" y2="9"/><line x1="7" y1="13" x2="12" y2="13"/></svg></span>
+        <span class="cw-gap"></span>
+        <span class="cw-b" id="cwGear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+      </div>
+      <div class="cw-q idle" id="cwQ">Waiting for a question...</div>
+      <div class="cw-ans idle" id="cwA">Answer will appear here...</div>
+      <div class="cw-hint"><kbd>Alt</kbd> hold to answer <kbd>Ctrl+Shift+A</kbd> Scan <kbd>Ctrl+Shift+C</kbd> Chat <span class="cw-model">gpt-4o-mini</span></div>
+      <div class="cw-panel" id="cwSettings">
+        <div class="cw-ph"><span>Settings</span><span class="cw-x">&times;</span></div>
+        <div class="cw-pbody">
+          <div class="cw-box cw-urow"><span class="cw-av"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2L4 6v5c0 4.5 3.2 8.7 8 10 4.8-1.3 8-5.5 8-10V6l-8-4z"/><circle cx="12" cy="10" r="2.4"/><path d="M8 16.5c.6-2 2.1-3 4-3s3.4 1 4 3"/></svg></span><div><div style="font-size:12px;color:#eafff0;font-weight:700">rahul.s@email.com</div><div style="font-size:10.5px;color:#45714d">9 Hour Pack</div></div></div>
+          <div class="cw-box"><div class="cw-lbl">Listening to</div><div class="cw-seg"><button class="active">Meeting</button><button>You (testing)</button></div></div>
+          <div class="cw-box"><div class="cw-lbl">Your resume</div><button class="cw-up" id="cwUp">Upload resume (PDF)</button><div class="cw-upst" id="cwUpSt">&#10003; Rahul_Sharma_CV.pdf - profile ready</div></div>
+          <div class="cw-box"><div class="cw-lbl">Coding language</div><div style="font-size:12px;color:#9ecfa6">Auto-detect &#9662;</div></div>
+        </div>
+      </div>
+      <div class="cw-panel" id="cwTrans">
+        <div class="cw-ph"><span>Transcript</span><span class="cw-x">&times;</span></div>
+        <div class="cw-pbody"><div class="cw-tp" id="cwTp"><div class="cw-tq">Q: Can you explain the difference between a process and a thread?</div><div class="cw-ta">A process is an independent program with its own memory space; a thread runs inside a process and shares its memory. Threads are cheaper to create, but one crashing can take down the whole process.</div></div></div>
+      </div>
+    </div>
+    <div class="cw-cap" id="cwCap">Scroll in to play the walkthrough</div>
+  </div>
+</section>
+<script>
+(function(){
+  var win=document.getElementById('cwWin'); if(!win) return;
+  var Q="Can you explain the difference between a process and a thread?";
+  var ANS='<div class="cw-line"><span class="cw-star">★</span>So basically, a <b>process</b> is an independent program with its own memory space, while a <b>thread</b> is a lighter unit that runs <i>inside</i> a process and shares its memory.</div>'
+    +'<div class="cw-line" style="margin-top:10px"><b>Key differences</b></div>'
+    +'<div class="cw-line cw-bul"><span>•</span><span><b>Memory</b> - processes are isolated; threads share the parent heap.</span></div>'
+    +'<div class="cw-line cw-bul"><span>•</span><span><b>Overhead</b> - spawning a thread is far cheaper than a new process.</span></div>'
+    +'<div class="cw-line cw-bul"><span>•</span><span><b>Crash safety</b> - one thread failing can bring down the whole process.</span></div>';
+  var $=function(id){return document.getElementById(id);};
+  var timers=[], playing=false, inView=false;
+  function T(fn,ms){var t=setTimeout(fn,ms);timers.push(t);return t;}
+  function status(txt,live){$('cwStatus').textContent=txt;$('cwDot').className='cw-dot'+(live?' live':'');}
+  function cap(html){$('cwCap').innerHTML=html;}
+  function reset(){
+    timers.forEach(clearTimeout);timers=[];
+    $('cwQ').className='cw-q idle';$('cwQ').textContent='Waiting for a question...';
+    $('cwA').className='cw-ans idle';$('cwA').textContent='Answer will appear here...';
+    status('Ready',false);
+    $('cwSettings').classList.remove('open');$('cwTrans').classList.remove('open');
+    $('cwGear').classList.remove('hot');$('cwTrBtn').classList.remove('hot');$('cwUp').classList.remove('hot');
+    $('cwUpSt').classList.remove('show');$('cwTp').classList.remove('show');
+  }
+  function typeQ(txt,done){
+    $('cwQ').className='cw-q';var i=0;
+    (function step(){
+      if(i<=txt.length){$('cwQ').innerHTML=txt.slice(0,i)+'<span class="cwcur"></span>';i++;T(step,38);}
+      else{$('cwQ').innerHTML=txt;done&&done();}
+    })();
+  }
+  function play(){
+    if(playing)return; playing=true; reset();
+    status('Listening...',true); cap('A question comes in from the caller');
+    T(function(){typeQ(Q,function(){
+      status('Thinking...',true); cap('CloakAI is <b>generating your answer</b>');
+      T(function(){
+        $('cwA').className='cw-ans';$('cwA').innerHTML=ANS;
+        void $('cwA').offsetWidth; $('cwA').classList.add('go');
+        status('Answered',false); cap('The answer appears, <b>only you can see it</b>');
+      },1100);
+    });},500);
+    T(function(){$('cwGear').classList.add('hot');cap('Open <b>Settings</b>');},5200);
+    T(function(){$('cwGear').classList.remove('hot');$('cwSettings').classList.add('open');},5900);
+    T(function(){$('cwUp').classList.add('hot');cap('Upload your <b>resume</b> so answers sound like you');},7000);
+    T(function(){$('cwUp').classList.remove('hot');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');},7700);
+    T(function(){$('cwSettings').classList.remove('open');},9300);
+    T(function(){$('cwTrBtn').classList.add('hot');cap('Every Q&amp;A is saved to the <b>Transcript</b>');},9900);
+    T(function(){$('cwTrBtn').classList.remove('hot');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},10500);
+    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},12900);
+    T(function(){playing=false; if(inView) play();},14300);
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){inView=e.isIntersecting; if(inView&&!playing) play();});
+  },{threshold:.4});
+  io.observe(win);
+})();
+</script>
 
 <section class="reveal">
   <div class="sh"><h2>Truly Invisible, Four Ways</h2><p>Not just a window you hope nobody sees. CloakAI is invisible at the level that actually matters.</p></div>
