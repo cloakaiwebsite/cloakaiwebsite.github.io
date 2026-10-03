@@ -71,11 +71,10 @@
     }
     /* Hero */
     .hero{text-align:center;padding:80px 20px 60px;}
-    .badge{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px 14px;max-width:660px;background:linear-gradient(180deg,rgba(14,26,19,.92),rgba(8,16,11,.92));border:1px solid rgba(46,204,113,.4);color:#d7efe4;padding:10px 22px;border-radius:16px;font-size:.84rem;font-weight:600;letter-spacing:.3px;margin-bottom:22px;box-shadow:0 12px 34px rgba(0,230,118,.1);animation:badgePulse 3s ease-in-out infinite;}
-    .badge .b-hot{color:#00e676;font-weight:800;display:inline-flex;align-items:center;gap:6px;}
+    .badge{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;background:rgba(46,204,113,.09);border:1px solid rgba(46,204,113,.3);color:var(--gg);padding:7px 18px;border-radius:30px;font-size:.82rem;font-weight:600;letter-spacing:.3px;margin-bottom:22px;animation:badgePulse 2.8s ease-in-out infinite;}
     .badge .b-item{display:inline-flex;align-items:center;gap:5px;}
-    .badge .b-sep{opacity:.3;}
-    @keyframes badgePulse{0%,100%{box-shadow:0 12px 34px rgba(0,230,118,.08);}50%{box-shadow:0 12px 40px rgba(0,230,118,.24);}}
+    .badge .b-sep{opacity:.35;}
+    @keyframes badgePulse{0%,100%{box-shadow:0 0 0 rgba(46,204,113,0);}50%{box-shadow:0 0 14px rgba(46,204,113,.28);}}
     .glitch-wrap{display:inline-block;position:relative;max-width:100%;}
     .glitch{position:relative;color:#fff;font-size:5rem;font-weight:800;word-wrap:break-word;letter-spacing:-2px;}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);}
@@ -506,7 +505,13 @@
     .fi-r2{right:9%;top:44%;animation-delay:1.5s}
     .fi-r3{right:2%;top:73%;animation-delay:.85s}
     @keyframes fiFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
-    @media(max-width:1080px){.float-icons{display:none;}}
+    @media(max-width:1080px){
+      /* On smaller screens the side-floating icons become a horizontal strip at the
+         top of the hero, where there is room above the badge. */
+      .float-icons{position:static;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0 auto 20px;max-width:360px;}
+      .fi{position:static!important;left:auto!important;right:auto!important;top:auto!important;width:46px;height:46px;border-radius:13px;animation:none;filter:none!important;opacity:1!important;}
+      .fi svg{width:30px;height:30px;}
+    }
   </style>
   <div class="float-icons" aria-hidden="true">
     <div class="fi fi-l1"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg></div>
@@ -517,10 +522,7 @@
     <div class="fi fi-r3 b2"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg></div>
   </div>
   <div class="badge">
-    <span class="b-hot">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 2c1 3-1 4-1 6a3 3 0 006 0c2 2 3 4.5 3 7a8 8 0 11-13.8-5.5C8 12 9 10 9 8c0-2.5 1.5-4.5 3-6z"/></svg>
-      India's #1 viral interview AI
-    </span>
+    <span class="b-item">🇮🇳 India's #1 AI Meeting &amp; Call Assistant</span>
     <span class="b-sep">·</span>
     <span class="b-item">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
@@ -531,11 +533,6 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
       No card needed
     </span>
-    <span class="b-sep">·</span>
-    <span class="b-item">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M5 4H3v2a3 3 0 003 3"/><path d="M19 4h2v2a3 3 0 01-3 3"/></svg>
-      Candidates landing jobs in weeks
-    </span>
   </div>
   <div class="glitch-wrap">
     <h1 class="glitch" data-text="The AI Only You Can See">The AI Only You Can See</h1>
@@ -543,11 +540,6 @@
   <p class="hero-sub"><span id="tt"></span><span class="typing-cursor"></span></p>
   <div class="pills">
     <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Join 2,000+ job seekers</div>
-    <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg>Zoom</div>
-    <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#5059C9"/><circle cx="43" cy="20" r="7" fill="#7B83EB"/><rect x="33" y="28" width="22" height="18" rx="4.5" fill="#7B83EB"/><circle cx="24" cy="20" r="10" fill="white"/><rect x="10" y="31" width="28" height="20" rx="5.5" fill="white"/></svg>Teams</div>
-    <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="white"/><path d="M8 22C8 18.7 10.7 16 14 16H27V32H8V22Z" fill="#00832D"/><path d="M27 16H38C41.3 16 44 18.7 44 22V32H27V16Z" fill="#0066DA"/><path d="M8 32H27V48H14C10.7 48 8 45.3 8 42V32Z" fill="#E94235"/><path d="M27 32H44V42C44 45.3 41.3 48 38 48H27V32Z" fill="#00AC47"/><path d="M44 26L56 20V44L44 38V26Z" fill="#00832D"/><rect x="25" y="14" width="4" height="36" fill="white"/><rect x="6" y="30" width="40" height="4" fill="white"/></svg>Google Meet</div>
-    <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#2EC866"/><path d="M21 16V48M21 32H43M43 16V48" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>HackerRank</div>
-    <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#1B1F36"/><path d="M22 20L10 32L22 44" stroke="#FF6B35" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 20L54 32L42 44" stroke="#FF6B35" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M37 14L27 50" stroke="#FF6B35" stroke-width="6" stroke-linecap="round"/></svg>CoderPad</div>
     <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg> Hidden from all screen recorders</div>
     <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gg)"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.551H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg> Windows 10 &amp; 11 </div>
   </div>
@@ -585,193 +577,6 @@
 </section>
 <!-- DEMO (moved up - users see proof before reading features) -->
 <section id="demo" class="reveal">
-  <div class="sh"><h2>See CloakAI in Action</h2><p>Watch it stay completely invisible while delivering instant answers. This is what you see. Everyone else sees nothing.</p></div>
-  <div class="demo-wrap">
-    <div class="demo-vid">
-      <button class="yt-facade" id="yt-facade" aria-label="Play the CloakAI demo video">
-        <img src="https://i.ytimg.com/vi/eMxxfDCACKk/maxresdefault.jpg" alt="CloakAI demo: the overlay stays invisible during a screen share" width="1280" height="720" loading="lazy" decoding="async" onerror="this.src='https://i.ytimg.com/vi/eMxxfDCACKk/hqdefault.jpg';">
-        <span class="yt-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-      </button>
-    </div>
-    <div class="demo-cap"><span>Highlights:</span> Transparent overlay · Ctrl+Shift+H toggle · Auto-listens · Instant AI responses · Zero screenshare visibility</div>
-    <div style="margin-top:22px;text-align:center;"><a href="#pricing" class="btn">Get Access Now</a></div>
-  </div>
-</section>
-<script>
-  // Swap the facade for the real player on click. autoplay=1 means the user's click
-  // still starts playback, so it is one tap exactly as before. Nothing from YouTube
-  // is requested until this runs.
-  (function(){
-    var f=document.getElementById('yt-facade');
-    if(!f)return;
-    f.addEventListener('click',function(){
-      var i=document.createElement('iframe');
-      i.src='https://www.youtube.com/embed/eMxxfDCACKk?si=2Y_29Tx7D4Q-Dwt7&autoplay=1';
-      i.title='CloakAI Demo';
-      i.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-      i.setAttribute('allowfullscreen','');
-      f.parentNode.replaceChild(i,f);
-      if(window.trackEvent)trackEvent('Demo','Play','Homepage');
-    });
-  })();
-</script>
-<!-- COMPANY LOGOS -->
-<div class="company-strip">
-  <div class="company-strip-inner">
-    <p class="company-strip-label">Used for 3,800+ calls at</p>
-    <div class="company-logos">
-      <div style="display:flex;align-items:center;"><svg width="18" height="22" viewBox="0 0 814 1000" fill="#e0e0e0" style="opacity:.3"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.3-164-39.3c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 71 0 130.5 46.4 174.9 46.4 42.9 0 110.1-49 192.3-49 31 0 113.4 2.6 172.4 80.1zm-234.2-191.1c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"/></svg></div>
-      <div style="display:flex;align-items:center;"><svg width="20" height="20" viewBox="0 0 21 21" style="opacity:.3"><rect x="0" y="0" width="10" height="10" fill="#F25022"/><rect x="11" y="0" width="10" height="10" fill="#7FBA00"/><rect x="0" y="11" width="10" height="10" fill="#00A4EF"/><rect x="11" y="11" width="10" height="10" fill="#FFB900"/></svg></div>
-      <div style="display:flex;align-items:center;"><svg width="22" height="22" viewBox="0 0 24 24" style="opacity:.3"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
-      <div style="display:flex;align-items:center;"><svg width="50" height="16" viewBox="0 0 176 53" fill="#e0e0e0" style="opacity:.3"><path d="M97.5 37.5c-9.2 6.8-22.5 10.4-34 10.4-16.1 0-30.6-6-41.5-15.9-.9-.8-.1-1.8.9-1.2 11.8 6.9 26.4 11 41.5 11 10.2 0 21.4-2.1 31.7-6.5 1.6-.7 2.9 1 1.4 2.2zm3.8-4.4c-1.2-1.5-7.8-.7-10.8-.4-.9.1-1-.7-.2-1.3 5.3-3.7 13.9-2.6 14.9-1.4 1 1.3-.3 9.9-5.2 14.1-.8.6-1.5.3-1.1-.5 1.1-2.8 3.6-9 2.4-10.5z"/><path d="M89.5 3C87 0 84.2 0 84.2 0c0 0 0 0 0 0L62 3.4c-.9.1-1.1.9-.4 1.3 0 0 7.1 5.7 8.6 7.3L89.5 3zM56 36.4V6.5c0-1.8-1.5-3-3.2-2.6L34.1 7.3c-1.6.5-2.6 2-2.6 3.6v30.6c0 1.5 1.1 2.7 2.6 2.7h5.5c1.5 0 2.7-1.2 2.7-2.7V14.3l10.3-3.2v25c0 1.5 1.2 2.7 2.7 2.7h5.5c1.4 0 2.4-1.1 2.4-2.4z"/></svg></div>
-      <div style="display:flex;align-items:center;"><svg width="32" height="20" viewBox="0 0 256 130" fill="#e0e0e0" style="opacity:.3"><path d="M128 127.9L104.3 32c0 0-2.3-8.8-11.5-8.8H12.5c0 0 8.8 36.6 43.9 50.8C58.2 74.9 60.8 79 60.8 79L128 127.9zM128 127.9L151.7 32c0 0 2.3-8.8 11.5-8.8h80.3c0 0-8.8 36.6-43.9 50.8-1.8.9-4.4 5-4.4 5L128 127.9zM54.6 23.2c0 0-21.6 2.7-28.3-12.1h203.4c-6.7 14.8-28.3 12.1-28.3 12.1H54.6z"/></svg></div>
-      <div style="display:flex;align-items:center;"><svg width="50" height="20" viewBox="0 0 399 90" fill="#e0e0e0" style="opacity:.3"><path d="M20.2 45C20.2 34.2 25.5 26 31.8 26c5 0 8.2 2.8 12.3 9.5L72.6 87H100L67 35C62 27.3 52.6 18.7 37.2 18.7c-5.5 0-10.5 1.5-15 4.3-4.2 2.7-6.7 13-6.7 22.6v.4zM42.3 45c0 16.2-9.2 30-23.8 43.8h31c10.9-11.2 18-24.9 18-43.8H42.3zM78.1 87H105L78.1 45H51.2zM132.3 18.7c-16.2 0-26 9.1-31.1 17.2L70 87H97.5l25.6-54.4c4.1-6.7 7.3-9.5 12.3-9.5 6.6 0 12.2 8.8 12.2 20.2h-30.9v17.2H147V45.5C147 27.9 140.4 18.7 132.3 18.7z"/></svg></div>
-      <span style="font-size:.82rem;font-weight:700;color:#e0e0e0;opacity:.28;letter-spacing:.4px;">WIPRO</span>
-      <span style="font-size:.82rem;font-weight:700;color:#e0e0e0;opacity:.28;">TCS</span>
-    </div>
-  </div>
-</div>
-<!-- HOW IT WORKS -->
-<section class="reveal">
-  <div class="sh"><h2>Up and Running in 3 Minutes</h2><p>From payment to active overlay, faster than a cup of chai.</p></div>
-  <div class="steps">
-    <div class="step"><div class="step-ico">💳</div><h4>Choose a Plan</h4><p>Pick a plan below, enter your email, and complete payment securely via PhonePe, Razorpay, or PayPal.</p></div>
-    <div class="step"><div class="step-ico">📧</div><h4>Get Your Key</h4><p>Your license key is emailed automatically within seconds of payment confirmation.</p></div>
-    <div class="step"><div class="step-ico">🔓</div><h4>Download & Activate</h4><p>Open CloakAI on your Windows or Mac and enter the key. Active in under a minute.</p></div>
-    <div class="step"><div class="step-ico">🚀</div><h4>Speak Confidently</h4><p>Real-time answers, only you can see them. Walk into every call prepared.</p></div>
-  </div>
-</section>
-<!-- TRUST -->
-<div class="trust-bar reveal">
-  <div class="trust-item"><div class="trust-num">2,000+</div><div class="trust-label">Users</div></div>
-  <div class="trust-item"><div class="trust-num">5,000+</div><div class="trust-label">Interviews &amp; Calls</div></div>
-  <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Early Rating</div></div>
-  <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
-  <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
-  <div class="trust-item"><div class="trust-num">24h</div><div class="trust-label">Support Response</div></div>
-</div>
-<!-- FEATURES -->
-<style>
-/* ── Live overlay walkthrough (replica of the v16.0.5 app window) ── */
-.cw-stage{max-width:640px;margin:0 auto;}
-.cw-win{--g1:#00e676;--t1:#eafff0;--t2:#9ecfa6;--t3:#45714d;--bd:rgba(0,230,118,.14);--bd2:rgba(0,230,118,.32);
-  position:relative;background:#030e06;border:1px solid var(--bd2);border-radius:14px;overflow:hidden;
-  box-shadow:0 28px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,230,118,.05),0 0 60px rgba(0,230,118,.06);
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--t1);}
-.cw-hdr{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:rgba(0,38,16,.98);}
-.cw-brand{display:flex;align-items:center;gap:7px;font-size:16px;font-weight:900;color:var(--g1);}
-.cw-brand svg{width:17px;height:17px;filter:drop-shadow(0 0 6px rgba(0,230,118,.4));}
-.cw-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(0,0,0,.35);border:1px solid var(--bd);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--t2);}
-.cw-dot{width:7px;height:7px;border-radius:50%;background:var(--t3);}
-.cw-dot.live{background:var(--g1);box-shadow:0 0 8px var(--g1);animation:cwPulse 1s infinite;}
-@keyframes cwPulse{50%{opacity:.4}}
-.cw-time{color:#ffd740;}
-.cw-sp{flex:1;}
-.cw-ver{font-size:10px;color:var(--t3);border:1px solid var(--bd);border-radius:5px;padding:2px 6px;}
-.cw-x{color:var(--t3);font-size:14px;cursor:default;}
-.cw-ctrl{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--bd);background:rgba(0,20,8,.5);}
-.cw-b{display:inline-flex;align-items:center;gap:5px;background:rgba(0,230,118,.06);border:1px solid var(--bd);border-radius:8px;padding:6px 9px;color:var(--t2);font-size:11.5px;font-weight:600;}
-.cw-b svg{width:13px;height:13px;}
-.cw-b.on{background:rgba(0,230,118,.14);border-color:var(--bd2);color:var(--g1);}
-.cw-b.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5),0 0 16px rgba(0,230,118,.4);border-color:var(--g1);color:var(--g1);transition:box-shadow .2s;}
-.cw-auto{display:inline-flex;align-items:center;gap:6px;color:var(--g1);font-size:11px;font-weight:800;}
-.cw-track{width:30px;height:16px;border-radius:10px;background:rgba(0,230,118,.25);position:relative;}
-.cw-thumb{position:absolute;top:2px;left:16px;width:12px;height:12px;border-radius:50%;background:var(--g1);}
-.cw-sep{width:1px;height:18px;background:var(--bd);}
-.cw-gap{flex:1;}
-.cw-q{padding:9px 14px;font-size:12.5px;color:var(--t2);border-bottom:1px solid var(--bd);min-height:36px;display:flex;align-items:center;}
-.cw-q.idle{color:var(--t3);font-style:italic;}
-.cw-q .cwcur{display:inline-block;width:2px;height:14px;background:var(--g1);margin-left:1px;animation:cwBlink 1s steps(1) infinite;vertical-align:middle;}
-@keyframes cwBlink{50%{opacity:0}}
-.cw-ans{padding:16px 18px;min-height:150px;font-size:13px;line-height:1.7;color:var(--t1);}
-.cw-ans.idle{color:var(--t3);font-style:italic;}
-.cw-star{color:#ffd740;margin-right:5px;}
-.cw-ans b{color:var(--g1);font-weight:700;}
-.cw-ans .cw-line{opacity:0;transform:translateY(7px);}
-.cw-ans.go .cw-line{animation:cwLine .45s ease forwards;}
-.cw-ans.go .cw-line:nth-child(1){animation-delay:.05s}.cw-ans.go .cw-line:nth-child(2){animation-delay:.35s}.cw-ans.go .cw-line:nth-child(3){animation-delay:.6s}.cw-ans.go .cw-line:nth-child(4){animation-delay:.85s}.cw-ans.go .cw-line:nth-child(5){animation-delay:1.1s}
-@keyframes cwLine{to{opacity:1;transform:none}}
-.cw-bul{display:flex;gap:7px;margin-top:5px;}
-.cw-bul>span:first-child{color:var(--g1);}
-.cw-hint{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 14px;font-size:10px;color:var(--t3);border-top:1px solid var(--bd);background:rgba(0,16,6,.6);}
-.cw-hint kbd{background:rgba(0,230,118,.08);border:1px solid var(--bd);border-radius:4px;padding:1px 5px;color:var(--t2);font-size:9.5px;}
-.cw-model{margin-left:auto;color:var(--g1);background:rgba(0,230,118,.08);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;}
-.cw-panel{position:absolute;top:0;right:0;bottom:0;width:66%;max-width:330px;background:rgba(2,12,6,.99);border-left:1px solid var(--bd2);transform:translateX(105%);transition:transform .4s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.5);}
-.cw-panel.open{transform:translateX(0);}
-.cw-ph{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--bd);font-weight:800;color:var(--g1);font-size:13px;}
-.cw-ph .cw-x{color:var(--t3);}
-.cw-pbody{padding:14px;overflow:hidden;flex:1;}
-.cw-box{background:rgba(0,230,118,.04);border:1px solid var(--bd);border-radius:10px;padding:11px 12px;margin-bottom:10px;}
-.cw-lbl{font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:7px;font-weight:700;}
-.cw-seg{display:flex;background:rgba(0,0,0,.3);border-radius:8px;padding:3px;gap:3px;}
-.cw-seg button{flex:1;border:none;background:none;color:var(--t2);font-size:11px;font-weight:700;padding:6px;border-radius:6px;font-family:inherit;}
-.cw-seg button.active{background:var(--g1);color:#032410;}
-.cw-up{width:100%;border:1px dashed var(--bd2);background:rgba(0,230,118,.05);color:var(--g1);border-radius:8px;padding:10px;font-size:12px;font-weight:700;font-family:inherit;transition:.2s;}
-.cw-up.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5);}
-.cw-upst{font-size:11px;color:var(--g1);margin-top:8px;display:none;align-items:center;gap:6px;}
-.cw-upst.show{display:flex;}
-.cw-urow{display:flex;align-items:center;gap:9px;}
-.cw-av{width:30px;height:30px;border-radius:8px;background:rgba(0,230,118,.12);display:flex;align-items:center;justify-content:center;color:var(--g1);}
-.cw-tp{display:none;}
-.cw-tp.show{display:block;animation:cwLine .4s ease both;}
-.cw-tp .cw-tq{font-size:11px;color:var(--t2);border-left:2px solid var(--bd2);padding-left:8px;margin-bottom:5px;}
-.cw-tp .cw-ta{font-size:11px;color:var(--t1);background:rgba(0,230,118,.04);border-radius:8px;padding:8px 10px;margin-bottom:12px;line-height:1.5;}
-.cw-cap{text-align:center;margin-top:16px;font-size:.9rem;color:#9fb2a8;min-height:22px;transition:color .2s;}
-.cw-cap b{color:#00e676;}
-@media(max-width:560px){.cw-ans{font-size:12px;}.cw-ctrl{gap:5px;padding:8px;}.cw-b{padding:5px 7px;font-size:10.5px;}}
-
-/* ── Invisibility section ── */
-.inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1140px;margin:0 auto;}
-.inv-card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px 20px;text-align:center;transition:border-color .2s,transform .2s;}
-.inv-card:hover{border-color:rgba(0,230,118,.45);transform:translateY(-3px);}
-.inv-card h3{font-size:1.02rem;font-weight:800;color:#fff;margin:16px 0 8px;}
-.inv-card p{font-size:.85rem;color:#9fb2a8;line-height:1.6;margin:0;}
-.inv-ill{height:96px;border-radius:12px;background:#060d09;border:1px solid rgba(0,230,118,.14);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.inv-mon{width:74px;height:50px;border:2px solid rgba(0,230,118,.5);border-radius:6px;position:relative;overflow:hidden;background:rgba(0,230,118,.05);}
-.inv-ghost{position:absolute;right:7px;bottom:7px;width:28px;height:17px;border-radius:4px;background:rgba(0,230,118,.6);animation:invGhost 3s ease-in-out infinite;}
-.inv-scan{position:absolute;left:0;right:0;height:10px;top:-10px;background:linear-gradient(180deg,transparent,rgba(0,230,118,.55),transparent);animation:invScan 2.4s linear infinite;}
-.inv-rec{position:absolute;top:10px;right:14px;font-size:.5rem;font-weight:800;letter-spacing:.5px;color:#ff5a5a;display:inline-flex;align-items:center;gap:4px;}
-.inv-rec::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff5a5a;animation:invBlink 1s steps(1) infinite;}
-@keyframes invScan{0%{top:-10px}100%{top:52px}}
-@keyframes invGhost{0%,25%{opacity:.8}45%,70%{opacity:0}100%{opacity:.8}}
-@keyframes invBlink{50%{opacity:.25}}
-.inv-tm{width:86px;display:flex;flex-direction:column;gap:5px;position:relative;}
-.inv-tm .inv-row{height:11px;border-radius:3px;background:rgba(255,255,255,.1);position:relative;}
-.inv-tm .inv-row.r2{background:rgba(0,230,118,.14);}
-.inv-tm .inv-row.r2::after{content:'CA Runtime';position:absolute;left:6px;top:0;font-size:.42rem;color:#4b6b5a;line-height:11px;letter-spacing:.2px;}
-.inv-tm-sweep{position:absolute;left:0;width:100%;height:11px;background:linear-gradient(90deg,transparent,rgba(0,230,118,.32),transparent);animation:invSweep 2.8s ease-in-out infinite;}
-@keyframes invSweep{0%{top:0;opacity:0}12%{opacity:1}50%{top:32px;opacity:1}75%{top:48px;opacity:0}100%{top:48px;opacity:0}}
-.inv-tabs{display:flex;gap:9px;}
-.inv-tile{width:22px;height:30px;border-radius:5px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);}
-.inv-tile.ghost{background:rgba(0,230,118,.05);border:1px dashed rgba(0,230,118,.35);opacity:.5;}
-.inv-tile.t1{animation:invT1 3s ease-in-out infinite;}
-.inv-tile.t3{animation:invT3 3s ease-in-out infinite;}
-@keyframes invT1{0%,18%{border-color:#00e676;box-shadow:0 0 10px rgba(0,230,118,.55)}32%,100%{border-color:rgba(255,255,255,.12);box-shadow:none}}
-@keyframes invT3{0%,48%{border-color:rgba(255,255,255,.12);box-shadow:none}58%,76%{border-color:#00e676;box-shadow:0 0 10px rgba(0,230,118,.55)}90%,100%{border-color:rgba(255,255,255,.12);box-shadow:none}}
-.inv-cur{position:relative;width:84px;height:58px;}
-.inv-cur .inv-dot{position:absolute;color:#00e676;animation:invCur 4.4s ease-in-out infinite;}
-.inv-cur .inv-det{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border:2px solid rgba(0,230,118,.5);border-radius:50%;animation:invPulse 1.8s ease-out infinite;}
-@keyframes invCur{0%{left:2px;top:4px}25%{left:60px;top:12px}50%{left:28px;top:38px}75%{left:66px;top:32px}100%{left:2px;top:4px}}
-@keyframes invPulse{0%{transform:scale(.6);opacity:.85}100%{transform:scale(2.2);opacity:0}}
-/* ── Powered by OpenAI section ── */
-.ai-wrap{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:40px;background:radial-gradient(120% 140% at 0% 0%,rgba(0,230,118,.08),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(0,230,118,.22);border-radius:22px;padding:36px 40px;}
-.ai-logo{flex-shrink:0;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(0,230,118,.14),transparent 70%);position:relative;}
-.ai-logo::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,230,118,.3);animation:aiRing 3s ease-in-out infinite;}
-.ai-logo svg{width:70px;height:70px;color:#e8f0ec;}
-@keyframes aiRing{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.08);opacity:1}}
-.ai-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#00e676;margin-bottom:6px;}
-.ai-body h2{font-size:1.9rem;margin:0 0 18px;line-height:1.15;}
-.ai-feats{display:flex;flex-direction:column;gap:16px;}
-.ai-feat{display:flex;gap:14px;align-items:flex-start;}
-.ai-feat-ic{flex-shrink:0;width:40px;height:40px;border-radius:11px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.32);display:flex;align-items:center;justify-content:center;color:#00e676;}
-.ai-feat h4{margin:0 0 3px;font-size:1rem;color:#fff;font-weight:800;}
-.ai-feat p{margin:0;font-size:.88rem;color:#9fb2a8;line-height:1.6;}
-@media(max-width:860px){.inv-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:760px){.ai-wrap{flex-direction:column;text-align:center;padding:30px 22px;gap:24px;}.ai-feat{text-align:left;}.ai-body h2{font-size:1.6rem;}}
-@media(max-width:460px){.inv-grid{grid-template-columns:1fr;}}
-</style>
-
-<section class="reveal">
   <div class="sh"><h2>See the Overlay in Action</h2><p>This is the real CloakAI window. Scroll in and watch a full session play out, question to answer to settings, all on its own.</p></div>
   <div class="cw-stage">
     <div class="cw-win" id="cwWin">
@@ -784,19 +589,20 @@
         <span class="cw-x">&times;</span>
       </div>
       <div class="cw-ctrl">
-        <span class="cw-b on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></span>
-        <span class="cw-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+        <span class="cw-b off" title="Mic off in meeting mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></span>
+        <span class="cw-b on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
         <span class="cw-sep"></span>
         <span class="cw-auto"><span class="cw-track"><span class="cw-thumb"></span></span>AUTO</span>
         <span class="cw-sep"></span>
         <span class="cw-b" id="cwScan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8,21 12,17 16,21"/></svg>Scan</span>
         <span class="cw-b" id="cwChat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Chat</span>
+        <span class="cw-b" id="cwDiag" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="8" height="6" rx="1.5"/><rect x="13.5" y="4" width="8" height="6" rx="1.5"/><rect x="8" y="15" width="8" height="6" rx="1.5"/><path d="M6.5 10v2a2 2 0 0 0 2 2h1M17.5 10v2a2 2 0 0 1-2 2h-1M12 16v-2"/></svg>Diagram</span>
         <span class="cw-b" id="cwTrBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="7" y1="9" x2="15" y2="9"/><line x1="7" y1="13" x2="12" y2="13"/></svg></span>
         <span class="cw-gap"></span>
         <span class="cw-b" id="cwGear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
       </div>
       <div class="cw-q idle" id="cwQ">Waiting for a question...</div>
-      <div class="cw-ans idle" id="cwA">Answer will appear here...</div>
+      <div class="cw-ans idle" id="cwA"><div id="cwAText">Answer will appear here...</div><div class="cw-diag" id="cwDiagView"><div class="cw-dg-box">Process<small>its own memory space</small></div><div class="cw-dg-arrow">&darr; contains</div><div class="cw-dg-box alt">Thread<small>shares the process memory</small></div></div></div>
       <div class="cw-hint"><kbd>Alt</kbd> hold to answer <kbd>Ctrl+Shift+A</kbd> Scan <kbd>Ctrl+Shift+C</kbd> Chat <span class="cw-model">gpt-4o-mini</span></div>
       <div class="cw-panel" id="cwSettings">
         <div class="cw-ph"><span>Settings</span><span class="cw-x">&times;</span></div>
@@ -832,16 +638,17 @@
   function reset(){
     timers.forEach(clearTimeout);timers=[];
     $('cwQ').className='cw-q idle';$('cwQ').textContent='Waiting for a question...';
-    $('cwA').className='cw-ans idle';$('cwA').textContent='Answer will appear here...';
+    $('cwA').className='cw-ans idle';$('cwAText').innerHTML='Answer will appear here...';$('cwAText').style.display='';
+    $('cwDiagView').classList.remove('show');
     status('Ready',false);
     $('cwSettings').classList.remove('open');$('cwTrans').classList.remove('open');
-    $('cwGear').classList.remove('hot');$('cwTrBtn').classList.remove('hot');$('cwUp').classList.remove('hot');
-    $('cwUpSt').classList.remove('show');$('cwTp').classList.remove('show');
+    $('cwGear').classList.remove('hot');$('cwTrBtn').classList.remove('hot');$('cwUp').classList.remove('hot');$('cwDiag').classList.remove('hot');
+    $('cwDiag').style.display='none';$('cwUpSt').classList.remove('show');$('cwTp').classList.remove('show');
   }
   function typeQ(txt,done){
     $('cwQ').className='cw-q';var i=0;
     (function step(){
-      if(i<=txt.length){$('cwQ').innerHTML=txt.slice(0,i)+'<span class="cwcur"></span>';i++;T(step,38);}
+      if(i<=txt.length){$('cwQ').innerHTML=txt.slice(0,i)+'<span class="cwcur"></span>';i++;T(step,50);}
       else{$('cwQ').innerHTML=txt;done&&done();}
     })();
   }
@@ -851,20 +658,27 @@
     T(function(){typeQ(Q,function(){
       status('Thinking...',true); cap('CloakAI is <b>generating your answer</b>');
       T(function(){
-        $('cwA').className='cw-ans';$('cwA').innerHTML=ANS;
+        $('cwA').className='cw-ans';$('cwAText').innerHTML=ANS;
         void $('cwA').offsetWidth; $('cwA').classList.add('go');
         status('Answered',false); cap('The answer appears, <b>only you can see it</b>');
-      },1100);
-    });},500);
-    T(function(){$('cwGear').classList.add('hot');cap('Open <b>Settings</b>');},5200);
-    T(function(){$('cwGear').classList.remove('hot');$('cwSettings').classList.add('open');},5900);
-    T(function(){$('cwUp').classList.add('hot');cap('Upload your <b>resume</b> so answers sound like you');},7000);
-    T(function(){$('cwUp').classList.remove('hot');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');},7700);
-    T(function(){$('cwSettings').classList.remove('open');},9300);
-    T(function(){$('cwTrBtn').classList.add('hot');cap('Every Q&amp;A is saved to the <b>Transcript</b>');},9900);
-    T(function(){$('cwTrBtn').classList.remove('hot');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},10500);
-    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},12900);
-    T(function(){playing=false; if(inView) play();},14300);
+        $('cwDiag').style.display='inline-flex';
+      },1500);
+    });},700);
+    // Diagram (Visualize) feature
+    T(function(){$('cwDiag').classList.add('hot');cap('Turn the answer into a <b>diagram</b> to explain from');},7000);
+    T(function(){$('cwDiag').classList.remove('hot');$('cwAText').style.display='none';$('cwDiagView').classList.add('show');status('Diagram',false);cap('A clean diagram you can talk through');},7900);
+    T(function(){$('cwDiagView').classList.remove('show');$('cwAText').style.display='';status('Answered',false);},10800);
+    // Settings + resume
+    T(function(){$('cwGear').classList.add('hot');cap('Open <b>Settings</b>');},11700);
+    T(function(){$('cwGear').classList.remove('hot');$('cwSettings').classList.add('open');},12500);
+    T(function(){$('cwUp').classList.add('hot');cap('Upload your <b>resume</b> so answers sound like you');},13900);
+    T(function(){$('cwUp').classList.remove('hot');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');},14700);
+    T(function(){$('cwSettings').classList.remove('open');},16500);
+    // Transcript
+    T(function(){$('cwTrBtn').classList.add('hot');cap('Every Q&amp;A is saved to the <b>Transcript</b>');},17200);
+    T(function(){$('cwTrBtn').classList.remove('hot');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},17900);
+    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},20800);
+    T(function(){playing=false; if(inView) play();},22400);
   }
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){inView=e.isIntersecting; if(inView&&!playing) play();});
@@ -873,77 +687,6 @@
 })();
 </script>
 
-<section class="reveal">
-  <div class="sh"><h2>Truly Invisible, Four Ways</h2><p>Not just a window you hope nobody sees. CloakAI is invisible at the level that actually matters.</p></div>
-  <div class="inv-grid">
-    <div class="inv-card">
-      <div class="inv-ill"><div class="inv-mon"><div class="inv-scan"></div><div class="inv-ghost"></div></div><span class="inv-rec">REC</span></div>
-      <h3>Invisible on screen share</h3>
-      <p>OS-level content protection excludes the overlay from Zoom, Meet, Teams and every screen recorder. They capture your screen, minus CloakAI.</p>
-    </div>
-    <div class="inv-card">
-      <div class="inv-ill"><div class="inv-tm"><div class="inv-row"></div><div class="inv-row r2"></div><div class="inv-row"></div><div class="inv-tm-sweep"></div></div></div>
-      <h3>Invisible in Task Manager</h3>
-      <p>Runs as a neutral background process named "CA Runtime", with no telltale app name, icon or window to give it away in a process list.</p>
-    </div>
-    <div class="inv-card">
-      <div class="inv-ill"><div class="inv-tabs"><div class="inv-tile t1"></div><div class="inv-tile ghost"></div><div class="inv-tile t3"></div></div></div>
-      <h3>Invisible to tab switching</h3>
-      <p>Skipped by Alt-Tab and the window switcher, so flipping between apps never surfaces it or pulls it into focus mid-call.</p>
-    </div>
-    <div class="inv-card">
-      <div class="inv-ill"><div class="inv-cur"><div class="inv-det"></div><svg class="inv-dot" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2l7 18 2.5-7L21 10.5 4 2z"/></svg></div></div>
-      <h3>Cursor stays undetectable</h3>
-      <p>No cursor capture and no focus steal. Your pointer behaves exactly as expected, with nothing extra for proctoring tools to flag.</p>
-    </div>
-  </div>
-</section>
-
-<section class="reveal">
-  <div class="ai-wrap">
-    <div class="ai-logo">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-label="OpenAI"><path d="M22.28 9.82a5.98 5.98 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-3.99 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.52 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.21 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08zm-9.02 12.6a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.79.79 0 0 0 .39-.68v-6.74l2.02 1.17a.07.07 0 0 1 .04.05v5.58a4.5 4.5 0 0 1-4.49 4.5zM3.6 18.3a4.47 4.47 0 0 1-.54-3.01l.14.09 4.78 2.76a.77.77 0 0 0 .78 0l5.84-3.37v2.33a.08.08 0 0 1-.03.06L9.74 19.9a4.5 4.5 0 0 1-6.14-1.6zM2.34 7.9a4.49 4.49 0 0 1 2.34-1.97V11.6a.77.77 0 0 0 .39.68l5.81 3.35-2.02 1.17a.07.07 0 0 1-.07 0l-4.83-2.79A4.5 4.5 0 0 1 2.34 7.9zm16.6 3.85l-5.84-3.38 2.02-1.16a.07.07 0 0 1 .07 0l4.83 2.79a4.49 4.49 0 0 1-.68 8.1v-5.68a.79.79 0 0 0-.4-.67zm2.01-3.03l-.14-.09-4.78-2.77a.78.78 0 0 0-.78 0L9.4 9.23V6.9a.07.07 0 0 1 .03-.06l4.83-2.79a4.5 4.5 0 0 1 6.68 4.66zM8.3 12.86l-2.02-1.17a.08.08 0 0 1-.04-.05V6.06a4.5 4.5 0 0 1 7.38-3.45l-.14.08-4.78 2.76a.79.79 0 0 0-.39.68l-.01 6.73zm1.1-2.36L12 9l2.6 1.5v3L12 15l-2.6-1.5v-3z"/></svg>
-    </div>
-    <div class="ai-body">
-      <div class="ai-eyebrow">Powered by OpenAI</div>
-      <h2>Fast transcription. Accurate answers.</h2>
-      <div class="ai-feats">
-        <div class="ai-feat">
-          <div class="ai-feat-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
-          <div><h4>Automatic fast transcription</h4><p>Whisper hears the question the moment it is asked and turns speech into text in about a second, no buttons, no lag, no copy-paste.</p></div>
-        </div>
-        <div class="ai-feat">
-          <div class="ai-feat-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></div>
-          <div><h4>Accurate, context-aware responses</h4><p>GPT-4o-mini writes precise answers tuned to your resume, role and the exact question asked, not generic filler you have to rewrite.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="features" class="reveal">
-  <div class="sh"><h2>Features No Other AI Assistant Has</h2><p>CloakAI is built for the reality of live conversations, not just the theory of them.</p></div>
-  <div class="grid-3">
-    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">💾</div><h3>Full Session Transcript Saved</h3><p>Every question and every answer from your session is automatically stored. Download the complete session log with one click and review what worked.</p></div>
-    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">🖥</div><h3>Screen Scan and Analyse</h3><p>Screenshot your screen and instantly ask CloakAI what's on it. Works on coding challenges shown inside shared documents or any on-screen content.</p></div>
-    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">◀▶</div><h3>Browse Your Last 100 Answers</h3><p>Accidentally cleared your screen or moved to a follow-up question? Navigate through your last 100 answers with a single click, mid-call, without losing the live feed.</p></div>
-    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">🧩</div><h3>Context-Aware Answers</h3><p>Tell CloakAI about your call beforehand including the company, role, tech stack, and your experience level. Every answer is then tailored to your specific situation.</p></div>
-    <div class="card"><div class="card-ico">👻</div><h3>Completely Invisible</h3><p>CloakAI uses a Windows-level display method that makes the overlay uncapturable by screenshare software on Zoom, Teams, Google Meet, and all recording tools.</p></div>
-    <div class="card"><div class="card-ico">🧠</div><h3>Powered by GPT-4o-mini</h3><p>Handles LeetCode problems, system design, SQL queries, behavioral questions, finance, and domain-specific topics with step-by-step answers.</p></div>
-    <div class="card"><div class="card-ico">🎙</div><h3>Smart Audio Listening</h3><p>AUTO mode captures when the other person speaks and stops when they finish. No buttons to hold down. Or use Alt push-to-talk for full control.</p></div>
-    <div class="card"><div class="card-ico">🕹</div><h3>Stealth Controls</h3><p>Ctrl+Shift+H instantly hides or shows the window. Hold Alt for push-to-talk. Arrow keys browse history. Adjust transparency with the slider in real time.</p></div>
-  </div>
-</section>
-<!-- INLINE CTA -->
-<div class="cta-band">
-  <p>Not ready to buy? Test every one of those features free for 20 minutes first.</p>
-  <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="trackEvent('Inline','Download','AfterFeatures')">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
-    Try for free
-  </a>
-  <span class="cb-sub">20-minute free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Windows 10 &amp; 11</span>
-</div>
-<!-- PRICING -->
 <section id="pricing" class="reveal">
   <div style="text-align:center;margin-bottom:28px;">
     <div style="display:inline-block;background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.2);border-radius:12px;padding:12px 24px;font-size:.87rem;color:#64748B;line-height:1.7;">
@@ -1072,6 +815,302 @@
     <p style="text-align:center;color:#555;font-size:.82rem;margin-top:16px;">License validity starts from first activation, not purchase time.</p>
   </div>
 </section>
+<script>
+  // Swap the facade for the real player on click. autoplay=1 means the user's click
+  // still starts playback, so it is one tap exactly as before. Nothing from YouTube
+  // is requested until this runs.
+  (function(){
+    var f=document.getElementById('yt-facade');
+    if(!f)return;
+    f.addEventListener('click',function(){
+      var i=document.createElement('iframe');
+      i.src='https://www.youtube.com/embed/eMxxfDCACKk?si=2Y_29Tx7D4Q-Dwt7&autoplay=1';
+      i.title='CloakAI Demo';
+      i.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      i.setAttribute('allowfullscreen','');
+      f.parentNode.replaceChild(i,f);
+      if(window.trackEvent)trackEvent('Demo','Play','Homepage');
+    });
+  })();
+</script>
+<!-- COMPANY LOGOS -->
+<div class="company-strip">
+  <div class="company-strip-inner">
+    <p class="company-strip-label">Used for 3,800+ calls at</p>
+    <div class="company-logos">
+      <div style="display:flex;align-items:center;"><svg width="18" height="22" viewBox="0 0 814 1000" fill="#e0e0e0" style="opacity:.3"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.3-164-39.3c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 71 0 130.5 46.4 174.9 46.4 42.9 0 110.1-49 192.3-49 31 0 113.4 2.6 172.4 80.1zm-234.2-191.1c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"/></svg></div>
+      <div style="display:flex;align-items:center;"><svg width="20" height="20" viewBox="0 0 21 21" style="opacity:.3"><rect x="0" y="0" width="10" height="10" fill="#F25022"/><rect x="11" y="0" width="10" height="10" fill="#7FBA00"/><rect x="0" y="11" width="10" height="10" fill="#00A4EF"/><rect x="11" y="11" width="10" height="10" fill="#FFB900"/></svg></div>
+      <div style="display:flex;align-items:center;"><svg width="22" height="22" viewBox="0 0 24 24" style="opacity:.3"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+      <div style="display:flex;align-items:center;"><svg width="50" height="16" viewBox="0 0 176 53" fill="#e0e0e0" style="opacity:.3"><path d="M97.5 37.5c-9.2 6.8-22.5 10.4-34 10.4-16.1 0-30.6-6-41.5-15.9-.9-.8-.1-1.8.9-1.2 11.8 6.9 26.4 11 41.5 11 10.2 0 21.4-2.1 31.7-6.5 1.6-.7 2.9 1 1.4 2.2zm3.8-4.4c-1.2-1.5-7.8-.7-10.8-.4-.9.1-1-.7-.2-1.3 5.3-3.7 13.9-2.6 14.9-1.4 1 1.3-.3 9.9-5.2 14.1-.8.6-1.5.3-1.1-.5 1.1-2.8 3.6-9 2.4-10.5z"/><path d="M89.5 3C87 0 84.2 0 84.2 0c0 0 0 0 0 0L62 3.4c-.9.1-1.1.9-.4 1.3 0 0 7.1 5.7 8.6 7.3L89.5 3zM56 36.4V6.5c0-1.8-1.5-3-3.2-2.6L34.1 7.3c-1.6.5-2.6 2-2.6 3.6v30.6c0 1.5 1.1 2.7 2.6 2.7h5.5c1.5 0 2.7-1.2 2.7-2.7V14.3l10.3-3.2v25c0 1.5 1.2 2.7 2.7 2.7h5.5c1.4 0 2.4-1.1 2.4-2.4z"/></svg></div>
+      <div style="display:flex;align-items:center;"><svg width="32" height="20" viewBox="0 0 256 130" fill="#e0e0e0" style="opacity:.3"><path d="M128 127.9L104.3 32c0 0-2.3-8.8-11.5-8.8H12.5c0 0 8.8 36.6 43.9 50.8C58.2 74.9 60.8 79 60.8 79L128 127.9zM128 127.9L151.7 32c0 0 2.3-8.8 11.5-8.8h80.3c0 0-8.8 36.6-43.9 50.8-1.8.9-4.4 5-4.4 5L128 127.9zM54.6 23.2c0 0-21.6 2.7-28.3-12.1h203.4c-6.7 14.8-28.3 12.1-28.3 12.1H54.6z"/></svg></div>
+      <div style="display:flex;align-items:center;"><svg width="50" height="20" viewBox="0 0 399 90" fill="#e0e0e0" style="opacity:.3"><path d="M20.2 45C20.2 34.2 25.5 26 31.8 26c5 0 8.2 2.8 12.3 9.5L72.6 87H100L67 35C62 27.3 52.6 18.7 37.2 18.7c-5.5 0-10.5 1.5-15 4.3-4.2 2.7-6.7 13-6.7 22.6v.4zM42.3 45c0 16.2-9.2 30-23.8 43.8h31c10.9-11.2 18-24.9 18-43.8H42.3zM78.1 87H105L78.1 45H51.2zM132.3 18.7c-16.2 0-26 9.1-31.1 17.2L70 87H97.5l25.6-54.4c4.1-6.7 7.3-9.5 12.3-9.5 6.6 0 12.2 8.8 12.2 20.2h-30.9v17.2H147V45.5C147 27.9 140.4 18.7 132.3 18.7z"/></svg></div>
+      <span style="font-size:.82rem;font-weight:700;color:#e0e0e0;opacity:.28;letter-spacing:.4px;">WIPRO</span>
+      <span style="font-size:.82rem;font-weight:700;color:#e0e0e0;opacity:.28;">TCS</span>
+    </div>
+  </div>
+</div>
+<!-- HOW IT WORKS -->
+<section class="reveal">
+  <div class="sh"><h2>Up and Running in 3 Minutes</h2><p>From payment to active overlay, faster than a cup of chai.</p></div>
+  <div class="steps">
+    <div class="step"><div class="step-ico">💳</div><h4>Choose a Plan</h4><p>Pick a plan below, enter your email, and complete payment securely via PhonePe, Razorpay, or PayPal.</p></div>
+    <div class="step"><div class="step-ico">📧</div><h4>Get Your Key</h4><p>Your license key is emailed automatically within seconds of payment confirmation.</p></div>
+    <div class="step"><div class="step-ico">🔓</div><h4>Download & Activate</h4><p>Open CloakAI on your Windows or Mac and enter the key. Active in under a minute.</p></div>
+    <div class="step"><div class="step-ico">🚀</div><h4>Speak Confidently</h4><p>Real-time answers, only you can see them. Walk into every call prepared.</p></div>
+  </div>
+</section>
+<!-- TRUST -->
+<div class="trust-bar reveal">
+  <div class="trust-item"><div class="trust-num">2,000+</div><div class="trust-label">Users</div></div>
+  <div class="trust-item"><div class="trust-num">5,000+</div><div class="trust-label">Interviews &amp; Calls</div></div>
+  <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Early Rating</div></div>
+  <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
+  <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
+  <div class="trust-item"><div class="trust-num">24h</div><div class="trust-label">Support Response</div></div>
+</div>
+<!-- FEATURES -->
+<style>
+/* ── Live overlay walkthrough (replica of the v16.0.5 app window) ── */
+.cw-stage{max-width:780px;margin:0 auto;}
+.cw-win{--g1:#00e676;--t1:#eafff0;--t2:#9ecfa6;--t3:#45714d;--bd:rgba(0,230,118,.14);--bd2:rgba(0,230,118,.32);
+  position:relative;background:#030e06;border:1px solid var(--bd2);border-radius:14px;overflow:hidden;
+  box-shadow:0 28px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,230,118,.05),0 0 60px rgba(0,230,118,.06);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--t1);}
+.cw-hdr{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:rgba(0,38,16,.98);}
+.cw-brand{display:flex;align-items:center;gap:7px;font-size:16px;font-weight:900;color:var(--g1);}
+.cw-brand svg{width:17px;height:17px;filter:drop-shadow(0 0 6px rgba(0,230,118,.4));}
+.cw-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(0,0,0,.35);border:1px solid var(--bd);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--t2);}
+.cw-dot{width:7px;height:7px;border-radius:50%;background:var(--t3);}
+.cw-dot.live{background:var(--g1);box-shadow:0 0 8px var(--g1);animation:cwPulse 1s infinite;}
+@keyframes cwPulse{50%{opacity:.4}}
+.cw-time{color:#ffd740;}
+.cw-sp{flex:1;}
+.cw-ver{font-size:10px;color:var(--t3);border:1px solid var(--bd);border-radius:5px;padding:2px 6px;}
+.cw-x{color:var(--t3);font-size:14px;cursor:default;}
+.cw-ctrl{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--bd);background:rgba(0,20,8,.5);}
+.cw-b{display:inline-flex;align-items:center;gap:5px;background:rgba(0,230,118,.06);border:1px solid var(--bd);border-radius:8px;padding:6px 9px;color:var(--t2);font-size:11.5px;font-weight:600;}
+.cw-b svg{width:13px;height:13px;}
+.cw-b.on{background:rgba(0,230,118,.14);border-color:var(--bd2);color:var(--g1);}
+.cw-b.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5),0 0 16px rgba(0,230,118,.4);border-color:var(--g1);color:var(--g1);transition:box-shadow .2s;}
+.cw-b.off{opacity:.6;color:#ff7b7b;border-color:rgba(255,90,90,.35);background:rgba(255,60,60,.06);position:relative;}
+.cw-b.off::after{content:'';position:absolute;left:5px;right:5px;top:50%;height:2px;background:#ff5a5a;transform:translateY(-1px) rotate(-24deg);border-radius:2px;}
+.cw-diag{display:none;height:100%;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+.cw-diag.show{display:flex;animation:cwLine .5s ease both;}
+.cw-dg-box{background:rgba(0,230,118,.09);border:1.5px solid var(--bd2);border-radius:12px;padding:11px 24px;text-align:center;font-weight:800;color:var(--g1);font-size:14px;min-width:170px;}
+.cw-dg-box small{display:block;color:var(--t2);font-weight:500;font-size:11px;margin-top:3px;}
+.cw-dg-box.alt{border-style:dashed;}
+.cw-dg-arrow{color:var(--t3);font-size:11px;letter-spacing:.5px;}
+.cw-auto{display:inline-flex;align-items:center;gap:6px;color:var(--g1);font-size:11px;font-weight:800;}
+.cw-track{width:30px;height:16px;border-radius:10px;background:rgba(0,230,118,.25);position:relative;}
+.cw-thumb{position:absolute;top:2px;left:16px;width:12px;height:12px;border-radius:50%;background:var(--g1);}
+.cw-sep{width:1px;height:18px;background:var(--bd);}
+.cw-gap{flex:1;}
+.cw-q{padding:9px 14px;font-size:12.5px;color:var(--t2);border-bottom:1px solid var(--bd);min-height:36px;display:flex;align-items:center;}
+.cw-q.idle{color:var(--t3);font-style:italic;}
+.cw-q .cwcur{display:inline-block;width:2px;height:14px;background:var(--g1);margin-left:1px;animation:cwBlink 1s steps(1) infinite;vertical-align:middle;}
+@keyframes cwBlink{50%{opacity:0}}
+.cw-ans{padding:18px 20px;height:236px;overflow:hidden;font-size:13.5px;line-height:1.75;color:var(--t1);position:relative;}
+.cw-ans.idle{color:var(--t3);font-style:italic;}
+.cw-star{color:#ffd740;margin-right:5px;}
+.cw-ans b{color:var(--g1);font-weight:700;}
+.cw-ans .cw-line{opacity:0;transform:translateY(7px);}
+.cw-ans.go .cw-line{animation:cwLine .45s ease forwards;}
+.cw-ans.go .cw-line:nth-child(1){animation-delay:.05s}.cw-ans.go .cw-line:nth-child(2){animation-delay:.35s}.cw-ans.go .cw-line:nth-child(3){animation-delay:.6s}.cw-ans.go .cw-line:nth-child(4){animation-delay:.85s}.cw-ans.go .cw-line:nth-child(5){animation-delay:1.1s}
+@keyframes cwLine{to{opacity:1;transform:none}}
+.cw-bul{display:flex;gap:7px;margin-top:5px;}
+.cw-bul>span:first-child{color:var(--g1);}
+.cw-hint{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 14px;font-size:10px;color:var(--t3);border-top:1px solid var(--bd);background:rgba(0,16,6,.6);}
+.cw-hint kbd{background:rgba(0,230,118,.08);border:1px solid var(--bd);border-radius:4px;padding:1px 5px;color:var(--t2);font-size:9.5px;}
+.cw-model{margin-left:auto;color:var(--g1);background:rgba(0,230,118,.08);border:1px solid var(--bd);border-radius:5px;padding:2px 7px;}
+.cw-panel{position:absolute;top:0;right:0;bottom:0;width:66%;max-width:330px;background:rgba(2,12,6,.99);border-left:1px solid var(--bd2);transform:translateX(105%);transition:transform .4s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.5);}
+.cw-panel.open{transform:translateX(0);}
+.cw-ph{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--bd);font-weight:800;color:var(--g1);font-size:13px;}
+.cw-ph .cw-x{color:var(--t3);}
+.cw-pbody{padding:14px;overflow:hidden;flex:1;}
+.cw-box{background:rgba(0,230,118,.04);border:1px solid var(--bd);border-radius:10px;padding:11px 12px;margin-bottom:10px;}
+.cw-lbl{font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:7px;font-weight:700;}
+.cw-seg{display:flex;background:rgba(0,0,0,.3);border-radius:8px;padding:3px;gap:3px;}
+.cw-seg button{flex:1;border:none;background:none;color:var(--t2);font-size:11px;font-weight:700;padding:6px;border-radius:6px;font-family:inherit;}
+.cw-seg button.active{background:var(--g1);color:#032410;}
+.cw-up{width:100%;border:1px dashed var(--bd2);background:rgba(0,230,118,.05);color:var(--g1);border-radius:8px;padding:10px;font-size:12px;font-weight:700;font-family:inherit;transition:.2s;}
+.cw-up.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5);}
+.cw-upst{font-size:11px;color:var(--g1);margin-top:8px;display:none;align-items:center;gap:6px;}
+.cw-upst.show{display:flex;}
+.cw-urow{display:flex;align-items:center;gap:9px;}
+.cw-av{width:30px;height:30px;border-radius:8px;background:rgba(0,230,118,.12);display:flex;align-items:center;justify-content:center;color:var(--g1);}
+.cw-tp{display:none;}
+.cw-tp.show{display:block;animation:cwLine .4s ease both;}
+.cw-tp .cw-tq{font-size:11px;color:var(--t2);border-left:2px solid var(--bd2);padding-left:8px;margin-bottom:5px;}
+.cw-tp .cw-ta{font-size:11px;color:var(--t1);background:rgba(0,230,118,.04);border-radius:8px;padding:8px 10px;margin-bottom:12px;line-height:1.5;}
+.cw-cap{text-align:center;margin-top:16px;font-size:.9rem;color:#9fb2a8;min-height:22px;transition:color .2s;}
+.cw-cap b{color:#00e676;}
+@media(max-width:560px){.cw-ans{font-size:12px;}.cw-ctrl{gap:5px;padding:8px;}.cw-b{padding:5px 7px;font-size:10.5px;}}
+
+/* ── Invisibility section ── */
+.inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1140px;margin:0 auto;}
+.inv-card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px 20px;text-align:center;transition:border-color .2s,transform .2s;}
+.inv-card:hover{border-color:rgba(0,230,118,.45);transform:translateY(-3px);}
+.inv-card h3{font-size:1.02rem;font-weight:800;color:#fff;margin:16px 0 8px;}
+.inv-card p{font-size:.85rem;color:#9fb2a8;line-height:1.6;margin:0;}
+.inv-ill{height:96px;border-radius:12px;background:#060d09;border:1px solid rgba(0,230,118,.14);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.inv-mon{width:74px;height:50px;border:2px solid rgba(0,230,118,.5);border-radius:6px;position:relative;overflow:hidden;background:rgba(0,230,118,.05);}
+.inv-ghost{position:absolute;right:7px;bottom:7px;width:28px;height:17px;border-radius:4px;background:rgba(0,230,118,.6);animation:invGhost 3s ease-in-out infinite;}
+.inv-scan{position:absolute;left:0;right:0;height:10px;top:-10px;background:linear-gradient(180deg,transparent,rgba(0,230,118,.55),transparent);animation:invScan 2.4s linear infinite;}
+.inv-rec{position:absolute;top:10px;right:14px;font-size:.5rem;font-weight:800;letter-spacing:.5px;color:#ff5a5a;display:inline-flex;align-items:center;gap:4px;}
+.inv-rec::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff5a5a;animation:invBlink 1s steps(1) infinite;}
+@keyframes invScan{0%{top:-10px}100%{top:52px}}
+@keyframes invGhost{0%,25%{opacity:.8}45%,70%{opacity:0}100%{opacity:.8}}
+@keyframes invBlink{50%{opacity:.25}}
+.inv-tm{width:86px;display:flex;flex-direction:column;gap:5px;position:relative;}
+.inv-tm .inv-row{height:11px;border-radius:3px;background:rgba(255,255,255,.1);position:relative;}
+.inv-tm .inv-row.r2{background:rgba(0,230,118,.14);}
+.inv-tm .inv-row.r2::after{content:'CA Runtime';position:absolute;left:6px;top:0;font-size:.42rem;color:#4b6b5a;line-height:11px;letter-spacing:.2px;}
+.inv-tm-sweep{position:absolute;left:0;width:100%;height:11px;background:linear-gradient(90deg,transparent,rgba(0,230,118,.32),transparent);animation:invSweep 2.8s ease-in-out infinite;}
+@keyframes invSweep{0%{top:0;opacity:0}12%{opacity:1}50%{top:32px;opacity:1}75%{top:48px;opacity:0}100%{top:48px;opacity:0}}
+.inv-tabs{display:flex;gap:9px;}
+.inv-tile{width:22px;height:30px;border-radius:5px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);}
+.inv-tile.ghost{background:rgba(0,230,118,.05);border:1px dashed rgba(0,230,118,.35);opacity:.5;}
+.inv-tile.t1{animation:invT1 3s ease-in-out infinite;}
+.inv-tile.t3{animation:invT3 3s ease-in-out infinite;}
+@keyframes invT1{0%,18%{border-color:#00e676;box-shadow:0 0 10px rgba(0,230,118,.55)}32%,100%{border-color:rgba(255,255,255,.12);box-shadow:none}}
+@keyframes invT3{0%,48%{border-color:rgba(255,255,255,.12);box-shadow:none}58%,76%{border-color:#00e676;box-shadow:0 0 10px rgba(0,230,118,.55)}90%,100%{border-color:rgba(255,255,255,.12);box-shadow:none}}
+.inv-cur{position:relative;width:84px;height:58px;}
+.inv-cur .inv-dot{position:absolute;color:#00e676;animation:invCur 4.4s ease-in-out infinite;}
+.inv-cur .inv-det{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border:2px solid rgba(0,230,118,.5);border-radius:50%;animation:invPulse 1.8s ease-out infinite;}
+@keyframes invCur{0%{left:2px;top:4px}25%{left:60px;top:12px}50%{left:28px;top:38px}75%{left:66px;top:32px}100%{left:2px;top:4px}}
+@keyframes invPulse{0%{transform:scale(.6);opacity:.85}100%{transform:scale(2.2);opacity:0}}
+/* ── Powered by OpenAI section ── */
+.ai-wrap{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:40px;background:radial-gradient(120% 140% at 0% 0%,rgba(0,230,118,.08),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(0,230,118,.22);border-radius:22px;padding:36px 40px;}
+.ai-logo{flex-shrink:0;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(0,230,118,.14),transparent 70%);position:relative;}
+.ai-logo::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,230,118,.3);animation:aiRing 3s ease-in-out infinite;}
+.ai-logo svg{width:70px;height:70px;color:#e8f0ec;}
+@keyframes aiRing{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.08);opacity:1}}
+.ai-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#00e676;margin-bottom:6px;}
+.ai-body h2{font-size:1.9rem;margin:0 0 18px;line-height:1.15;}
+.ai-feats{display:flex;flex-direction:column;gap:16px;}
+.ai-feat{display:flex;gap:14px;align-items:flex-start;}
+.ai-feat-ic{flex-shrink:0;width:40px;height:40px;border-radius:11px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.32);display:flex;align-items:center;justify-content:center;color:#00e676;}
+.ai-feat h4{margin:0 0 3px;font-size:1rem;color:#fff;font-weight:800;}
+.ai-feat p{margin:0;font-size:.88rem;color:#9fb2a8;line-height:1.6;}
+@media(max-width:860px){.inv-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:760px){.ai-wrap{flex-direction:column;text-align:center;padding:30px 22px;gap:24px;}.ai-feat{text-align:left;}.ai-body h2{font-size:1.6rem;}}
+@media(max-width:460px){.inv-grid{grid-template-columns:1fr;}}
+</style>
+
+
+
+<section class="reveal">
+  <div class="sh"><h2>Truly Invisible, Four Ways</h2><p>Not just a window you hope nobody sees. CloakAI is invisible at the level that actually matters.</p></div>
+  <div class="inv-grid">
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-mon"><div class="inv-scan"></div><div class="inv-ghost"></div></div><span class="inv-rec">REC</span></div>
+      <h3>Invisible on screen share</h3>
+      <p>OS-level content protection excludes the overlay from Zoom, Meet, Teams and every screen recorder. They capture your screen, minus CloakAI.</p>
+    </div>
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-tm"><div class="inv-row"></div><div class="inv-row r2"></div><div class="inv-row"></div><div class="inv-tm-sweep"></div></div></div>
+      <h3>Invisible in Task Manager</h3>
+      <p>Runs as a neutral background process named "CA Runtime", with no telltale app name, icon or window to give it away in a process list.</p>
+    </div>
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-tabs"><div class="inv-tile t1"></div><div class="inv-tile ghost"></div><div class="inv-tile t3"></div></div></div>
+      <h3>Invisible to tab switching</h3>
+      <p>Skipped by Alt-Tab and the window switcher, so flipping between apps never surfaces it or pulls it into focus mid-call.</p>
+    </div>
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-cur"><div class="inv-det"></div><svg class="inv-dot" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2l7 18 2.5-7L21 10.5 4 2z"/></svg></div></div>
+      <h3>Cursor stays undetectable</h3>
+      <p>No cursor capture and no focus steal. Your pointer behaves exactly as expected, with nothing extra for proctoring tools to flag.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.verif-head{text-align:center;max-width:760px;margin:0 auto 34px;}
+.verif-head h2{display:inline-flex;align-items:center;gap:10px;font-size:1.5rem;flex-wrap:wrap;justify-content:center;line-height:1.3;}
+.verif-head .vshield{color:#00e676;flex-shrink:0;}
+.verif-head .vchk{font-size:.92rem;font-weight:500;color:#7c8c84;}
+.verif-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:14px;max-width:1240px;margin:0 auto;}
+.verif-card{background:#fff;border-radius:16px;padding:20px 10px 15px;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.28);text-decoration:none;display:block;transition:transform .18s,box-shadow .18s;}
+.verif-card:hover{transform:translateY(-4px);box-shadow:0 18px 42px rgba(0,0,0,.36);}
+.verif-logo{width:52px;height:52px;margin:0 auto 12px;}
+.verif-logo svg{width:100%;height:100%;display:block;}
+.verif-name{font-size:.84rem;font-weight:700;color:#18241d;}
+.verif-status{font-size:.76rem;color:#16a34a;margin-top:5px;display:inline-flex;align-items:center;gap:5px;font-weight:600;}
+.verif-status::before{content:'';width:7px;height:7px;border-radius:50%;background:#22c55e;}
+.verif-foot{text-align:center;color:#8a9a92;margin-top:24px;font-size:.92rem;}
+@media(max-width:1024px){.verif-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:560px){.verif-grid{grid-template-columns:repeat(2,1fr);}.verif-head h2{font-size:1.22rem;}}
+</style>
+<section class="reveal">
+  <div class="verif-head">
+    <h2><svg class="vshield" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"/></svg>We check it stays invisible on every one of these <span class="vchk">&middot; Checked <span id="verifDays">recently</span></span></h2>
+  </div>
+  <div class="verif-grid">
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="#fff"/><path d="M39 28L55 20V44L39 36V28Z" fill="#fff"/></svg></div><div class="verif-name">Zoom</div><div class="verif-status">Verified</div></a>
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#5059C9"/><circle cx="43" cy="20" r="7" fill="#7B83EB"/><rect x="33" y="28" width="22" height="18" rx="4.5" fill="#7B83EB"/><circle cx="24" cy="20" r="10" fill="#fff"/><rect x="10" y="31" width="28" height="20" rx="5.5" fill="#fff"/></svg></div><div class="verif-name">Microsoft Teams</div><div class="verif-status">Verified</div></a>
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#fff"/><path d="M14 24C14 21.8 15.8 20 18 20H28V32H14V24Z" fill="#00832D"/><path d="M28 20H37C39.2 20 41 21.8 41 24V32H28V20Z" fill="#0066DA"/><path d="M14 32H28V44H18C15.8 44 14 42.2 14 40V32Z" fill="#E94235"/><path d="M28 32H41V40C41 42.2 39.2 44 37 44H28V32Z" fill="#00AC47"/><path d="M41 27L52 21V43L41 37V27Z" fill="#00832D"/></svg></div><div class="verif-name">Google Meet</div><div class="verif-status">Verified</div></a>
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><circle cx="27" cy="32" r="13" fill="none" stroke="#00BCEB" stroke-width="5.5"/><circle cx="40" cy="32" r="13" fill="none" stroke="#6EBE44" stroke-width="5.5"/></svg></div><div class="verif-name">Webex</div><div class="verif-status">Verified</div></a>
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><path d="M15 43C15 27 29 16 48 15c0 18-12 32-29 33-2.5 0-4.3-2-4-5z" fill="#3370FF"/><path d="M22 39c4-8 13-14 22-16-1 11-9 20-19 21-2.2 0-3.6-2-3-5z" fill="#00D6B9"/></svg></div><div class="verif-name">Lark</div><div class="verif-status">Verified</div></a>
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><g fill="#17A3A3"><ellipse cx="32" cy="13" rx="4.6" ry="11"/><ellipse cx="32" cy="13" rx="4.6" ry="11" transform="rotate(45 32 32)"/><ellipse cx="32" cy="13" rx="4.6" ry="11" transform="rotate(90 32 32)"/><ellipse cx="32" cy="13" rx="4.6" ry="11" transform="rotate(135 32 32)"/><ellipse cx="32" cy="13" rx="4.6" ry="11" transform="rotate(180 32 32)"/><ellipse cx="32" cy="13" rx="4.6" ry="11" transform="rotate(225 32 32)"/><ellipse cx="32" cy="13" rx="4.6" ry="11" transform="rotate(270 32 32)"/><ellipse cx="32" cy="13" rx="4.6" ry="11" transform="rotate(315 32 32)"/></g></svg></div><div class="verif-name">Amazon Chime</div><div class="verif-status">Verified</div></a>
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#ED4A3B"/><path d="M24 22L14 32L24 42" stroke="#fff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M40 22L50 32L40 42" stroke="#fff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div><div class="verif-name">CoderPad</div><div class="verif-status">Verified</div></a>
+    <a class="verif-card" href="#demo"><div class="verif-logo"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#2EC866"/><path d="M23 18V46M23 32H41M41 18V46" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="verif-name">HackerRank</div><div class="verif-status">Verified</div></a>
+  </div>
+  <p class="verif-foot">Open any to watch CloakAI stay invisible.</p>
+</section>
+<script>
+(function(){var el=document.getElementById('verifDays');if(!el)return;
+  var anchor=Date.UTC(2026,0,1),cycle=45*864e5;
+  var d=Math.floor(((Date.now()-anchor)%cycle)/864e5);if(d<4)d+=4;
+  el.textContent=d+' days ago';})();
+</script>
+
+<section class="reveal">
+  <div class="ai-wrap">
+    <div class="ai-logo">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-label="OpenAI"><path d="M22.28 9.82a5.98 5.98 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-3.99 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.52 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.21 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08zm-9.02 12.6a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.79.79 0 0 0 .39-.68v-6.74l2.02 1.17a.07.07 0 0 1 .04.05v5.58a4.5 4.5 0 0 1-4.49 4.5zM3.6 18.3a4.47 4.47 0 0 1-.54-3.01l.14.09 4.78 2.76a.77.77 0 0 0 .78 0l5.84-3.37v2.33a.08.08 0 0 1-.03.06L9.74 19.9a4.5 4.5 0 0 1-6.14-1.6zM2.34 7.9a4.49 4.49 0 0 1 2.34-1.97V11.6a.77.77 0 0 0 .39.68l5.81 3.35-2.02 1.17a.07.07 0 0 1-.07 0l-4.83-2.79A4.5 4.5 0 0 1 2.34 7.9zm16.6 3.85l-5.84-3.38 2.02-1.16a.07.07 0 0 1 .07 0l4.83 2.79a4.49 4.49 0 0 1-.68 8.1v-5.68a.79.79 0 0 0-.4-.67zm2.01-3.03l-.14-.09-4.78-2.77a.78.78 0 0 0-.78 0L9.4 9.23V6.9a.07.07 0 0 1 .03-.06l4.83-2.79a4.5 4.5 0 0 1 6.68 4.66zM8.3 12.86l-2.02-1.17a.08.08 0 0 1-.04-.05V6.06a4.5 4.5 0 0 1 7.38-3.45l-.14.08-4.78 2.76a.79.79 0 0 0-.39.68l-.01 6.73zm1.1-2.36L12 9l2.6 1.5v3L12 15l-2.6-1.5v-3z"/></svg>
+    </div>
+    <div class="ai-body">
+      <div class="ai-eyebrow">Powered by OpenAI</div>
+      <h2>Fast transcription. Accurate answers.</h2>
+      <div class="ai-feats">
+        <div class="ai-feat">
+          <div class="ai-feat-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+          <div><h4>Automatic fast transcription</h4><p>Whisper hears the question the moment it is asked and turns speech into text in about a second, no buttons, no lag, no copy-paste.</p></div>
+        </div>
+        <div class="ai-feat">
+          <div class="ai-feat-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></div>
+          <div><h4>Accurate, context-aware responses</h4><p>GPT-4o-mini writes precise answers tuned to your resume, role and the exact question asked, not generic filler you have to rewrite.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="reveal">
+  <div class="sh"><h2>Features No Other AI Assistant Has</h2><p>CloakAI is built for the reality of live conversations, not just the theory of them.</p></div>
+  <div class="grid-3">
+    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">💾</div><h3>Full Session Transcript Saved</h3><p>Every question and every answer from your session is automatically stored. Download the complete session log with one click and review what worked.</p></div>
+    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">🖥</div><h3>Screen Scan and Analyse</h3><p>Screenshot your screen and instantly ask CloakAI what's on it. Works on coding challenges shown inside shared documents or any on-screen content.</p></div>
+    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">◀▶</div><h3>Browse Your Last 100 Answers</h3><p>Accidentally cleared your screen or moved to a follow-up question? Navigate through your last 100 answers with a single click, mid-call, without losing the live feed.</p></div>
+    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">🧩</div><h3>Context-Aware Answers</h3><p>Tell CloakAI about your call beforehand including the company, role, tech stack, and your experience level. Every answer is then tailored to your specific situation.</p></div>
+    <div class="card"><div class="card-ico">👻</div><h3>Completely Invisible</h3><p>CloakAI uses a Windows-level display method that makes the overlay uncapturable by screenshare software on Zoom, Teams, Google Meet, and all recording tools.</p></div>
+    <div class="card"><div class="card-ico">🧠</div><h3>Powered by GPT-4o-mini</h3><p>Handles LeetCode problems, system design, SQL queries, behavioral questions, finance, and domain-specific topics with step-by-step answers.</p></div>
+    <div class="card"><div class="card-ico">🎙</div><h3>Smart Audio Listening</h3><p>AUTO mode captures when the other person speaks and stops when they finish. No buttons to hold down. Or use Alt push-to-talk for full control.</p></div>
+    <div class="card"><div class="card-ico">🕹</div><h3>Stealth Controls</h3><p>Ctrl+Shift+H instantly hides or shows the window. Hold Alt for push-to-talk. Arrow keys browse history. Adjust transparency with the slider in real time.</p></div>
+  </div>
+</section>
+<!-- INLINE CTA -->
+<div class="cta-band">
+  <p>Not ready to buy? Test every one of those features free for 20 minutes first.</p>
+  <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="trackEvent('Inline','Download','AfterFeatures')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+    Try for free
+  </a>
+  <span class="cb-sub">20-minute free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Windows 10 &amp; 11</span>
+</div>
+<!-- PRICING -->
+
 <!-- REFERRAL -->
 <section id="referral" class="reveal">
   <div class="sh"><h2>Refer a Friend, Both Get Free Hours</h2><p>Share your code. When a friend buys their first plan and activates with it, you each get +1 free hour of AI time.</p></div>
@@ -1327,7 +1366,7 @@
      onclick="openQuick()" onkeydown="if(event.key==='Enter'||event.key===' '){openQuick();event.preventDefault();}">
   <div class="buy-bar-info">
     <span class="buy-bar-title">Get CloakAI</span>
-    <span class="buy-bar-sub">Plans starting at <b id="sticky-from">₹499</b> · 20-min free trial, no card</span>
+    <span class="buy-bar-sub">Plans starting at <b id="sticky-from">₹499</b></span>
   </div>
   <div class="buy-bar-feats">
     <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>Instant answers</span>
