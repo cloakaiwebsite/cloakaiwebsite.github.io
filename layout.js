@@ -177,3 +177,54 @@ document.querySelectorAll('#mnav a').forEach(function(a){
     }
   }
 })();
+
+/* ── Cookie consent (Google Consent Mode v2) ──────────────────────────────
+   GA defaults to DENIED in the EEA/UK (set inline on each page before gtag runs)
+   and GRANTED elsewhere. This bar is shown only to visitors OUTSIDE India
+   (window.cloakRegion==='INTL', from the region block above) so they can Accept or
+   Decline; India keeps analytics on by default. The choice is stored per-browser and
+   can be changed via the footer "Cookie settings" link. Best-effort throughout: a
+   missing gtag or blocked storage never breaks the page. */
+(function(){
+  var KEY='cloak_consent';
+  function applyChoice(v){ try{ if(window.gtag) gtag('consent','update',{'analytics_storage':(v==='granted'?'granted':'denied')}); }catch(e){} }
+  function stored(){ try{ return localStorage.getItem(KEY)||''; }catch(e){ return ''; } }
+  function save(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+
+  var prior=stored();
+  if(prior==='granted'||prior==='denied') applyChoice(prior);
+
+  var bar=null;
+  function build(){
+    if(bar) return bar;
+    bar=document.createElement('div');
+    bar.id='ck-consent';
+    bar.setAttribute('role','dialog');
+    bar.setAttribute('aria-label','Cookie consent');
+    bar.innerHTML='<p>We use cookies for analytics (Google Analytics) to understand how this site is used. We do not use advertising cookies. See our <a href="privacy.html">Privacy Policy</a>.</p><div class="ck-btns"><button type="button" id="ck-decline">Decline</button><button type="button" id="ck-accept">Accept</button></div>';
+    (document.body||document.documentElement).appendChild(bar);
+    bar.querySelector('#ck-accept').addEventListener('click',function(){ applyChoice('granted'); save('granted'); hide(); });
+    bar.querySelector('#ck-decline').addEventListener('click',function(){ applyChoice('denied'); save('denied'); hide(); });
+    return bar;
+  }
+  function show(){ build().classList.add('on'); }
+  function hide(){ if(bar) bar.classList.remove('on'); }
+  window.cloakCookieSettings=function(){ build(); show(); };
+
+  function maybeShow(){ if(stored()) return; if(window.cloakRegion==='INTL') show(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',maybeShow); else maybeShow();
+  // IP refinement may flip region to INTL after load; ask then if no choice yet.
+  window.addEventListener('cloakregion',function(){ if(!stored() && window.cloakRegion==='INTL') show(); });
+
+  // "Cookie settings" link in the footer (where one exists), to change the choice later.
+  function addFooterLink(){
+    try{
+      var f=document.querySelector('footer'); if(!f||f.querySelector('[data-ck-settings]')) return;
+      var a=document.createElement('a'); a.href='#'; a.setAttribute('data-ck-settings','');
+      a.textContent='Cookie settings';
+      a.addEventListener('click',function(e){ e.preventDefault(); window.cloakCookieSettings(); });
+      f.appendChild(document.createTextNode(' · ')); f.appendChild(a);
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',addFooterLink); else addFooterLink();
+})();

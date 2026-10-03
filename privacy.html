@@ -5,7 +5,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E78JBBWJQW"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'granted'});gtag('consent','default',{'analytics_storage':'denied','wait_for_update':500,'region':['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
     gtag('js', new Date());
 
     gtag('config', 'G-E78JBBWJQW');
@@ -104,8 +104,8 @@
       <li><strong>We never store your audio.</strong> It is captured locally, streamed for transcription, and discarded. No copy is kept on our servers.</li>
       <li><strong>We never store transcriptions, questions or AI answers.</strong> They are passed through in real time and never written to our database. Your session transcript is saved only on your own computer, if you choose to save it.</li>
       <li>Keystrokes, screen content, or browsing history.</li>
-      <li>Credit card or banking credentials handled entirely by PhonePe.</li>
-      <li>Cookies for tracking, advertising, or profiling purposes.</li>
+      <li>Credit card or banking credentials, which are handled entirely by our payment providers (PhonePe, Razorpay, or PayPal).</li>
+      <li>Cookies for advertising, retargeting, or cross-site profiling. (We do use Google Analytics cookies on the website, with consent outside India; see "Cookies &amp; Website Analytics" below.)</li>
     </ul>
     <div class="note"><strong>Important: what OpenAI does retain.</strong> Although <em>we</em> store none of the above, your audio and text are processed by OpenAI to produce transcriptions and answers. Under OpenAI's API terms, this data may be retained by OpenAI for <strong>up to 30 days</strong> for abuse and misuse monitoring, and is then deleted. OpenAI does not use data submitted through its API to train its models. We have no access to that copy. Please read <a href="https://openai.com/enterprise-privacy" target="_blank">OpenAI's API data usage policy</a> if this matters to you.</div>
     <div class="warn"><strong>Audio of other people, and your responsibility.</strong> When you run CloakAI in call-listening mode, the audio captured and sent for transcription includes <strong>the other people on your call</strong>, who are not CloakAI users and have not agreed to our terms. You are solely responsible for ensuring your use of CloakAI is lawful where you are, including any obligation to notify or obtain consent from other participants before a call is captured or transcribed. Recording and consent laws vary by country and by state. If you are unsure, do not use the call-listening mode.</div>
@@ -131,15 +131,22 @@
       <li><strong>OpenAI API</strong> Audio is sent to Whisper for transcription and to Chat Completions for answers. We store none of it, but OpenAI may retain it for <strong>up to 30 days</strong> for abuse monitoring before deleting it, and does not use API data to train its models. We do not send your email address or any payment information to OpenAI. See <a href="https://openai.com/enterprise-privacy" target="_blank">OpenAI's API data usage policy</a>.</li>
       <li><strong>Cloudflare</strong> All AI requests are routed through our own proxy at api.cloakai.in, running on Cloudflare Workers. This exists so the application never has to carry an AI provider credential. The proxy passes your audio and text straight through without storing them, and receives your licence key and device identifier in order to verify your subscription and meter usage. Subject to <a href="https://www.cloudflare.com/privacypolicy/" target="_blank">Cloudflare's privacy policy</a>.</li>
       <li><strong>Google Analytics (GA4)</strong> The application reports anonymous usage events so we can understand which features are used and detect errors. These carry your anonymous device identifier, plan name, app version, feature names, a count of questions asked, and error types. <strong>They never include your questions, the AI's answers, any transcription, your resume, or your email address.</strong></li>
-      <li><strong>PhonePe</strong> Payment processing. We do not receive or store card details. Subject to PhonePe's own privacy policy.</li>
+      <li><strong>PhonePe</strong> Payment processing for customers in India (UPI, cards, net banking). We do not receive or store card details. Subject to PhonePe's own privacy policy.</li>
+      <li><strong>Razorpay</strong> Payment processing for international card payments. We do not receive or store card details. Subject to Razorpay's own privacy policy.</li>
+      <li><strong>PayPal</strong> Payment processing for international customers paying in USD. We do not receive or store card or PayPal account credentials. Subject to PayPal's own privacy policy.</li>
       <li><strong>Google Firestore</strong> Licence records are stored in a database accessible only to CloakAI. Subject to Google's privacy policy. We do not use Google advertising services and we do not sell or share your data with advertisers.</li>
       <li><strong>Google Sign-In (Google Identity Services)</strong> Used only on the optional account page at cloakai.in/account.html. When you choose to sign in, Google confirms your identity and provides your verified email and name so we can look up the keys bought with that email. We request no other Google data, store no Google profile data, and post nothing to your Google account. You can sign out at any time. Subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's privacy policy</a>.</li>
     </ul>
 
-    <h2>7. Data Retention</h2>
+    <h2>7. Cookies &amp; Website Analytics</h2>
+    <p>Our website uses <strong>Google Analytics</strong> to understand how visitors use the site. Google Analytics sets the <code>_ga</code> and <code>_ga_*</code> cookies in your browser to distinguish users and sessions (they typically expire after up to 2 years). We do <strong>not</strong> use advertising, retargeting, or cross-site profiling cookies, and we never sell your data.</p>
+    <p><strong>In the EEA and the UK</strong>, analytics is <strong>off until you consent</strong>: a banner asks you to Accept or Decline, and nothing analytics-related is stored unless you Accept (opt-in, in line with GDPR and the ePrivacy rules). <strong>Elsewhere outside India</strong>, the same banner lets you Accept or Decline, with analytics active unless you Decline. <strong>Within India</strong>, analytics is enabled by default. Everywhere, you can change your choice at any time using the <strong>"Cookie settings"</strong> link in the site footer, and declining never affects your ability to use the site, buy a plan, or use the app.</p>
+    <p>The CloakAI desktop app itself does not use cookies. The in-app analytics described under "Third-Party Services" above is separate from these website cookies and carries no web cookie.</p>
+
+    <h2>8. Data Retention</h2>
     <p>License records (email, plan, activation data) are retained for 24 months after license expiry for audit and support purposes. They are then permanently deleted. If you request deletion before this period, your license will be deactivated as a consequence.</p>
 
-    <h2>8. Data Security</h2>
+    <h2>9. Data Security</h2>
     <ul>
       <li>Database Server are access-restricted to authorised CloakAI accounts only.</li>
       <li>Hardware IDs are stored as SHA-256 hashes they cannot be reverse-engineered.</li>
@@ -147,7 +154,7 @@
       <li>All communication between the app and our server uses HTTPS.</li>
     </ul>
 
-    <h2>9. Your Rights</h2>
+    <h2>10. Your Rights</h2>
     <p>You may exercise the following rights by emailing <a href="mailto:support@cloakai.in">support@cloakai.in</a>:</p>
     <ul>
       <li><strong>Access:</strong> Request a copy of the data we hold about you.</li>
@@ -157,13 +164,13 @@
     </ul>
     <p>We aim to respond to all requests within 30 days.</p>
 
-    <h2>10. Children's Privacy</h2>
+    <h2>11. Children's Privacy</h2>
     <p>CloakAI is not intended for use by persons under 18 years of age. We do not knowingly collect personal data from minors. If you believe a minor has provided us with personal information, please contact us immediately.</p>
 
-    <h2>11. Changes to This Policy</h2>
+    <h2>12. Changes to This Policy</h2>
     <p>We may update this Privacy Policy periodically. Changes will be posted on this page with a revised "Last Updated" date. Continued use of the Software after changes constitutes acceptance of the updated policy.</p>
 
-    <h2>12. Contact</h2>
+    <h2>13. Contact</h2>
     <p>For privacy concerns, data requests, or questions: <strong><a href="mailto:support@cloakai.in">support@cloakai.in</a></strong></p>
   </div>
 </div>
