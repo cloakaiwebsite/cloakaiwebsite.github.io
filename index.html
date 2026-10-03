@@ -506,11 +506,11 @@
     .fi-r3{right:2%;top:73%;animation-delay:.85s}
     @keyframes fiFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
     @media(max-width:1080px){
-      /* On smaller screens the side-floating icons become a horizontal strip at the
-         top of the hero, where there is room above the badge. */
-      .float-icons{position:static;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0 auto 20px;max-width:360px;}
-      .fi{position:static!important;left:auto!important;right:auto!important;top:auto!important;width:46px;height:46px;border-radius:13px;animation:none;filter:none!important;opacity:1!important;}
-      .fi svg{width:30px;height:30px;}
+      /* A horizontal row of the SAME faded, floating icons at the top of the hero
+         (keeps the blur/opacity/float - not flat static icons). */
+      .float-icons{position:static;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px;margin:0 auto 24px;max-width:430px;}
+      .fi{position:static;left:auto;right:auto;top:auto;width:50px;height:50px;border-radius:14px;}
+      .fi svg{width:32px;height:32px;}
     }
   </style>
   <div class="float-icons" aria-hidden="true">
@@ -532,6 +532,11 @@
     <span class="b-item">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
       No card needed
+    </span>
+    <span class="b-sep">·</span>
+    <span class="b-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M5 4H3v2a3 3 0 003 3"/><path d="M19 4h2v2a3 3 0 01-3 3"/></svg>
+      Candidates landing jobs in weeks
     </span>
   </div>
   <div class="glitch-wrap">
