@@ -75,6 +75,13 @@
     .badge .b-item{display:inline-flex;align-items:center;gap:5px;}
     .badge .b-sep{opacity:.35;}
     @keyframes badgePulse{0%,100%{box-shadow:0 0 0 rgba(46,204,113,0);}50%{box-shadow:0 0 14px rgba(46,204,113,.28);}}
+    /* On mobile the single long pill looks cramped; show each tagline as its own
+       small themed chip instead, which reads cleaner and on-theme. */
+    @media(max-width:600px){
+      .badge{border:none;background:none;box-shadow:none;animation:none;padding:0;gap:7px;}
+      .badge .b-item{background:rgba(46,204,113,.09);border:1px solid rgba(46,204,113,.28);border-radius:20px;padding:5px 12px;font-size:.76rem;color:var(--gg);}
+      .badge .b-sep{display:none;}
+    }
     .glitch-wrap{display:inline-block;position:relative;max-width:100%;}
     .glitch{position:relative;color:#fff;font-size:5rem;font-weight:800;word-wrap:break-word;letter-spacing:-2px;}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);}
@@ -395,11 +402,11 @@
     .rv-star:hover{transform:scale(1.12);}
     .rv-star.on{color:#F59E0B;}
     @media(max-width:768px){
-      /* Full-width edge bar on phones (overrides the floating desktop bar). */
-      #buy-bar{left:0;right:0;bottom:0;max-width:none;margin:0;border:none;border-top:1px solid rgba(46,204,113,.4);border-radius:0;padding:11px 14px;gap:12px;}
+      /* Floating rounded bar on phones too (matches the desktop floating bar). */
+      #buy-bar{left:10px;right:10px;bottom:10px;max-width:none;margin:0;border:1px solid rgba(46,204,113,.4);border-radius:16px;padding:10px 12px;gap:10px;}
       .buy-bar-title{font-size:.96rem;}
-      .buy-bar-btn{padding:13px 24px;}
-      body{padding-bottom:70px;}
+      .buy-bar-btn{padding:12px 22px;}
+      body{padding-bottom:84px;}
     }
     @keyframes buyBarUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   html{overflow-x:hidden;}
@@ -505,13 +512,10 @@
     .fi-r2{right:9%;top:44%;animation-delay:1.5s}
     .fi-r3{right:2%;top:73%;animation-delay:.85s}
     @keyframes fiFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
-    @media(max-width:1080px){
-      /* A horizontal row of the SAME faded, floating icons at the top of the hero
-         (keeps the blur/opacity/float - not flat static icons). */
-      .float-icons{position:static;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px;margin:0 auto 24px;max-width:430px;}
-      .fi{position:static;left:auto;right:auto;top:auto;width:50px;height:50px;border-radius:14px;}
-      .fi svg{width:32px;height:32px;}
-    }
+    /* Keep the faded floating icons on BOTH sides (like desktop) on all widths,
+       just scaled down so they frame the hero without crowding it. */
+    @media(max-width:1080px){.fi{width:42px;height:42px;}.fi svg{width:27px;height:27px;}}
+    @media(max-width:600px){.fi{width:34px;height:34px;border-radius:11px;}.fi svg{width:22px;height:22px;}}
   </style>
   <div class="float-icons" aria-hidden="true">
     <div class="fi fi-l1"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg></div>

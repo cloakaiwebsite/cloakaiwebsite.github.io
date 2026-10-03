@@ -51,8 +51,8 @@ document.querySelectorAll('#mnav a').forEach(function(a){
    to the account page, which handles the actual sign-in. The label text is a fixed
    string, never user data, so building it with innerHTML is safe. */
 (function(){
+  if(document.querySelector('[data-account-link]'))return;
   var nav=document.getElementById('mnav');
-  if(!nav||nav.querySelector('[data-account-link]'))return;
   var signedIn=false;
   try{
     var t=sessionStorage.getItem('cloakai_gtok')||'';
@@ -61,9 +61,27 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   var a=document.createElement('a');
   a.href='account.html';
   a.setAttribute('data-account-link','');
-  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>'+(signedIn?'My Account':'Sign in');
-  var cta=nav.querySelector('.nav-cta');
-  if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
+  a.className='hdr-account';
+  a.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><span>'+(signedIn?'Account':'Sign in')+'</span>';
+  // Place it right next to the CloakAI logo (always visible, not inside the collapsing nav).
+  var inner=document.querySelector('.header-inner');
+  var logo=inner&&inner.querySelector('.logo');
+  if(logo&&logo.parentNode){ logo.parentNode.insertBefore(a, logo.nextSibling); }
+  else if(nav){ var cta=nav.querySelector('.nav-cta'); if(cta)nav.insertBefore(a,cta);else nav.appendChild(a); }
+})();
+
+/* ── Floating nav: rounded when scrolled, hides on scroll down, shows on scroll up ── */
+(function(){
+  var h=document.querySelector('header'); if(!h) return;
+  var last=0, ticking=false;
+  function upd(){
+    var y=window.pageYOffset||document.documentElement.scrollTop||0;
+    if(y>60) h.classList.add('nav-scrolled'); else h.classList.remove('nav-scrolled');
+    if(y>last && y>240) h.classList.add('nav-up'); else h.classList.remove('nav-up');
+    last=y; ticking=false;
+  }
+  window.addEventListener('scroll',function(){ if(!ticking){ requestAnimationFrame(upd); ticking=true; } },{passive:true});
+  upd();
 })();
 
 /* ── News bar dismiss ────────────────────────── */
@@ -224,6 +242,7 @@ document.querySelectorAll('#mnav a').forEach(function(a){
       var f=document.querySelector('footer'); if(!f||f.querySelector('[data-ck-settings]')) return;
       var a=document.createElement('a'); a.href='#'; a.setAttribute('data-ck-settings','');
       a.className='ck-set-link'; a.textContent='Cookie settings';
+      a.style.color='#64748b'; a.style.textDecoration='underline'; a.style.cursor='pointer';
       a.addEventListener('click',function(e){ e.preventDefault(); window.cloakCookieSettings(); });
       f.appendChild(document.createTextNode(' · ')); f.appendChild(a);
     }catch(e){}
