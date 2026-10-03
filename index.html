@@ -71,8 +71,11 @@
     }
     /* Hero */
     .hero{text-align:center;padding:80px 20px 60px;}
-    .badge{display:inline-block;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.4);color:var(--gg);padding:6px 18px;border-radius:30px;font-size:.83rem;font-weight:600;letter-spacing:.5px;margin-bottom:24px;animation:badgePulse 2.5s ease-in-out infinite;}
-    @keyframes badgePulse{0%,100%{box-shadow:0 0 0 rgba(46,204,113,0);}50%{box-shadow:0 0 16px rgba(46,204,113,.35);}}
+    .badge{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px 14px;max-width:660px;background:linear-gradient(180deg,rgba(14,26,19,.92),rgba(8,16,11,.92));border:1px solid rgba(46,204,113,.4);color:#d7efe4;padding:10px 22px;border-radius:16px;font-size:.84rem;font-weight:600;letter-spacing:.3px;margin-bottom:22px;box-shadow:0 12px 34px rgba(0,230,118,.1);animation:badgePulse 3s ease-in-out infinite;}
+    .badge .b-hot{color:#00e676;font-weight:800;display:inline-flex;align-items:center;gap:6px;}
+    .badge .b-item{display:inline-flex;align-items:center;gap:5px;}
+    .badge .b-sep{opacity:.3;}
+    @keyframes badgePulse{0%,100%{box-shadow:0 12px 34px rgba(0,230,118,.08);}50%{box-shadow:0 12px 40px rgba(0,230,118,.24);}}
     .glitch-wrap{display:inline-block;position:relative;max-width:100%;}
     .glitch{position:relative;color:#fff;font-size:5rem;font-weight:800;word-wrap:break-word;letter-spacing:-2px;}
     .glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);}
@@ -321,20 +324,26 @@
     .sup-btn:disabled{opacity:.45;cursor:not-allowed;}
     .sup-msg{text-align:center;font-size:.8rem;margin-top:8px;min-height:16px;}
     .sup-msg.err{color:#EF4444;}.sup-msg.ok{color:#34D399;}.sup-msg.inf{color:#94A3B8;}
-    /* Sticky buy bar + quick plan picker, on EVERY screen (desktop too) for one-tap
-       checkout. Fixed to the bottom, so the FAB is nudged up and the body gets bottom
-       padding to keep the footer clear of it. Slides up shortly after load. */
-    #buy-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:1900;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(14px,6vw,90px);background:linear-gradient(180deg,rgba(8,16,11,.98),rgba(4,10,7,.99));border-top:1px solid rgba(46,204,113,.4);box-shadow:0 -8px 28px rgba(0,0,0,.55);backdrop-filter:blur(10px);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:buyBarUp .5s cubic-bezier(.22,1,.36,1) .3s both;}
-    #buy-bar:active{background:linear-gradient(180deg,rgba(10,20,14,1),rgba(6,12,9,1));}
+    /* Sticky buy bar + quick plan picker, on EVERY screen for one-tap checkout. On
+       desktop it is a CENTERED FLOATING bar (not full-width); on mobile it spans the
+       bottom edge. The FAB is nudged up and the body gets bottom padding so the footer
+       clears it. Slides up shortly after load. */
+    #buy-bar{display:flex;position:fixed;left:16px;right:16px;bottom:16px;z-index:1900;max-width:1060px;margin:0 auto;align-items:center;justify-content:space-between;gap:18px;padding:11px 14px 11px 24px;background:linear-gradient(180deg,rgba(10,20,14,.98),rgba(5,11,8,.99));border:1px solid rgba(46,204,113,.45);border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.55),0 0 0 1px rgba(46,204,113,.06);backdrop-filter:blur(10px);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:buyBarUp .5s cubic-bezier(.22,1,.36,1) .3s both;}
+    #buy-bar:active{filter:brightness(1.08);}
     /* Children are pointer-events:none so every click lands on #buy-bar's single
        handler: the whole bar is one big target, no double-fire. */
     .buy-bar-info{display:flex;flex-direction:column;line-height:1.2;min-width:0;pointer-events:none;}
     .buy-bar-title{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.2px;}
     .buy-bar-sub{font-size:.76rem;color:#9fb2a8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .buy-bar-sub b{color:#00e676;font-weight:800;}
+    /* Middle feature chips, shown on wide screens only. */
+    .buy-bar-feats{display:flex;align-items:center;gap:18px;font-size:.82rem;color:#b9c9c0;pointer-events:none;flex:0 1 auto;}
+    .buy-bar-feats span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+    .buy-bar-feats svg{color:#00e676;flex-shrink:0;}
     .buy-bar-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;padding:12px 28px;border-radius:26px;border:1px solid var(--gg);background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;font-weight:800;font-size:.95rem;font-family:inherit;box-shadow:0 4px 18px rgba(0,230,118,.4);position:relative;overflow:hidden;white-space:nowrap;pointer-events:none;}
     .buy-bar-btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.28),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
-    body{padding-bottom:74px;}
+    @media(max-width:980px){.buy-bar-feats{display:none;}}
+    body{padding-bottom:96px;}
     .sup-fab{bottom:84px;}
     .sup-fab-label{bottom:88px;}
     .quick-list{display:flex;flex-direction:column;gap:10px;}
@@ -387,7 +396,8 @@
     .rv-star:hover{transform:scale(1.12);}
     .rv-star.on{color:#F59E0B;}
     @media(max-width:768px){
-      #buy-bar{padding:11px 14px;gap:12px;}
+      /* Full-width edge bar on phones (overrides the floating desktop bar). */
+      #buy-bar{left:0;right:0;bottom:0;max-width:none;margin:0;border:none;border-top:1px solid rgba(46,204,113,.4);border-radius:0;padding:11px 14px;gap:12px;}
       .buy-bar-title{font-size:.96rem;}
       .buy-bar-btn{padding:13px 24px;}
       body{padding-bottom:70px;}
@@ -481,15 +491,50 @@
 <div class="wrap">
 <!-- HERO -->
 <section class="hero">
-  <div class="badge" style="display:inline-flex;align-items:center;justify-content:center;gap:4px 8px;flex-wrap:wrap;">
-    <span style="display:inline-flex;align-items:center;gap:5px;">
+  <style>
+    .hero{position:relative;}
+    .hero>*:not(.float-icons){position:relative;z-index:1;}
+    .float-icons{position:absolute;inset:0;z-index:0;pointer-events:none;}
+    .fi{position:absolute;width:60px;height:60px;border-radius:17px;background:#fff;box-shadow:0 20px 44px rgba(0,0,0,.22),0 6px 14px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;animation:fiFloat 6s ease-in-out infinite;}
+    .fi svg{width:38px;height:38px;}
+    .fi.b1{filter:blur(2.5px);opacity:.6;}
+    .fi.b2{filter:blur(5px);opacity:.42;}
+    .fi-l1{left:3%;top:13%;animation-delay:0s}
+    .fi-l2{left:8%;top:47%;animation-delay:1.1s}
+    .fi-l3{left:1.5%;top:76%;animation-delay:.6s}
+    .fi-r1{right:4%;top:10%;animation-delay:.35s}
+    .fi-r2{right:9%;top:44%;animation-delay:1.5s}
+    .fi-r3{right:2%;top:73%;animation-delay:.85s}
+    @keyframes fiFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
+    @media(max-width:1080px){.float-icons{display:none;}}
+  </style>
+  <div class="float-icons" aria-hidden="true">
+    <div class="fi fi-l1"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg></div>
+    <div class="fi fi-l2 b1"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="white"/><path d="M8 22C8 18.7 10.7 16 14 16H27V32H8V22Z" fill="#00832D"/><path d="M27 16H38C41.3 16 44 18.7 44 22V32H27V16Z" fill="#0066DA"/><path d="M8 32H27V48H14C10.7 48 8 45.3 8 42V32Z" fill="#E94235"/><path d="M27 32H44V42C44 45.3 41.3 48 38 48H27V32Z" fill="#00AC47"/><path d="M44 26L56 20V44L44 38V26Z" fill="#00832D"/><rect x="25" y="14" width="4" height="36" fill="white"/><rect x="6" y="30" width="40" height="4" fill="white"/></svg></div>
+    <div class="fi fi-l3 b2"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2EC866"/><path d="M21 16V48M21 32H43M43 16V48" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="fi fi-r1"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#5059C9"/><circle cx="43" cy="20" r="7" fill="#7B83EB"/><rect x="33" y="28" width="22" height="18" rx="4.5" fill="#7B83EB"/><circle cx="24" cy="20" r="10" fill="white"/><rect x="10" y="31" width="28" height="20" rx="5.5" fill="white"/></svg></div>
+    <div class="fi fi-r2 b1"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1B1F36"/><path d="M22 20L10 32L22 44" stroke="#FF6B35" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 20L54 32L42 44" stroke="#FF6B35" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M37 14L27 50" stroke="#FF6B35" stroke-width="6" stroke-linecap="round"/></svg></div>
+    <div class="fi fi-r3 b2"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg></div>
+  </div>
+  <div class="badge">
+    <span class="b-hot">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 2c1 3-1 4-1 6a3 3 0 006 0c2 2 3 4.5 3 7a8 8 0 11-13.8-5.5C8 12 9 10 9 8c0-2.5 1.5-4.5 3-6z"/></svg>
+      India's #1 viral interview AI
+    </span>
+    <span class="b-sep">·</span>
+    <span class="b-item">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
       20-Min Free Trial
     </span>
-    <span style="opacity:.4">·</span>
-    <span style="display:inline-flex;align-items:center;gap:5px;">
+    <span class="b-sep">·</span>
+    <span class="b-item">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
       No card needed
+    </span>
+    <span class="b-sep">·</span>
+    <span class="b-item">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M5 4H3v2a3 3 0 003 3"/><path d="M19 4h2v2a3 3 0 01-3 3"/></svg>
+      Candidates landing jobs in weeks
     </span>
   </div>
   <div class="glitch-wrap">
@@ -598,14 +643,114 @@
 </section>
 <!-- TRUST -->
 <div class="trust-bar reveal">
-  <div class="trust-item"><div class="trust-num">1,500+</div><div class="trust-label">Users</div></div>
-  <div class="trust-item"><div class="trust-num">3,800+</div><div class="trust-label">Calls Supported</div></div>
+  <div class="trust-item"><div class="trust-num">2,000+</div><div class="trust-label">Users</div></div>
+  <div class="trust-item"><div class="trust-num">5,000+</div><div class="trust-label">Interviews &amp; Calls</div></div>
   <div class="trust-item"><div class="trust-num">4.9★</div><div class="trust-label">Early Rating</div></div>
   <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">Screenshare Proof</div></div>
   <div class="trust-item"><div class="trust-num">Instant</div><div class="trust-label">AI Responses</div></div>
   <div class="trust-item"><div class="trust-num">24h</div><div class="trust-label">Support Response</div></div>
 </div>
 <!-- FEATURES -->
+<style>
+/* ── Invisibility section ── */
+.inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1140px;margin:0 auto;}
+.inv-card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px 20px;text-align:center;transition:border-color .2s,transform .2s;}
+.inv-card:hover{border-color:rgba(0,230,118,.45);transform:translateY(-3px);}
+.inv-card h3{font-size:1.02rem;font-weight:800;color:#fff;margin:16px 0 8px;}
+.inv-card p{font-size:.85rem;color:#9fb2a8;line-height:1.6;margin:0;}
+.inv-ill{height:96px;border-radius:12px;background:#060d09;border:1px solid rgba(0,230,118,.14);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.inv-mon{width:74px;height:50px;border:2px solid rgba(0,230,118,.5);border-radius:6px;position:relative;overflow:hidden;background:rgba(0,230,118,.05);}
+.inv-ghost{position:absolute;right:7px;bottom:7px;width:28px;height:17px;border-radius:4px;background:rgba(0,230,118,.6);animation:invGhost 3s ease-in-out infinite;}
+.inv-scan{position:absolute;left:0;right:0;height:10px;top:-10px;background:linear-gradient(180deg,transparent,rgba(0,230,118,.55),transparent);animation:invScan 2.4s linear infinite;}
+.inv-rec{position:absolute;top:10px;right:14px;font-size:.5rem;font-weight:800;letter-spacing:.5px;color:#ff5a5a;display:inline-flex;align-items:center;gap:4px;}
+.inv-rec::before{content:'';width:6px;height:6px;border-radius:50%;background:#ff5a5a;animation:invBlink 1s steps(1) infinite;}
+@keyframes invScan{0%{top:-10px}100%{top:52px}}
+@keyframes invGhost{0%,25%{opacity:.8}45%,70%{opacity:0}100%{opacity:.8}}
+@keyframes invBlink{50%{opacity:.25}}
+.inv-tm{width:86px;display:flex;flex-direction:column;gap:5px;position:relative;}
+.inv-tm .inv-row{height:11px;border-radius:3px;background:rgba(255,255,255,.1);position:relative;}
+.inv-tm .inv-row.r2{background:rgba(0,230,118,.14);}
+.inv-tm .inv-row.r2::after{content:'CA Runtime';position:absolute;left:6px;top:0;font-size:.42rem;color:#4b6b5a;line-height:11px;letter-spacing:.2px;}
+.inv-tm-sweep{position:absolute;left:0;width:100%;height:11px;background:linear-gradient(90deg,transparent,rgba(0,230,118,.32),transparent);animation:invSweep 2.8s ease-in-out infinite;}
+@keyframes invSweep{0%{top:0;opacity:0}12%{opacity:1}50%{top:32px;opacity:1}75%{top:48px;opacity:0}100%{top:48px;opacity:0}}
+.inv-tabs{display:flex;gap:9px;}
+.inv-tile{width:22px;height:30px;border-radius:5px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);}
+.inv-tile.ghost{background:rgba(0,230,118,.05);border:1px dashed rgba(0,230,118,.35);opacity:.5;}
+.inv-tile.t1{animation:invT1 3s ease-in-out infinite;}
+.inv-tile.t3{animation:invT3 3s ease-in-out infinite;}
+@keyframes invT1{0%,18%{border-color:#00e676;box-shadow:0 0 10px rgba(0,230,118,.55)}32%,100%{border-color:rgba(255,255,255,.12);box-shadow:none}}
+@keyframes invT3{0%,48%{border-color:rgba(255,255,255,.12);box-shadow:none}58%,76%{border-color:#00e676;box-shadow:0 0 10px rgba(0,230,118,.55)}90%,100%{border-color:rgba(255,255,255,.12);box-shadow:none}}
+.inv-cur{position:relative;width:84px;height:58px;}
+.inv-cur .inv-dot{position:absolute;color:#00e676;animation:invCur 4.4s ease-in-out infinite;}
+.inv-cur .inv-det{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border:2px solid rgba(0,230,118,.5);border-radius:50%;animation:invPulse 1.8s ease-out infinite;}
+@keyframes invCur{0%{left:2px;top:4px}25%{left:60px;top:12px}50%{left:28px;top:38px}75%{left:66px;top:32px}100%{left:2px;top:4px}}
+@keyframes invPulse{0%{transform:scale(.6);opacity:.85}100%{transform:scale(2.2);opacity:0}}
+/* ── Powered by OpenAI section ── */
+.ai-wrap{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:40px;background:radial-gradient(120% 140% at 0% 0%,rgba(0,230,118,.08),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid rgba(0,230,118,.22);border-radius:22px;padding:36px 40px;}
+.ai-logo{flex-shrink:0;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(0,230,118,.14),transparent 70%);position:relative;}
+.ai-logo::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,230,118,.3);animation:aiRing 3s ease-in-out infinite;}
+.ai-logo svg{width:70px;height:70px;color:#e8f0ec;}
+@keyframes aiRing{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.08);opacity:1}}
+.ai-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#00e676;margin-bottom:6px;}
+.ai-body h2{font-size:1.9rem;margin:0 0 18px;line-height:1.15;}
+.ai-feats{display:flex;flex-direction:column;gap:16px;}
+.ai-feat{display:flex;gap:14px;align-items:flex-start;}
+.ai-feat-ic{flex-shrink:0;width:40px;height:40px;border-radius:11px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.32);display:flex;align-items:center;justify-content:center;color:#00e676;}
+.ai-feat h4{margin:0 0 3px;font-size:1rem;color:#fff;font-weight:800;}
+.ai-feat p{margin:0;font-size:.88rem;color:#9fb2a8;line-height:1.6;}
+@media(max-width:860px){.inv-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:760px){.ai-wrap{flex-direction:column;text-align:center;padding:30px 22px;gap:24px;}.ai-feat{text-align:left;}.ai-body h2{font-size:1.6rem;}}
+@media(max-width:460px){.inv-grid{grid-template-columns:1fr;}}
+</style>
+
+<section class="reveal">
+  <div class="sh"><h2>Truly Invisible, Four Ways</h2><p>Not just a window you hope nobody sees. CloakAI is invisible at the level that actually matters.</p></div>
+  <div class="inv-grid">
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-mon"><div class="inv-scan"></div><div class="inv-ghost"></div></div><span class="inv-rec">REC</span></div>
+      <h3>Invisible on screen share</h3>
+      <p>OS-level content protection excludes the overlay from Zoom, Meet, Teams and every screen recorder. They capture your screen, minus CloakAI.</p>
+    </div>
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-tm"><div class="inv-row"></div><div class="inv-row r2"></div><div class="inv-row"></div><div class="inv-tm-sweep"></div></div></div>
+      <h3>Invisible in Task Manager</h3>
+      <p>Runs as a neutral background process named "CA Runtime", with no telltale app name, icon or window to give it away in a process list.</p>
+    </div>
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-tabs"><div class="inv-tile t1"></div><div class="inv-tile ghost"></div><div class="inv-tile t3"></div></div></div>
+      <h3>Invisible to tab switching</h3>
+      <p>Skipped by Alt-Tab and the window switcher, so flipping between apps never surfaces it or pulls it into focus mid-call.</p>
+    </div>
+    <div class="inv-card">
+      <div class="inv-ill"><div class="inv-cur"><div class="inv-det"></div><svg class="inv-dot" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2l7 18 2.5-7L21 10.5 4 2z"/></svg></div></div>
+      <h3>Cursor stays undetectable</h3>
+      <p>No cursor capture and no focus steal. Your pointer behaves exactly as expected, with nothing extra for proctoring tools to flag.</p>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="ai-wrap">
+    <div class="ai-logo">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-label="OpenAI"><path d="M22.28 9.82a5.98 5.98 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-3.99 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.52 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.21 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08zm-9.02 12.6a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.79.79 0 0 0 .39-.68v-6.74l2.02 1.17a.07.07 0 0 1 .04.05v5.58a4.5 4.5 0 0 1-4.49 4.5zM3.6 18.3a4.47 4.47 0 0 1-.54-3.01l.14.09 4.78 2.76a.77.77 0 0 0 .78 0l5.84-3.37v2.33a.08.08 0 0 1-.03.06L9.74 19.9a4.5 4.5 0 0 1-6.14-1.6zM2.34 7.9a4.49 4.49 0 0 1 2.34-1.97V11.6a.77.77 0 0 0 .39.68l5.81 3.35-2.02 1.17a.07.07 0 0 1-.07 0l-4.83-2.79A4.5 4.5 0 0 1 2.34 7.9zm16.6 3.85l-5.84-3.38 2.02-1.16a.07.07 0 0 1 .07 0l4.83 2.79a4.49 4.49 0 0 1-.68 8.1v-5.68a.79.79 0 0 0-.4-.67zm2.01-3.03l-.14-.09-4.78-2.77a.78.78 0 0 0-.78 0L9.4 9.23V6.9a.07.07 0 0 1 .03-.06l4.83-2.79a4.5 4.5 0 0 1 6.68 4.66zM8.3 12.86l-2.02-1.17a.08.08 0 0 1-.04-.05V6.06a4.5 4.5 0 0 1 7.38-3.45l-.14.08-4.78 2.76a.79.79 0 0 0-.39.68l-.01 6.73zm1.1-2.36L12 9l2.6 1.5v3L12 15l-2.6-1.5v-3z"/></svg>
+    </div>
+    <div class="ai-body">
+      <div class="ai-eyebrow">Powered by OpenAI</div>
+      <h2>Fast transcription. Accurate answers.</h2>
+      <div class="ai-feats">
+        <div class="ai-feat">
+          <div class="ai-feat-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+          <div><h4>Automatic fast transcription</h4><p>Whisper hears the question the moment it is asked and turns speech into text in about a second, no buttons, no lag, no copy-paste.</p></div>
+        </div>
+        <div class="ai-feat">
+          <div class="ai-feat-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></div>
+          <div><h4>Accurate, context-aware responses</h4><p>GPT-4o-mini writes precise answers tuned to your resume, role and the exact question asked, not generic filler you have to rewrite.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="features" class="reveal">
   <div class="sh"><h2>Features No Other AI Assistant Has</h2><p>CloakAI is built for the reality of live conversations, not just the theory of them.</p></div>
   <div class="grid-3">
@@ -1012,7 +1157,12 @@
      onclick="openQuick()" onkeydown="if(event.key==='Enter'||event.key===' '){openQuick();event.preventDefault();}">
   <div class="buy-bar-info">
     <span class="buy-bar-title">Get CloakAI</span>
-    <span class="buy-bar-sub">Plans starting at <b id="sticky-from">₹499</b></span>
+    <span class="buy-bar-sub">Plans starting at <b id="sticky-from">₹499</b> · 20-min free trial, no card</span>
+  </div>
+  <div class="buy-bar-feats">
+    <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>Instant answers</span>
+    <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>Invisible on screen share</span>
+    <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>Hours never expire</span>
   </div>
   <span class="buy-bar-btn">Get Access
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="M12.5 6l6 6-6 6"/></svg>
