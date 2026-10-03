@@ -202,6 +202,8 @@ document.querySelectorAll('#mnav a').forEach(function(a){
     bar.setAttribute('role','dialog');
     bar.setAttribute('aria-label','Cookie consent');
     bar.innerHTML='<p>We use cookies for analytics (Google Analytics) to understand how this site is used. We do not use advertising cookies. See our <a href="privacy.html">Privacy Policy</a>.</p><div class="ck-btns"><button type="button" id="ck-decline">Decline</button><button type="button" id="ck-accept">Accept</button></div>';
+    // Sit above the sticky buy bar where one exists, so the two never overlap.
+    if(document.getElementById('buy-bar')) bar.classList.add('has-buybar');
     (document.body||document.documentElement).appendChild(bar);
     bar.querySelector('#ck-accept').addEventListener('click',function(){ applyChoice('granted'); save('granted'); hide(); });
     bar.querySelector('#ck-decline').addEventListener('click',function(){ applyChoice('denied'); save('denied'); hide(); });

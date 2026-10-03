@@ -186,9 +186,11 @@
     .pc-feats li.feat-up::before{content:'★';color:#F59E0B;}
     .pc .pc-feats li.feat-up::before{color:var(--gg);}
     .pc[data-tier="pro"] .pc-feats li.feat-up::before{color:#A78BFA;}
-    .btn-buy{margin-top:auto;width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:.2s;box-shadow:0 4px 14px rgba(46,204,113,.2);position:relative;overflow:hidden;}
+    .btn-buy{margin-top:auto;width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-size:.97rem;font-weight:700;cursor:pointer;transition:transform .2s;position:relative;overflow:hidden;animation:buyGlow 2.4s ease-in-out infinite;}
     .btn-buy::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
-    .btn-buy:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(46,204,113,.35);}
+    .btn-buy:hover{transform:translateY(-2px);}
+    /* Pulsing green glow on the plan CTAs, matching the hero's glow treatment. */
+    @keyframes buyGlow{0%,100%{box-shadow:0 4px 14px rgba(46,204,113,.25);}50%{box-shadow:0 0 22px rgba(46,204,113,.6),0 4px 18px rgba(46,204,113,.4);}}
     .pricing-note{text-align:center;margin-top:24px;color:#444;font-size:.8rem;line-height:1.8;}
     .pricing-note a{color:var(--ag);text-decoration:underline;}
     /* Payment methods */
@@ -319,11 +321,22 @@
     .sup-btn:disabled{opacity:.45;cursor:not-allowed;}
     .sup-msg{text-align:center;font-size:.8rem;margin-top:8px;min-height:16px;}
     .sup-msg.err{color:#EF4444;}.sup-msg.ok{color:#34D399;}.sup-msg.inf{color:#94A3B8;}
-    /* Mobile sticky buy bar + quick plan picker. Desktop hides the bar entirely; the
-       header already has a Get Access CTA there. On mobile the bar is fixed to the
-       bottom, so the FAB is nudged up and the body gets bottom padding to keep the
-       footer clear of it. */
-    #buy-bar{display:none;}
+    /* Sticky buy bar + quick plan picker, on EVERY screen (desktop too) for one-tap
+       checkout. Fixed to the bottom, so the FAB is nudged up and the body gets bottom
+       padding to keep the footer clear of it. Slides up shortly after load. */
+    #buy-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:1900;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(14px,6vw,90px);background:linear-gradient(180deg,rgba(8,16,11,.98),rgba(4,10,7,.99));border-top:1px solid rgba(46,204,113,.4);box-shadow:0 -8px 28px rgba(0,0,0,.55);backdrop-filter:blur(10px);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:buyBarUp .5s cubic-bezier(.22,1,.36,1) .3s both;}
+    #buy-bar:active{background:linear-gradient(180deg,rgba(10,20,14,1),rgba(6,12,9,1));}
+    /* Children are pointer-events:none so every click lands on #buy-bar's single
+       handler: the whole bar is one big target, no double-fire. */
+    .buy-bar-info{display:flex;flex-direction:column;line-height:1.2;min-width:0;pointer-events:none;}
+    .buy-bar-title{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.2px;}
+    .buy-bar-sub{font-size:.76rem;color:#9fb2a8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .buy-bar-sub b{color:#00e676;font-weight:800;}
+    .buy-bar-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;padding:12px 28px;border-radius:26px;border:1px solid var(--gg);background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;font-weight:800;font-size:.95rem;font-family:inherit;box-shadow:0 4px 18px rgba(0,230,118,.4);position:relative;overflow:hidden;white-space:nowrap;pointer-events:none;}
+    .buy-bar-btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.28),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
+    body{padding-bottom:74px;}
+    .sup-fab{bottom:84px;}
+    .sup-fab-label{bottom:88px;}
     .quick-list{display:flex;flex-direction:column;gap:10px;}
     .quick-row{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:14px 16px;border-radius:13px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#fff;cursor:pointer;font-family:inherit;transition:border-color .18s,background .18s;}
     .quick-row:hover,.quick-row:active{border-color:var(--gg);background:rgba(0,230,118,.06);}
@@ -374,19 +387,10 @@
     .rv-star:hover{transform:scale(1.12);}
     .rv-star.on{color:#F59E0B;}
     @media(max-width:768px){
-      #buy-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:1900;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:linear-gradient(180deg,rgba(8,16,11,.98),rgba(4,10,7,.99));border-top:1px solid rgba(46,204,113,.4);box-shadow:0 -8px 28px rgba(0,0,0,.55);backdrop-filter:blur(10px);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:buyBarUp .45s cubic-bezier(.4,0,.2,1) .35s both;}
-      #buy-bar:active{background:linear-gradient(180deg,rgba(10,20,14,1),rgba(6,12,9,1));}
-      /* Children are pointer-events:none so every tap lands on #buy-bar's single
-         handler: the whole bar is one big tap target, and there is no double-fire. */
-      .buy-bar-info{display:flex;flex-direction:column;line-height:1.2;min-width:0;pointer-events:none;}
-      .buy-bar-title{font-size:.96rem;font-weight:800;color:#fff;letter-spacing:-.2px;}
-      .buy-bar-sub{font-size:.72rem;color:#9fb2a8;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-      .buy-bar-sub b{color:#00e676;font-weight:800;}
-      .buy-bar-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:26px;border:1px solid var(--gg);background:linear-gradient(90deg,#00e676,#00c853);color:#04170f;font-weight:800;font-size:.95rem;font-family:inherit;box-shadow:0 4px 18px rgba(0,230,118,.4);position:relative;overflow:hidden;white-space:nowrap;pointer-events:none;}
-      .buy-bar-btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.28),transparent);transform:rotate(45deg);animation:shine 3s infinite;}
+      #buy-bar{padding:11px 14px;gap:12px;}
+      .buy-bar-title{font-size:.96rem;}
+      .buy-bar-btn{padding:13px 24px;}
       body{padding-bottom:70px;}
-      .sup-fab{bottom:84px;}
-      .sup-fab-label{bottom:88px;}
     }
     @keyframes buyBarUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   html{overflow-x:hidden;}
@@ -478,8 +482,6 @@
 <!-- HERO -->
 <section class="hero">
   <div class="badge" style="display:inline-flex;align-items:center;justify-content:center;gap:4px 8px;flex-wrap:wrap;">
-    <span>🇮🇳 India's #1 AI Meeting & Call Assistant</span>
-    <span style="opacity:.4">·</span>
     <span style="display:inline-flex;align-items:center;gap:5px;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
       20-Min Free Trial
@@ -495,7 +497,7 @@
   </div>
   <p class="hero-sub"><span id="tt"></span><span class="typing-cursor"></span></p>
   <div class="pills">
-    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Join 1,500+ early users</div>
+    <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Join 2,000+ job seekers</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#2D8CFF"/><rect x="9" y="19" width="30" height="26" rx="6" fill="white"/><path d="M39 28L55 20V44L39 36V28Z" fill="white"/></svg>Zoom</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="#5059C9"/><circle cx="43" cy="20" r="7" fill="#7B83EB"/><rect x="33" y="28" width="22" height="18" rx="4.5" fill="#7B83EB"/><circle cx="24" cy="20" r="10" fill="white"/><rect x="10" y="31" width="28" height="20" rx="5.5" fill="white"/></svg>Teams</div>
     <div class="pill"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><rect width="64" height="64" rx="14" fill="white"/><path d="M8 22C8 18.7 10.7 16 14 16H27V32H8V22Z" fill="#00832D"/><path d="M27 16H38C41.3 16 44 18.7 44 22V32H27V16Z" fill="#0066DA"/><path d="M8 32H27V48H14C10.7 48 8 45.3 8 42V32Z" fill="#E94235"/><path d="M27 32H44V42C44 45.3 41.3 48 38 48H27V32Z" fill="#00AC47"/><path d="M44 26L56 20V44L44 38V26Z" fill="#00832D"/><rect x="25" y="14" width="4" height="36" fill="white"/><rect x="6" y="30" width="40" height="4" fill="white"/></svg>Google Meet</div>
@@ -781,6 +783,21 @@
 <!-- REVIEWS -->
 <section class="reveal">
   <div class="sh"><h2>Early Users Are Saying</h2><p>Real feedback from our early access users across India.</p></div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;max-width:880px;margin:0 auto 22px;">
+    <div style="flex:1 1 230px;background:rgba(255,255,255,.04);border:1px solid rgba(46,204,113,.28);border-radius:14px;padding:20px 18px;text-align:center;">
+      <div style="font-size:2.1rem;font-weight:900;color:#00e676;letter-spacing:-.5px;line-height:1;">2,000+</div>
+      <div style="font-size:.86rem;color:#9fb2a8;margin-top:6px;">job seekers using CloakAI</div>
+    </div>
+    <div style="flex:1 1 230px;background:rgba(255,255,255,.04);border:1px solid rgba(46,204,113,.28);border-radius:14px;padding:20px 18px;text-align:center;">
+      <div style="font-size:2.1rem;font-weight:900;color:#00e676;letter-spacing:-.5px;line-height:1;">1 in 4</div>
+      <div style="font-size:.86rem;color:#9fb2a8;margin-top:6px;">customers come back &amp; buy more hours</div>
+    </div>
+    <div style="flex:1 1 230px;background:rgba(255,255,255,.04);border:1px solid rgba(46,204,113,.28);border-radius:14px;padding:20px 18px;text-align:center;">
+      <div style="font-size:2.1rem;font-weight:900;color:#00e676;letter-spacing:-.5px;line-height:1;">20 min</div>
+      <div style="font-size:.86rem;color:#9fb2a8;margin-top:6px;">free trial, no card needed</div>
+    </div>
+  </div>
+  <p style="text-align:center;color:#94A3B8;font-size:.92rem;max-width:640px;margin:0 auto 30px;line-height:1.7;">We follow up with every customer. Candidates tell us they are landing interview calls and offers, and many are still mid-search, read their words below.</p>
   <div class="grid-3" id="reviews-grid">
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"I'll be honest I was skeptical. Tested it on a Google Meet call with a friend first. He shared his screen, I had CloakAI open. He saw nothing. Not even a flash. That was enough for me."</p><div class="rev-author">Karthik N.</div><div class="rev-role">SDE-2 candidate, Bengaluru</div></div>
     <div class="review-card"><div class="stars">★★★★★</div><p class="rev-text">"Got asked a SQL joins question mid-call. Held Alt, the other person asked, released. Answer appeared in about 2 seconds. I typed it out like it was mine. Second round cleared."</p><div class="rev-author">Neha P.</div><div class="rev-role">Data Engineer, Pune</div></div>
