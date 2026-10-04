@@ -7,7 +7,7 @@
        document. Analytics used to sit above it and competed for the same connection
        on a slow mobile link, delaying first paint for no benefit. gtag is async, so
        moving it down costs nothing: it still loads, just not ahead of the paint. -->
-  <link rel="stylesheet" href="theme.css?v=20261009">
+  <link rel="stylesheet" href="theme.css?v=20261010">
   <!-- Google Identity Services for the optional "Continue with Google" checkout. Async,
        so if it fails to load the email + OTP flow below is completely unaffected. -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -2106,6 +2106,6 @@
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 </script>
-<script src="layout.js?v=20261009"></script>
+<script src="layout.js?v=20261010"></script>
 </body>
 </html>

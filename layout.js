@@ -73,7 +73,7 @@ document.querySelectorAll('#mnav a').forEach(function(a){
     am.href='account.html';
     am.className='hdr-account-m';
     am.setAttribute('aria-label',signedIn?'My account':'Sign in');
-    am.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>';
+    am.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><span>'+(signedIn?'My account':'Sign in')+'</span>';
     inner.insertBefore(am, ham);
   }
 })();
