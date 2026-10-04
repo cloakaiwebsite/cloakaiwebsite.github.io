@@ -93,9 +93,12 @@
     /* "Try for free" label sits above the download button. The wrapper keeps the
        label and its button together as one flex item; align-items:flex-end above
        keeps every button on the same baseline. The mobile rule below re-centres. */
-    .dl-stack{display:flex;flex-direction:column;align-items:center;gap:7px;}
-    .dl-tag{font-size:.68rem;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--gg);
-      display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+    .dl-stack{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    /* "Try for free" reads as a small pill chip above the button, not cramped text. */
+    .dl-tag{font-size:.62rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--gg);
+      display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+      background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.32);border-radius:20px;padding:4px 11px;}
+    .dl-tag svg{width:12px;height:12px;}
     /* Repeating "Try for free" CTA placed between sections. Deliberately NOT given
        the .reveal class: reveal starts at opacity:0 and needs JS to add .on, so a
        failed observer would leave the primary CTA invisible. An unanimated button
@@ -519,13 +522,19 @@
     .hero-laurel .lrl-txt b{font-size:1.02rem;font-weight:800;color:#eafff0;letter-spacing:.2px;}
     .hero-laurel .lrl-txt small{font-size:.76rem;font-weight:600;color:#9ecfa6;}
     /* Taglines as three clean grid cells with subtle dividers - not an oval pill. */
-    .hero-tags{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;max-width:720px;margin:0 auto 26px;}
-    .htg{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 16px;font-size:.92rem;font-weight:600;color:#cfe9d6;text-align:center;}
+    .hero-laurel .in-flag{border-radius:3px;vertical-align:-2px;margin-left:3px;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+    .hero-tags{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;max-width:760px;margin:0 auto 26px;}
+    .htg{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 14px;font-size:.92rem;font-weight:600;color:#cfe9d6;text-align:center;}
     .htg svg{width:15px;height:15px;color:var(--gg);flex-shrink:0;}
     .htg + .htg{border-left:1px solid rgba(0,230,118,.18);}
+    /* Feedback cell: two tight lines, icon close to the text. */
+    .htg-fb{gap:7px;}
+    .htg-fb-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;text-align:left;}
+    .htg-fb-txt small{font-size:.72rem;font-weight:500;color:#8fb89b;margin-top:1px;}
     @media(max-width:620px){
-      .hero-tags{grid-template-columns:1fr;max-width:300px;}
+      .hero-tags{grid-template-columns:1fr;max-width:320px;justify-items:center;}
       .htg{padding:8px 10px;}
+      .htg-fb-txt{align-items:center;text-align:center;}
       .htg + .htg{border-left:0;border-top:1px solid rgba(0,230,118,.14);}
     }
   </style>
@@ -542,7 +551,7 @@
       <ellipse cx="15" cy="11" rx="4.5" ry="2.4" transform="rotate(-28 15 11)"/>
       <ellipse cx="20" cy="5" rx="4" ry="2.2" transform="rotate(-45 20 5)"/>
     </svg>
-    <span class="lrl-txt"><b>India's #1</b><small>AI Meeting &amp; Call Assistant</small></span>
+    <span class="lrl-txt"><b>India's #1 <svg class="in-flag" viewBox="0 0 30 20" width="19" height="13" aria-label="India"><rect width="30" height="20" fill="#138808"/><rect width="30" height="13.34" fill="#fff"/><rect width="30" height="6.67" fill="#FF9933"/><circle cx="15" cy="10" r="2.3" fill="none" stroke="#000080" stroke-width="0.7"/><circle cx="15" cy="10" r="0.5" fill="#000080"/></svg></b><small>AI Meeting &amp; Call Assistant</small></span>
     <svg class="lrl lrl-r" viewBox="0 0 30 60" fill="currentColor" aria-hidden="true">
       <path d="M22 58 C12 50 8 36 12 20 C14 12 18 6 24 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       <ellipse cx="11" cy="46" rx="5" ry="2.6" transform="rotate(35 11 46)"/>
@@ -562,9 +571,9 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
       <span>No card needed</span>
     </div>
-    <div class="htg">
+    <div class="htg htg-fb">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M5 4H3v2a3 3 0 003 3"/><path d="M19 4h2v2a3 3 0 01-3 3"/></svg>
-      <span>Candidates landing jobs in weeks</span>
+      <span class="htg-fb-txt">Candidates landing jobs in weeks<small>Real, anonymous feedback from placed users</small></span>
     </div>
   </div>
   <div class="float-icons" aria-hidden="true">
