@@ -51,8 +51,8 @@ document.querySelectorAll('#mnav a').forEach(function(a){
    to the account page, which handles the actual sign-in. The label text is a fixed
    string, never user data, so building it with innerHTML is safe. */
 (function(){
-  if(document.querySelector('[data-account-link]'))return;
   var nav=document.getElementById('mnav');
+  if(!nav||nav.querySelector('[data-account-link]'))return;
   var signedIn=false;
   try{
     var t=sessionStorage.getItem('cloakai_gtok')||'';
@@ -61,13 +61,9 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   var a=document.createElement('a');
   a.href='account.html';
   a.setAttribute('data-account-link','');
-  a.className='hdr-account';
-  a.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><span>'+(signedIn?'Account':'Sign in')+'</span>';
-  // Place it right next to the CloakAI logo (always visible, not inside the collapsing nav).
-  var inner=document.querySelector('.header-inner');
-  var logo=inner&&inner.querySelector('.logo');
-  if(logo&&logo.parentNode){ logo.parentNode.insertBefore(a, logo.nextSibling); }
-  else if(nav){ var cta=nav.querySelector('.nav-cta'); if(cta)nav.insertBefore(a,cta);else nav.appendChild(a); }
+  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>'+(signedIn?'My Account':'Sign in');
+  var cta=nav.querySelector('.nav-cta');
+  if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
 })();
 
 /* ── Floating nav: rounded when scrolled, hides on scroll down, shows on scroll up ── */

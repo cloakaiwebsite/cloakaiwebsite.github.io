@@ -7,7 +7,7 @@
        document. Analytics used to sit above it and competed for the same connection
        on a slow mobile link, delaying first paint for no benefit. gtag is async, so
        moving it down costs nothing: it still loads, just not ahead of the paint. -->
-  <link rel="stylesheet" href="theme.css?v=20261005">
+  <link rel="stylesheet" href="theme.css?v=20261006">
   <!-- Google Identity Services for the optional "Continue with Google" checkout. Async,
        so if it fails to load the email + OTP flow below is completely unaffected. -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -600,6 +600,7 @@
         <span class="cw-sep"></span>
         <span class="cw-b" id="cwScan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8,21 12,17 16,21"/></svg>Scan</span>
         <span class="cw-b" id="cwChat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Chat</span>
+        <span class="cw-b" id="cwDiag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="5" rx="1"/><rect x="14" y="4" width="7" height="5" rx="1"/><rect x="8.5" y="15" width="7" height="5" rx="1"/><path d="M6.5 9v2.5h11V9M12 11.5V15"/></svg>Diagram</span>
         <span class="cw-b" id="cwTrBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="7" y1="9" x2="15" y2="9"/><line x1="7" y1="13" x2="12" y2="13"/></svg></span>
         <span class="cw-gap"></span>
         <span class="cw-b" id="cwGear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
@@ -636,6 +637,25 @@
     +'<div class="cw-line cw-bul"><span>•</span><span><b>Memory</b> - processes are isolated; threads share the parent heap.</span></div>'
     +'<div class="cw-line cw-bul"><span>•</span><span><b>Overhead</b> - spawning a thread is far cheaper than a new process.</span></div>'
     +'<div class="cw-line cw-bul"><span>•</span><span><b>Crash safety</b> - one thread failing can bring down the whole process.</span></div>';
+  var SCAN_Q='📷 Screen scan - "Two Sum": return the indices of the two numbers that add up to target';
+  var SCAN_ANS='<div class="cw-line"><span class="cw-star">★</span>Use a <b>hash map</b> in a single pass: for each number, check whether <b>target &minus; num</b> has already been seen.</div>'
+    +'<div class="cw-line cw-bul"><span>•</span><span>If yes, return the stored index and the current one.</span></div>'
+    +'<div class="cw-line cw-bul"><span>•</span><span>If no, store <b>num &rarr; index</b> and move on.</span></div>'
+    +'<div class="cw-line" style="margin-top:8px">Runs in <b>O(n)</b> time, <b>O(n)</b> space - the brute force is O(n&sup2;).</div>';
+  var CHAT_Q='You: why not just sort the array first?';
+  var CHAT_ANS='<div class="cw-line"><span class="cw-star">★</span>Sorting is <b>O(n log n)</b> and scrambles the original positions, so you would need extra bookkeeping to recover the indices.</div>'
+    +'<div class="cw-line" style="margin-top:8px">The hash map stays <b>O(n)</b> and hands back the indices directly, so it wins here.</div>';
+  var DG='<div class="cw-dg"><svg viewBox="0 0 520 150" width="100%" style="max-width:500px;display:block;margin:2px auto">'
+    +'<defs><marker id="cwar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#00e676"/></marker></defs>'
+    +'<g fill="none" stroke="#1f6b3f" stroke-width="1.6" marker-end="url(#cwar)">'
+    +'<path d="M120 36 H176"/><path d="M300 36 H360"/><path d="M250 58 V104 H176 V58"/><path d="M420 58 V104 H300"/></g>'
+    +'<g font-family="inherit" font-size="12" font-weight="700" text-anchor="middle">'
+    +'<rect x="16" y="20" width="104" height="34" rx="8" fill="rgba(0,230,118,.14)" stroke="#00e676" stroke-width="1.4"/><text x="68" y="41" fill="#9effc4">For each num</text>'
+    +'<rect x="176" y="20" width="124" height="34" rx="8" fill="rgba(0,230,118,.06)" stroke="#1f6b3f" stroke-width="1.3"/><text x="238" y="41" fill="#eafff0">target&minus;num seen?</text>'
+    +'<rect x="360" y="20" width="144" height="34" rx="8" fill="rgba(0,230,118,.14)" stroke="#00e676" stroke-width="1.4"/><text x="432" y="41" fill="#9effc4">return indices</text>'
+    +'<rect x="176" y="104" width="124" height="34" rx="8" fill="rgba(255,255,255,.03)" stroke="#1f6b3f" stroke-width="1.2"/><text x="238" y="125" fill="#cfeeda">store num&rarr;index</text>'
+    +'<text x="330" y="30" fill="#00e676" font-size="11">yes</text><text x="258" y="84" fill="#7fb894" font-size="11">no</text>'
+    +'</g></svg></div>';
   var $=function(id){return document.getElementById(id);};
   var timers=[], playing=false, inView=false;
   function T(fn,ms){var t=setTimeout(fn,ms);timers.push(t);return t;}
@@ -647,7 +667,7 @@
     $('cwA').className='cw-ans idle';$('cwAText').innerHTML='Answer will appear here...';
     status('Ready',false);
     $('cwSettings').classList.remove('open');$('cwTrans').classList.remove('open');
-    $('cwGear').classList.remove('hot');$('cwTrBtn').classList.remove('hot');$('cwUp').classList.remove('hot');
+    ['cwGear','cwTrBtn','cwUp','cwScan','cwChat','cwDiag'].forEach(function(id){var el=$(id);if(el)el.classList.remove('hot');});
     $('cwUpSt').classList.remove('show');$('cwTp').classList.remove('show');
   }
   function typeQ(txt,done){
@@ -657,28 +677,44 @@
       else{$('cwQ').innerHTML=txt;done&&done();}
     })();
   }
+  function setQ(txt){$('cwQ').className='cw-q';$('cwQ').innerHTML=txt;}
+  function showAns(html){$('cwA').className='cw-ans';$('cwAText').innerHTML=html;void $('cwA').offsetWidth;$('cwA').classList.add('go');}
+  function hot(id){var el=$(id);if(el)el.classList.add('hot');}
+  function cool(id){var el=$(id);if(el)el.classList.remove('hot');}
   function play(){
     if(playing)return; playing=true; reset();
+    // 1) A live question is heard and answered
     status('Listening...',true); cap('A question comes in from the caller');
     T(function(){typeQ(Q,function(){
       status('Thinking...',true); cap('CloakAI is <b>generating your answer</b>');
       T(function(){
-        $('cwA').className='cw-ans';$('cwAText').innerHTML=ANS;
-        void $('cwA').offsetWidth; $('cwA').classList.add('go');
+        showAns(ANS);
         status('Answered',false); cap('The answer appears, <b>only you can see it</b>');
       },1900);
     });},900);
-    // Settings + resume
-    T(function(){$('cwGear').classList.add('hot');cap('Open <b>Settings</b>');},9800);
-    T(function(){$('cwGear').classList.remove('hot');$('cwSettings').classList.add('open');},10900);
-    T(function(){$('cwUp').classList.add('hot');cap('Upload your <b>resume</b> so answers sound like you');},12800);
-    T(function(){$('cwUp').classList.remove('hot');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');},13900);
-    T(function(){$('cwSettings').classList.remove('open');},16200);
-    // Transcript
-    T(function(){$('cwTrBtn').classList.add('hot');cap('Every Q&amp;A is saved to the <b>Transcript</b>');},17000);
-    T(function(){$('cwTrBtn').classList.remove('hot');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},18000);
-    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},21500);
-    T(function(){playing=false; if(inView) play();},23500);
+    // 2) Scan - read a coding problem or MCQ straight off the screen
+    T(function(){hot('cwScan');cap('Hit <b>Scan</b> to read a coding problem or MCQ on your screen');},8400);
+    T(function(){cool('cwScan');status('Scanning...',true);setQ(SCAN_Q);cap('CloakAI reads the whole screen');},9600);
+    T(function(){showAns(SCAN_ANS);status('Answered',false);cap('and answers what is <b>on your screen</b>, instantly');},11200);
+    // 3) Chat - ask a follow-up in your own words
+    T(function(){hot('cwChat');cap('Open <b>Chat</b> to ask a follow-up in your own words');},14200);
+    T(function(){cool('cwChat');status('Thinking...',true);setQ(CHAT_Q);cap('It keeps the <b>full conversation</b> in mind');},15400);
+    T(function(){showAns(CHAT_ANS);status('Answered',false);cap('so follow-ups stay on topic');},17000);
+    // 4) Diagram - turn the answer into a visual you can explain from
+    T(function(){hot('cwDiag');cap('Tap <b>Diagram</b> to turn the answer into a visual');},20000);
+    T(function(){cool('cwDiag');status('Drawing...',true);cap('CloakAI draws a diagram for the concept');},21200);
+    T(function(){showAns(DG);status('Answered',false);cap('A diagram you can actually explain from - <b>no other tool does this</b>');},22600);
+    // 5) Settings + resume
+    T(function(){setQ(Q);showAns(ANS);hot('cwGear');cap('Open <b>Settings</b>');},25800);
+    T(function(){cool('cwGear');$('cwSettings').classList.add('open');},26900);
+    T(function(){hot('cwUp');cap('Upload your <b>resume</b> so answers sound like you');},28800);
+    T(function(){cool('cwUp');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');},29900);
+    T(function(){$('cwSettings').classList.remove('open');},32200);
+    // 6) Transcript
+    T(function(){hot('cwTrBtn');cap('Every Q&amp;A is saved to the <b>Transcript</b>');},33000);
+    T(function(){cool('cwTrBtn');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},34000);
+    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},37500);
+    T(function(){playing=false; if(inView) play();},39500);
   }
   var revealed=false;
   function wake(){
@@ -1124,6 +1160,7 @@
 <section id="features" class="reveal">
   <div class="sh"><h2>Features No Other AI Assistant Has</h2><p>CloakAI is built for the reality of live conversations, not just the theory of them.</p></div>
   <div class="grid-3">
+    <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">📊</div><h3>Instant Concept Diagrams</h3><p>Turn any answer into a diagram with one tap, an architecture, a flow or a sequence drawn from that exact answer. Explain the concept on screen like you really understand it, instead of just reciting text. No other interview assistant can do this.</p></div>
     <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">💾</div><h3>Full Session Transcript Saved</h3><p>Every question and every answer from your session is automatically stored. Download the complete session log with one click and review what worked.</p></div>
     <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">🖥</div><h3>Screen Scan and Analyse</h3><p>Screenshot your screen and instantly ask CloakAI what's on it. Works on coding challenges shown inside shared documents or any on-screen content.</p></div>
     <div class="card unique"><div class="unique-badge">EXCLUSIVE</div><div class="card-ico">◀▶</div><h3>Browse Your Last 100 Answers</h3><p>Accidentally cleared your screen or moved to a follow-up question? Navigate through your last 100 answers with a single click, mid-call, without losing the live feed.</p></div>
@@ -1972,6 +2009,6 @@
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 </script>
-<script src="layout.js?v=20261004"></script>
+<script src="layout.js?v=20261006"></script>
 </body>
 </html>
