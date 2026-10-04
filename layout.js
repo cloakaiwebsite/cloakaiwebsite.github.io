@@ -64,16 +64,32 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>'+(signedIn?'My Account':'Sign in');
   var cta=nav.querySelector('.nav-cta');
   if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
+  // Mobile only: a visible account button next to the hamburger (the three lines),
+  // since the nav copy above is hidden inside the collapsed menu on small screens.
+  var inner=document.querySelector('.header-inner');
+  var ham=inner&&inner.querySelector('.ham');
+  if(inner&&ham&&!inner.querySelector('.hdr-account-m')){
+    var am=document.createElement('a');
+    am.href='account.html';
+    am.className='hdr-account-m';
+    am.setAttribute('aria-label',signedIn?'My account':'Sign in');
+    am.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>';
+    inner.insertBefore(am, ham);
+  }
 })();
 
 /* ── Floating nav: rounded when scrolled, hides on scroll down, shows on scroll up ── */
 (function(){
   var h=document.querySelector('header'); if(!h) return;
+  var bb=document.getElementById('buy-bar');   // sticky bottom bar (homepage only)
   var last=0, ticking=false;
   function upd(){
     var y=window.pageYOffset||document.documentElement.scrollTop||0;
     if(y>60) h.classList.add('nav-scrolled'); else h.classList.remove('nav-scrolled');
     if(y>last && y>240) h.classList.add('nav-up'); else h.classList.remove('nav-up');
+    // The buy bar stays invisible at the very top (so it never overlaps the hero) and
+    // slides up from the bottom after the first scroll, on mobile and desktop alike.
+    if(bb){ if(y>140) bb.classList.add('show'); else bb.classList.remove('show'); }
     last=y; ticking=false;
   }
   window.addEventListener('scroll',function(){ if(!ticking){ requestAnimationFrame(upd); ticking=true; } },{passive:true});

@@ -7,7 +7,7 @@
        document. Analytics used to sit above it and competed for the same connection
        on a slow mobile link, delaying first paint for no benefit. gtag is async, so
        moving it down costs nothing: it still loads, just not ahead of the paint. -->
-  <link rel="stylesheet" href="theme.css?v=20261007">
+  <link rel="stylesheet" href="theme.css?v=20261008">
   <!-- Google Identity Services for the optional "Continue with Google" checkout. Async,
        so if it fails to load the email + OTP flow below is completely unaffected. -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -70,7 +70,7 @@
 
     }
     /* Hero */
-    .hero{text-align:center;padding:40px 20px 54px;}
+    .hero{text-align:center;padding:16px 20px 48px;}
     .badge{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;background:rgba(46,204,113,.09);border:1px solid rgba(46,204,113,.3);color:var(--gg);padding:7px 18px;border-radius:30px;font-size:.82rem;font-weight:600;letter-spacing:.3px;margin-bottom:22px;animation:badgePulse 2.8s ease-in-out infinite;}
     .badge .b-item{display:inline-flex;align-items:center;gap:5px;}
     .badge .b-sep{opacity:.35;}
@@ -89,7 +89,7 @@
     .pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:7px 15px;font-size:.82rem;color:#bbb;display:flex;align-items:center;gap:6px;}
     .pill .dot{width:7px;height:7px;background:var(--gg);border-radius:50%;flex-shrink:0;}
     .pill svg{flex-shrink:0;}
-    .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px;align-items:flex-end;}
+    .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px;align-items:flex-end;}
     /* "Try for free" label sits above the download button. The wrapper keeps the
        label and its button together as one flex item; align-items:flex-end above
        keeps every button on the same baseline. The mobile rule below re-centres. */
@@ -330,7 +330,8 @@
        desktop it is a CENTERED FLOATING bar (not full-width); on mobile it spans the
        bottom edge. The FAB is nudged up and the body gets bottom padding so the footer
        clears it. Slides up shortly after load. */
-    #buy-bar{display:flex;position:fixed;left:16px;right:16px;bottom:16px;z-index:1900;max-width:1060px;margin:0 auto;align-items:center;justify-content:space-between;gap:18px;padding:11px 14px 11px 24px;background:linear-gradient(180deg,rgba(10,20,14,.98),rgba(5,11,8,.99));border:1px solid rgba(46,204,113,.45);border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.55),0 0 0 1px rgba(46,204,113,.06);backdrop-filter:blur(10px);cursor:pointer;-webkit-tap-highlight-color:transparent;animation:buyBarUp .5s cubic-bezier(.22,1,.36,1) .3s both;}
+    #buy-bar{display:flex;position:fixed;left:16px;right:16px;bottom:16px;z-index:1900;max-width:1060px;margin:0 auto;align-items:center;justify-content:space-between;gap:18px;padding:11px 14px 11px 24px;background:linear-gradient(180deg,rgba(10,20,14,.98),rgba(5,11,8,.99));border:1px solid rgba(46,204,113,.45);border-radius:18px;box-shadow:0 18px 44px rgba(0,0,0,.55),0 0 0 1px rgba(46,204,113,.06);backdrop-filter:blur(10px);cursor:pointer;-webkit-tap-highlight-color:transparent;transform:translateY(170%);opacity:0;pointer-events:none;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease;}
+    #buy-bar.show{transform:translateY(0);opacity:1;pointer-events:auto;}
     #buy-bar:active{filter:brightness(1.08);}
     /* Children are pointer-events:none so every click lands on #buy-bar's single
        handler: the whole bar is one big target, no double-fire. */
@@ -515,7 +516,7 @@
       .fi svg{width:32px;height:32px;}
     }
     /* Laurel "viral app" badge - no flashy pill, just leaves + text. */
-    .hero-laurel{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px auto 16px;}
+    .hero-laurel{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px auto 14px;}
     .hero-laurel .lrl{width:24px;height:48px;color:var(--gg);flex-shrink:0;opacity:.92;}
     .hero-laurel .lrl-r{transform:scaleX(-1);}
     .hero-laurel .lrl-txt{display:flex;flex-direction:column;align-items:center;line-height:1.18;}
@@ -523,18 +524,16 @@
     .hero-laurel .lrl-txt small{font-size:.76rem;font-weight:600;color:#9ecfa6;}
     /* Taglines as three clean grid cells with subtle dividers - not an oval pill. */
     .hero-laurel .in-flag{border-radius:3px;vertical-align:-2px;margin-left:3px;box-shadow:0 1px 3px rgba(0,0,0,.3);}
-    .hero-tags{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;max-width:760px;margin:0 auto 26px;}
-    .htg{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 14px;font-size:.92rem;font-weight:600;color:#cfe9d6;text-align:center;}
-    .htg svg{width:15px;height:15px;color:var(--gg);flex-shrink:0;}
+    .hero-tags{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;max-width:820px;margin:0 auto 24px;}
+    .htg{display:flex;align-items:center;justify-content:center;gap:9px;padding:6px 16px;font-size:.92rem;font-weight:700;color:#e4f6ea;text-align:left;}
+    .htg svg{width:17px;height:17px;color:var(--gg);flex-shrink:0;}
     .htg + .htg{border-left:1px solid rgba(0,230,118,.18);}
-    /* Feedback cell: two tight lines, icon close to the text. */
-    .htg-fb{gap:7px;}
-    .htg-fb-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;text-align:left;}
-    .htg-fb-txt small{font-size:.72rem;font-weight:500;color:#8fb89b;margin-top:1px;}
+    /* Each cell: a title plus one small sub-line, so the three read evenly. */
+    .htg-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.22;}
+    .htg-txt small{font-size:.72rem;font-weight:500;color:#8fb89b;margin-top:2px;}
     @media(max-width:620px){
-      .hero-tags{grid-template-columns:1fr;max-width:320px;justify-items:center;}
-      .htg{padding:8px 10px;}
-      .htg-fb-txt{align-items:center;text-align:center;}
+      .hero-tags{grid-template-columns:1fr;max-width:340px;justify-items:center;}
+      .htg{padding:8px 10px;justify-content:flex-start;width:220px;}
       .htg + .htg{border-left:0;border-top:1px solid rgba(0,230,118,.14);}
     }
   </style>
@@ -565,15 +564,15 @@
   <div class="hero-tags">
     <div class="htg">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
-      <span>20-Min Free Trial</span>
+      <span class="htg-txt">20-Min Free Trial<small>Full access, counted as AI time</small></span>
     </div>
     <div class="htg">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
-      <span>No card needed</span>
+      <span class="htg-txt">No card needed<small>Start now, pay only if you like it</small></span>
     </div>
-    <div class="htg htg-fb">
+    <div class="htg">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M5 4H3v2a3 3 0 003 3"/><path d="M19 4h2v2a3 3 0 01-3 3"/></svg>
-      <span class="htg-fb-txt">Candidates landing jobs in weeks<small>Real, anonymous feedback from placed users</small></span>
+      <span class="htg-txt">Candidates landing jobs in weeks<small>Real, anonymous feedback from placed users</small></span>
     </div>
   </div>
   <div class="float-icons" aria-hidden="true">
@@ -646,19 +645,21 @@
           <div class="cw-box"><div class="cw-lbl">Listening to</div><div class="cw-seg"><button class="active">Meeting</button><button>You (testing)</button></div></div>
           <div class="cw-box"><div class="cw-lbl">Your resume</div><button class="cw-up" id="cwUp">Upload resume (PDF)</button><div class="cw-upst" id="cwUpSt">&#10003; Rahul_Sharma_CV.pdf - profile ready</div></div>
           <div class="cw-box" id="cwLang"><div class="cw-lbl">Coding language</div><div style="font-size:12px;color:#9ecfa6">Python &#9662;</div></div>
+          <div class="cw-box" id="cwSave"><div class="cw-lbl">Saved transcripts</div><div class="cw-saverow"><span class="cw-savetext">Auto-save each session <b>On</b></span><button type="button" class="cw-foldbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Open folder</button></div></div>
         </div>
       </div>
       <div class="cw-panel" id="cwTrans">
-        <div class="cw-ph"><span>Transcript</span><span class="cw-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download</span></div>
+        <div class="cw-ph"><span>Transcript</span><span class="cw-ph-live">&#9679; live</span></div>
         <div class="cw-pbody"><div class="cw-tp" id="cwTp">
-          <div class="cw-ts"><span class="cw-ts-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span><div class="cw-ts-b"><div class="cw-ts-t">Backend round - Infosys</div><div class="cw-ts-m">18 Q&amp;A &middot; today, 3:14 PM</div></div></div>
-          <div class="cw-ts"><span class="cw-ts-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span><div class="cw-ts-b"><div class="cw-ts-t">System design - Amazon</div><div class="cw-ts-m">24 Q&amp;A &middot; yesterday</div></div></div>
-          <div class="cw-ts"><span class="cw-ts-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span><div class="cw-ts-b"><div class="cw-ts-t">DSA screen - TCS</div><div class="cw-ts-m">12 Q&amp;A &middot; 2 days ago</div></div></div>
+          <div class="cw-tq">Q: Difference between a process and a thread?</div>
+          <div class="cw-ta">A process has its own memory; a thread runs inside a process and shares it. Threads are cheaper, but one crashing can take down the whole process.</div>
+          <div class="cw-tq">Q: Two Sum - return the indices that add to target</div>
+          <div class="cw-ta">Single-pass hash map: for each number check if target - num was seen. O(n) time, O(n) space.</div>
         </div></div>
       </div>
+      <button class="cw-ov-pp" id="cwPP" type="button" aria-label="Pause walkthrough" aria-pressed="false"></button>
     </div>
     <div class="cw-playbar">
-      <button class="cw-pp" id="cwPP" type="button" aria-label="Pause walkthrough" aria-pressed="false"></button>
       <div class="cw-prog"><div class="cw-prog-fill" id="cwProg"></div></div>
     </div>
   </div>
@@ -702,7 +703,7 @@
     $('cwA').className='cw-ans idle';$('cwAText').innerHTML='Answer will appear here...';
     status('Ready',false);
     $('cwSettings').classList.remove('open');$('cwTrans').classList.remove('open');
-    ['cwGear','cwTrBtn','cwUp','cwScan','cwChat','cwDiag','cwLang'].forEach(function(id){var el=$(id);if(el)el.classList.remove('hot');});
+    ['cwGear','cwTrBtn','cwUp','cwScan','cwChat','cwDiag','cwLang','cwSave'].forEach(function(id){var el=$(id);if(el)el.classList.remove('hot');});
     $('cwUpSt').classList.remove('show');$('cwTp').classList.remove('show');
     var ctrl=document.querySelector('#cwWin .cw-ctrl');if(ctrl)ctrl.scrollLeft=0;
   }
@@ -720,7 +721,7 @@
 
   // The walkthrough runs on a single virtual clock (elapsed ms) driven by rAF, so it
   // can be paused/resumed and a progress bar can show exactly where it is.
-  var TYPE_START=1100, CHAR_MS=70, TYPE_END=TYPE_START+Q.length*CHAR_MS, DUR=56000;
+  var TYPE_START=1100, CHAR_MS=70, TYPE_END=TYPE_START+Q.length*CHAR_MS, DUR=58000;
   var STEPS=[
     {at:0,            fn:function(){reset();status('Listening...',true);cap('A question comes in from the caller');}},
     {at:TYPE_END,     fn:function(){setQ(Q);status('Thinking...',true);cap('CloakAI is <b>generating your answer</b>');}},
@@ -739,18 +740,19 @@
     {at:38400, fn:function(){hot('cwUp');cap('Upload your <b>resume</b> so answers sound like you');}},
     {at:39800, fn:function(){cool('cwUp');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');}},
     {at:41800, fn:function(){hot('cwLang');cap('Code answers default to <b>Python</b> - switch the language anytime');}},
-    {at:43600, fn:function(){cool('cwLang');cap('Every answer tuned to <b>you</b>');}},
-    {at:44800, fn:function(){$('cwSettings').classList.remove('open');}},
-    {at:46000, fn:function(){flash();hot('cwTrBtn');cap('Every Q&amp;A is <b>saved</b> to the Transcript');}},
-    {at:47400, fn:function(){cool('cwTrBtn');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');}},
-    {at:49600, fn:function(){cap('Open your <b>saved transcripts</b> in the browser - every session in one list');}},
-    {at:53000, fn:function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');}}
+    {at:43600, fn:function(){cool('cwLang');hot('cwSave');cap('Every session is <b>auto-saved</b> to a file on your PC');}},
+    {at:45400, fn:function(){cap('Tap <b>Open folder</b> to see all your saved transcripts');}},
+    {at:47200, fn:function(){cool('cwSave');$('cwSettings').classList.remove('open');}},
+    {at:48400, fn:function(){flash();hot('cwTrBtn');cap('The <b>Transcript</b> button shows this session live');}},
+    {at:49800, fn:function(){cool('cwTrBtn');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');}},
+    {at:51400, fn:function(){cap('Every question and answer, right as it happens');}},
+    {at:54400, fn:function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');}}
   ];
   var ICON_PAUSE='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
   var ICON_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   var elapsed=0,lastWall=0,raf=0,running=false,userPaused=false,firedIdx=0,revealed=false,inView=false;
   function setProg(f){var el=$('cwProg');if(el)el.style.width=(Math.max(0,Math.min(1,f))*100).toFixed(2)+'%';}
-  function ppIcon(){var b=$('cwPP');if(!b)return;b.innerHTML=userPaused?ICON_PLAY:ICON_PAUSE;b.setAttribute('aria-label',userPaused?'Play walkthrough':'Pause walkthrough');b.setAttribute('aria-pressed',userPaused?'true':'false');}
+  function ppIcon(){var b=$('cwPP');if(!b)return;b.innerHTML=userPaused?ICON_PLAY:ICON_PAUSE;b.classList.toggle('paused',userPaused);b.setAttribute('aria-label',userPaused?'Play walkthrough':'Pause walkthrough');b.setAttribute('aria-pressed',userPaused?'true':'false');}
   function renderTyping(){
     if(elapsed<TYPE_START||elapsed>=TYPE_END)return;
     var q=$('cwQ');if(!q)return;q.className='cw-q';
@@ -781,7 +783,8 @@
     } else if(inView&&!userPaused){ startDriver(); }
   }
   ppIcon();
-  var pp=$('cwPP'); if(pp) pp.addEventListener('click',togglePP);
+  var pp=$('cwPP'); if(pp) pp.addEventListener('click',function(e){ e.stopPropagation(); togglePP(); });
+  win.addEventListener('click',togglePP);   // tapping the overlay toggles play/pause
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){inView=e.isIntersecting; if(inView){wake();} else {stopDriver();}});
   },{threshold:.4});
@@ -1065,14 +1068,25 @@
 .cw-ts-ic svg{width:14px;height:14px;}
 .cw-ts-t{font-size:11.5px;color:var(--t1);font-weight:600;}
 .cw-ts-m{font-size:10px;color:var(--t3);margin-top:1px;}
+.cw-ph-live{font-size:10px;color:#00e676;font-weight:700;letter-spacing:.5px;}
+.cw-saverow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;}
+.cw-savetext{font-size:11.5px;color:#9ecfa6;}
+.cw-savetext b{color:#00e676;}
+.cw-foldbtn{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--g1);background:rgba(0,230,118,.1);border:1px solid var(--bd2);border-radius:7px;padding:5px 9px;cursor:pointer;font-family:inherit;flex-shrink:0;}
+.cw-foldbtn svg{width:13px;height:13px;}
+.cw-box.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5),0 0 16px rgba(0,230,118,.35);border-color:var(--g1);transition:box-shadow .2s;}
 .cw-cap{text-align:center;margin:0 auto 14px;font-size:.92rem;font-weight:600;color:#bfe9cf;min-height:22px;transition:color .2s;}
 .cw-cap b{color:#00e676;}
 /* Play/pause + progress bar below the overlay. */
 .cw-playbar{display:flex;align-items:center;gap:13px;max-width:520px;margin:16px auto 0;}
-.cw-pp{flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,230,118,.32);background:rgba(0,230,118,.1);color:#00e676;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,transform .1s;}
-.cw-pp:hover{background:rgba(0,230,118,.2);border-color:#00e676;}
-.cw-pp:active{transform:scale(.93);}
-.cw-pp svg{width:16px;height:16px;}
+/* Play/pause lives ON the overlay: hidden while playing, revealed on hover, and pinned
+   visible (as a play button) while paused. The whole overlay is clickable to toggle. */
+.cw-ov-pp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:30;width:58px;height:58px;border-radius:50%;border:none;background:rgba(0,18,9,.74);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .35s ease,transform .1s;box-shadow:0 8px 28px rgba(0,0,0,.55),0 0 0 1px rgba(0,230,118,.4);backdrop-filter:blur(3px);}
+.cw-ov-pp svg{width:24px;height:24px;}
+.cw-ov-pp:active{transform:translate(-50%,-50%) scale(.92);}
+.cw-win:hover .cw-ov-pp{opacity:1;}
+.cw-ov-pp.paused{opacity:1;}
+.cw-win{cursor:pointer;}
 .cw-prog{flex:1;height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;}
 .cw-prog-fill{height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,#00a152,#00e676);transition:width .12s linear;}
 /* Caption fades in on every change; the overlay pulses green when a new feature starts. */
@@ -2092,6 +2106,6 @@
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 </script>
-<script src="layout.js?v=20261007"></script>
+<script src="layout.js?v=20261008"></script>
 </body>
 </html>
