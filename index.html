@@ -680,8 +680,18 @@
     T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},21500);
     T(function(){playing=false; if(inView) play();},23500);
   }
+  var revealed=false;
+  function wake(){
+    if(!revealed){
+      revealed=true;
+      // Maximize the overlay out: fade + scale from faded to clear, THEN start operations.
+      void win.offsetWidth; win.classList.add('revealed');
+      cap('CloakAI pops up, hidden from everyone else');
+      T(function(){ if(inView&&!playing) play(); },900);
+    } else if(inView&&!playing){ play(); }
+  }
   var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){inView=e.isIntersecting; if(inView&&!playing) play();});
+    es.forEach(function(e){inView=e.isIntersecting; if(inView) wake();});
   },{threshold:.4});
   io.observe(win);
 })();
@@ -849,6 +859,16 @@
     </div>
   </div>
 </div>
+<!-- TRY FREE (after pricing) -->
+<div class="cta-band">
+  <p>Not ready to buy? Run every paid feature free for 20 minutes on your own machine first.</p>
+  <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="trackEvent('Inline','Download','AfterPricing')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+    Try for free
+  </a>
+  <span class="cb-sub">20-minute free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Windows 10 &amp; 11</span>
+</div>
+
 <!-- HOW IT WORKS -->
 <section class="reveal">
   <div class="sh"><h2>Up and Running in 3 Minutes</h2><p>From payment to active overlay, faster than a cup of chai.</p></div>
@@ -875,7 +895,11 @@
 .cw-win{--g1:#00e676;--t1:#eafff0;--t2:#9ecfa6;--t3:#45714d;--bd:rgba(0,230,118,.14);--bd2:rgba(0,230,118,.32);
   position:relative;background:#030e06;border:1px solid var(--bd2);border-radius:14px;overflow:hidden;
   box-shadow:0 28px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,230,118,.05),0 0 60px rgba(0,230,118,.06);
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--t1);}
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--t1);
+  opacity:0;transform:scale(.78) translateY(46px);transform-origin:center bottom;filter:blur(6px);
+  transition:opacity .8s cubic-bezier(.2,.75,.2,1),transform .8s cubic-bezier(.2,.75,.2,1),filter .8s cubic-bezier(.2,.75,.2,1);}
+.cw-win.revealed{opacity:1;transform:none;filter:none;}
+@media(prefers-reduced-motion:reduce){.cw-win{transition:none;opacity:1;transform:none;filter:none;}}
 .cw-hdr{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;background:rgba(0,38,16,.98);}
 .cw-brand{display:flex;align-items:center;gap:7px;font-size:16px;font-weight:900;color:var(--g1);}
 .cw-brand svg{width:17px;height:17px;filter:drop-shadow(0 0 6px rgba(0,230,118,.4));}
@@ -1064,6 +1088,16 @@
   var d=Math.floor(((Date.now()-anchor)%cycle)/864e5);if(d<4)d+=4;
   el.textContent=d+' days ago';})();
 </script>
+
+<!-- TRY FREE (mid page) -->
+<div class="cta-band">
+  <p>See it vanish on your own screen share before you pay a single rupee.</p>
+  <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="trackEvent('Inline','Download','MidPage')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
+    Try for free
+  </a>
+  <span class="cb-sub">20-minute free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Windows 10 &amp; 11</span>
+</div>
 
 <section class="reveal">
   <div class="ai-wrap">
