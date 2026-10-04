@@ -253,10 +253,13 @@ document.querySelectorAll('#mnav a').forEach(function(a){
     try{
       var f=document.querySelector('footer'); if(!f||f.querySelector('[data-ck-settings]')) return;
       var a=document.createElement('a'); a.href='#'; a.setAttribute('data-ck-settings','');
-      a.className='ck-set-link'; a.textContent='Cookie settings';
-      a.style.color='#64748b'; a.style.textDecoration='underline'; a.style.cursor='pointer';
+      a.className='ck-set-link'; a.textContent='Cookie settings'; a.style.cursor='pointer';
       a.addEventListener('click',function(e){ e.preventDefault(); window.cloakCookieSettings(); });
-      f.appendChild(document.createTextNode(' · ')); f.appendChild(a);
+      // Put it IN the footer links row so it matches the other links (greyed, same row),
+      // on mobile and desktop. Fall back to the footer end only if that row is missing.
+      var links=f.querySelector('.footer-links');
+      if(links){ links.appendChild(a); }
+      else { f.appendChild(document.createTextNode(' · ')); f.appendChild(a); }
     }catch(e){}
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',addFooterLink); else addFooterLink();

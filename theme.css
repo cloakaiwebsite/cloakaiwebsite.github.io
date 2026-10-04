@@ -172,8 +172,9 @@ body.blog .blog-card-thumb{border-bottom-color:rgba(0,0,0,.06);}
 }
 
 /* Footer "Cookie settings" link (injected by layout.js) - themed, not default blue */
-.ck-set-link{color:#64748b;text-decoration:underline;cursor:pointer;font:inherit;}
-.ck-set-link:hover{color:#34D399;}
+/* Cookie settings sits in .footer-links and inherits that greyed link style; keep it
+   plain so it matches its neighbours rather than standing out. */
+.ck-set-link{cursor:pointer;text-decoration:none;}
 
 /* ── Floating scroll-aware header - MOBILE ONLY. Desktop keeps the original static nav. ── */
 @media(max-width:768px){
@@ -186,7 +187,9 @@ body.blog .blog-card-thumb{border-bottom-color:rgba(0,0,0,.06);}
   .header-inner{position:relative;}
   /* Floating pill open: the dropdown is a matching floating card that reads as the pill
      expanding downward - same width, same card, rounded bottom, merged top edge. */
-  header.nav-scrolled #mnav{left:0;right:0;top:100%;border:1px solid rgba(46,204,113,.22);border-top:none;border-radius:0 0 16px 16px;background:rgba(8,26,17,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 16px 40px rgba(0,0,0,.45);padding:8px 12px 12px;overflow:hidden;}
+  /* left/right -1px + margin-top -1px makes the dropdown edges sit exactly on the pill's
+     border on all three sides, so it is not tucked a bit inside the pill. */
+  header.nav-scrolled #mnav{left:-1px;right:-1px;top:100%;margin-top:-1px;border:1px solid rgba(46,204,113,.22);border-top:none;border-radius:0 0 16px 16px;background:rgba(8,26,17,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 16px 40px rgba(0,0,0,.45);padding:8px 12px 12px;overflow:hidden;}
   /* While open, the pill squares its bottom corners so pill + dropdown become one shape. */
   header.nav-scrolled:has(#mnav.open) .header-inner{border-radius:16px 16px 0 0;}
   body{padding-top:60px;}
