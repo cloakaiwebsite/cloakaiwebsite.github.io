@@ -177,6 +177,14 @@ body.blog .blog-card-thumb{border-bottom-color:rgba(0,0,0,.06);}
   header.nav-up{transform:translateY(-130%);}
   header.nav-scrolled{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:transparent;}
   header.nav-scrolled .header-inner{margin:8px 10px;border-radius:16px;background:rgba(8,26,17,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(46,204,113,.22);box-shadow:0 14px 40px rgba(0,0,0,.45);}
+  /* Anchor the dropdown to the header pill (not the full-width header) so it drops out
+     of the pill itself and keeps the same width. */
+  .header-inner{position:relative;}
+  /* Floating pill open: the dropdown is a matching floating card that reads as the pill
+     expanding downward - same width, same card, rounded bottom, merged top edge. */
+  header.nav-scrolled #mnav{left:0;right:0;top:100%;border:1px solid rgba(46,204,113,.22);border-top:none;border-radius:0 0 16px 16px;background:rgba(8,26,17,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 16px 40px rgba(0,0,0,.45);padding:8px 12px 12px;overflow:hidden;}
+  /* While open, the pill squares its bottom corners so pill + dropdown become one shape. */
+  header.nav-scrolled:has(#mnav.open) .header-inner{border-radius:16px 16px 0 0;}
   body{padding-top:60px;}
   section[id],h2[id]{scroll-margin-top:72px;}
 }

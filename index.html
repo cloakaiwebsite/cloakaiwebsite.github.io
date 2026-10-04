@@ -7,7 +7,7 @@
        document. Analytics used to sit above it and competed for the same connection
        on a slow mobile link, delaying first paint for no benefit. gtag is async, so
        moving it down costs nothing: it still loads, just not ahead of the paint. -->
-  <link rel="stylesheet" href="theme.css?v=20261006">
+  <link rel="stylesheet" href="theme.css?v=20261007">
   <!-- Google Identity Services for the optional "Continue with Google" checkout. Async,
        so if it fails to load the email + OTP flow below is completely unaffected. -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -599,24 +599,12 @@
     </a>
   </div>
   <p class="hero-note" style="line-height:1.7;margin-top:12px;">Latest version <strong style="color:var(--gg)">v16.0.4</strong> &nbsp;·&nbsp; Windows 10 &amp; 11</p>
-  <p class="hero-note" style="line-height:1.9;display:flex;align-items:center;justify-content:center;gap:6px 14px;flex-wrap:wrap;">
-    <span style="display:inline-flex;align-items:center;gap:6px;">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg>
-      <strong style="color:var(--gg)">20-min free trial</strong>
-    </span>
-    <span style="opacity:.35">·</span>
-    <span style="display:inline-flex;align-items:center;gap:6px;">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h3"/></svg>
-      NO CREDIT CARD REQUIRED
-    </span>
-    <span style="opacity:.35">·</span>
-    <span>Plans from <strong style="color:var(--gg)" id="hero-from2">₹499</strong></span>
-  </p>
 </section>
 <!-- DEMO (moved up - users see proof before reading features) -->
 <section id="demo" class="reveal">
   <div class="sh"><h2>See CloakAI in Action</h2><p>Watch it stay completely invisible while delivering instant answers. This is what you see. Everyone else sees nothing.</p></div>
   <div class="cw-stage">
+    <div class="cw-cap" id="cwCap">Scroll in to play the walkthrough</div>
     <div class="cw-win" id="cwWin">
       <div class="cw-hdr">
         <span class="cw-brand"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="currentColor"/></svg>CloakAI</span>
@@ -648,15 +636,14 @@
           <div class="cw-box cw-urow"><span class="cw-av"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2L4 6v5c0 4.5 3.2 8.7 8 10 4.8-1.3 8-5.5 8-10V6l-8-4z"/><circle cx="12" cy="10" r="2.4"/><path d="M8 16.5c.6-2 2.1-3 4-3s3.4 1 4 3"/></svg></span><div><div style="font-size:12px;color:#eafff0;font-weight:700">rahul.s@email.com</div><div style="font-size:10.5px;color:#45714d">9 Hour Pack</div></div></div>
           <div class="cw-box"><div class="cw-lbl">Listening to</div><div class="cw-seg"><button class="active">Meeting</button><button>You (testing)</button></div></div>
           <div class="cw-box"><div class="cw-lbl">Your resume</div><button class="cw-up" id="cwUp">Upload resume (PDF)</button><div class="cw-upst" id="cwUpSt">&#10003; Rahul_Sharma_CV.pdf - profile ready</div></div>
-          <div class="cw-box"><div class="cw-lbl">Coding language</div><div style="font-size:12px;color:#9ecfa6">Auto-detect &#9662;</div></div>
+          <div class="cw-box" id="cwLang"><div class="cw-lbl">Coding language</div><div style="font-size:12px;color:#9ecfa6">Python &#9662;</div></div>
         </div>
       </div>
       <div class="cw-panel" id="cwTrans">
-        <div class="cw-ph"><span>Transcript</span><span class="cw-x">&times;</span></div>
+        <div class="cw-ph"><span>Transcript</span><span class="cw-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download</span></div>
         <div class="cw-pbody"><div class="cw-tp" id="cwTp"><div class="cw-tq">Q: Can you explain the difference between a process and a thread?</div><div class="cw-ta">A process is an independent program with its own memory space; a thread runs inside a process and shares its memory. Threads are cheaper to create, but one crashing can take down the whole process.</div></div></div>
       </div>
     </div>
-    <div class="cw-cap" id="cwCap">Scroll in to play the walkthrough</div>
   </div>
   <div style="margin-top:28px;text-align:center;">
     <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="btn" onclick="trackEvent('Demo','TryFree','Win')">Try Free - Download for Windows</a>
@@ -672,10 +659,9 @@
     +'<div class="cw-line cw-bul"><span>•</span><span><b>Overhead</b> - spawning a thread is far cheaper than a new process.</span></div>'
     +'<div class="cw-line cw-bul"><span>•</span><span><b>Crash safety</b> - one thread failing can bring down the whole process.</span></div>';
   var SCAN_Q='📷 Screen scan - "Two Sum": return the indices of the two numbers that add up to target';
-  var SCAN_ANS='<div class="cw-line"><span class="cw-star">★</span>Use a <b>hash map</b> in a single pass: for each number, check whether <b>target &minus; num</b> has already been seen.</div>'
-    +'<div class="cw-line cw-bul"><span>•</span><span>If yes, return the stored index and the current one.</span></div>'
-    +'<div class="cw-line cw-bul"><span>•</span><span>If no, store <b>num &rarr; index</b> and move on.</span></div>'
-    +'<div class="cw-line" style="margin-top:8px">Runs in <b>O(n)</b> time, <b>O(n)</b> space - the brute force is O(n&sup2;).</div>';
+  var SCAN_ANS='<div class="cw-line"><span class="cw-star">★</span>Use a <b>hash map</b> in a single pass: for each number, check whether <b>target &minus; num</b> was already seen.</div>'
+    +'<pre class="cw-code"><code>def two_sum(nums, target):\n    seen = {}\n    for i, n in enumerate(nums):\n        if target - n in seen:\n            return [seen[target - n], i]\n        seen[n] = i</code></pre>'
+    +'<div class="cw-line"><b>O(n)</b> time, <b>O(n)</b> space - brute force is O(n&sup2;).</div>';
   var CHAT_Q='You: why not just sort the array first?';
   var CHAT_ANS='<div class="cw-line"><span class="cw-star">★</span>Sorting is <b>O(n log n)</b> and scrambles the original positions, so you would need extra bookkeeping to recover the indices.</div>'
     +'<div class="cw-line" style="margin-top:8px">The hash map stays <b>O(n)</b> and hands back the indices directly, so it wins here.</div>';
@@ -701,8 +687,9 @@
     $('cwA').className='cw-ans idle';$('cwAText').innerHTML='Answer will appear here...';
     status('Ready',false);
     $('cwSettings').classList.remove('open');$('cwTrans').classList.remove('open');
-    ['cwGear','cwTrBtn','cwUp','cwScan','cwChat','cwDiag'].forEach(function(id){var el=$(id);if(el)el.classList.remove('hot');});
+    ['cwGear','cwTrBtn','cwUp','cwScan','cwChat','cwDiag','cwLang'].forEach(function(id){var el=$(id);if(el)el.classList.remove('hot');});
     $('cwUpSt').classList.remove('show');$('cwTp').classList.remove('show');
+    var ctrl=document.querySelector('#cwWin .cw-ctrl');if(ctrl)ctrl.scrollLeft=0;
   }
   function typeQ(txt,done){
     $('cwQ').className='cw-q';var i=0;
@@ -713,7 +700,14 @@
   }
   function setQ(txt){$('cwQ').className='cw-q';$('cwQ').innerHTML=txt;}
   function showAns(html){$('cwA').className='cw-ans';$('cwAText').innerHTML=html;void $('cwA').offsetWidth;$('cwA').classList.add('go');}
-  function hot(id){var el=$(id);if(el)el.classList.add('hot');}
+  function hot(id){var el=$(id);if(!el)return;el.classList.add('hot');
+    // On mobile the control row scrolls; bring the highlighted button into view.
+    var ctrl=el.closest('.cw-ctrl');
+    if(ctrl&&ctrl.scrollWidth>ctrl.clientWidth+4){
+      var cr=ctrl.getBoundingClientRect(),er=el.getBoundingClientRect();
+      ctrl.scrollBy({left:(er.left+er.width/2)-(cr.left+cr.width/2),behavior:'smooth'});
+    }
+  }
   function cool(id){var el=$(id);if(el)el.classList.remove('hot');}
   function play(){
     if(playing)return; playing=true; reset();
@@ -738,17 +732,20 @@
     T(function(){hot('cwDiag');cap('Tap <b>Diagram</b> to turn the answer into a visual');},20000);
     T(function(){cool('cwDiag');status('Drawing...',true);cap('CloakAI draws a diagram for the concept');},21200);
     T(function(){showAns(DG);status('Answered',false);cap('A diagram you can actually explain from - <b>no other tool does this</b>');},22600);
-    // 5) Settings + resume
+    // 5) Settings - resume + coding language
     T(function(){setQ(Q);showAns(ANS);hot('cwGear');cap('Open <b>Settings</b>');},25800);
     T(function(){cool('cwGear');$('cwSettings').classList.add('open');},26900);
     T(function(){hot('cwUp');cap('Upload your <b>resume</b> so answers sound like you');},28800);
     T(function(){cool('cwUp');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');},29900);
-    T(function(){$('cwSettings').classList.remove('open');},32200);
-    // 6) Transcript
-    T(function(){hot('cwTrBtn');cap('Every Q&amp;A is saved to the <b>Transcript</b>');},33000);
-    T(function(){cool('cwTrBtn');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},34000);
-    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},37500);
-    T(function(){playing=false; if(inView) play();},39500);
+    T(function(){hot('cwLang');cap('Code answers default to <b>Python</b> - switch the language anytime');},31400);
+    T(function(){cool('cwLang');cap('Every answer tuned to <b>you</b>');},33000);
+    T(function(){$('cwSettings').classList.remove('open');},34000);
+    // 6) Transcript - saved and downloadable
+    T(function(){hot('cwTrBtn');cap('Every Q&amp;A is <b>saved</b> to the Transcript');},34800);
+    T(function(){cool('cwTrBtn');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},35800);
+    T(function(){cap('<b>Download</b> the full session anytime - nothing is lost');},37400);
+    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},40000);
+    T(function(){playing=false; if(inView) play();},42000);
   }
   var revealed=false;
   function wake(){
@@ -981,7 +978,9 @@
 .cw-sp{flex:1;}
 .cw-ver{font-size:10px;color:var(--t3);border:1px solid var(--bd);border-radius:5px;padding:2px 6px;}
 .cw-x{color:var(--t3);font-size:14px;cursor:default;}
-.cw-ctrl{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--bd);background:rgba(0,20,8,.5);}
+.cw-ctrl{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--bd);background:rgba(0,20,8,.5);overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;}
+.cw-ctrl::-webkit-scrollbar{display:none;}
+.cw-ctrl>*{flex-shrink:0;}
 .cw-b{display:inline-flex;align-items:center;gap:5px;background:rgba(0,230,118,.06);border:1px solid var(--bd);border-radius:8px;padding:6px 9px;color:var(--t2);font-size:11.5px;font-weight:600;}
 .cw-b svg{width:13px;height:13px;}
 .cw-b.on{background:rgba(0,230,118,.14);border-color:var(--bd2);color:var(--g1);}
@@ -1036,8 +1035,16 @@
 .cw-tp.show{display:block;animation:cwLine .4s ease both;}
 .cw-tp .cw-tq{font-size:11px;color:var(--t2);border-left:2px solid var(--bd2);padding-left:8px;margin-bottom:5px;}
 .cw-tp .cw-ta{font-size:11px;color:var(--t1);background:rgba(0,230,118,.04);border-radius:8px;padding:8px 10px;margin-bottom:12px;line-height:1.5;}
-.cw-cap{text-align:center;margin-top:16px;font-size:.9rem;color:#9fb2a8;min-height:22px;transition:color .2s;}
+.cw-cap{text-align:center;margin:0 auto 14px;font-size:.92rem;font-weight:600;color:#bfe9cf;min-height:22px;transition:color .2s;}
 .cw-cap b{color:#00e676;}
+/* Code block inside a demo answer (coding questions). */
+.cw-code{margin:8px 0;padding:9px 11px;background:rgba(0,0,0,.42);border:1px solid var(--bd);border-radius:8px;overflow-x:auto;font-family:'SF Mono',Consolas,'Roboto Mono',monospace;font-size:11px;line-height:1.5;color:#d6f5e2;white-space:pre;scrollbar-width:thin;}
+.cw-code code{color:inherit;background:none;font-family:inherit;}
+/* Generic highlight for a settings row being pointed at (resume, coding language). */
+.cw-box.hot{box-shadow:0 0 0 2px rgba(0,230,118,.5),0 0 16px rgba(0,230,118,.35);border-color:var(--g1);transition:box-shadow .2s;}
+/* "Download" chip in the transcript panel header. */
+.cw-dl{display:inline-flex;align-items:center;gap:5px;margin-left:auto;font-size:10.5px;font-weight:700;color:var(--g1);background:rgba(0,230,118,.1);border:1px solid var(--bd2);border-radius:7px;padding:3px 8px;}
+.cw-dl svg{width:12px;height:12px;}
 @media(max-width:560px){.cw-ans{font-size:12px;}.cw-ctrl{gap:5px;padding:8px;}.cw-b{padding:5px 7px;font-size:10.5px;}}
 
 /* ── Invisibility section ── */
@@ -2043,6 +2050,6 @@
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 </script>
-<script src="layout.js?v=20261006"></script>
+<script src="layout.js?v=20261007"></script>
 </body>
 </html>
