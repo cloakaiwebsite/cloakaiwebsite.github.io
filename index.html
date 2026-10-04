@@ -239,9 +239,12 @@
     .reveal{opacity:0;transform:translateY(38px);transition:all .7s cubic-bezier(.5,0,0,1);}
     .reveal.on{opacity:1;transform:translateY(0);}
     /* Modals */
-    .mo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.87);z-index:2000;justify-content:center;align-items:center;backdrop-filter:blur(6px);}
-    .mo.open{display:flex;}
-    .mc{background:var(--bg);border:1px solid var(--gg);padding:36px;border-radius:18px;max-width:720px;width:92%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 0 56px rgba(46,204,113,.12);animation:mpop .22s ease-out;}
+    /* Always rendered but hidden via opacity/visibility (not display:none), so opening
+       does not flash the final frame before the pop-in animation. */
+    .mo{display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.87);z-index:2000;justify-content:center;align-items:center;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .2s ease,visibility 0s linear .2s;}
+    .mo.open{visibility:visible;opacity:1;pointer-events:auto;backdrop-filter:blur(6px);transition:opacity .2s ease,visibility 0s;}
+    .mc{background:var(--bg);border:1px solid var(--gg);padding:36px;border-radius:18px;max-width:720px;width:92%;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 0 56px rgba(46,204,113,.12);}
+    .mo.open .mc{animation:mpop .22s ease-out;}
     @keyframes mpop{from{transform:scale(.88);opacity:0;}to{transform:scale(1);opacity:1;}}
     .mc::-webkit-scrollbar{width:5px;}.mc::-webkit-scrollbar-track{background:rgba(0,0,0,.3);}.mc::-webkit-scrollbar-thumb{background:var(--pg);border-radius:3px;}
     .close-mc{position:absolute;top:14px;right:18px;font-size:1.7rem;color:#444;cursor:pointer;transition:.2s;background:none;border:none;line-height:1;z-index:10;}
@@ -481,8 +484,8 @@
     </a>
     <nav id="mnav">
       <a href="#demo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10.5 8.5l5.5 3.5-5.5 3.5z"/></svg>Demo</a>
-      <a href="#features"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.3L19.5 10l-5.3 2.2L12 17.5l-2.2-5.3L4.5 10l5.3-1.7z"/></svg>Features</a>
       <a href="#pricing"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/></svg>Pricing</a>
+      <a href="#features"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 5.3L19.5 10l-5.3 2.2L12 17.5l-2.2-5.3L4.5 10l5.3-1.7z"/></svg>Features</a>
       <a href="how-to-use.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.8 9.4a2.3 2.3 0 114 1.8c-.7.7-1.8 1.1-1.8 2.1"/><path d="M12 17h.01"/></svg>How to use?</a>
       <a href="license-info.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg>License &amp; Referral</a>
       <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" onclick="window.trackEvent&amp;&amp;trackEvent('Nav','Download','Win')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11"/><path d="M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4 19.5h16"/></svg>Desktop App</a>
@@ -524,16 +527,19 @@
     .hero-laurel .lrl-txt small{font-size:.76rem;font-weight:600;color:#9ecfa6;}
     /* Taglines as three clean grid cells with subtle dividers - not an oval pill. */
     .hero-laurel .in-flag{border-radius:3px;vertical-align:-2px;margin-left:3px;box-shadow:0 1px 3px rgba(0,0,0,.3);}
-    .hero-tags{display:grid;grid-template-columns:repeat(3,1fr);align-items:center;max-width:820px;margin:0 auto 24px;}
-    .htg{display:flex;align-items:center;justify-content:center;gap:9px;padding:6px 16px;font-size:.92rem;font-weight:700;color:#e4f6ea;text-align:left;}
+    /* Desktop: size each cell to its content and center the row, with nowrap, so the
+       three taglines (and their sub-lines) each stay on a single line. */
+    .hero-tags{display:grid;grid-template-columns:repeat(3,auto);justify-content:center;align-items:center;margin:0 auto 24px;}
+    .htg{display:flex;align-items:center;justify-content:center;gap:9px;padding:6px 18px;font-size:.92rem;font-weight:700;color:#e4f6ea;text-align:left;white-space:nowrap;}
     .htg svg{width:17px;height:17px;color:var(--gg);flex-shrink:0;}
     .htg + .htg{border-left:1px solid rgba(0,230,118,.18);}
     /* Each cell: a title plus one small sub-line, so the three read evenly. */
     .htg-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.22;}
     .htg-txt small{font-size:.72rem;font-weight:500;color:#8fb89b;margin-top:2px;}
-    @media(max-width:620px){
-      .hero-tags{grid-template-columns:1fr;max-width:420px;justify-items:center;}
-      .htg{padding:8px 12px;justify-content:center;width:100%;}
+    /* Below ~900px the three nowrap cells no longer fit on one row, so stack them. */
+    @media(max-width:900px){
+      .hero-tags{grid-template-columns:1fr;max-width:420px;justify-content:center;justify-items:center;}
+      .htg{padding:8px 12px;justify-content:center;width:100%;white-space:normal;}
       .htg-txt{align-items:center;text-align:center;}
       .htg + .htg{border-left:0;border-top:1px solid rgba(0,230,118,.14);}
     }
