@@ -650,8 +650,16 @@
       </div>
       <div class="cw-panel" id="cwTrans">
         <div class="cw-ph"><span>Transcript</span><span class="cw-dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download</span></div>
-        <div class="cw-pbody"><div class="cw-tp" id="cwTp"><div class="cw-tq">Q: Can you explain the difference between a process and a thread?</div><div class="cw-ta">A process is an independent program with its own memory space; a thread runs inside a process and shares its memory. Threads are cheaper to create, but one crashing can take down the whole process.</div></div></div>
+        <div class="cw-pbody"><div class="cw-tp" id="cwTp">
+          <div class="cw-ts"><span class="cw-ts-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span><div class="cw-ts-b"><div class="cw-ts-t">Backend round - Infosys</div><div class="cw-ts-m">18 Q&amp;A &middot; today, 3:14 PM</div></div></div>
+          <div class="cw-ts"><span class="cw-ts-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span><div class="cw-ts-b"><div class="cw-ts-t">System design - Amazon</div><div class="cw-ts-m">24 Q&amp;A &middot; yesterday</div></div></div>
+          <div class="cw-ts"><span class="cw-ts-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg></span><div class="cw-ts-b"><div class="cw-ts-t">DSA screen - TCS</div><div class="cw-ts-m">12 Q&amp;A &middot; 2 days ago</div></div></div>
+        </div></div>
       </div>
+    </div>
+    <div class="cw-playbar">
+      <button class="cw-pp" id="cwPP" type="button" aria-label="Pause walkthrough" aria-pressed="false"></button>
+      <div class="cw-prog"><div class="cw-prog-fill" id="cwProg"></div></div>
     </div>
   </div>
   <div style="margin-top:28px;text-align:center;">
@@ -686,12 +694,10 @@
     +'<text x="330" y="30" fill="#00e676" font-size="11">yes</text><text x="258" y="84" fill="#7fb894" font-size="11">no</text>'
     +'</g></svg></div>';
   var $=function(id){return document.getElementById(id);};
-  var timers=[], playing=false, inView=false;
-  function T(fn,ms){var t=setTimeout(fn,ms);timers.push(t);return t;}
   function status(txt,live){$('cwStatus').textContent=txt;$('cwDot').className='cw-dot'+(live?' live':'');}
-  function cap(html){$('cwCap').innerHTML=html;}
+  function cap(html){var c=$('cwCap');if(!c)return;c.innerHTML=html;c.style.animation='none';void c.offsetWidth;c.style.animation='cwCapIn .5s ease';}
+  function flash(){var w=$('cwWin');if(!w)return;w.classList.remove('cw-flash');void w.offsetWidth;w.classList.add('cw-flash');}
   function reset(){
-    timers.forEach(clearTimeout);timers=[];
     $('cwQ').className='cw-q idle';$('cwQ').textContent='Waiting for a question...';
     $('cwA').className='cw-ans idle';$('cwAText').innerHTML='Answer will appear here...';
     status('Ready',false);
@@ -699,13 +705,6 @@
     ['cwGear','cwTrBtn','cwUp','cwScan','cwChat','cwDiag','cwLang'].forEach(function(id){var el=$(id);if(el)el.classList.remove('hot');});
     $('cwUpSt').classList.remove('show');$('cwTp').classList.remove('show');
     var ctrl=document.querySelector('#cwWin .cw-ctrl');if(ctrl)ctrl.scrollLeft=0;
-  }
-  function typeQ(txt,done){
-    $('cwQ').className='cw-q';var i=0;
-    (function step(){
-      if(i<=txt.length){$('cwQ').innerHTML=txt.slice(0,i)+'<span class="cwcur"></span>';i++;T(step,65);}
-      else{$('cwQ').innerHTML=txt;done&&done();}
-    })();
   }
   function setQ(txt){$('cwQ').className='cw-q';$('cwQ').innerHTML=txt;}
   function showAns(html){$('cwA').className='cw-ans';$('cwAText').innerHTML=html;void $('cwA').offsetWidth;$('cwA').classList.add('go');}
@@ -718,56 +717,73 @@
     }
   }
   function cool(id){var el=$(id);if(el)el.classList.remove('hot');}
-  function play(){
-    if(playing)return; playing=true; reset();
-    // 1) A live question is heard and answered
-    status('Listening...',true); cap('A question comes in from the caller');
-    T(function(){typeQ(Q,function(){
-      status('Thinking...',true); cap('CloakAI is <b>generating your answer</b>');
-      T(function(){
-        showAns(ANS);
-        status('Answered',false); cap('The answer appears, <b>only you can see it</b>');
-      },1900);
-    });},900);
-    // 2) Scan - read a coding problem or MCQ straight off the screen
-    T(function(){hot('cwScan');cap('Hit <b>Scan</b> to read a coding problem or MCQ on your screen');},8400);
-    T(function(){cool('cwScan');status('Scanning...',true);setQ(SCAN_Q);cap('CloakAI reads the whole screen');},9600);
-    T(function(){showAns(SCAN_ANS);status('Answered',false);cap('and answers what is <b>on your screen</b>, instantly');},11200);
-    // 3) Chat - ask a follow-up in your own words
-    T(function(){hot('cwChat');cap('Open <b>Chat</b> to ask a follow-up in your own words');},14200);
-    T(function(){cool('cwChat');status('Thinking...',true);setQ(CHAT_Q);cap('It keeps the <b>full conversation</b> in mind');},15400);
-    T(function(){showAns(CHAT_ANS);status('Answered',false);cap('so follow-ups stay on topic');},17000);
-    // 4) Diagram - turn the answer into a visual you can explain from
-    T(function(){hot('cwDiag');cap('Tap <b>Diagram</b> to turn the answer into a visual');},20000);
-    T(function(){cool('cwDiag');status('Drawing...',true);cap('CloakAI draws a diagram for the concept');},21200);
-    T(function(){showAns(DG);status('Answered',false);cap('A diagram you can actually explain from - <b>no other tool does this</b>');},22600);
-    // 5) Settings - resume + coding language
-    T(function(){setQ(Q);showAns(ANS);hot('cwGear');cap('Open <b>Settings</b>');},25800);
-    T(function(){cool('cwGear');$('cwSettings').classList.add('open');},26900);
-    T(function(){hot('cwUp');cap('Upload your <b>resume</b> so answers sound like you');},28800);
-    T(function(){cool('cwUp');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');},29900);
-    T(function(){hot('cwLang');cap('Code answers default to <b>Python</b> - switch the language anytime');},31400);
-    T(function(){cool('cwLang');cap('Every answer tuned to <b>you</b>');},33000);
-    T(function(){$('cwSettings').classList.remove('open');},34000);
-    // 6) Transcript - saved and downloadable
-    T(function(){hot('cwTrBtn');cap('Every Q&amp;A is <b>saved</b> to the Transcript');},34800);
-    T(function(){cool('cwTrBtn');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');},35800);
-    T(function(){cap('<b>Download</b> the full session anytime - nothing is lost');},37400);
-    T(function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');},40000);
-    T(function(){playing=false; if(inView) play();},42000);
+
+  // The walkthrough runs on a single virtual clock (elapsed ms) driven by rAF, so it
+  // can be paused/resumed and a progress bar can show exactly where it is.
+  var TYPE_START=1100, CHAR_MS=70, TYPE_END=TYPE_START+Q.length*CHAR_MS, DUR=56000;
+  var STEPS=[
+    {at:0,            fn:function(){reset();status('Listening...',true);cap('A question comes in from the caller');}},
+    {at:TYPE_END,     fn:function(){setQ(Q);status('Thinking...',true);cap('CloakAI is <b>generating your answer</b>');}},
+    {at:TYPE_END+2400,fn:function(){showAns(ANS);status('Answered',false);cap('The answer appears, <b>only you can see it</b>');}},
+    {at:11000, fn:function(){flash();hot('cwScan');cap('Hit <b>Scan</b> to read a coding problem or MCQ on your screen');}},
+    {at:12800, fn:function(){cool('cwScan');status('Scanning...',true);setQ(SCAN_Q);cap('CloakAI reads the whole screen');}},
+    {at:14800, fn:function(){showAns(SCAN_ANS);status('Answered',false);cap('and answers what is <b>on your screen</b>, in <b>Python</b> by default');}},
+    {at:19000, fn:function(){flash();hot('cwChat');cap('Open <b>Chat</b> to ask a follow-up in your own words');}},
+    {at:20800, fn:function(){cool('cwChat');status('Thinking...',true);setQ(CHAT_Q);cap('It keeps the <b>full conversation</b> in mind');}},
+    {at:22800, fn:function(){showAns(CHAT_ANS);status('Answered',false);cap('so follow-ups stay on topic');}},
+    {at:27000, fn:function(){flash();hot('cwDiag');cap('Tap <b>Diagram</b> to turn the answer into a visual');}},
+    {at:28800, fn:function(){cool('cwDiag');status('Drawing...',true);cap('CloakAI draws a diagram for the concept');}},
+    {at:30600, fn:function(){showAns(DG);status('Answered',false);cap('A diagram you can actually explain from - <b>no other tool does this</b>');}},
+    {at:35000, fn:function(){flash();setQ(Q);showAns(ANS);hot('cwGear');cap('Open <b>Settings</b>');}},
+    {at:36400, fn:function(){cool('cwGear');$('cwSettings').classList.add('open');}},
+    {at:38400, fn:function(){hot('cwUp');cap('Upload your <b>resume</b> so answers sound like you');}},
+    {at:39800, fn:function(){cool('cwUp');$('cwUpSt').classList.add('show');cap('Resume condensed into your profile');}},
+    {at:41800, fn:function(){hot('cwLang');cap('Code answers default to <b>Python</b> - switch the language anytime');}},
+    {at:43600, fn:function(){cool('cwLang');cap('Every answer tuned to <b>you</b>');}},
+    {at:44800, fn:function(){$('cwSettings').classList.remove('open');}},
+    {at:46000, fn:function(){flash();hot('cwTrBtn');cap('Every Q&amp;A is <b>saved</b> to the Transcript');}},
+    {at:47400, fn:function(){cool('cwTrBtn');$('cwTrans').classList.add('open');$('cwTp').classList.add('show');}},
+    {at:49600, fn:function(){cap('Open your <b>saved transcripts</b> in the browser - every session in one list');}},
+    {at:53000, fn:function(){$('cwTrans').classList.remove('open');cap('A full session, start to finish');}}
+  ];
+  var ICON_PAUSE='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+  var ICON_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  var elapsed=0,lastWall=0,raf=0,running=false,userPaused=false,firedIdx=0,revealed=false,inView=false;
+  function setProg(f){var el=$('cwProg');if(el)el.style.width=(Math.max(0,Math.min(1,f))*100).toFixed(2)+'%';}
+  function ppIcon(){var b=$('cwPP');if(!b)return;b.innerHTML=userPaused?ICON_PLAY:ICON_PAUSE;b.setAttribute('aria-label',userPaused?'Play walkthrough':'Pause walkthrough');b.setAttribute('aria-pressed',userPaused?'true':'false');}
+  function renderTyping(){
+    if(elapsed<TYPE_START||elapsed>=TYPE_END)return;
+    var q=$('cwQ');if(!q)return;q.className='cw-q';
+    var n=Math.min(Q.length,Math.floor((elapsed-TYPE_START)/CHAR_MS));
+    q.innerHTML=Q.slice(0,n)+'<span class="cwcur"></span>';
   }
-  var revealed=false;
+  function frame(ts){
+    if(!running)return;
+    var now=ts||performance.now();
+    var dt=now-lastWall;lastWall=now;if(dt>250)dt=250;if(dt<0)dt=0;
+    elapsed+=dt;
+    renderTyping();
+    while(firedIdx<STEPS.length&&STEPS[firedIdx].at<=elapsed){try{STEPS[firedIdx].fn();}catch(e){}firedIdx++;}
+    setProg(elapsed/DUR);
+    if(elapsed>=DUR){elapsed=0;firedIdx=0;setProg(0);}   // loop: restart from the top
+    raf=requestAnimationFrame(frame);
+  }
+  function startDriver(){if(running)return;running=true;lastWall=performance.now();raf=requestAnimationFrame(frame);}
+  function stopDriver(){running=false;if(raf)cancelAnimationFrame(raf);raf=0;}
+  function togglePP(){userPaused=!userPaused;ppIcon();if(userPaused)stopDriver();else if(inView&&revealed)startDriver();}
   function wake(){
     if(!revealed){
       revealed=true;
       // Maximize the overlay out: fade + scale from faded to clear, THEN start operations.
       void win.offsetWidth; win.classList.add('revealed');
       cap('CloakAI pops up, hidden from everyone else');
-      T(function(){ if(inView&&!playing) play(); },900);
-    } else if(inView&&!playing){ play(); }
+      setTimeout(function(){ if(inView&&!userPaused) startDriver(); },900);
+    } else if(inView&&!userPaused){ startDriver(); }
   }
+  ppIcon();
+  var pp=$('cwPP'); if(pp) pp.addEventListener('click',togglePP);
   var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){inView=e.isIntersecting; if(inView) wake();});
+    es.forEach(function(e){inView=e.isIntersecting; if(inView){wake();} else {stopDriver();}});
   },{threshold:.4});
   io.observe(win);
 })();
@@ -1044,8 +1060,25 @@
 .cw-tp.show{display:block;animation:cwLine .4s ease both;}
 .cw-tp .cw-tq{font-size:11px;color:var(--t2);border-left:2px solid var(--bd2);padding-left:8px;margin-bottom:5px;}
 .cw-tp .cw-ta{font-size:11px;color:var(--t1);background:rgba(0,230,118,.04);border-radius:8px;padding:8px 10px;margin-bottom:12px;line-height:1.5;}
+.cw-ts{display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--bd);border-radius:9px;background:rgba(0,230,118,.03);margin-bottom:8px;}
+.cw-ts-ic{width:26px;height:26px;border-radius:7px;background:rgba(0,230,118,.1);display:flex;align-items:center;justify-content:center;color:var(--g1);flex-shrink:0;}
+.cw-ts-ic svg{width:14px;height:14px;}
+.cw-ts-t{font-size:11.5px;color:var(--t1);font-weight:600;}
+.cw-ts-m{font-size:10px;color:var(--t3);margin-top:1px;}
 .cw-cap{text-align:center;margin:0 auto 14px;font-size:.92rem;font-weight:600;color:#bfe9cf;min-height:22px;transition:color .2s;}
 .cw-cap b{color:#00e676;}
+/* Play/pause + progress bar below the overlay. */
+.cw-playbar{display:flex;align-items:center;gap:13px;max-width:520px;margin:16px auto 0;}
+.cw-pp{flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,230,118,.32);background:rgba(0,230,118,.1);color:#00e676;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,transform .1s;}
+.cw-pp:hover{background:rgba(0,230,118,.2);border-color:#00e676;}
+.cw-pp:active{transform:scale(.93);}
+.cw-pp svg{width:16px;height:16px;}
+.cw-prog{flex:1;height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;}
+.cw-prog-fill{height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,#00a152,#00e676);transition:width .12s linear;}
+/* Caption fades in on every change; the overlay pulses green when a new feature starts. */
+@keyframes cwCapIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.cw-win.cw-flash{animation:cwFlash .6s ease;}
+@keyframes cwFlash{0%{box-shadow:0 28px 80px rgba(0,0,0,.6),0 0 0 1.5px rgba(0,230,118,.55),0 0 42px rgba(0,230,118,.5);}100%{box-shadow:0 28px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,230,118,.05),0 0 60px rgba(0,230,118,.06);}}
 /* Code block inside a demo answer (coding questions). */
 .cw-code{margin:8px 0;padding:9px 11px;background:rgba(0,0,0,.42);border:1px solid var(--bd);border-radius:8px;overflow-x:auto;font-family:'SF Mono',Consolas,'Roboto Mono',monospace;font-size:11px;line-height:1.5;color:#d6f5e2;white-space:pre;scrollbar-width:thin;}
 .cw-code code{color:inherit;background:none;font-family:inherit;}
