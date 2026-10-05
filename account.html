@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="theme.css?v=20261011">
+  <link rel="stylesheet" href="theme.css?v=20261012">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account - CloakAI</title>
   <meta name="description" content="Sign in to manage your CloakAI license keys, see hours used and remaining, top up, and remove keys.">
@@ -11,7 +11,10 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
-    body{background:var(--bg);color:var(--tc);min-height:100vh;padding:0;}
+    /* Do NOT set padding:0 here. On mobile theme.css sets body{padding-top:60px} to
+       clear the FIXED header; a blanket padding:0 overrode it and the header covered
+       the top of the account content. Leave body padding to theme.css. */
+    body{background:var(--bg);color:var(--tc);min-height:100vh;}
     main{max-width:900px;margin:0 auto;padding:48px 20px 80px;}
     .page-title{font-size:2.2rem;font-weight:800;letter-spacing:-.6px;color:#fff;margin-bottom:8px;}
     .page-sub{color:#7C93A1;font-size:.95rem;line-height:1.6;margin-bottom:36px;max-width:640px;}
@@ -719,6 +722,6 @@
   };
 </script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="layout.js?v=20261011"></script>
+<script src="layout.js?v=20261012"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
        document. Analytics used to sit above it and competed for the same connection
        on a slow mobile link, delaying first paint for no benefit. gtag is async, so
        moving it down costs nothing: it still loads, just not ahead of the paint. -->
-  <link rel="stylesheet" href="theme.css?v=20261011">
+  <link rel="stylesheet" href="theme.css?v=20261012">
   <!-- Google Identity Services for the optional "Continue with Google" checkout. Async,
        so if it fails to load the email + OTP flow below is completely unaffected. -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -434,7 +434,7 @@
 <script>var NEWSBAR_ENABLED = false;</script>
 <div id="news-bar">
   <div class="news-bar-inner">
-    <span class="news-bar-text">🔥 Upgrade CloakAI to v16.0.5 available!</span>
+    <span class="news-bar-text">🔥 Upgrade CloakAI to v16.0.6 available!</span>
     <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-Setup.exe" class="news-bar-cta" onclick="window.trackEvent&amp;&amp;trackEvent('Newsbar','Download','Win')">Update now →</a>
     <button class="news-bar-close" id="news-bar-close" aria-label="Dismiss">×</button>
   </div>
@@ -642,7 +642,7 @@
       Download for Mac
     </a>
   </div>
-  <p class="hero-note" style="line-height:1.7;margin-top:12px;">Latest version <strong style="color:var(--gg)">v16.0.5</strong> &nbsp;·&nbsp; Windows 10 &amp; 11</p>
+  <p class="hero-note" style="line-height:1.7;margin-top:12px;">Latest version <strong style="color:var(--gg)">v16.0.6</strong> &nbsp;·&nbsp; Windows 10 &amp; 11</p>
 </section>
 
 <!-- Demo video lightbox (opened by the "Watch Demo" button) -->
@@ -715,7 +715,7 @@
         <span class="cw-pill"><span class="cw-dot" id="cwDot"></span><span id="cwStatus">Ready</span></span>
         <span class="cw-pill cw-time">&#8987; 2h 41m</span>
         <span class="cw-sp"></span>
-        <span class="cw-ver">v16.0.5</span>
+        <span class="cw-ver">v16.0.6</span>
         <span class="cw-x">&times;</span>
       </div>
       <div class="cw-ctrl">
@@ -1104,7 +1104,7 @@
 </div>
 <!-- FEATURES -->
 <style>
-/* ── Live overlay walkthrough (replica of the v16.0.5 app window) ── */
+/* ── Live overlay walkthrough (replica of the v16.0.6 app window) ── */
 .cw-stage{max-width:900px;margin:0 auto;}
 /* ---- Demo: light Windows desktop behind the overlay (File Explorer + taskbar) ---- */
 .cw-desk{position:relative;border-radius:14px;overflow:hidden;background:linear-gradient(140deg,#eaf1fb 0%,#d7e4f5 55%,#cfe0f2 100%);box-shadow:0 30px 80px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.5);}
@@ -2246,6 +2246,6 @@
     history.replaceState(null,'',location.pathname+location.hash);
   })();
 </script>
-<script src="layout.js?v=20261011"></script>
+<script src="layout.js?v=20261012"></script>
 </body>
 </html>

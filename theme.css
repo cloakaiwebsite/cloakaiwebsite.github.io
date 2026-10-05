@@ -67,6 +67,14 @@ header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter
 #mnav a.nav-cta svg{stroke:#fff;opacity:1;}
 .nav-cta{background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff!important;padding:7px 16px;border-radius:20px;border:1px solid var(--gg);font-weight:700!important;}
 .nav-cta:hover{box-shadow:0 0 14px rgba(46,204,113,.45);}
+/* Desktop Sign in / My Account: the SAME rounded black pill as the mobile button
+   (.hdr-account-m), scaled up in proportion for the desktop nav. Scoped to >900px so
+   it never restyles the same link inside the collapsed mobile hamburger menu. */
+@media(min-width:901px){
+  #mnav a[data-account-link]{height:40px;padding:0 20px;border-radius:11px;border:1px solid rgba(255,255,255,.22);background:#000;color:#fff;font-weight:700;font-size:.9rem;}
+  #mnav a[data-account-link]:hover{background:#111;border-color:rgba(255,255,255,.4);color:#fff;}
+  #mnav a[data-account-link] svg{stroke:#fff;opacity:1;}
+}
 .ham{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:6px 4px;z-index:1001;}
 .ham span{display:block;width:22px;height:2px;background:var(--gg);border-radius:2px;transition:transform .28s,opacity .28s;}
 .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
