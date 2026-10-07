@@ -44,6 +44,21 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   });
 });
 
+/* ── Blog link in the main nav, on EVERY page (desktop + mobile share #mnav) ──
+   Injected here so all pages get it without editing each file. Guarded against a
+   duplicate if any page already hardcodes a Blog link. */
+(function(){
+  var nav=document.getElementById('mnav');
+  if(!nav)return;
+  if(nav.querySelector('[data-blog-link]')||nav.querySelector('a[href="blog.html"]'))return;
+  var a=document.createElement('a');
+  a.href='blog.html';
+  a.setAttribute('data-blog-link','');
+  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Blog';
+  var cta=nav.querySelector('.nav-cta');
+  if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
+})();
+
 /* ── Account link in the top nav, on EVERY page ──────────────────────
    Injected here so all pages get it without editing each file. The label is
    "My Account" when a valid Google session token is present (set by the account
