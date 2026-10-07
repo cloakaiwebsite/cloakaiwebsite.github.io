@@ -4,4 +4,5 @@
 # This file exists to prevent ad fraud impersonation of this domain.
 # https://iabtechlab.com/ads-txt/
 
+google.com, pub-4276388839695004, DIRECT, f08c47fec0942fa0
 google.com, pub-9285613095773032, DIRECT, f08c47fec0942fa0
