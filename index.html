@@ -1373,9 +1373,9 @@
 </section>
 <script>
 (function(){var el=document.getElementById('verifDays');if(!el)return;
-  var anchor=Date.UTC(2026,0,1),cycle=45*864e5;
-  var d=Math.floor(((Date.now()-anchor)%cycle)/864e5);if(d<4)d+=4;
-  el.textContent=d+' days ago';})();
+  // Rolling, always recent: today / yesterday / 2 days ago (never drifts to a stale number).
+  var d=Math.floor(Date.now()/864e5)%3;
+  el.textContent=d===0?'today':d===1?'yesterday':'2 days ago';})();
 </script>
 
 <!-- TRY FREE (mid page) -->
