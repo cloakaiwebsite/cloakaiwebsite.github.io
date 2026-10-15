@@ -97,18 +97,20 @@
       <tr><td><strong>License key &amp; plan</strong></td><td>To validate your subscription status</td><td>Database Server</td></tr>
       <tr><td><strong>Transaction ID</strong></td><td>To confirm payment and prevent fraud</td><td>Database Server</td></tr>
       <tr><td><strong>Activation timestamp</strong></td><td>To calculate license expiry</td><td>Database Server</td></tr>
+      <tr><td><strong>Company and role you are interviewing for</strong> (entered in the app at the start of each session)</td><td>To honor organizations that have asked us not to be used in their interviews, to tailor CloakAI's help for your role, and to keep a compliance record of what you declared when starting a session</td><td>Database Server, in a session record and on your license or trial record</td></tr>
+      <tr><td><strong>Questions asked during a session</strong> (the text of the questions CloakAI answers for you, spoken or typed)</td><td>To keep a compliance and dispute record of how CloakAI was used in a session, and to investigate misuse. We do NOT store the audio itself or CloakAI's answers</td><td>Database Server, in the session record (access-controlled)</td></tr>
       <tr><td><strong>Google account email and name</strong> (only if you sign in to the account page)</td><td>To find and show the license keys bought with that email, and to let you top up or remove them</td><td>Not stored by us. Used only during the request; we match your verified email to existing records</td></tr>
     </table>
 
     <h2>3. Data We Do NOT Collect</h2>
     <ul>
       <li><strong>We never store your audio.</strong> It is captured locally, streamed for transcription, and discarded. No copy is kept on our servers.</li>
-      <li><strong>We never store transcriptions, questions or AI answers.</strong> They are passed through in real time and never written to our database. Your session transcript is saved only on your own computer, if you choose to save it.</li>
+      <li><strong>We do not store CloakAI's answers, and we do not store a full transcript of your call.</strong> They are passed through in real time. Your full session transcript is saved only on your own computer, if you choose to save it. <strong>We do, however, keep a record of the questions CloakAI answered for you during a session</strong> (the question text only), together with the company and role you entered, as described in the table above. This is a compliance and dispute record, kept access-controlled and used only for the purposes in "How We Use Your Data".</li>
       <li>Keystrokes, screen content, or browsing history.</li>
       <li>Credit card or banking credentials, which are handled entirely by our payment providers (PhonePe, Razorpay, or PayPal).</li>
       <li>Cookies for advertising, retargeting, or cross-site profiling. (We do use Google Analytics cookies on the website, with consent outside India; see "Cookies &amp; Website Analytics" below.)</li>
     </ul>
-    <div class="note"><strong>Important: what OpenAI does retain.</strong> Although <em>we</em> store none of the above, your audio and text are processed by OpenAI to produce transcriptions and answers. Under OpenAI's API terms, this data may be retained by OpenAI for <strong>up to 30 days</strong> for abuse and misuse monitoring, and is then deleted. OpenAI does not use data submitted through its API to train its models. We have no access to that copy. Please read <a href="https://openai.com/enterprise-privacy" target="_blank">OpenAI's API data usage policy</a> if this matters to you.</div>
+    <div class="note"><strong>Important: what OpenAI does retain.</strong> Although <em>we</em> do not store your audio or CloakAI's answers, your audio and text are processed by OpenAI to produce transcriptions and answers. Under OpenAI's API terms, this data may be retained by OpenAI for <strong>up to 30 days</strong> for abuse and misuse monitoring, and is then deleted. OpenAI does not use data submitted through its API to train its models. We have no access to that copy. Please read <a href="https://openai.com/enterprise-privacy" target="_blank">OpenAI's API data usage policy</a> if this matters to you.</div>
     <div class="warn"><strong>Audio of other people, and your responsibility.</strong> When you run CloakAI in call-listening mode, the audio captured and sent for transcription includes <strong>the other people on your call</strong>, who are not CloakAI users and have not agreed to our terms. You are solely responsible for ensuring your use of CloakAI is lawful where you are, including any obligation to notify or obtain consent from other participants before a call is captured or transcribed. Recording and consent laws vary by country and by state. If you are unsure, do not use the call-listening mode.</div>
 
     <h2>4. How We Use Your Data</h2>
@@ -117,6 +119,8 @@
       <li>To validate license authenticity each time the app launches.</li>
       <li>To enforce single-device binding and prevent unauthorised sharing.</li>
       <li>To respond to your support and migration requests.</li>
+      <li>To respect organizations that have asked us not to be used during their interviews, by disabling CloakAI for a session when the company you enter is on our opt-out blocklist.</li>
+      <li>To keep a compliance record (the company and role you declared, and the questions asked) so we can respond to a dispute, complaint, or lawful request about how CloakAI was used in a given session, and to investigate misuse.</li>
       <li>To show you your own license keys, hours used and remaining on the optional account page when you sign in with Google, and to let you top up or remove a key.</li>
       <li>To investigate abuse or fraudulent activity.</li>
     </ul>
