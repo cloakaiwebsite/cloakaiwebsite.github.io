@@ -258,7 +258,11 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   function hide(){ if(bar) bar.classList.remove('on'); }
   window.cloakCookieSettings=function(){ build(); show(); };
 
-  function maybeShow(){ if(stored()) return; if(window.cloakRegion==='INTL') show(); }
+  // Re-apply a saved choice on EVERY load. The inline default denies analytics_storage in the
+  // EEA/UK, so without this a returning visitor who clicked Accept reverts to cookieless/denied on
+  // every page after the one they clicked on (seen in Realtime as cookieless pings, but not counted
+  // as an identified active user). Symmetric: a saved Decline is also honored on later pages.
+  function maybeShow(){ var c=stored(); if(c){ applyChoice(c); return; } if(window.cloakRegion==='INTL') show(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',maybeShow); else maybeShow();
   // IP refinement may flip region to INTL after load; ask then if no choice yet.
   window.addEventListener('cloakregion',function(){ if(!stored() && window.cloakRegion==='INTL') show(); });
