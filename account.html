@@ -162,6 +162,107 @@
     .tu-continue-btn:disabled{opacity:.75;cursor:default;transform:none;}
     .tu-cspin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:tuspin .7s linear infinite;}
     @keyframes tuspin{to{transform:rotate(360deg);}}
+
+    /* ===== Question Bank (base dark theme; #view-qb.qb-light overrides it above) ===== */
+    .qb-sep{font-size:.8rem;color:#64748B;margin:-6px 0 16px;display:flex;align-items:center;gap:8px;}
+    .qb-sep b{color:#8CA3B0;}
+    .qb-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+    @media(max-width:560px){.qb-stats{grid-template-columns:repeat(2,1fr);}}
+    .qb-stat{background:rgba(0,230,118,.04);border:1px solid rgba(52,211,153,.16);border-radius:12px;padding:12px 14px;}
+    .qb-stat .n{font-size:1.4rem;font-weight:900;color:#00e676;letter-spacing:-.5px;}
+    .qb-stat .l{font-size:.64rem;color:#475569;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;}
+    .qb-search{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:0 13px;margin-bottom:10px;}
+    .qb-search input{flex:1;min-width:0;background:none;border:0;color:#E2E8F0;font:inherit;font-size:.9rem;padding:11px 0;outline:none;}
+    .qb-search input::placeholder{color:#475569;}
+    .qb-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+    .qb-chip{font-size:.72rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#8CA3B0;padding:6px 11px;border-radius:999px;}
+    .qb-chip.on{background:rgba(0,230,118,.14);border-color:rgba(52,211,153,.4);color:#34D399;}
+    .qb-colist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+    .qb-co{text-align:left;cursor:pointer;background:linear-gradient(165deg,#0b1410,#060d09);border:1px solid rgba(52,211,153,.18);border-radius:13px;padding:13px;color:#E2E8F0;transition:.15s;font-family:inherit;}
+    .qb-co:hover{border-color:rgba(52,211,153,.4);}
+    .qb-co.on{border-color:#34D399;box-shadow:0 0 0 1px rgba(52,211,153,.5) inset;}
+    .qb-co .cn{font-weight:700;font-size:.9rem;}
+    .qb-co .cq{font-size:.76rem;color:#64748B;margin-top:4px;}
+    .qb-co .bar{height:4px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:9px;}
+    .qb-co .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--pg),var(--ag));}
+    .qb-panel{margin-top:16px;border-top:1px solid rgba(255,255,255,.07);padding-top:16px;position:relative;}
+    .qb-qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:11px;}
+    .qb-qhead h4{font-size:.95rem;color:#E2E8F0;margin:0;font-weight:800;}
+    .qb-qlist{display:flex;flex-direction:column;gap:9px;}
+    .qb-q{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;}
+    .qb-q .t{font-size:.9rem;color:#E2E8F0;}
+    .qb-q .m{font-size:.7rem;color:#475569;margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+    .qb-q .m .f{color:#34D399;}
+    .qb-q .m .tag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:1px 7px;border-radius:5px;}
+    .qb-protect{-webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-touch-callout:none;}
+    .qb-lockcard{background:linear-gradient(165deg,#0b1410,#060d09);border:1px solid rgba(168,85,247,.35);border-radius:16px;padding:22px;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.5);}
+    .qb-lockico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin:0 auto 12px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:#c4a2fb;}
+    .qb-price{font-size:1.9rem;font-weight:900;color:#c4a2fb;letter-spacing:-.5px;line-height:1;}
+    .qb-price small{font-size:.8rem;color:#8b6fc0;font-weight:600;}
+    .qb-lockcard h4{font-size:1rem;color:#E2E8F0;margin:10px 0 6px;font-weight:800;}
+    .qb-lockcard p{font-size:.82rem;color:#64748B;line-height:1.55;margin:0 0 15px;}
+    .qb-join{width:100%;padding:12px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer;}
+    .qb-wm{position:absolute;inset:40px 0 0;pointer-events:none;overflow:hidden;z-index:2;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:26px 44px;transform:rotate(-22deg) scale(1.5);transform-origin:center;opacity:.06;font-family:'Consolas',monospace;font-size:.72rem;color:#fff;white-space:nowrap;}
+    .qb-ptag{font-size:.7rem;color:#34D399;display:inline-flex;align-items:center;gap:5px;}
+    .qb-disc{font-size:.72rem;color:#475569;line-height:1.6;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px 15px;margin-top:16px;}
+    .qb-disc b{color:#64748B;}
+    .qb-pager-btn{min-width:34px;height:34px;padding:0 10px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:#0b1410;color:#94A3B8;font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
+    .qb-pager-btn.on{background:rgba(0,230,118,.14);border-color:rgba(52,211,153,.45);color:#34D399;}
+    .qb-pager-btn:disabled{opacity:.4;cursor:default;}
+
+    /* ===== 4-section chooser + per-section views + shared pager ===== */
+    .acct-sections{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:4px 0 8px;}
+    @media(max-width:560px){.acct-sections{grid-template-columns:1fr;}}
+    .asec{display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;background:linear-gradient(165deg,#0b1410,#060d09);border:1px solid rgba(52,211,153,.2);border-radius:16px;padding:18px 20px;color:#E2E8F0;font-family:inherit;transition:border-color .2s,transform .2s,box-shadow .2s;}
+    .asec:hover{border-color:rgba(52,211,153,.45);transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,0,0,.35);}
+    .asec-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(0,230,118,.1);border:1px solid rgba(52,211,153,.25);color:#34D399;flex-shrink:0;}
+    .asec-ic svg{width:22px;height:22px;}
+    .asec-tx{min-width:0;}
+    .asec-tt{font-size:1rem;font-weight:800;color:#E2E8F0;}
+    .asec-ct{font-size:.8rem;color:#64748B;margin-top:2px;}
+    .asec-go{margin-left:auto;color:#475569;flex-shrink:0;}
+    .asec[data-sec="qb"] .asec-ic{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.4);color:#c4a2fb;}
+
+    .acct-view{display:none;}
+    .acct-view.on{display:block;}
+    .view-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+    .view-back{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid rgba(255,255,255,.12);color:#94A3B8;font:inherit;font-size:.85rem;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer;}
+    .view-back:hover{border-color:rgba(255,255,255,.28);color:#E2E8F0;}
+    .page-size{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;color:#64748B;}
+    .page-size select{background:#0b1410;border:1px solid rgba(255,255,255,.14);color:#E2E8F0;font:inherit;font-size:.82rem;border-radius:8px;padding:6px 8px;cursor:pointer;}
+    .pager{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;}
+    .pager button{min-width:34px;height:34px;padding:0 10px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:#0b1410;color:#94A3B8;font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
+    .pager button:hover:not(:disabled){border-color:rgba(52,211,153,.4);color:#E2E8F0;}
+    .pager button.on{background:rgba(0,230,118,.14);border-color:rgba(52,211,153,.45);color:#34D399;}
+    .pager button:disabled{opacity:.4;cursor:default;}
+    .view-empty{color:#64748B;font-size:.9rem;text-align:center;padding:30px 16px;}
+
+    /* Question Bank view: LIGHT theme + BOLD readable question text, scoped to this view only. */
+    #view-qb.qb-light .panel{background:#f4f7f5;border-color:#d7e3dc;}
+    #view-qb.qb-light .panel-title{color:#0f2a1b;}
+    #view-qb.qb-light .qb-sep{color:#3f5c4c;}
+    #view-qb.qb-light .qb-stat{background:#e9f3ec;border-color:#cfe3d6;}
+    #view-qb.qb-light .qb-stat .n{color:#0a7c44;}
+    #view-qb.qb-light .qb-stat .l{color:#5a7566;}
+    #view-qb.qb-light .qb-search{background:#fff;border-color:#cfe0d5;}
+    #view-qb.qb-light .qb-search input{color:#12271c;}
+    #view-qb.qb-light .qb-chip{background:#fff;border-color:#cfe0d5;color:#35553f;}
+    #view-qb.qb-light .qb-chip.on{background:#d6f5e2;border-color:#8fd3a8;color:#0a7c44;}
+    #view-qb.qb-light .qb-co{background:#fff;border-color:#d2e4d8;color:#12271c;}
+    #view-qb.qb-light .qb-co .cq{color:#5a7566;}
+    #view-qb.qb-light .qb-panel{border-top-color:#d7e3dc;}
+    #view-qb.qb-light .qb-qhead h4{color:#0f2a1b;}
+    #view-qb.qb-light .qb-q{background:#fff;border-color:#d2e4d8;}
+    #view-qb.qb-light .qb-q .t{color:#0c1f16;font-weight:700;font-size:.95rem;line-height:1.5;}
+    #view-qb.qb-light .qb-q .m{color:#5a7566;}
+    #view-qb.qb-light .qb-q .m .tag{background:#eef5f0;border-color:#d2e4d8;color:#35553f;}
+    #view-qb.qb-light .qb-lockcard{background:#fff;border-color:#c7b3ea;}
+    #view-qb.qb-light .qb-lockcard h4{color:#0f2a1b;}
+    #view-qb.qb-light .qb-lockcard p{color:#5a7566;}
+    #view-qb.qb-light .qb-price{color:#6d28d9;}
+    #view-qb.qb-light .qb-price small{color:#8b6fc0;}
+    #view-qb.qb-light .qb-pager-btn{background:#fff;border-color:#cfe0d5;color:#35553f;}
+    #view-qb .qb-join{background:linear-gradient(135deg,#8b5cf6,#7c3aed);}
   </style>
 </head>
 <body>
@@ -221,35 +322,106 @@
       <div><div class="s-num" id="sum-hours">0</div><div class="s-lbl">Hours remaining</div></div>
     </div>
 
-    <!-- Section: license keys -->
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg></div>
-        <div class="panel-title">License keys</div>
-        <span class="panel-count" id="keys-count">0</span>
-      </div>
-      <div id="keys" class="keys"></div>
+    <!-- 4-section chooser (shown first; each card opens one section) -->
+    <div class="acct-sections" id="acct-sections">
+      <button type="button" class="asec" data-sec="qb" onclick="goSection('qb')">
+        <span class="asec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h7M8 11h7M8 15h4"/></svg></span>
+        <span class="asec-tx"><span class="asec-tt">Question Bank</span><span class="asec-ct" id="asec-qb-ct">Membership</span></span>
+        <span class="asec-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </button>
+      <button type="button" class="asec" data-sec="licenses" onclick="goSection('licenses')">
+        <span class="asec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg></span>
+        <span class="asec-tx"><span class="asec-tt">Licenses</span><span class="asec-ct" id="asec-lic-ct">0 keys</span></span>
+        <span class="asec-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </button>
+      <button type="button" class="asec" data-sec="referrals" onclick="goSection('referrals')">
+        <span class="asec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span>
+        <span class="asec-tx"><span class="asec-tt">Referrals</span><span class="asec-ct" id="asec-ref-ct">0 referrals</span></span>
+        <span class="asec-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </button>
+      <button type="button" class="asec" data-sec="orders" onclick="goSection('orders')">
+        <span class="asec-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h10"/></svg></span>
+        <span class="asec-tx"><span class="asec-tt">Order history</span><span class="asec-ct" id="asec-ord-ct">0 orders</span></span>
+        <span class="asec-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </button>
     </div>
 
-    <!-- Section: referrals (per key: shareable code + earnings) -->
-    <div class="panel" id="referrals-wrap" style="display:none;">
-      <div class="panel-head">
-        <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-        <div class="panel-title">Referrals</div>
-        <span class="panel-count" id="ref-count">0</span>
-      </div>
-      <div class="ref-intro" id="ref-intro"></div>
-      <div id="referrals" class="referrals"></div>
+    <!-- Shared bar for any open section: back + one page-size control for all 4 sections -->
+    <div class="view-bar" id="view-bar" style="display:none;">
+      <button type="button" class="view-back" onclick="backSections()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg> All sections</button>
+      <label class="page-size">Show <select id="acct-pagesize" onchange="acctPageSizeChange()"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select> per page</label>
     </div>
 
-    <!-- Section: order history (kept separate from license keys) -->
-    <div class="panel" id="orders-wrap" style="display:none;">
-      <div class="panel-head">
-        <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h10"/></svg></div>
-        <div class="panel-title">Order history</div>
-        <span class="panel-count" id="orders-count">0</span>
+    <!-- View: Question Bank (light + bold theme, members-only, 0 free) -->
+    <div class="acct-view qb-light" id="view-qb">
+      <div class="panel" id="qb-wrap">
+        <div class="panel-head">
+          <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h11l3 3v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7M8 11h7M8 15h4"/></svg></div>
+          <div class="panel-title">Interview Question Bank</div>
+          <span class="panel-count" id="qb-badge">Members only</span>
+        </div>
+        <div class="qb-sep">A separate membership. It does <b>&nbsp;not&nbsp;</b> use your interview hours.</div>
+        <div class="qb-stats">
+          <div class="qb-stat"><div class="n" id="qb-interviews">-</div><div class="l">Interviews</div></div>
+          <div class="qb-stat"><div class="n" id="qb-questions">-</div><div class="l">Questions</div></div>
+          <div class="qb-stat"><div class="n" id="qb-roles">-</div><div class="l">Roles</div></div>
+          <div class="qb-stat"><div class="n" id="qb-companies">-</div><div class="l">Companies</div></div>
+        </div>
+        <div class="qb-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="qb-q" placeholder="Search a company - Google, Amazon, Infosys..." oninput="qbRender()">
+        </div>
+        <div class="qb-chips" id="qb-chips"></div>
+        <div class="qb-colist" id="qb-colist"></div>
+        <div class="qb-panel" id="qb-panel"></div>
+        <div class="qb-disc">
+          <b>What this is:</b> questions are community-sourced from real interviews CloakAI users chose to log, grouped by company and role; mistyped, placeholder or too-few companies are grouped under <b>Other</b>.
+          <b>No guarantees</b> that questions will appear in your interview, or that they are accurate, complete or current - it is a study aid, not a prediction.
+          <b>Fair use:</b> personal prep only. Each view is watermarked to your account. No redistribution or resale. Separate from your app plan; renews only if you buy it again.
+        </div>
       </div>
-      <div id="orders" class="orders"></div>
+    </div>
+
+    <!-- View: license keys -->
+    <div class="acct-view" id="view-licenses">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15.5" r="4"/><path d="M10.8 12.7L20 3.5"/><path d="M17 6.5l2.5 2.5"/></svg></div>
+          <div class="panel-title">License keys</div>
+          <span class="panel-count" id="keys-count">0</span>
+        </div>
+        <div id="keys" class="keys"></div>
+        <div class="pager" id="pager-licenses"></div>
+      </div>
+    </div>
+
+    <!-- View: referrals (per key: shareable code + earnings) -->
+    <div class="acct-view" id="view-referrals">
+      <div class="panel" id="referrals-wrap">
+        <div class="panel-head">
+          <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <div class="panel-title">Referrals</div>
+          <span class="panel-count" id="ref-count">0</span>
+        </div>
+        <div class="ref-intro" id="ref-intro"></div>
+        <div id="referrals" class="referrals"></div>
+        <div class="pager" id="pager-referrals"></div>
+        <div class="view-empty" id="empty-referrals" style="display:none;">No referral codes on this account yet.</div>
+      </div>
+    </div>
+
+    <!-- View: order history -->
+    <div class="acct-view" id="view-orders">
+      <div class="panel" id="orders-wrap">
+        <div class="panel-head">
+          <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h10"/></svg></div>
+          <div class="panel-title">Order history</div>
+          <span class="panel-count" id="orders-count">0</span>
+        </div>
+        <div id="orders" class="orders"></div>
+        <div class="pager" id="pager-orders"></div>
+        <div class="view-empty" id="empty-orders" style="display:none;">No orders on this account yet.</div>
+      </div>
     </div>
   </div>
 
@@ -539,6 +711,7 @@
         '</div>'+
       '</div>';
     }).join('');
+    try{window.acctAfterRender(d);}catch(e){}
   }
 
   function copyKey(key,btn){
@@ -721,6 +894,176 @@
     try{stored=sessionStorage.getItem('cloakai_gtok')||'';}catch(_){}
     if(stored && !tokenExpired(stored)){ idToken=stored; loadAccount(); }
   };
+</script>
+<!-- ===== 4-section navigation + shared pagination + gated Question Bank =====
+     Pure presentation layer. It does NOT touch the sign-in, account_data, top-up, Razorpay/PayPal or
+     revoke logic above - it only shows/hides sections, paginates the lists those functions already
+     rendered, and loads the members-only Question Bank (which the backend gates: non-members get 0). -->
+<script>
+(function(){
+  var PAGE_SIZE=10, activeSection=null, pageState={licenses:1,referrals:1,orders:1};
+  function $(id){return document.getElementById(id);}
+  window._acctPageSize=function(){return PAGE_SIZE;};
+
+  // Called at the end of renderAccount (one added line). Fills the chooser counts and returns to the
+  // chooser. Never throws into renderAccount (the caller wraps it in try/catch).
+  window.acctAfterRender=function(d){
+    var keys=(d&&d.keys)||[], orders=(d&&d.orders)||[], nref=Number((d&&d.total_referrals)||0);
+    if($('asec-lic-ct'))$('asec-lic-ct').textContent=keys.length+(keys.length===1?' key':' keys');
+    if($('asec-ord-ct'))$('asec-ord-ct').textContent=orders.length+(orders.length===1?' order':' orders');
+    if($('asec-ref-ct'))$('asec-ref-ct').textContent=nref+(nref===1?' referral':' referrals');
+    backSections();
+  };
+  window.goSection=function(sec){
+    if($('acct-sections'))$('acct-sections').style.display='none';
+    if($('view-bar'))$('view-bar').style.display='';
+    ['qb','licenses','referrals','orders'].forEach(function(s){var v=$('view-'+s);if(v)v.classList.toggle('on',s===sec);});
+    activeSection=sec;
+    try{window.scrollTo({top:0,behavior:'smooth'});}catch(_){}
+    if(sec==='qb'){ if(window.qbEnsure)qbEnsure(); return; }
+    pageState[sec]=1;
+    paginateSection(sec);
+  };
+  window.backSections=function(){
+    if($('view-bar'))$('view-bar').style.display='none';
+    ['qb','licenses','referrals','orders'].forEach(function(s){var v=$('view-'+s);if(v)v.classList.remove('on');});
+    if($('acct-sections'))$('acct-sections').style.display='';
+    activeSection=null;
+  };
+  window.acctPageSizeChange=function(){
+    var sel=$('acct-pagesize'); var v=parseInt((sel&&sel.value)||'10',10); PAGE_SIZE=(v===25||v===50)?v:10;
+    if(activeSection==='qb'){ if(window.qbRepaginate)qbRepaginate(); }
+    else if(activeSection){ pageState[activeSection]=1; paginateSection(activeSection); }
+  };
+  function listInfo(sec){
+    if(sec==='licenses')return {list:$('keys'),pager:$('pager-licenses'),empty:null,wrap:null,itemSel:'.k-card'};
+    if(sec==='referrals')return {list:$('referrals'),pager:$('pager-referrals'),empty:$('empty-referrals'),wrap:$('referrals-wrap'),itemSel:'.ref-row'};
+    if(sec==='orders')return {list:$('orders'),pager:$('pager-orders'),empty:$('empty-orders'),wrap:$('orders-wrap'),itemSel:'.o-row'};
+    return null;
+  }
+  function paginateSection(sec){
+    var info=listInfo(sec); if(!info||!info.list)return;
+    if(info.wrap)info.wrap.style.display='';   // render fns hide empty panels; the view controls visibility now
+    var items=info.list.querySelectorAll(info.itemSel);
+    if(!items.length){ if(info.empty)info.empty.style.display=''; if(info.pager)info.pager.innerHTML=''; return; }
+    if(info.empty)info.empty.style.display='none';
+    var total=items.length, pages=Math.ceil(total/PAGE_SIZE), page=Math.min(pageState[sec]||1,pages);
+    pageState[sec]=page;
+    var start=(page-1)*PAGE_SIZE, end=start+PAGE_SIZE;
+    for(var i=0;i<items.length;i++){ items[i].style.display=(i>=start&&i<end)?'':'none'; }
+    renderPager(info.pager,pages,page,function(p){ pageState[sec]=p; paginateSection(sec); });
+  }
+  function renderPager(el,pages,page,cb){
+    if(!el)return;
+    if(pages<=1){ el.innerHTML=''; return; }
+    var h='<button '+(page<=1?'disabled':'')+' data-p="'+(page-1)+'">Prev</button>';
+    for(var p=1;p<=pages;p++) h+='<button class="'+(p===page?'on':'')+'" data-p="'+p+'">'+p+'</button>';
+    h+='<button '+(page>=pages?'disabled':'')+' data-p="'+(page+1)+'">Next</button>';
+    el.innerHTML=h;
+    el.querySelectorAll('button[data-p]').forEach(function(b){ b.onclick=function(){ var p=parseInt(b.getAttribute('data-p'),10); if(p>=1&&p<=pages)cb(p); }; });
+  }
+
+  // ---------- Question Bank (members-only; non-members get 0 from the backend) ----------
+  var QB_API="https://app.cloakai.in/";
+  var qbBooted=false, companies=[], otherQ=0, selKey=null, selName="", qbRole="All", cur=null, qbQPage=1, qbMember=false, searchT=null;
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]});}
+  function nfmt(n){try{return Number(n||0).toLocaleString();}catch(e){return String(n||0);}}
+  function qbToken(){try{return sessionStorage.getItem('cloakai_gtok')||"";}catch(e){return "";}}
+  function qbPrice(){return (window.cloakRegion==='INTL')?"$9.99":"₹499";}
+  function memberEmail(){var e=$("acct-email");return (e&&e.textContent||"member").trim();}
+  function fresh(ts){ts=Number(ts||0);if(!ts)return"";var d=Math.max(0,Math.round((Date.now()/1000-ts)/86400));return d<=1?"asked recently":d<=7?"asked ~"+d+"d ago":d<=60?"asked ~"+Math.round(d/7)+"w ago":"asked ~"+Math.round(d/30)+"mo ago";}
+  function qbGet(a,p){var u=new URL(QB_API);u.searchParams.set("action",a);p=p||{};for(var k in p){if(p[k]!=null&&p[k]!=="")u.searchParams.set(k,p[k]);}return fetch(u.toString(),{credentials:"omit"}).then(function(r){return r.json();}).catch(function(){return{success:false};});}
+  function qbQ(company){return fetch(QB_API+"?action=qb_questions",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify({company:company,id_token:qbToken()})}).then(function(r){return r.json();}).catch(function(){return{success:false};});}
+
+  window.qbEnsure=function(){ if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(""); };
+  function loadStats(){
+    ["qb-interviews","qb-questions","qb-roles","qb-companies"].forEach(function(id){var e=$(id);if(e)e.textContent="…";});
+    qbGet("qb_stats",{}).then(function(d){if(!d||!d.success)return;$("qb-interviews").textContent=nfmt(d.interviews);$("qb-questions").textContent=nfmt(d.questions);$("qb-roles").textContent=nfmt(d.roles);$("qb-companies").textContent=nfmt(d.companies);});
+  }
+  function loadCompanies(query){
+    qbGet("qb_companies",{q:query||""}).then(function(d){
+      companies=(d&&d.companies)||[];otherQ=(d&&d.other_q)||0;
+      var keys=companies.map(function(c){return c.key;});
+      if(!selKey||(keys.indexOf(selKey)<0&&selKey!=="__other__")){selKey=companies[0]?companies[0].key:(otherQ>0?"__other__":null);selName=companies[0]?companies[0].name:"Other companies";}
+      renderCompanies();loadQuestions();
+    });
+  }
+  function renderCompanies(){
+    var cl=$("qb-colist");if(!cl)return;
+    var maxq=companies.reduce(function(m,c){return Math.max(m,Number(c.q)||0);},1);
+    var cards=companies.map(function(c){return '<button class="qb-co'+(c.key===selKey?" on":"")+'" data-k="'+esc(c.key)+'" data-n="'+esc(c.name)+'"><div class="cn">'+esc(c.name)+'</div><div class="cq">'+nfmt(c.q)+' questions</div><div class="bar"><i style="width:'+Math.max(8,Math.round((Number(c.q)||0)/maxq*100))+'%"></i></div></button>';});
+    if(otherQ>0)cards.push('<button class="qb-co'+("__other__"===selKey?" on":"")+'" data-k="__other__" data-n="Other companies"><div class="cn">Other companies</div><div class="cq">'+nfmt(otherQ)+' questions</div><div class="bar"><i style="width:14%"></i></div></button>');
+    cl.innerHTML=cards.join("")||'<div class="qb-sep" style="margin:4px 0">No company matches that search.</div>';
+    cl.querySelectorAll(".qb-co").forEach(function(b){b.onclick=function(){selKey=b.getAttribute("data-k");selName=b.getAttribute("data-n");qbRole="All";qbQPage=1;loadQuestions();};});
+  }
+  function loadQuestions(){
+    var panel=$("qb-panel");if(!selKey){if(panel)panel.innerHTML="";if($("qb-chips"))$("qb-chips").innerHTML="";return;}
+    if(panel)panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Loading '+esc(selName)+'...</div>';
+    qbQ(selKey).then(function(d){cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;renderChips();renderPanel();});
+  }
+  function renderChips(){
+    var ch=$("qb-chips");if(!ch)return;
+    var roles=(cur&&cur.roles)||[];
+    var chips=['<button class="qb-chip'+(qbRole==="All"?" on":"")+'" data-r="All">All <b>'+nfmt((cur&&cur.count)||0)+'</b></button>'];
+    roles.forEach(function(r){chips.push('<button class="qb-chip'+(qbRole===r.role?" on":"")+'" data-r="'+esc(r.role)+'">'+esc(r.role)+' <b>'+nfmt(r.count)+'</b></button>');});
+    ch.innerHTML=chips.join("");
+    ch.querySelectorAll(".qb-chip").forEach(function(b){b.onclick=function(){qbRole=b.getAttribute("data-r");qbQPage=1;renderPanel();};});
+  }
+  function renderPanel(){
+    var panel=$("qb-panel");if(!panel||!cur)return;
+    var badge=$("qb-badge");if(badge)badge.textContent=qbMember?"Member":"Members only";
+    if(!cur.success){panel.className="qb-panel";panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Could not load questions right now. Please try again.</div>';return;}
+    var total=Number(cur.count)||0;
+    var head='<div class="qb-qhead"><h4>'+esc(selName)+' - '+nfmt(total)+' questions</h4>'+(qbMember?'<span class="qb-ptag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Protected - copy disabled</span>':'<span class="qb-ptag" style="color:#8b6fc0">Members only</span>')+'</div>';
+    if(!qbMember){
+      panel.className="qb-panel";
+      panel.innerHTML=head+'<div class="qb-lockcard" style="position:static;inset:auto;margin:14px auto 0">'+
+        '<div class="qb-lockico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
+        '<div class="qb-price">'+esc(qbPrice())+'<small> / month</small></div>'+
+        '<h4>'+nfmt(total)+' questions for '+esc(selName)+'</h4>'+
+        '<p>Hidden until you join. Membership opens all '+esc(($("qb-questions")&&$("qb-questions").textContent)||String(total))+' questions across every company and role, updated daily. 30 days of access.</p>'+
+        '<button class="qb-join" id="qb-join-btn" onclick="qbJoin()">Become a member - '+esc(qbPrice())+'</button></div>';
+      return;
+    }
+    var all=(cur.questions||[]);
+    var qs=qbRole==="All"?all:all.filter(function(x){return (x.role||"")===qbRole;});
+    var ps=window._acctPageSize?window._acctPageSize():10;
+    var pages=Math.max(1,Math.ceil(qs.length/ps)); if(qbQPage>pages)qbQPage=pages; if(qbQPage<1)qbQPage=1;
+    var slice=qs.slice((qbQPage-1)*ps,(qbQPage-1)*ps+ps);
+    var rows=slice.map(function(x){return '<div class="qb-q"><div class="t">'+esc(x.q)+'</div><div class="m"><span class="tag">'+esc(x.role||"Not mentioned")+'</span>'+(x.company?'<span class="tag">'+esc(x.company)+'</span>':'')+(fresh(x.ts)?'<span class="f">'+esc(fresh(x.ts))+'</span>':'')+'</div></div>';}).join("")||'<div class="qb-sep" style="margin:6px 0">No questions for this role.</div>';
+    var pager="";
+    if(pages>1){
+      pager='<div class="pager" style="margin-top:14px"><button class="qb-pager-btn" '+(qbQPage<=1?'disabled':'')+' data-qp="'+(qbQPage-1)+'">Prev</button>';
+      for(var p=1;p<=pages;p++)pager+='<button class="qb-pager-btn '+(p===qbQPage?'on':'')+'" data-qp="'+p+'">'+p+'</button>';
+      pager+='<button class="qb-pager-btn" '+(qbQPage>=pages?'disabled':'')+' data-qp="'+(qbQPage+1)+'">Next</button></div>';
+    }
+    panel.className="qb-panel qb-protect";
+    panel.innerHTML=head+'<div class="qb-qlist">'+rows+'</div>'+pager+qbWm();
+    panel.querySelectorAll("button[data-qp]").forEach(function(b){b.onclick=function(){var p=parseInt(b.getAttribute("data-qp"),10);if(p>=1&&p<=pages){qbQPage=p;renderPanel();}};});
+  }
+  function qbWm(){var m=memberEmail()+"  -  "+new Date().toISOString().slice(0,10);var s="";for(var i=0;i<48;i++)s+="<span>"+esc(m)+"</span>";return '<div class="qb-wm" aria-hidden="true">'+s+"</div>";}
+  window.qbRepaginate=function(){ if(cur)renderPanel(); };
+  window.qbRender=function(){clearTimeout(searchT);searchT=setTimeout(function(){loadCompanies((($("qb-q")&&$("qb-q").value)||"").toLowerCase().trim());},300);};
+
+  window.qbJoin=function(){
+    var tok=qbToken(); if(!tok){ location.href="account.html"; return; }
+    var btn=$("qb-join-btn");
+    if(btn){ if(btn.getAttribute("data-busy")==="1")return; btn.setAttribute("data-busy","1"); btn.textContent="Starting checkout..."; }
+    var intl=(window.cloakRegion==="INTL");
+    var action=intl?"paypal_create_order":"create_order";
+    var body={plan:"qb",id_token:tok}; if(!intl)body.ajax="1";
+    function reset(){ if(btn){ btn.removeAttribute("data-busy"); btn.textContent="Become a member - "+qbPrice(); } }
+    fetch(QB_API+"?action="+action,{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify(body)})
+      .then(function(r){return r.json();}).then(function(d){
+        var url=d&&(d.payment_url||d.approve_url||d.approval_url||d.url);
+        if(d&&d.success&&url){ location.href=url; return; }
+        reset(); alert((d&&d.error)||"Could not start checkout. Please try again.");
+      }).catch(function(){ reset(); alert("Could not start checkout. Please try again."); });
+  };
+
+  // content protection for MEMBERS only (deterrents; a browser cannot block screenshots)
+  ["copy","cut","contextmenu","dragstart","selectstart"].forEach(function(ev){document.addEventListener(ev,function(e){if(qbMember&&e.target&&e.target.closest&&e.target.closest(".qb-protect"))e.preventDefault();},true);});
+})();
 </script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="layout.js?v=20261013"></script>
