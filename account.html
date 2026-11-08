@@ -582,6 +582,24 @@
     <div class="tu-foot">256-bit secured checkout &nbsp;·&nbsp; Hours are added to this key right after payment.</div>
   </div>
 </div>
+<!-- Question Bank membership payment-method selection. Region-based two-gateway choice
+     (India: PhonePe + Razorpay, International: Razorpay + PayPal). The user is already
+     signed in (Google or OTP token = verified email), so there is no OTP step. -->
+<div id="qb-pay-modal" class="tu-modal hidden" onclick="if(event.target===this)qbGwClose()">
+  <div class="tu-card">
+    <button class="tu-close" onclick="qbGwClose()" aria-label="Close">&times;</button>
+    <div class="tu-title">Question Bank membership</div>
+    <div class="tu-sub">30 days of full access &nbsp;·&nbsp; <span id="qb-pay-price"></span></div>
+    <div class="tu-pay-head">Choose a payment method</div>
+    <div id="qb-gateways" class="tu-gw-list"></div>
+    <button class="tu-continue-btn" id="qb-pay-continue" onclick="qbPayContinue()">
+      <span class="tu-btn-txt">Continue to Payment</span>
+      <span class="tu-cspin" style="display:none;"></span>
+    </button>
+    <div id="qb-pay-msg" class="tu-msg"></div>
+    <div class="tu-foot">256-bit secured checkout &nbsp;·&nbsp; Access unlocks right after payment.</div>
+  </div>
+</div>
 
 <footer>
   <div class="footer-logo">
@@ -1136,7 +1154,7 @@
 
   // ---------- Question Bank (members-only; non-members get 0 from the backend) ----------
   var QB_API="https://app.cloakai.in/";
-  var qbBooted=false, companies=[], otherQ=0, selKey="__all__", selName="All companies", qbRole="All", cur=null, qbQPage=1, qbMember=false, searchT=null;
+  var qbBooted=false, companies=[], otherQ=0, selKey="__all__", selName="All companies", qbRole="All", cur=null, qbQPage=1, qbMember=false, searchT=null, qbSelGw="";
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]});}
   function nfmt(n){try{return Number(n||0).toLocaleString();}catch(e){return String(n||0);}}
   function qbToken(){try{return sessionStorage.getItem('cloakai_gtok')||"";}catch(e){return "";}}
@@ -1264,24 +1282,102 @@
   function qbWm(){var m=memberEmail()+"  -  "+new Date().toISOString().slice(0,10);var s="";for(var i=0;i<48;i++)s+="<span>"+esc(m)+"</span>";return '<div class="qb-wm" aria-hidden="true">'+s+"</div>";}
   window.qbRepaginate=function(){ if(cur)renderPanel(); };
 
-  window.qbJoin=function(btnEl){
+  // Opening the membership checkout: require sign-in + the agreement (non-member card),
+  // then show the region-based two-gateway chooser (India: PhonePe/Razorpay,
+  // International: Razorpay/PayPal). The signed-in token proves the email, so no OTP.
+  window.qbJoin=function(){
     if(!qbSignedIn()){ location.href="account.html"; return; }
     var cb=$("qb-agree-cb");
     if(cb && !cb.checked){ var lbl=cb.closest(".qb-agree"); if(lbl){lbl.style.color="#EF4444";setTimeout(function(){lbl.style.color="";},2500);} return; }
-    var btn=(btnEl&&btnEl.tagName)?btnEl:$("qb-join-btn");
-    var orig=btn?btn.textContent:"";
-    if(btn){ if(btn.getAttribute("data-busy")==="1")return; btn.setAttribute("data-busy","1"); btn.textContent="Starting checkout..."; }
+    qbGwOpen();
+  };
+  function qbGwCard(g,sel){
     var intl=(window.cloakRegion==="INTL");
-    var action=intl?"paypal_create_order":"create_order";
-    var body=Object.assign({plan:"qb"},qbAuth()); if(!intl)body.ajax="1";
-    function reset(){ if(btn){ btn.removeAttribute("data-busy"); btn.textContent=orig||("Become a member - "+qbPrice()); } }
+    var C={
+      paypal:  {brand:'#0070ba',logo:'assets/PayPal-logo.svg',  alt:'PayPal',  desc:'Balance or card'},
+      razorpay:{brand:'#0b3fae',logo:'assets/razorpay-logo.svg', alt:'Razorpay',desc:(intl?'Debit / Credit Card':'Cards & UPI'),circ:true},
+      phonepe: {brand:'#5f259f',logo:'assets/phonepe-logo.webp', alt:'PhonePe', desc:'Cards, UPI & Wallets',circ:true}
+    }[g];
+    return '<button type="button" class="tu-gw'+(sel?' sel':'')+'" data-g="'+g+'" style="--brand:'+C.brand+';" onclick="qbSelectGw(\''+g+'\')">'
+      +'<span class="tu-gw-radio"></span>'
+      +'<span class="tu-gw-logo'+(C.circ?' circle':'')+'"><img src="'+C.logo+'" alt="'+esc(C.alt)+'" loading="lazy"></span>'
+      +'<span class="tu-gw-l"><span class="tu-gw-t">'+esc(C.alt)+'</span><span class="tu-gw-s">'+esc(C.desc)+'</span></span>'
+      +'</button>';
+  }
+  function qbRenderGateways(){
+    var intl=(window.cloakRegion==="INTL");
+    var list=intl?['razorpay','paypal']:['phonepe','razorpay'];
+    qbSelGw=list[0];
+    var box=$("qb-gateways"); if(box)box.innerHTML=list.map(function(g,i){return qbGwCard(g,i===0);}).join('<div class="tu-or"><span>OR</span></div>');
+  }
+  window.qbSelectGw=function(g){
+    qbSelGw=g;
+    var cards=document.querySelectorAll('#qb-gateways .tu-gw');
+    for(var i=0;i<cards.length;i++){cards[i].classList.toggle('sel',cards[i].getAttribute('data-g')===g);}
+  };
+  function qbPayLoading(on){
+    var b=$("qb-pay-continue"); if(!b)return;
+    var t=b.querySelector('.tu-btn-txt'),s=b.querySelector('.tu-cspin');
+    b.disabled=on; if(t)t.style.display=on?'none':'inline'; if(s)s.style.display=on?'inline-block':'none';
+  }
+  window.qbGwOpen=function(){
+    var pr=$("qb-pay-price"); if(pr)pr.textContent=qbPrice()+" / month";
+    var m=$("qb-pay-msg"); if(m){m.textContent="";m.className="tu-msg";}
+    qbPayLoading(false); qbRenderGateways();
+    var mod=$("qb-pay-modal"); if(mod)mod.classList.remove("hidden");
+  };
+  window.qbGwClose=function(){ var mod=$("qb-pay-modal"); if(mod)mod.classList.add("hidden"); };
+  // Create the membership order with the chosen gateway and route to its payment surface.
+  window.qbPayContinue=function(){
+    if(!qbSignedIn()){ location.href="account.html"; return; }
+    var m=$("qb-pay-msg");
+    if(!qbSelGw){ if(m){m.className="tu-msg err";m.textContent="Please choose a payment method.";} return; }
+    var g=qbSelGw, intl=(window.cloakRegion==="INTL");
+    qbPayLoading(true); if(m){m.className="tu-msg inf";m.textContent="Starting secure checkout...";}
+    var action=(g==="phonepe")?"create_order":(g==="razorpay"?"razorpay_create_order":"paypal_create_order");
+    var body=Object.assign({plan:"qb",ajax:"1"},qbAuth());
+    if(g==="razorpay")body.intl=intl?"1":"0";
+    function fail(t){ qbPayLoading(false); if(m){m.className="tu-msg err";m.textContent=t;} }
     fetch(QB_API+"?action="+action,{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify(body)})
       .then(function(r){return r.json();}).then(function(d){
-        var url=d&&(d.payment_url||d.approve_url||d.approval_url||d.url);
-        if(d&&d.success&&url){ location.href=url; return; }
-        reset(); alert((d&&d.error)||"Could not start checkout. Please try again.");
-      }).catch(function(){ reset(); alert("Could not start checkout. Please try again."); });
+        if(!d){ fail("Something went wrong. Please try again."); return; }
+        if(g==="razorpay"){
+          if(d.success&&d.razorpay_order_id){ qbPayLoading(false); if(m)m.textContent=""; qbOpenRazorpay(d); }
+          else fail(d.error||"Could not start card payment.");
+          return;
+        }
+        if(g==="paypal"){
+          if(d.success&&(d.approve_url||d.approval_url)){ location.href=d.approve_url||d.approval_url; }
+          else fail(d.error||"Could not start PayPal checkout.");
+          return;
+        }
+        if(d.payment_url){ location.href=d.payment_url; }
+        else fail(d.error||"Could not start payment. Please try again.");
+      }).catch(function(){ fail("Our servers are busy. Please try again in a minute."); });
   };
+  // Razorpay modal for a membership order, verified server-side; then land on
+  // payment-result.html which detects plan 'qb' and redirects to the account QB
+  // section with the activation celebration.
+  function qbOpenRazorpay(o){
+    if(typeof Razorpay==="undefined"){ alert("The payment library did not load. Please refresh and try again."); return; }
+    var settled=false;
+    var opts={
+      key:o.key_id,order_id:o.razorpay_order_id,amount:o.amount,currency:o.currency,
+      name:"CloakAI",description:(o.plan_name||"Question Bank membership"),
+      prefill:{email:o.email||""},theme:{color:"#00e676"},
+      handler:function(resp){
+        settled=true;
+        var vp={action:"razorpay_verify",order_id:o.order_id,razorpay_order_id:resp.razorpay_order_id,razorpay_payment_id:resp.razorpay_payment_id,razorpay_signature:resp.razorpay_signature};
+        fetch(QB_API+"?"+new URLSearchParams(vp),{credentials:"omit"}).then(function(r){return r.json();})
+          .then(function(d){ if(d&&d.success){ location.href=location.origin+"/payment-result.html?order="+encodeURIComponent(o.order_id); }
+            else alert((d&&d.error)||"We could not verify your payment. If you were charged, email support@cloakai.in."); })
+          .catch(function(){ alert("Payment verification could not reach our server. If you were charged, email support@cloakai.in."); });
+      },
+      modal:{ondismiss:function(){ if(settled)return; location.href=location.origin+"/payment-result.html?order="+encodeURIComponent(o.order_id)+"&cancelled=1"; }}
+    };
+    try{ var rzp=new Razorpay(opts); rzp.on("payment.failed",function(r){ alert("Payment failed: "+((r&&r.error&&r.error.description)||"Please try again.")); }); rzp.open(); }
+    catch(e){ alert("Could not open the payment window. Please try again."); }
+  }
 
   // content protection for MEMBERS only (deterrents; a browser cannot block screenshots)
   // Copy/select/context-menu/drag deterrents on any protected question block (preview + member),
