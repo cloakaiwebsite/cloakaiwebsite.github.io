@@ -44,19 +44,47 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   });
 });
 
-/* ── Blog link in the main nav, on EVERY page (desktop + mobile share #mnav) ──
-   Injected here so all pages get it without editing each file. Guarded against a
-   duplicate if any page already hardcodes a Blog link. */
+/* ── Blog link: MOBILE menu only (hidden from the desktop bar, kept in the hamburger
+   dropdown and the footer). Injected on every page; tagged menu-mobile-only so one CSS
+   rule hides it on desktop. */
 (function(){
   var nav=document.getElementById('mnav');
   if(!nav)return;
-  if(nav.querySelector('[data-blog-link]')||nav.querySelector('a[href="blog.html"]'))return;
+  if(nav.querySelector('[data-blog-link]')||nav.querySelector('a[href="blog.html"]')){
+    var ex=nav.querySelector('a[href="blog.html"]'); if(ex)ex.classList.add('menu-mobile-only'); return;
+  }
   var a=document.createElement('a');
   a.href='blog.html';
   a.setAttribute('data-blog-link','');
+  a.className='menu-mobile-only';
   a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Blog';
   var cta=nav.querySelector('.nav-cta');
   if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
+})();
+
+/* ── Question Bank link in the main nav, on EVERY page (desktop + mobile). Target: the
+   homepage promo section (#qbank) on the homepage, the account page's own section (#qb)
+   on the account page, else the homepage promo on every other page. */
+(function(){
+  var nav=document.getElementById('mnav');
+  if(!nav||nav.querySelector('[data-qbank-link]'))return;
+  var href = document.getElementById('qbank') ? '#qbank'
+           : document.getElementById('qb')    ? '#qb'
+           : 'index.html#qbank';
+  var a=document.createElement('a');
+  a.href=href;
+  a.setAttribute('data-qbank-link','');
+  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M12 7v10"/><path d="M8 7v10"/><path d="M16 7v10"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Question Bank';
+  var cta=nav.querySelector('.nav-cta');
+  if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
+})();
+
+/* ── License & Referral: MOBILE menu only (hidden from the desktop bar, kept in the
+   hamburger dropdown and the footer). The link is hardcoded in each page's #mnav. */
+(function(){
+  var nav=document.getElementById('mnav'); if(!nav)return;
+  var a=nav.querySelector('a[href="license-info.html"]');
+  if(a)a.classList.add('menu-mobile-only');
 })();
 
 /* ── Account link in the top nav, on EVERY page ──────────────────────

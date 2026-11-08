@@ -49,6 +49,9 @@ header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter
 #mnav{display:flex;align-items:center;}
 #mnav a{color:var(--tc);text-decoration:none;margin-left:15px;font-size:.9rem;font-weight:500;transition:color .3s;display:inline-flex;align-items:center;gap:7px;}
 #mnav a:hover{color:var(--gg);}
+/* Blog and License & Referral are tagged (by layout.js) mobile-menu-only: hidden in the desktop
+   bar, shown again inside the hamburger dropdown by the @media(max-width:900px) rule below. */
+#mnav a.menu-mobile-only{display:none;}
 /* Nav icons: outline only (fill:none), always brand green, never white or grey.
    A CSS `stroke` beats the inline stroke="currentColor" presentation attribute, so
    the colour is set here in one place rather than on 126 SVG tags across 18 pages.
@@ -92,6 +95,7 @@ header{background:transparent;backdrop-filter:blur(18px);-webkit-backdrop-filter
   #mnav.open{display:flex;}
   #mnav a{margin:0;padding:12px 14px;border-radius:9px;font-size:.95rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.05);}
   #mnav a:last-child{border-bottom:none;}
+  #mnav a.menu-mobile-only{display:flex;}   /* Blog + License & Referral: visible in the mobile dropdown only */
   /* display:flex, not block: the CTA now contains an icon plus a label, and block
      would leave them left-aligned inside a full-width button while text-align
      centred only the text. */
