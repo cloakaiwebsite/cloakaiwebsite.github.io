@@ -16,7 +16,7 @@
        clear the FIXED header; a blanket padding:0 overrode it and the header covered
        the top of the account content. Leave body padding to theme.css. */
     body{background:var(--bg);color:var(--tc);min-height:100vh;}
-    main{max-width:900px;margin:0 auto;padding:48px 20px 80px;}
+    main{max-width:1180px;margin:0 auto;padding:48px 20px 80px;}
     .page-title{font-size:2.2rem;font-weight:800;letter-spacing:-.6px;color:#fff;margin-bottom:8px;}
     .page-sub{color:#7C93A1;font-size:.95rem;line-height:1.6;margin-bottom:36px;max-width:640px;}
 
@@ -26,6 +26,21 @@
     .signin-card p{color:#64748B;font-size:.9rem;line-height:1.6;margin-bottom:24px;}
     #gbtn{display:flex;justify-content:center;min-height:44px;}
     .signin-note{margin-top:18px;font-size:.78rem;color:#334155;line-height:1.6;}
+    /* Email-OTP sign-in (alternative to Google) */
+    .otp-or{display:flex;align-items:center;gap:12px;margin:22px 0 14px;color:#475569;font-size:.78rem;}
+    .otp-or::before,.otp-or::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1);}
+    .otp-row{display:flex;gap:8px;margin-bottom:10px;}
+    .otp-row input{flex:1;min-width:0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#E2E8F0;font:inherit;font-size:.9rem;padding:11px 13px;outline:none;text-align:left;}
+    .otp-row input:focus{border-color:rgba(52,211,153,.5);}
+    .otp-row input::placeholder{color:#475569;}
+    .otp-btn{padding:0 18px;border-radius:10px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font:inherit;font-weight:700;font-size:.88rem;cursor:pointer;white-space:nowrap;transition:transform .2s;}
+    .otp-btn:hover{transform:translateY(-1px);}
+    .otp-btn:disabled{opacity:.6;cursor:default;transform:none;}
+    .otp-link{background:none;border:none;color:#64748B;font:inherit;font-size:.78rem;cursor:pointer;text-decoration:underline;padding:0;}
+    .otp-link:hover{color:#94A3B8;}
+    .otp-msg{font-size:.8rem;margin-top:6px;min-height:1em;}
+    .otp-msg.err{color:#EF4444;}
+    .otp-msg.inf{color:#34D399;}
 
     /* Signed-in header row */
     .acct-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
@@ -177,8 +192,21 @@
     .qb-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
     .qb-chip{font-size:.72rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#8CA3B0;padding:6px 11px;border-radius:999px;}
     .qb-chip.on{background:rgba(0,230,118,.14);border-color:rgba(52,211,153,.4);color:#34D399;}
-    .qb-colist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
-    .qb-co{text-align:left;cursor:pointer;background:linear-gradient(165deg,#0b1410,#060d09);border:1px solid rgba(52,211,153,.18);border-radius:13px;padding:13px;color:#E2E8F0;transition:.15s;font-family:inherit;}
+    /* Companies in a single horizontal strip (native scroll, no arrow buttons). */
+    .qb-colist{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 10px;scrollbar-width:thin;scrollbar-color:rgba(52,211,153,.35) transparent;}
+    .qb-colist::-webkit-scrollbar{height:8px;}
+    .qb-colist::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:8px;}
+    .qb-colist::-webkit-scrollbar-thumb{background:rgba(52,211,153,.3);border-radius:8px;}
+    .qb-colist::-webkit-scrollbar-thumb:hover{background:rgba(52,211,153,.5);}
+    .qb-co{flex:0 0 auto;width:172px;text-align:left;cursor:pointer;background:linear-gradient(165deg,#0b1410,#060d09);border:1px solid rgba(52,211,153,.18);border-radius:13px;padding:13px;color:#E2E8F0;transition:.15s;font-family:inherit;}
+    .qb-co .cn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .qb-co .cq{white-space:nowrap;}
+    /* Theme toggle for the Question Bank (defaults to light; button lets the member switch). */
+    .qb-themebar{display:flex;justify-content:flex-end;margin:-4px 0 12px;}
+    .qb-themebtn{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:#8CA3B0;font:inherit;font-size:.8rem;font-weight:600;cursor:pointer;}
+    .qb-themebtn:hover{color:#E2E8F0;border-color:rgba(52,211,153,.4);}
+    #view-qb.qb-light .qb-themebtn{background:#fff;border-color:#cfe0d5;color:#35553f;}
+    #view-qb.qb-light .qb-themebtn:hover{color:#0f2a1b;}
     .qb-co:hover{border-color:rgba(52,211,153,.4);}
     .qb-co.on{border-color:#34D399;box-shadow:0 0 0 1px rgba(52,211,153,.5) inset;}
     .qb-co .cn{font-weight:700;font-size:.9rem;}
@@ -303,6 +331,19 @@
     <p>We match your Google email to the keys bought with it. We only use your email to find your keys - nothing is posted to Google.</p>
     <div id="gbtn"></div>
     <div id="gbtn-fallback" class="signin-note" style="display:none;color:#EF4444;">Google sign-in is not configured yet. Please email support@cloakai.in and we will look up your keys for you.</div>
+
+    <div class="otp-or"><span>or sign in with your email</span></div>
+    <div id="otp-step1" class="otp-row">
+      <input id="otp-email" type="email" autocomplete="email" placeholder="you@example.com">
+      <button type="button" id="otp-send-btn" class="otp-btn" onclick="otpSend()">Send code</button>
+    </div>
+    <div id="otp-step2" class="otp-row" style="display:none;">
+      <input id="otp-code" inputmode="numeric" maxlength="6" placeholder="6-digit code">
+      <button type="button" id="otp-verify-btn" class="otp-btn" onclick="otpVerify()">Verify &amp; sign in</button>
+    </div>
+    <div id="otp-back" style="display:none;"><button type="button" class="otp-link" onclick="otpReset()">Use a different email</button></div>
+    <div id="otp-msg" class="otp-msg"></div>
+
     <div class="signin-note">By signing in you agree to our <a href="terms.html" style="color:var(--gg);">Terms</a> and <a href="privacy.html" style="color:var(--gg);">Privacy Policy</a>.</div>
   </div>
 
@@ -355,6 +396,7 @@
 
     <!-- View: Question Bank (light + bold theme, members-only, 0 free) -->
     <div class="acct-view qb-light" id="view-qb">
+      <div class="qb-themebar"><button type="button" class="qb-themebtn" id="qb-theme-btn" onclick="qbToggleTheme()" aria-label="Toggle theme"></button></div>
       <div class="panel" id="qb-wrap">
         <div class="panel-head">
           <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h11l3 3v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7M8 11h7M8 15h4"/></svg></div>
@@ -502,6 +544,37 @@
   const GOOGLE_CLIENT_ID = '699977930283-dusu1csjuo3rfa7r9l0jgf4teosn5hsd.apps.googleusercontent.com';
 
   var idToken = '';
+  // Email-OTP sign-in (for users without a Google account). An OTP session token stands in for the
+  // Google id_token; the backend (accountIdentity) accepts either.
+  var otpToken = '', otpEmail = '';
+  function isSignedIn(){ return !!(idToken || otpToken); }
+  function authQS(){ return idToken ? {id_token:idToken} : (otpToken ? {otp_token:otpToken, otp_email:otpEmail} : {}); }
+  function otpMsg(t,c){ var m=document.getElementById('otp-msg'); if(m){m.textContent=t;m.className='otp-msg '+(c||'');} }
+  function otpSend(){
+    var el=document.getElementById('otp-email'), email=((el&&el.value)||'').trim().toLowerCase();
+    if(!email || email.indexOf('@')<1){ otpMsg('Please enter a valid email address.','err'); return; }
+    var b=document.getElementById('otp-send-btn'); if(b){b.disabled=true;b.textContent='Sending...';}
+    otpMsg('','');
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,account:'1'}))
+      .then(function(d){ if(b){b.disabled=false;b.textContent='Send code';}
+        if(d&&d.success){ otpEmail=email; document.getElementById('otp-step1').style.display='none'; document.getElementById('otp-step2').style.display=''; document.getElementById('otp-back').style.display=''; var c=document.getElementById('otp-code'); if(c)c.focus(); otpMsg('Code sent to '+email+'. Check your inbox (and spam).','inf'); }
+        else otpMsg((d&&d.error)||'Could not send the code. Please try again.','err');
+      })
+      .catch(function(err){ if(b){b.disabled=false;b.textContent='Send code';} otpMsg(_acctErrMsg(err),'err'); });
+  }
+  function otpVerify(){
+    var el=document.getElementById('otp-code'), code=((el&&el.value)||'').trim();
+    if(!code){ otpMsg('Enter the 6-digit code.','err'); return; }
+    var b=document.getElementById('otp-verify-btn'); if(b){b.disabled=true;b.textContent='Verifying...';}
+    otpMsg('','');
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:otpEmail,otp:code,account:'1'}))
+      .then(function(d){ if(b){b.disabled=false;b.textContent='Verify & sign in';}
+        if(d&&d.success&&d.otp_token){ otpToken=d.otp_token; idToken=''; try{sessionStorage.setItem('cloakai_otp_tok',otpToken);sessionStorage.setItem('cloakai_otp_email',otpEmail);}catch(_){} loadAccount(); }
+        else otpMsg((d&&d.error)||'Incorrect or expired code.','err');
+      })
+      .catch(function(err){ if(b){b.disabled=false;b.textContent='Verify & sign in';} otpMsg(_acctErrMsg(err),'err'); });
+  }
+  function otpReset(){ otpEmail=''; var s2=document.getElementById('otp-step2'),s1=document.getElementById('otp-step1'),bk=document.getElementById('otp-back'),c=document.getElementById('otp-code'); if(s2)s2.style.display='none'; if(bk)bk.style.display='none'; if(s1)s1.style.display=''; if(c)c.value=''; otpMsg('',''); }
 
   function showMsg(text, cls){var m=document.getElementById('msg');m.textContent=text;m.className='msg '+(cls||'inf');}
   function clearMsg(){var m=document.getElementById('msg');m.textContent='';m.className='msg';}
@@ -567,8 +640,8 @@
   window.onGoogleLibraryLoad = initGoogle;
 
   function signOut(){
-    idToken='';
-    try{sessionStorage.removeItem('cloakai_gtok');}catch(_){}
+    idToken=''; otpToken=''; otpEmail='';
+    try{sessionStorage.removeItem('cloakai_gtok');sessionStorage.removeItem('cloakai_otp_tok');sessionStorage.removeItem('cloakai_otp_email');}catch(_){}
     try{ if(typeof google!=='undefined'&&google.accounts) google.accounts.id.disableAutoSelect(); }catch(_){}
     document.getElementById('signed-in').style.display='none';
     document.getElementById('signed-out').style.display='';
@@ -579,14 +652,14 @@
   // ── Data ──
   function loadAccount(){ _loadAccount(false); }
   function _loadAccount(isRetry){
-    if(!idToken){signOut();return;}
+    if(!isSignedIn()){signOut();return;}
     document.getElementById('signed-out').style.display='none';
     document.getElementById('signed-in').style.display='none';
     document.getElementById('retry').style.display='none';
     document.getElementById('page-sub').style.display='none';
     document.getElementById('loading').style.display='block';
     clearMsg();
-    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'account_data',id_token:idToken}))
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams(Object.assign({action:'account_data'},authQS())))
       .then(function(d){
         document.getElementById('loading').style.display='none';
         if(!d||!d.success){
@@ -720,9 +793,9 @@
   }
 
   function deleteKey(key){
-    if(!idToken){signOut();return;}
+    if(!isSignedIn()){signOut();return;}
     if(!confirm('Delete '+key+'?\n\nThis permanently deactivates the key. It will stop working on any device and cannot be reactivated. This does not refund unused hours.'))return;
-    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'revoke_key',id_token:idToken,license_key:key}))
+    _acctFetch(SCRIPT_URL+'?'+new URLSearchParams(Object.assign({action:'revoke_key',license_key:key},authQS())))
       .then(function(d){
         if(d&&d.success){showMsg('Key '+key+' deleted.','inf');loadAccount();}
         else{showMsg((d&&d.error)||'Could not delete the key. Please try again.','err');}
@@ -743,7 +816,7 @@
   };
 
   function openTopup(key){
-    if(!idToken){signOut();return;}
+    if(!isSignedIn()){signOut();return;}
     currentTopupKey=key;
     document.getElementById('tu-key').textContent=key;
     var m=document.getElementById('tu-msg'); m.textContent=''; m.className='tu-msg';
@@ -786,7 +859,7 @@
 
   // Pack chosen -> open the payment-method modal (region-based gateways).
   function selectTopupPlan(planKey){
-    if(!idToken){signOut();return;}
+    if(!isSignedIn()){signOut();return;}
     if(!currentTopupKey)return;
     _tuPlan=planKey; _tuSelGw='';
     var p=(PLANS_CACHE&&PLANS_CACHE[planKey])||{};
@@ -830,13 +903,13 @@
   // Create the top-up order with the chosen gateway and route to its payment
   // surface. No OTP: the Google id_token already proves the buyer, so this is fast.
   function topupContinue(){
-    if(!idToken){signOut();return;}
+    if(!isSignedIn()){signOut();return;}
     if(!currentTopupKey||!_tuPlan)return;
     var m=document.getElementById('tu-pay-msg');
     if(!_tuSelGw){ m.className='tu-msg err'; m.textContent='Please choose a payment method.'; return; }
     var g=_tuSelGw;
     _tuContinueLoading(true); m.className='tu-msg inf'; m.textContent='Starting secure checkout...';
-    var params={id_token:idToken,plan:_tuPlan,topup_key:currentTopupKey,ajax:'1'};
+    var params=Object.assign({plan:_tuPlan,topup_key:currentTopupKey,ajax:'1'},authQS());
     if(g==='phonepe'){ params.action='create_order'; }
     else if(g==='razorpay'){ params.action='razorpay_create_order'; params.intl=_tuIntl()?'1':'0'; }
     else if(g==='paypal'){ params.action='paypal_create_order'; }
@@ -893,7 +966,10 @@
     setTimeout(function(){ if(!_gInit) document.getElementById('gbtn-fallback').style.display='block'; }, 3500);
     var stored='';
     try{stored=sessionStorage.getItem('cloakai_gtok')||'';}catch(_){}
-    if(stored && !tokenExpired(stored)){ idToken=stored; loadAccount(); }
+    if(stored && !tokenExpired(stored)){ idToken=stored; loadAccount(); return; }
+    var ot='',oe='';
+    try{ot=sessionStorage.getItem('cloakai_otp_tok')||'';oe=sessionStorage.getItem('cloakai_otp_email')||'';}catch(_){}
+    if(ot && oe){ otpToken=ot; otpEmail=oe; loadAccount(); }
   };
 </script>
 <!-- ===== 4-section navigation + shared pagination + gated Question Bank =====
@@ -970,13 +1046,40 @@
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]});}
   function nfmt(n){try{return Number(n||0).toLocaleString();}catch(e){return String(n||0);}}
   function qbToken(){try{return sessionStorage.getItem('cloakai_gtok')||"";}catch(e){return "";}}
+  // Auth for QB calls: a Google id_token, else an email-OTP session token (both accepted server-side).
+  function qbAuth(){
+    var g=qbToken(); if(g) return {id_token:g};
+    var t="",em=""; try{t=sessionStorage.getItem('cloakai_otp_tok')||"";em=sessionStorage.getItem('cloakai_otp_email')||"";}catch(e){}
+    if(t&&em) return {otp_token:t, otp_email:em};
+    return {};
+  }
+  function qbSignedIn(){ var a=qbAuth(); return !!(a.id_token||a.otp_token); }
   function qbPrice(){return (window.cloakRegion==='INTL')?"$9.99":"₹499";}
   function memberEmail(){var e=$("acct-email");return (e&&e.textContent||"member").trim();}
   function fresh(ts){ts=Number(ts||0);if(!ts)return"";var d=Math.max(0,Math.round((Date.now()/1000-ts)/86400));return d<=1?"asked recently":d<=7?"asked ~"+d+"d ago":d<=60?"asked ~"+Math.round(d/7)+"w ago":"asked ~"+Math.round(d/30)+"mo ago";}
   function qbGet(a,p){var u=new URL(QB_API);u.searchParams.set("action",a);p=p||{};for(var k in p){if(p[k]!=null&&p[k]!=="")u.searchParams.set(k,p[k]);}return fetch(u.toString(),{credentials:"omit"}).then(function(r){return r.json();}).catch(function(){return{success:false};});}
-  function qbQ(company){return fetch(QB_API+"?action=qb_questions",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify({company:company,id_token:qbToken()})}).then(function(r){return r.json();}).catch(function(){return{success:false};});}
+  function qbQ(company){return fetch(QB_API+"?action=qb_questions",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify(Object.assign({company:company},qbAuth()))}).then(function(r){return r.json();}).catch(function(){return{success:false};});}
 
-  window.qbEnsure=function(){ if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(""); };
+  function qbThemeLabel(){
+    var v=$("view-qb"), b=$("qb-theme-btn"); if(!v||!b)return;
+    var light=v.classList.contains("qb-light");
+    b.innerHTML=light
+      ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>Dark mode'
+      : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Light mode';
+  }
+  window.qbToggleTheme=function(){
+    var v=$("view-qb"); if(!v)return;
+    v.classList.toggle("qb-light");
+    try{localStorage.setItem("cloak_qb_theme", v.classList.contains("qb-light")?"light":"dark");}catch(e){}
+    qbThemeLabel();
+  };
+  function qbThemeInit(){
+    var v=$("view-qb"); if(!v)return;
+    var saved=""; try{saved=localStorage.getItem("cloak_qb_theme")||"";}catch(e){}
+    if(saved==="dark")v.classList.remove("qb-light"); else v.classList.add("qb-light"); // default: light
+    qbThemeLabel();
+  }
+  window.qbEnsure=function(){ qbThemeInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(""); };
   function loadStats(){
     ["qb-interviews","qb-questions","qb-roles","qb-companies"].forEach(function(id){var e=$(id);if(e)e.textContent="…";});
     qbGet("qb_stats",{}).then(function(d){if(!d||!d.success)return;$("qb-interviews").textContent=nfmt(d.interviews);$("qb-questions").textContent=nfmt(d.questions);$("qb-roles").textContent=nfmt(d.roles);$("qb-companies").textContent=nfmt(d.companies);});
@@ -1048,13 +1151,13 @@
   window.qbRender=function(){clearTimeout(searchT);searchT=setTimeout(function(){loadCompanies((($("qb-q")&&$("qb-q").value)||"").toLowerCase().trim());},300);};
 
   window.qbJoin=function(){
-    var tok=qbToken(); if(!tok){ location.href="account.html"; return; }
+    if(!qbSignedIn()){ location.href="account.html"; return; }
     if(!confirm("Question Bank membership is "+qbPrice()+" for 30 days and is NON-REFUNDABLE once you open the questions. By continuing you agree to our Terms, Privacy Policy and Refund Policy.\n\nContinue to payment?"))return;
     var btn=$("qb-join-btn");
     if(btn){ if(btn.getAttribute("data-busy")==="1")return; btn.setAttribute("data-busy","1"); btn.textContent="Starting checkout..."; }
     var intl=(window.cloakRegion==="INTL");
     var action=intl?"paypal_create_order":"create_order";
-    var body={plan:"qb",id_token:tok}; if(!intl)body.ajax="1";
+    var body=Object.assign({plan:"qb"},qbAuth()); if(!intl)body.ajax="1";
     function reset(){ if(btn){ btn.removeAttribute("data-busy"); btn.textContent="Become a member - "+qbPrice(); } }
     fetch(QB_API+"?action="+action,{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify(body)})
       .then(function(r){return r.json();}).then(function(d){
