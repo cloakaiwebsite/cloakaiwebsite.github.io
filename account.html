@@ -235,6 +235,21 @@
     .qb-ptag{font-size:.7rem;color:#34D399;display:inline-flex;align-items:center;gap:5px;}
     .qb-disc{font-size:.72rem;color:#475569;line-height:1.6;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px 15px;margin-top:16px;}
     .qb-disc b{color:#64748B;}
+    /* Company + role dropdowns */
+    .qb-selects{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+    .qb-sel{flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;}
+    .qb-sel-l{font-size:.68rem;color:#64748B;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+    .qb-sel select{width:100%;background:#0b1410;border:1px solid rgba(52,211,153,.22);border-radius:11px;color:#E2E8F0;font:inherit;font-size:.92rem;font-weight:600;padding:11px 13px;cursor:pointer;outline:none;}
+    .qb-sel select:focus{border-color:rgba(52,211,153,.5);}
+    #view-qb.qb-light .qb-sel-l{color:#5a7566;}
+    #view-qb.qb-light .qb-sel select{background:#fff;border-color:#cfe0d5;color:#12271c;}
+    /* Blurred locked preview + CTA overlay for non-members */
+    .qb-lockwrap{position:relative;}
+    .qb-blur .t{filter:blur(5px);user-select:none;}
+    .qb-blur{pointer-events:none;opacity:.85;}
+    .qb-ctaover{position:absolute;left:0;right:0;bottom:0;top:30%;display:flex;align-items:flex-end;justify-content:center;background:linear-gradient(to bottom,rgba(7,13,10,0) 0%,rgba(7,13,10,.55) 40%,var(--bg) 92%);padding:0 6px 4px;}
+    #view-qb.qb-light .qb-ctaover{background:linear-gradient(to bottom,rgba(244,247,245,0) 0%,rgba(244,247,245,.6) 40%,#f4f7f5 92%);}
+    .qb-ctaover .qb-lockcard{margin:0;}
     /* Agreement checkbox on the join card */
     .qb-agree{display:flex;align-items:flex-start;gap:8px;text-align:left;font-size:.74rem;color:#8CA3B0;line-height:1.5;margin:4px 0 14px;cursor:pointer;transition:color .2s;}
     .qb-agree input{margin-top:2px;flex-shrink:0;accent-color:#00e676;width:15px;height:15px;cursor:pointer;}
@@ -428,12 +443,10 @@
           <div class="qb-stat"><div class="n" id="qb-roles">-</div><div class="l">Roles</div></div>
           <div class="qb-stat"><div class="n" id="qb-companies">-</div><div class="l">Companies</div></div>
         </div>
-        <div class="qb-search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <input id="qb-q" placeholder="Search a company - Google, Amazon, Infosys..." oninput="qbRender()">
+        <div class="qb-selects">
+          <label class="qb-sel"><span class="qb-sel-l">Company</span><select id="qb-co-select" onchange="qbPickCompany(this.value)"></select></label>
+          <label class="qb-sel"><span class="qb-sel-l">Job role</span><select id="qb-role-select" onchange="qbPickRole(this.value)"></select></label>
         </div>
-        <div class="qb-strip"><button type="button" class="qb-arrow" id="co-prev" aria-label="Scroll companies left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="qb-colist" id="qb-colist"></div><button type="button" class="qb-arrow" id="co-next" aria-label="Scroll companies right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
-        <div class="qb-strip"><button type="button" class="qb-arrow" id="role-prev" aria-label="Scroll roles left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="qb-chips" id="qb-chips"></div><button type="button" class="qb-arrow" id="role-next" aria-label="Scroll roles right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
         <div class="qb-panel" id="qb-panel"></div>
         <div class="qb-disc">
           <b>What this is:</b> questions are community-sourced from real sessions CloakAI users chose to log, grouped by company and role; mistyped, placeholder or too-few companies are grouped under <b>Other</b>. <b>Personal information is automatically removed</b> - only general and technical questions are shown, never names, audio, answers or anyone's confidential details.
@@ -1099,63 +1112,39 @@
     if(saved==="light")v.classList.add("qb-light"); else v.classList.remove("qb-light"); // default: dark
     qbThemeLabel();
   }
-  function qbScroll(el,dir){ if(el)el.scrollBy({left:dir*Math.max(200,Math.round(el.clientWidth*0.8)),behavior:"smooth"}); }
-  window.qbUpdArrows=function(){
-    [["qb-colist","co-prev","co-next"],["qb-chips","role-prev","role-next"]].forEach(function(m){
-      var el=$(m[0]),p=$(m[1]),n=$(m[2]); if(!el)return;
-      var over=el.scrollWidth>el.clientWidth+4;
-      if(p){p.style.display=over?"":"none";p.disabled=el.scrollLeft<=2;}
-      if(n){n.style.display=over?"":"none";n.disabled=el.scrollLeft>=el.scrollWidth-el.clientWidth-2;}
-    });
-  };
-  var qbArrowsReady=false;
-  function qbArrowsInit(){
-    if(qbArrowsReady)return; qbArrowsReady=true;
-    [["co-prev","qb-colist",-1],["co-next","qb-colist",1],["role-prev","qb-chips",-1],["role-next","qb-chips",1]].forEach(function(m){
-      var b=$(m[0]); if(b)b.onclick=function(){qbScroll($(m[1]),m[2]);};
-    });
-    var co=$("qb-colist"),ch=$("qb-chips");
-    if(co)co.addEventListener("scroll",window.qbUpdArrows,{passive:true});
-    if(ch)ch.addEventListener("scroll",window.qbUpdArrows,{passive:true});
-    window.addEventListener("resize",window.qbUpdArrows);
-  }
-  window.qbEnsure=function(){ qbThemeInit(); qbArrowsInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(""); };
+  window.qbEnsure=function(){ qbThemeInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(); };
   function loadStats(){
     ["qb-interviews","qb-questions","qb-roles","qb-companies"].forEach(function(id){var e=$(id);if(e)e.textContent="…";});
     qbGet("qb_stats",{}).then(function(d){if(!d||!d.success)return;$("qb-interviews").textContent=nfmt(d.interviews);$("qb-questions").textContent=nfmt(d.questions);$("qb-roles").textContent=nfmt(d.roles);$("qb-companies").textContent=nfmt(d.companies);});
   }
-  function loadCompanies(query){
-    qbGet("qb_companies",{q:query||""}).then(function(d){
+  function loadCompanies(){
+    qbGet("qb_companies",{limit:250}).then(function(d){
       companies=(d&&d.companies)||[];otherQ=(d&&d.other_q)||0;
       var keys=companies.map(function(c){return c.key;});
       if(!selKey||(keys.indexOf(selKey)<0&&selKey!=="__other__")){selKey=companies[0]?companies[0].key:(otherQ>0?"__other__":null);selName=companies[0]?companies[0].name:"Other companies";}
       renderCompanies();loadQuestions();
     });
   }
+  window.qbPickCompany=function(v){ selKey=v; var c=null; for(var i=0;i<companies.length;i++){if(companies[i].key===v){c=companies[i];break;}} selName=c?c.name:(v==="__other__"?"Other companies":v); qbRole="All"; qbQPage=1; loadQuestions(); };
+  window.qbPickRole=function(v){ qbRole=v; qbQPage=1; renderPanel(); };
   function renderCompanies(){
-    var cl=$("qb-colist");if(!cl)return;
-    // Non-members see only the top 5 companies (a teaser); members see all + the "Other" bucket.
-    var list=qbMember?companies:companies.slice(0,5);
-    var maxq=list.reduce(function(m,c){return Math.max(m,Number(c.q)||0);},1);
-    var cards=list.map(function(c){return '<button class="qb-co'+(c.key===selKey?" on":"")+'" data-k="'+esc(c.key)+'" data-n="'+esc(c.name)+'"><div class="cn">'+esc(c.name)+'</div><div class="cq">'+nfmt(c.q)+' questions</div><div class="bar"><i style="width:'+Math.max(8,Math.round((Number(c.q)||0)/maxq*100))+'%"></i></div></button>';});
-    if(qbMember&&otherQ>0)cards.push('<button class="qb-co'+("__other__"===selKey?" on":"")+'" data-k="__other__" data-n="Other companies"><div class="cn">Other companies</div><div class="cq">'+nfmt(otherQ)+' questions</div><div class="bar"><i style="width:14%"></i></div></button>');
-    cl.innerHTML=cards.join("")||'<div class="qb-sep" style="margin:4px 0">No company matches that search.</div>';
-    cl.querySelectorAll(".qb-co").forEach(function(b){b.onclick=function(){selKey=b.getAttribute("data-k");selName=b.getAttribute("data-n");qbRole="All";qbQPage=1;loadQuestions();};});
-    qbUpdArrows();
+    // All companies in a dropdown (members also get the "Other" bucket).
+    var sel=$("qb-co-select");if(!sel)return;
+    var opts=companies.map(function(c){return '<option value="'+esc(c.key)+'"'+(c.key===selKey?' selected':'')+'>'+esc(c.name)+' ('+nfmt(c.q)+')</option>';});
+    if(qbMember&&otherQ>0)opts.push('<option value="__other__"'+("__other__"===selKey?' selected':'')+'>Other companies ('+nfmt(otherQ)+')</option>');
+    sel.innerHTML=opts.join("")||'<option value="">No companies yet</option>';
   }
   function loadQuestions(){
-    var panel=$("qb-panel");if(!selKey){if(panel)panel.innerHTML="";if($("qb-chips"))$("qb-chips").innerHTML="";return;}
+    var panel=$("qb-panel");if(!selKey){if(panel)panel.innerHTML="";var rs=$("qb-role-select");if(rs)rs.innerHTML="";return;}
     if(panel)panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Loading '+esc(selName)+'...</div>';
     qbQ(selKey).then(function(d){var wasMember=qbMember;cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;if(qbMember&&!wasMember)renderCompanies();renderChips();renderPanel();});
   }
   function renderChips(){
-    var ch=$("qb-chips");if(!ch)return;
+    var sel=$("qb-role-select");if(!sel)return;
     var roles=(cur&&cur.roles)||[];
-    var chips=['<button class="qb-chip'+(qbRole==="All"?" on":"")+'" data-r="All">All <b>'+nfmt((cur&&cur.count)||0)+'</b></button>'];
-    roles.forEach(function(r){chips.push('<button class="qb-chip'+(qbRole===r.role?" on":"")+'" data-r="'+esc(r.role)+'">'+esc(r.role)+' <b>'+nfmt(r.count)+'</b></button>');});
-    ch.innerHTML=chips.join("");
-    ch.querySelectorAll(".qb-chip").forEach(function(b){b.onclick=function(){qbRole=b.getAttribute("data-r");qbQPage=1;renderPanel();};});
-    if(window.qbUpdArrows)qbUpdArrows();
+    var opts=['<option value="All"'+(qbRole==="All"?' selected':'')+'>All roles ('+nfmt((cur&&cur.count)||0)+')</option>'];
+    roles.forEach(function(r){opts.push('<option value="'+esc(r.role)+'"'+(qbRole===r.role?' selected':'')+'>'+esc(r.role)+' ('+nfmt(r.count)+')</option>');});
+    sel.innerHTML=opts.join("");
   }
   function renderPanel(){
     var panel=$("qb-panel");if(!panel||!cur)return;
@@ -1165,19 +1154,21 @@
     var total=Number(cur.count)||0;
     var head='<div class="qb-qhead"><h4>'+esc(selName)+' - '+nfmt(total)+' questions</h4>'+(qbMember?'<span class="qb-ptag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Protected - copy disabled</span>':'<span class="qb-ptag" style="color:#5a7566">Members only</span>')+'</div>';
     if(!qbMember){
-      // Show the server-capped teaser (max 5, enforced server-side) to hook, then the lock + join card.
-      var preview=(cur.questions||[]);
-      var prows=preview.map(function(x){return '<div class="qb-q"><div class="t">'+esc(x.q)+'</div><div class="m"><span class="tag">'+esc(x.role||"Not mentioned")+'</span>'+(x.company?'<span class="tag">'+esc(x.company)+'</span>':'')+(fresh(x.ts)?'<span class="f">'+esc(fresh(x.ts))+'</span>':'')+'</div></div>';}).join("");
-      var remaining=Math.max(0,total-preview.length);
-      panel.className="qb-panel qb-protect";
-      panel.innerHTML=head+'<div class="qb-qlist">'+prows+'</div>'+
-        '<div class="qb-lockcard" style="position:static;inset:auto;margin:16px auto 0">'+
+      // 2 REAL questions (server sends only 2), then 3 BLURRED placeholders with the CTA over them.
+      function qrow(x){return '<div class="qb-q"><div class="t">'+esc(x.q)+'</div><div class="m"><span class="tag">'+esc(x.role||"Not mentioned")+'</span>'+(x.company?'<span class="tag">'+esc(x.company)+'</span>':'')+(fresh(x.ts)?'<span class="f">'+esc(fresh(x.ts))+'</span>':'')+'</div></div>';}
+      var prows=(cur.questions||[]).slice(0,2).map(qrow).join("");
+      var FAKE=["Design a scalable system for high traffic and explain the tradeoffs.","Find the longest substring without repeating characters in a string.","How would you optimise a slow database query running in production?"];
+      var blur="";for(var bi=0;bi<3;bi++){blur+='<div class="qb-q qb-blur"><div class="t">'+esc(FAKE[bi])+'</div><div class="m"><span class="tag">Role</span></div></div>';}
+      var card='<div class="qb-lockcard">'+
         '<div class="qb-lockico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
         '<div class="qb-price">'+esc(qbPrice())+'<small> / month</small></div>'+
-        '<h4>'+(remaining>0?('Unlock '+nfmt(remaining)+' more from '+esc(selName)):'Unlock every question')+'</h4>'+
-        '<p>Membership opens all '+esc(($("qb-questions")&&$("qb-questions").textContent)||String(total))+' questions across every company and role, updated regularly. 30 days of access.</p>'+
-        '<label class="qb-agree"><input type="checkbox" id="qb-agree-cb"> I agree to the <a href="terms.html" target="_blank">Terms</a>, <a href="privacy.html" target="_blank">Privacy Policy</a> and <a href="refund.html" target="_blank">Refund Policy</a>.</label>'+
-        '<button class="qb-join" id="qb-join-btn" onclick="qbJoin()">Become a member - '+esc(qbPrice())+'</button></div>';
+        '<h4>Unlock all '+nfmt(total)+' questions for '+esc(selName)+'</h4>'+
+        '<p>Once you subscribe, every question across every company and role is available. 30 days of access.</p>'+
+        '<button class="qb-join" id="qb-join-btn" onclick="qbJoin()">Subscribe - '+esc(qbPrice())+'</button>'+
+        '<label class="qb-agree"><input type="checkbox" id="qb-agree-cb" checked> By becoming a member you agree to our <a href="terms.html" target="_blank">Terms</a>, <a href="privacy.html" target="_blank">Privacy</a> and <a href="refund.html" target="_blank">Refund Policy</a>.</label>'+
+        '</div>';
+      panel.className="qb-panel qb-protect";
+      panel.innerHTML=head+'<div class="qb-qlist qb-lockwrap">'+prows+blur+'<div class="qb-ctaover">'+card+'</div></div>';
       return;
     }
     var all=(cur.questions||[]);
@@ -1200,7 +1191,6 @@
   }
   function qbWm(){var m=memberEmail()+"  -  "+new Date().toISOString().slice(0,10);var s="";for(var i=0;i<48;i++)s+="<span>"+esc(m)+"</span>";return '<div class="qb-wm" aria-hidden="true">'+s+"</div>";}
   window.qbRepaginate=function(){ if(cur)renderPanel(); };
-  window.qbRender=function(){clearTimeout(searchT);searchT=setTimeout(function(){loadCompanies((($("qb-q")&&$("qb-q").value)||"").toLowerCase().trim());},300);};
 
   window.qbJoin=function(){
     if(!qbSignedIn()){ location.href="account.html"; return; }

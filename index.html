@@ -563,6 +563,8 @@
     .btn-qb-ic svg{width:18px;height:18px;}
     .btn-qb-new{font-size:.62rem;font-weight:800;letter-spacing:.6px;background:#A78BFA;color:#fff;padding:2px 7px;border-radius:5px;}
     .btn-qb:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 0 36px rgba(167,139,250,.55);}
+    /* Mobile: make "Get Access" and "Get Question Bank" the same size (equal full width). */
+    @media(max-width:600px){.cta-group .btn,.cta-group .btn-qb{width:100%;max-width:340px;justify-content:center;box-sizing:border-box;}}
     .hc2-play{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--gg);color:#042a14;flex-shrink:0;}
     .hc2-play svg{width:12px;height:12px;margin-left:1px;}
     /* YouTube demo lightbox */
@@ -1153,7 +1155,7 @@
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> See how recently each one was asked</li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> A daily email when new questions land</li>
       </ul>
-      <a href="account.html#qb" class="qbk-cta" onclick="try{if(window.trackEvent)trackEvent('QuestionBank','CTA','homepage')}catch(e){}">Sign in to preview and join</a>
+      <a href="account.html#qb" class="qbk-cta" id="qbk-cta-btn" onclick="try{if(window.trackEvent)trackEvent('QuestionBank','CTA','homepage')}catch(e){}">Subscribe - <span id="qbk-cta-amt">&#8377;499</span> / month</a>
       <div class="qbk-sep">Sign in first to see the companies and questions available to you, then join. Cancel anytime - it simply does not renew.</div>
     </div>
   </div>
@@ -1177,7 +1179,7 @@
     g("qbk-coname").textContent=CO[sel].name;
     g("qbk-qlist").innerHTML=CO[sel].qs.map(function(x,i){return '<div class="qbk-q'+(i>=1?" blur":"")+'"><div class="t">'+esc(x.t)+'</div><div class="m"><span class="tag">'+esc(x.r)+'</span><span style="color:#34d399">'+esc(x.d)+'</span></div></div>'}).join("");
   }
-  function price(){ var intl=(window.cloakRegion==='INTL'); var e=g("qbk-amt"); if(e)e.innerHTML=intl?"$9.99":"&#8377;499"; }
+  function price(){ var intl=(window.cloakRegion==='INTL'); var amt=intl?"$9.99":"&#8377;499"; var e=g("qbk-amt"); if(e)e.innerHTML=amt; var c=g("qbk-cta-amt"); if(c)c.innerHTML=amt; }
   function nfmt(n){try{return Number(n||0).toLocaleString()}catch(e){return String(n||0)}}
   function stats(){
     try{
