@@ -195,13 +195,14 @@
     .qb-q .m .f{color:#34D399;}
     .qb-q .m .tag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:1px 7px;border-radius:5px;}
     .qb-protect{-webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-touch-callout:none;}
-    .qb-lockcard{background:linear-gradient(165deg,#0b1410,#060d09);border:1px solid rgba(168,85,247,.35);border-radius:16px;padding:22px;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.5);}
-    .qb-lockico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin:0 auto 12px;background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:#c4a2fb;}
-    .qb-price{font-size:1.9rem;font-weight:900;color:#c4a2fb;letter-spacing:-.5px;line-height:1;}
-    .qb-price small{font-size:.8rem;color:#8b6fc0;font-weight:600;}
+    .qb-lockcard{background:linear-gradient(165deg,#0b1410,#060d09);border:1px solid rgba(0,230,118,.35);border-radius:16px;padding:22px;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.5);}
+    .qb-lockico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin:0 auto 12px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.3);color:#34d399;}
+    .qb-price{font-size:1.9rem;font-weight:900;color:#34d399;letter-spacing:-.5px;line-height:1;}
+    .qb-price small{font-size:.8rem;color:#5a7566;font-weight:600;}
     .qb-lockcard h4{font-size:1rem;color:#E2E8F0;margin:10px 0 6px;font-weight:800;}
     .qb-lockcard p{font-size:.82rem;color:#64748B;line-height:1.55;margin:0 0 15px;}
-    .qb-join{width:100%;padding:12px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer;}
+    .qb-join{width:100%;padding:12px 16px;border-radius:11px;border:none;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(46,204,113,.25);}
+    .qb-join:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(46,204,113,.45);}
     .qb-wm{position:absolute;inset:40px 0 0;pointer-events:none;overflow:hidden;z-index:2;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:26px 44px;transform:rotate(-22deg) scale(1.5);transform-origin:center;opacity:.06;font-family:'Consolas',monospace;font-size:.72rem;color:#fff;white-space:nowrap;}
     .qb-ptag{font-size:.7rem;color:#34D399;display:inline-flex;align-items:center;gap:5px;}
     .qb-disc{font-size:.72rem;color:#475569;line-height:1.6;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px 15px;margin-top:16px;}
@@ -221,7 +222,7 @@
     .asec-tt{font-size:1rem;font-weight:800;color:#E2E8F0;}
     .asec-ct{font-size:.8rem;color:#64748B;margin-top:2px;}
     .asec-go{margin-left:auto;color:#475569;flex-shrink:0;}
-    .asec[data-sec="qb"] .asec-ic{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.4);color:#c4a2fb;}
+    .asec[data-sec="qb"] .asec-ic{background:rgba(0,230,118,.12);border-color:rgba(0,230,118,.4);color:#34d399;}
 
     .acct-view{display:none;}
     .acct-view.on{display:block;}
@@ -256,13 +257,13 @@
     #view-qb.qb-light .qb-q .t{color:#0c1f16;font-weight:700;font-size:.95rem;line-height:1.5;}
     #view-qb.qb-light .qb-q .m{color:#5a7566;}
     #view-qb.qb-light .qb-q .m .tag{background:#eef5f0;border-color:#d2e4d8;color:#35553f;}
-    #view-qb.qb-light .qb-lockcard{background:#fff;border-color:#c7b3ea;}
+    #view-qb.qb-light .qb-lockcard{background:#fff;border-color:#8fd3a8;}
     #view-qb.qb-light .qb-lockcard h4{color:#0f2a1b;}
     #view-qb.qb-light .qb-lockcard p{color:#5a7566;}
-    #view-qb.qb-light .qb-price{color:#6d28d9;}
-    #view-qb.qb-light .qb-price small{color:#8b6fc0;}
+    #view-qb.qb-light .qb-price{color:#0a7c44;}
+    #view-qb.qb-light .qb-price small{color:#5a7566;}
     #view-qb.qb-light .qb-pager-btn{background:#fff;border-color:#cfe0d5;color:#35553f;}
-    #view-qb .qb-join{background:linear-gradient(135deg,#8b5cf6,#7c3aed);}
+    #view-qb .qb-join{background:linear-gradient(45deg,var(--pg),var(--ag));}
   </style>
 </head>
 <body>
@@ -1014,7 +1015,7 @@
     var badge=$("qb-badge");if(badge)badge.textContent=qbMember?"Member":"Members only";
     if(!cur.success){panel.className="qb-panel";panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Could not load questions right now. Please try again.</div>';return;}
     var total=Number(cur.count)||0;
-    var head='<div class="qb-qhead"><h4>'+esc(selName)+' - '+nfmt(total)+' questions</h4>'+(qbMember?'<span class="qb-ptag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Protected - copy disabled</span>':'<span class="qb-ptag" style="color:#8b6fc0">Members only</span>')+'</div>';
+    var head='<div class="qb-qhead"><h4>'+esc(selName)+' - '+nfmt(total)+' questions</h4>'+(qbMember?'<span class="qb-ptag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Protected - copy disabled</span>':'<span class="qb-ptag" style="color:#5a7566">Members only</span>')+'</div>';
     if(!qbMember){
       panel.className="qb-panel";
       panel.innerHTML=head+'<div class="qb-lockcard" style="position:static;inset:auto;margin:14px auto 0">'+
@@ -1022,7 +1023,8 @@
         '<div class="qb-price">'+esc(qbPrice())+'<small> / month</small></div>'+
         '<h4>'+nfmt(total)+' questions for '+esc(selName)+'</h4>'+
         '<p>Hidden until you join. Membership opens all '+esc(($("qb-questions")&&$("qb-questions").textContent)||String(total))+' questions across every company and role, updated daily. 30 days of access.</p>'+
-        '<button class="qb-join" id="qb-join-btn" onclick="qbJoin()">Become a member - '+esc(qbPrice())+'</button></div>';
+        '<button class="qb-join" id="qb-join-btn" onclick="qbJoin()">Become a member - '+esc(qbPrice())+'</button>'+
+        '<p style="font-size:.72rem;color:#64748B;margin-top:11px;line-height:1.55">By continuing you agree to our <a href="terms.html" target="_blank" style="color:#34D399">Terms</a>, <a href="privacy.html" target="_blank" style="color:#34D399">Privacy Policy</a> and <a href="refund.html" target="_blank" style="color:#34D399">Refund Policy</a>. Membership is <b style="color:#8CA3B0">non-refundable</b> once you open the questions, and it renews only if you buy it again.</p></div>';
       return;
     }
     var all=(cur.questions||[]);
@@ -1047,6 +1049,7 @@
 
   window.qbJoin=function(){
     var tok=qbToken(); if(!tok){ location.href="account.html"; return; }
+    if(!confirm("Question Bank membership is "+qbPrice()+" for 30 days and is NON-REFUNDABLE once you open the questions. By continuing you agree to our Terms, Privacy Policy and Refund Policy.\n\nContinue to payment?"))return;
     var btn=$("qb-join-btn");
     if(btn){ if(btn.getAttribute("data-busy")==="1")return; btn.setAttribute("data-busy","1"); btn.textContent="Starting checkout..."; }
     var intl=(window.cloakRegion==="INTL");

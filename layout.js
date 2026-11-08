@@ -75,8 +75,10 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   a.href=href;
   a.setAttribute('data-qbank-link','');
   a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M12 7v10"/><path d="M8 7v10"/><path d="M16 7v10"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Question Bank';
-  var cta=nav.querySelector('.nav-cta');
-  if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
+  // Place it right AFTER the Pricing link. Fall back to before the CTA if Pricing is not found.
+  var pricing=nav.querySelector('a[href="#pricing"],a[href="index.html#pricing"],a[href$="#pricing"]');
+  if(pricing&&pricing.parentNode===nav){ pricing.insertAdjacentElement('afterend',a); }
+  else { var cta=nav.querySelector('.nav-cta'); if(cta)nav.insertBefore(a,cta);else nav.appendChild(a); }
 })();
 
 /* ── License & Referral: MOBILE menu only (hidden from the desktop bar, kept in the
