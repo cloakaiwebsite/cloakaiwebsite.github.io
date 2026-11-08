@@ -10,6 +10,10 @@
   <!-- Account pages must never be indexed: they are per-user and gated behind sign-in. -->
   <meta name="robots" content="noindex,nofollow">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Warm the Google sign-in connection early so the button renders fast (it was slow /
+       sometimes blank, especially right after being redirected here from the Subscribe CTA). -->
+  <link rel="preconnect" href="https://accounts.google.com" crossorigin>
+  <link rel="dns-prefetch" href="https://accounts.google.com">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     /* Do NOT set padding:0 here. On mobile theme.css sets body{padding-top:60px} to
@@ -185,6 +189,16 @@
     .tu-continue-btn:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(46,204,113,.45);}
     .tu-continue-btn:disabled{opacity:.75;cursor:default;transform:none;}
     .tu-cspin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:tuspin .7s linear infinite;}
+    /* Question Bank payment modal: dark gateway tiles matching the homepage license
+       checkout (not the white top-up tiles). Dark brand logos keep a light chip. */
+    #qb-pay-modal .tu-gw{background:rgba(255,255,255,.03);border:2px solid rgba(255,255,255,.09);box-shadow:none;}
+    #qb-pay-modal .tu-gw:hover{background:rgba(0,230,118,.05);border-color:rgba(0,230,118,.45);box-shadow:none;}
+    #qb-pay-modal .tu-gw.sel{background:rgba(0,230,118,.10);border-color:#00e676;box-shadow:0 0 0 3px rgba(0,230,118,.14);}
+    #qb-pay-modal .tu-gw-t{color:#e8f0ec;}
+    #qb-pay-modal .tu-gw-s{color:#8fa39a;}
+    #qb-pay-modal .tu-gw-radio{border-color:rgba(255,255,255,.3);}
+    #qb-pay-modal .tu-gw-logo{background:#f6f8fb;border-radius:10px;padding:6px 10px;box-shadow:0 2px 8px rgba(0,0,0,.28);}
+    #qb-pay-modal .tu-gw-logo.circle{background:transparent;box-shadow:none;padding:0;}
     @keyframes tuspin{to{transform:rotate(360deg);}}
 
     /* ===== Question Bank (base dark theme; #view-qb.qb-light overrides it above) ===== */
@@ -309,6 +323,9 @@
     .pager button:hover:not(:disabled){border-color:rgba(52,211,153,.4);color:#E2E8F0;}
     .pager button.on{background:rgba(0,230,118,.14);border-color:rgba(52,211,153,.45);color:#34D399;}
     .pager button:disabled{opacity:.4;cursor:default;}
+    .pager .pg-gap{min-width:18px;text-align:center;color:#64748B;font-weight:700;align-self:center;user-select:none;}
+    .pager .pg-arrow{font-size:1rem;line-height:1;}
+    #view-qb.qb-light .pager .pg-gap{color:#5a7566;}
     .view-empty{color:#64748B;font-size:.9rem;text-align:center;padding:30px 16px;}
 
     /* Question Bank view: LIGHT theme + BOLD readable question text, scoped to this view only. */
@@ -661,7 +678,7 @@
     otpMsg('','');
     _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:otpEmail,otp:code,account:'1'}))
       .then(function(d){ if(b){b.disabled=false;b.textContent='Verify & sign in';}
-        if(d&&d.success&&d.otp_token){ otpToken=d.otp_token; idToken=''; try{sessionStorage.setItem('cloakai_otp_tok',otpToken);sessionStorage.setItem('cloakai_otp_email',otpEmail);}catch(_){} loadAccount(); }
+        if(d&&d.success&&d.otp_token){ otpToken=d.otp_token; idToken=''; try{sessionStorage.setItem('cloakai_otp_tok',otpToken);sessionStorage.setItem('cloakai_otp_email',otpEmail);localStorage.setItem('cloakai_otp_tok',otpToken);localStorage.setItem('cloakai_otp_email',otpEmail);}catch(_){} loadAccount(); }
         else otpMsg((d&&d.error)||'Incorrect or expired code.','err');
       })
       .catch(function(err){ if(b){b.disabled=false;b.textContent='Verify & sign in';} otpMsg(_acctErrMsg(err),'err'); });
@@ -714,7 +731,11 @@
   function onCredential(resp){
     idToken = resp.credential || '';
     if(!idToken){showMsg('Sign-in failed. Please try again.','err');return;}
-    try{sessionStorage.setItem('cloakai_gtok', idToken);}catch(_){}
+    // Mirror to BOTH stores: a payment redirect leaves and re-enters the origin, and some
+    // browsers drop sessionStorage across that external roundtrip, which logged the user
+    // out right after paying. localStorage survives it; the token is still server-validated
+    // on every call and expiry-checked by tokenExpired().
+    try{sessionStorage.setItem('cloakai_gtok', idToken);localStorage.setItem('cloakai_gtok', idToken);}catch(_){}
     loadAccount();
   }
 
@@ -733,7 +754,7 @@
 
   function signOut(){
     idToken=''; otpToken=''; otpEmail='';
-    try{sessionStorage.removeItem('cloakai_gtok');sessionStorage.removeItem('cloakai_otp_tok');sessionStorage.removeItem('cloakai_otp_email');}catch(_){}
+    try{sessionStorage.removeItem('cloakai_gtok');sessionStorage.removeItem('cloakai_otp_tok');sessionStorage.removeItem('cloakai_otp_email');localStorage.removeItem('cloakai_gtok');localStorage.removeItem('cloakai_otp_tok');localStorage.removeItem('cloakai_otp_email');}catch(_){}
     try{ if(typeof google!=='undefined'&&google.accounts) google.accounts.id.disableAutoSelect(); }catch(_){}
     document.getElementById('signed-in').style.display='none';
     document.getElementById('signed-out').style.display='';
@@ -1054,14 +1075,24 @@
   // ── Boot ──
   window.onload=function(){
     initGoogle(); // in case the GSI library loaded before onGoogleLibraryLoad was set
+    // onGoogleLibraryLoad can race (the library may finish loading before the inline script
+    // assigns the callback), which left the sign-in button blank. Poll for the library and
+    // init as soon as it is ready, for up to ~15s.
+    if(!_gInit){
+      var tries=0, gpoll=setInterval(function(){ tries++; initGoogle(); if(_gInit||tries>=75){ clearInterval(gpoll); } }, 200);
+    }
     // If sign-in never becomes available (library blocked/offline), show the fallback note.
-    setTimeout(function(){ if(!_gInit) document.getElementById('gbtn-fallback').style.display='block'; }, 3500);
+    setTimeout(function(){ if(!_gInit) document.getElementById('gbtn-fallback').style.display='block'; }, 6000);
+    // Read from sessionStorage first, then fall back to localStorage (which survives the
+    // payment redirect roundtrip). Whatever we recover is re-seeded into sessionStorage so
+    // the Question Bank module (which reads sessionStorage) stays in sync.
     var stored='';
-    try{stored=sessionStorage.getItem('cloakai_gtok')||'';}catch(_){}
-    if(stored && !tokenExpired(stored)){ idToken=stored; loadAccount(); return; }
+    try{stored=sessionStorage.getItem('cloakai_gtok')||localStorage.getItem('cloakai_gtok')||'';}catch(_){}
+    if(stored && !tokenExpired(stored)){ idToken=stored; try{sessionStorage.setItem('cloakai_gtok',stored);}catch(_){} loadAccount(); return; }
+    if(stored && tokenExpired(stored)){ try{localStorage.removeItem('cloakai_gtok');}catch(_){} }  // stale Google token: drop it
     var ot='',oe='';
-    try{ot=sessionStorage.getItem('cloakai_otp_tok')||'';oe=sessionStorage.getItem('cloakai_otp_email')||'';}catch(_){}
-    if(ot && oe){ otpToken=ot; otpEmail=oe; loadAccount(); }
+    try{ot=sessionStorage.getItem('cloakai_otp_tok')||localStorage.getItem('cloakai_otp_tok')||'';oe=sessionStorage.getItem('cloakai_otp_email')||localStorage.getItem('cloakai_otp_email')||'';}catch(_){}
+    if(ot && oe){ otpToken=ot; otpEmail=oe; try{sessionStorage.setItem('cloakai_otp_tok',ot);sessionStorage.setItem('cloakai_otp_email',oe);}catch(_){} loadAccount(); }
   };
 </script>
 <!-- ===== 4-section navigation + shared pagination + gated Question Bank =====
@@ -1142,14 +1173,44 @@
     for(var i=0;i<items.length;i++){ items[i].style.display=(i>=start&&i<end)?'':'none'; }
     renderPager(info.pager,pages,page,function(p){ pageState[sec]=p; paginateSection(sec); });
   }
+  // Windowed page list: always first + last, a window of +/-2 around the current page,
+  // '…' for the gaps. So 300 pages render as about 5-7 numbers, not 300 buttons.
+  function pagerItems(pages,page){
+    var d=2,out=[],last=0;
+    for(var p=1;p<=pages;p++){
+      if(p===1||p===pages||(p>=page-d&&p<=page+d)){
+        if(last&&p-last>1)out.push('gap');
+        out.push(p);last=p;
+      }
+    }
+    return out;
+  }
+  // Build the pager HTML (first/prev arrows + windowed numbers + next/last arrows).
+  // cls is the per-button class ('' for the shared .pager, 'qb-pager-btn' for the QB list).
+  // Every button carries data-p; the caller wires the clicks.
+  function buildPager(pages,page,cls){
+    if(pages<=1)return '';
+    var c=cls||'';
+    function btn(p,label,arrow,dis,on){
+      return '<button class="'+c+(on?' on':'')+(arrow?' pg-arrow':'')+'"'+(dis?' disabled':'')
+        +' data-p="'+p+'" aria-label="'+(arrow?('Go to page '+p):('Page '+p))+'">'+label+'</button>';
+    }
+    var h='';
+    h+=btn(1,'«',true,page<=1,false);      // first
+    h+=btn(page-1,'‹',true,page<=1,false);  // prev
+    pagerItems(pages,page).forEach(function(it){
+      if(it==='gap')h+='<span class="pg-gap">…</span>';
+      else h+=btn(it,String(it),false,false,it===page);
+    });
+    h+=btn(page+1,'›',true,page>=pages,false); // next
+    h+=btn(pages,'»',true,page>=pages,false);   // last
+    return h;
+  }
   function renderPager(el,pages,page,cb){
     if(!el)return;
     if(pages<=1){ el.innerHTML=''; return; }
-    var h='<button '+(page<=1?'disabled':'')+' data-p="'+(page-1)+'">Prev</button>';
-    for(var p=1;p<=pages;p++) h+='<button class="'+(p===page?'on':'')+'" data-p="'+p+'">'+p+'</button>';
-    h+='<button '+(page>=pages?'disabled':'')+' data-p="'+(page+1)+'">Next</button>';
-    el.innerHTML=h;
-    el.querySelectorAll('button[data-p]').forEach(function(b){ b.onclick=function(){ var p=parseInt(b.getAttribute('data-p'),10); if(p>=1&&p<=pages)cb(p); }; });
+    el.innerHTML=buildPager(pages,page,'');
+    el.querySelectorAll('button[data-p]').forEach(function(b){ b.onclick=function(){ var p=parseInt(b.getAttribute('data-p'),10); if(p>=1&&p<=pages&&p!==page)cb(p); }; });
   }
 
   // ---------- Question Bank (members-only; non-members get 0 from the backend) ----------
@@ -1267,17 +1328,12 @@
     var pages=Math.max(1,Math.ceil(qs.length/ps)); if(qbQPage>pages)qbQPage=pages; if(qbQPage<1)qbQPage=1;
     var slice=qs.slice((qbQPage-1)*ps,(qbQPage-1)*ps+ps);
     var rows=slice.map(function(x){return '<div class="qb-q"><div class="t">'+esc(x.q)+'</div><div class="m"><span class="tag">'+esc(x.role||"Not mentioned")+'</span>'+(x.company?'<span class="tag">'+esc(x.company)+'</span>':'')+(fresh(x.ts)?'<span class="f">'+esc(fresh(x.ts))+'</span>':'')+'</div></div>';}).join("")||'<div class="qb-sep" style="margin:6px 0">No questions for this role.</div>';
-    var pager="";
-    if(pages>1){
-      pager='<div class="pager" style="margin-top:14px"><button class="qb-pager-btn" '+(qbQPage<=1?'disabled':'')+' data-qp="'+(qbQPage-1)+'">Prev</button>';
-      for(var p=1;p<=pages;p++)pager+='<button class="qb-pager-btn '+(p===qbQPage?'on':'')+'" data-qp="'+p+'">'+p+'</button>';
-      pager+='<button class="qb-pager-btn" '+(qbQPage>=pages?'disabled':'')+' data-qp="'+(qbQPage+1)+'">Next</button></div>';
-    }
+    var pager=pages>1?('<div class="pager" style="margin-top:14px">'+buildPager(pages,qbQPage,'qb-pager-btn')+'</div>'):"";
     panel.className="qb-panel qb-protect";
     panel.innerHTML=head+'<div class="qb-qlist">'+rows+'</div>'+pager+
       '<div style="text-align:center;margin-top:16px;font-size:.72rem;color:#64748B">Use <strong>Renew membership</strong> at the top to extend. Renew early and your remaining days roll over - you never lose a day.</div>'+
       qbWm();
-    panel.querySelectorAll("button[data-qp]").forEach(function(b){b.onclick=function(){var p=parseInt(b.getAttribute("data-qp"),10);if(p>=1&&p<=pages){qbQPage=p;renderPanel();}};});
+    panel.querySelectorAll("button[data-p]").forEach(function(b){b.onclick=function(){var p=parseInt(b.getAttribute("data-p"),10);if(p>=1&&p<=pages&&p!==qbQPage){qbQPage=p;renderPanel();}};});
   }
   function qbWm(){var m=memberEmail()+"  -  "+new Date().toISOString().slice(0,10);var s="";for(var i=0;i<48;i++)s+="<span>"+esc(m)+"</span>";return '<div class="qb-wm" aria-hidden="true">'+s+"</div>";}
   window.qbRepaginate=function(){ if(cur)renderPanel(); };
