@@ -74,7 +74,7 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   var a=document.createElement('a');
   a.href=href;
   a.setAttribute('data-qbank-link','');
-  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M12 7v10"/><path d="M8 7v10"/><path d="M16 7v10"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Question Bank';
+  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Question Bank';
   // Place it right AFTER the Pricing link. Fall back to before the CTA if Pricing is not found.
   var pricing=nav.querySelector('a[href="#pricing"],a[href="index.html#pricing"],a[href$="#pricing"]');
   if(pricing&&pricing.parentNode===nav){ pricing.insertAdjacentElement('afterend',a); }
@@ -102,6 +102,8 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   try{
     var t=sessionStorage.getItem('cloakai_gtok')||'';
     if(t){var p=JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));signedIn=(Number(p.exp||0)*1000)>Date.now();}
+    // Email-OTP sign-in: no JWT, just a server session token kept in sessionStorage.
+    if(!signedIn && (sessionStorage.getItem('cloakai_otp_tok')||'')) signedIn=true;
   }catch(e){signedIn=false;}
   var a=document.createElement('a');
   a.href='account.html';

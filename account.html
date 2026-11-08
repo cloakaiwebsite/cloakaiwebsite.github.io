@@ -235,6 +235,25 @@
     .qb-ptag{font-size:.7rem;color:#34D399;display:inline-flex;align-items:center;gap:5px;}
     .qb-disc{font-size:.72rem;color:#475569;line-height:1.6;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px 15px;margin-top:16px;}
     .qb-disc b{color:#64748B;}
+    /* Agreement checkbox on the join card */
+    .qb-agree{display:flex;align-items:flex-start;gap:8px;text-align:left;font-size:.74rem;color:#8CA3B0;line-height:1.5;margin:4px 0 14px;cursor:pointer;transition:color .2s;}
+    .qb-agree input{margin-top:2px;flex-shrink:0;accent-color:#00e676;width:15px;height:15px;cursor:pointer;}
+    .qb-agree a{color:#34D399;}
+    /* "Spiced" member badge in the corner */
+    .panel-count.qb-badge-member{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#00e676,#00c853);color:#04170f;font-weight:800;border:none;box-shadow:0 0 0 0 rgba(0,230,118,.5);animation:qbMemberPulse 2.6s infinite;}
+    .panel-count.qb-badge-member svg{width:12px;height:12px;}
+    @keyframes qbMemberPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.45)}70%{box-shadow:0 0 0 7px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+    #view-qb.qb-light .panel-count.qb-badge-member{color:#04170f;}
+    /* Company + role strips with arrow buttons */
+    .qb-strip{display:flex;align-items:center;gap:6px;}
+    .qb-strip .qb-colist,.qb-strip .qb-chips{flex:1;min-width:0;}
+    .qb-arrow{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid rgba(52,211,153,.3);background:#0b1410;color:#34D399;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+    .qb-arrow:hover{background:rgba(0,230,118,.12);border-color:#34D399;}
+    .qb-arrow:disabled{opacity:.3;cursor:default;}
+    .qb-arrow svg{width:16px;height:16px;}
+    #view-qb.qb-light .qb-arrow{background:#fff;border-color:#cfe0d5;color:#0a7c44;}
+    .qb-chips{overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap;scrollbar-width:thin;padding-bottom:4px;}
+    .qb-chip{flex:0 0 auto;white-space:nowrap;}
     .qb-pager-btn{min-width:34px;height:34px;padding:0 10px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:#0b1410;color:#94A3B8;font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
     .qb-pager-btn.on{background:rgba(0,230,118,.14);border-color:rgba(52,211,153,.45);color:#34D399;}
     .qb-pager-btn:disabled{opacity:.4;cursor:default;}
@@ -247,8 +266,8 @@
     .asec-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(0,230,118,.1);border:1px solid rgba(52,211,153,.25);color:#34D399;flex-shrink:0;}
     .asec-ic svg{width:22px;height:22px;}
     .asec-tx{min-width:0;}
-    .asec-tt{font-size:1rem;font-weight:800;color:#E2E8F0;}
-    .asec-ct{font-size:.8rem;color:#64748B;margin-top:2px;}
+    .asec-tt{display:block;font-size:1rem;font-weight:800;color:#E2E8F0;}
+    .asec-ct{display:block;font-size:.8rem;color:#64748B;margin-top:3px;}
     .asec-go{margin-left:auto;color:#475569;flex-shrink:0;}
     .asec[data-sec="qb"] .asec-ic{background:rgba(0,230,118,.12);border-color:rgba(0,230,118,.4);color:#34d399;}
 
@@ -395,17 +414,16 @@
     </div>
 
     <!-- View: Question Bank (light + bold theme, members-only, 0 free) -->
-    <div class="acct-view qb-light" id="view-qb">
+    <div class="acct-view" id="view-qb">
       <div class="qb-themebar"><button type="button" class="qb-themebtn" id="qb-theme-btn" onclick="qbToggleTheme()" aria-label="Toggle theme"></button></div>
       <div class="panel" id="qb-wrap">
         <div class="panel-head">
           <div class="panel-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h11l3 3v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7M8 11h7M8 15h4"/></svg></div>
-          <div class="panel-title">Interview Question Bank</div>
+          <div class="panel-title">Question Bank</div>
           <span class="panel-count" id="qb-badge">Members only</span>
         </div>
-        <div class="qb-sep">A separate membership. It does <b>&nbsp;not&nbsp;</b> use your interview hours.</div>
         <div class="qb-stats">
-          <div class="qb-stat"><div class="n" id="qb-interviews">-</div><div class="l">Interviews</div></div>
+          <div class="qb-stat"><div class="n" id="qb-interviews">-</div><div class="l">Sessions</div></div>
           <div class="qb-stat"><div class="n" id="qb-questions">-</div><div class="l">Questions</div></div>
           <div class="qb-stat"><div class="n" id="qb-roles">-</div><div class="l">Roles</div></div>
           <div class="qb-stat"><div class="n" id="qb-companies">-</div><div class="l">Companies</div></div>
@@ -414,12 +432,12 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
           <input id="qb-q" placeholder="Search a company - Google, Amazon, Infosys..." oninput="qbRender()">
         </div>
-        <div class="qb-chips" id="qb-chips"></div>
-        <div class="qb-colist" id="qb-colist"></div>
+        <div class="qb-strip"><button type="button" class="qb-arrow" id="co-prev" aria-label="Scroll companies left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="qb-colist" id="qb-colist"></div><button type="button" class="qb-arrow" id="co-next" aria-label="Scroll companies right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+        <div class="qb-strip"><button type="button" class="qb-arrow" id="role-prev" aria-label="Scroll roles left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="qb-chips" id="qb-chips"></div><button type="button" class="qb-arrow" id="role-next" aria-label="Scroll roles right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
         <div class="qb-panel" id="qb-panel"></div>
         <div class="qb-disc">
-          <b>What this is:</b> questions are community-sourced from real interviews CloakAI users chose to log, grouped by company and role; mistyped, placeholder or too-few companies are grouped under <b>Other</b>. <b>Personal information is automatically removed</b> - only general and technical questions are shown, never names, audio, answers or anyone's confidential details.
-          <b>No guarantees</b> that questions will appear in your interview, or that they are accurate, complete or current - it is a study aid, not a prediction.
+          <b>What this is:</b> questions are community-sourced from real sessions CloakAI users chose to log, grouped by company and role; mistyped, placeholder or too-few companies are grouped under <b>Other</b>. <b>Personal information is automatically removed</b> - only general and technical questions are shown, never names, audio, answers or anyone's confidential details.
+          <b>No guarantees</b> that questions will appear for you, or that they are accurate, complete or current - it is a study aid, not a prediction.
           <b>Fair use:</b> personal prep only. Each view is watermarked to your account. No redistribution or resale. Separate from your app plan; renews only if you buy it again.
         </div>
       </div>
@@ -990,6 +1008,8 @@
     if($('asec-ord-ct'))$('asec-ord-ct').textContent=orders.length+(orders.length===1?' order':' orders');
     if($('asec-ref-ct'))$('asec-ref-ct').textContent=nref+(nref===1?' referral':' referrals');
     backSections();
+    // Arriving from the homepage "Get Question Bank" CTA (account.html#qb): open the QB section directly.
+    try{ if((location.hash||'')==='#qb'){ goSection('qb'); } }catch(e){}
   };
   window.goSection=function(sec){
     if($('acct-sections'))$('acct-sections').style.display='none';
@@ -1076,10 +1096,30 @@
   function qbThemeInit(){
     var v=$("view-qb"); if(!v)return;
     var saved=""; try{saved=localStorage.getItem("cloak_qb_theme")||"";}catch(e){}
-    if(saved==="dark")v.classList.remove("qb-light"); else v.classList.add("qb-light"); // default: light
+    if(saved==="light")v.classList.add("qb-light"); else v.classList.remove("qb-light"); // default: dark
     qbThemeLabel();
   }
-  window.qbEnsure=function(){ qbThemeInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(""); };
+  function qbScroll(el,dir){ if(el)el.scrollBy({left:dir*Math.max(200,Math.round(el.clientWidth*0.8)),behavior:"smooth"}); }
+  window.qbUpdArrows=function(){
+    [["qb-colist","co-prev","co-next"],["qb-chips","role-prev","role-next"]].forEach(function(m){
+      var el=$(m[0]),p=$(m[1]),n=$(m[2]); if(!el)return;
+      var over=el.scrollWidth>el.clientWidth+4;
+      if(p){p.style.display=over?"":"none";p.disabled=el.scrollLeft<=2;}
+      if(n){n.style.display=over?"":"none";n.disabled=el.scrollLeft>=el.scrollWidth-el.clientWidth-2;}
+    });
+  };
+  var qbArrowsReady=false;
+  function qbArrowsInit(){
+    if(qbArrowsReady)return; qbArrowsReady=true;
+    [["co-prev","qb-colist",-1],["co-next","qb-colist",1],["role-prev","qb-chips",-1],["role-next","qb-chips",1]].forEach(function(m){
+      var b=$(m[0]); if(b)b.onclick=function(){qbScroll($(m[1]),m[2]);};
+    });
+    var co=$("qb-colist"),ch=$("qb-chips");
+    if(co)co.addEventListener("scroll",window.qbUpdArrows,{passive:true});
+    if(ch)ch.addEventListener("scroll",window.qbUpdArrows,{passive:true});
+    window.addEventListener("resize",window.qbUpdArrows);
+  }
+  window.qbEnsure=function(){ qbThemeInit(); qbArrowsInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(""); };
   function loadStats(){
     ["qb-interviews","qb-questions","qb-roles","qb-companies"].forEach(function(id){var e=$(id);if(e)e.textContent="…";});
     qbGet("qb_stats",{}).then(function(d){if(!d||!d.success)return;$("qb-interviews").textContent=nfmt(d.interviews);$("qb-questions").textContent=nfmt(d.questions);$("qb-roles").textContent=nfmt(d.roles);$("qb-companies").textContent=nfmt(d.companies);});
@@ -1094,16 +1134,19 @@
   }
   function renderCompanies(){
     var cl=$("qb-colist");if(!cl)return;
-    var maxq=companies.reduce(function(m,c){return Math.max(m,Number(c.q)||0);},1);
-    var cards=companies.map(function(c){return '<button class="qb-co'+(c.key===selKey?" on":"")+'" data-k="'+esc(c.key)+'" data-n="'+esc(c.name)+'"><div class="cn">'+esc(c.name)+'</div><div class="cq">'+nfmt(c.q)+' questions</div><div class="bar"><i style="width:'+Math.max(8,Math.round((Number(c.q)||0)/maxq*100))+'%"></i></div></button>';});
-    if(otherQ>0)cards.push('<button class="qb-co'+("__other__"===selKey?" on":"")+'" data-k="__other__" data-n="Other companies"><div class="cn">Other companies</div><div class="cq">'+nfmt(otherQ)+' questions</div><div class="bar"><i style="width:14%"></i></div></button>');
+    // Non-members see only the top 5 companies (a teaser); members see all + the "Other" bucket.
+    var list=qbMember?companies:companies.slice(0,5);
+    var maxq=list.reduce(function(m,c){return Math.max(m,Number(c.q)||0);},1);
+    var cards=list.map(function(c){return '<button class="qb-co'+(c.key===selKey?" on":"")+'" data-k="'+esc(c.key)+'" data-n="'+esc(c.name)+'"><div class="cn">'+esc(c.name)+'</div><div class="cq">'+nfmt(c.q)+' questions</div><div class="bar"><i style="width:'+Math.max(8,Math.round((Number(c.q)||0)/maxq*100))+'%"></i></div></button>';});
+    if(qbMember&&otherQ>0)cards.push('<button class="qb-co'+("__other__"===selKey?" on":"")+'" data-k="__other__" data-n="Other companies"><div class="cn">Other companies</div><div class="cq">'+nfmt(otherQ)+' questions</div><div class="bar"><i style="width:14%"></i></div></button>');
     cl.innerHTML=cards.join("")||'<div class="qb-sep" style="margin:4px 0">No company matches that search.</div>';
     cl.querySelectorAll(".qb-co").forEach(function(b){b.onclick=function(){selKey=b.getAttribute("data-k");selName=b.getAttribute("data-n");qbRole="All";qbQPage=1;loadQuestions();};});
+    qbUpdArrows();
   }
   function loadQuestions(){
     var panel=$("qb-panel");if(!selKey){if(panel)panel.innerHTML="";if($("qb-chips"))$("qb-chips").innerHTML="";return;}
     if(panel)panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Loading '+esc(selName)+'...</div>';
-    qbQ(selKey).then(function(d){cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;renderChips();renderPanel();});
+    qbQ(selKey).then(function(d){var wasMember=qbMember;cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;if(qbMember&&!wasMember)renderCompanies();renderChips();renderPanel();});
   }
   function renderChips(){
     var ch=$("qb-chips");if(!ch)return;
@@ -1112,22 +1155,29 @@
     roles.forEach(function(r){chips.push('<button class="qb-chip'+(qbRole===r.role?" on":"")+'" data-r="'+esc(r.role)+'">'+esc(r.role)+' <b>'+nfmt(r.count)+'</b></button>');});
     ch.innerHTML=chips.join("");
     ch.querySelectorAll(".qb-chip").forEach(function(b){b.onclick=function(){qbRole=b.getAttribute("data-r");qbQPage=1;renderPanel();};});
+    if(window.qbUpdArrows)qbUpdArrows();
   }
   function renderPanel(){
     var panel=$("qb-panel");if(!panel||!cur)return;
-    var badge=$("qb-badge");if(badge)badge.textContent=qbMember?"Member":"Members only";
+    var badge=$("qb-badge");
+    if(badge){ if(qbMember){ badge.className="panel-count qb-badge-member"; badge.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 16l-2-9 5.5 4L12 5l3.5 6L21 7l-2 9H5zm0 2h14v2H5v-2z"/></svg>Member'; } else { badge.className="panel-count"; badge.textContent="Not a member"; } }
     if(!cur.success){panel.className="qb-panel";panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Could not load questions right now. Please try again.</div>';return;}
     var total=Number(cur.count)||0;
     var head='<div class="qb-qhead"><h4>'+esc(selName)+' - '+nfmt(total)+' questions</h4>'+(qbMember?'<span class="qb-ptag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Protected - copy disabled</span>':'<span class="qb-ptag" style="color:#5a7566">Members only</span>')+'</div>';
     if(!qbMember){
-      panel.className="qb-panel";
-      panel.innerHTML=head+'<div class="qb-lockcard" style="position:static;inset:auto;margin:14px auto 0">'+
+      // Show the server-capped teaser (max 5, enforced server-side) to hook, then the lock + join card.
+      var preview=(cur.questions||[]);
+      var prows=preview.map(function(x){return '<div class="qb-q"><div class="t">'+esc(x.q)+'</div><div class="m"><span class="tag">'+esc(x.role||"Not mentioned")+'</span>'+(x.company?'<span class="tag">'+esc(x.company)+'</span>':'')+(fresh(x.ts)?'<span class="f">'+esc(fresh(x.ts))+'</span>':'')+'</div></div>';}).join("");
+      var remaining=Math.max(0,total-preview.length);
+      panel.className="qb-panel qb-protect";
+      panel.innerHTML=head+'<div class="qb-qlist">'+prows+'</div>'+
+        '<div class="qb-lockcard" style="position:static;inset:auto;margin:16px auto 0">'+
         '<div class="qb-lockico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
         '<div class="qb-price">'+esc(qbPrice())+'<small> / month</small></div>'+
-        '<h4>'+nfmt(total)+' questions for '+esc(selName)+'</h4>'+
-        '<p>Hidden until you join. Membership opens all '+esc(($("qb-questions")&&$("qb-questions").textContent)||String(total))+' questions across every company and role, updated daily. 30 days of access.</p>'+
-        '<button class="qb-join" id="qb-join-btn" onclick="qbJoin()">Become a member - '+esc(qbPrice())+'</button>'+
-        '<p style="font-size:.72rem;color:#64748B;margin-top:11px;line-height:1.55">By continuing you agree to our <a href="terms.html" target="_blank" style="color:#34D399">Terms</a>, <a href="privacy.html" target="_blank" style="color:#34D399">Privacy Policy</a> and <a href="refund.html" target="_blank" style="color:#34D399">Refund Policy</a>. Membership is <b style="color:#8CA3B0">non-refundable</b> once you open the questions, and it renews only if you buy it again.</p></div>';
+        '<h4>'+(remaining>0?('Unlock '+nfmt(remaining)+' more from '+esc(selName)):'Unlock every question')+'</h4>'+
+        '<p>Membership opens all '+esc(($("qb-questions")&&$("qb-questions").textContent)||String(total))+' questions across every company and role, updated regularly. 30 days of access.</p>'+
+        '<label class="qb-agree"><input type="checkbox" id="qb-agree-cb"> I agree to the <a href="terms.html" target="_blank">Terms</a>, <a href="privacy.html" target="_blank">Privacy Policy</a> and <a href="refund.html" target="_blank">Refund Policy</a>.</label>'+
+        '<button class="qb-join" id="qb-join-btn" onclick="qbJoin()">Become a member - '+esc(qbPrice())+'</button></div>';
       return;
     }
     var all=(cur.questions||[]);
@@ -1143,7 +1193,9 @@
       pager+='<button class="qb-pager-btn" '+(qbQPage>=pages?'disabled':'')+' data-qp="'+(qbQPage+1)+'">Next</button></div>';
     }
     panel.className="qb-panel qb-protect";
-    panel.innerHTML=head+'<div class="qb-qlist">'+rows+'</div>'+pager+qbWm();
+    panel.innerHTML=head+'<div class="qb-qlist">'+rows+'</div>'+pager+
+      '<div style="text-align:center;margin-top:18px"><button class="qb-join" id="qb-join-btn" style="width:auto;padding:11px 24px" onclick="qbJoin()">Renew / extend membership - '+esc(qbPrice())+'</button><div style="font-size:.72rem;color:#64748B;margin-top:7px">Renew early and your remaining days roll over - you never lose a day.</div></div>'+
+      qbWm();
     panel.querySelectorAll("button[data-qp]").forEach(function(b){b.onclick=function(){var p=parseInt(b.getAttribute("data-qp"),10);if(p>=1&&p<=pages){qbQPage=p;renderPanel();}};});
   }
   function qbWm(){var m=memberEmail()+"  -  "+new Date().toISOString().slice(0,10);var s="";for(var i=0;i<48;i++)s+="<span>"+esc(m)+"</span>";return '<div class="qb-wm" aria-hidden="true">'+s+"</div>";}
@@ -1152,7 +1204,8 @@
 
   window.qbJoin=function(){
     if(!qbSignedIn()){ location.href="account.html"; return; }
-    if(!confirm("Question Bank membership is "+qbPrice()+" for 30 days and is NON-REFUNDABLE once you open the questions. By continuing you agree to our Terms, Privacy Policy and Refund Policy.\n\nContinue to payment?"))return;
+    var cb=$("qb-agree-cb");
+    if(cb && !cb.checked){ var lbl=cb.closest(".qb-agree"); if(lbl){lbl.style.color="#EF4444";setTimeout(function(){lbl.style.color="";},2500);} return; }
     var btn=$("qb-join-btn");
     if(btn){ if(btn.getAttribute("data-busy")==="1")return; btn.setAttribute("data-busy","1"); btn.textContent="Starting checkout..."; }
     var intl=(window.cloakRegion==="INTL");
@@ -1168,7 +1221,9 @@
   };
 
   // content protection for MEMBERS only (deterrents; a browser cannot block screenshots)
-  ["copy","cut","contextmenu","dragstart","selectstart"].forEach(function(ev){document.addEventListener(ev,function(e){if(qbMember&&e.target&&e.target.closest&&e.target.closest(".qb-protect"))e.preventDefault();},true);});
+  // Copy/select/context-menu/drag deterrents on any protected question block (preview + member),
+  // desktop and mobile. A browser cannot block screenshots, so each member view is also watermarked.
+  ["copy","cut","contextmenu","dragstart","selectstart"].forEach(function(ev){document.addEventListener(ev,function(e){if(e.target&&e.target.closest&&e.target.closest(".qb-protect"))e.preventDefault();},true);});
 })();
 </script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
