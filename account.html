@@ -1134,7 +1134,7 @@
     var sel=$("qb-co-select");if(!sel)return;
     var opts=['<option value="__all__"'+("__all__"===selKey?' selected':'')+'>All companies</option>'];
     companies.forEach(function(c){opts.push('<option value="'+esc(c.key)+'"'+(c.key===selKey?' selected':'')+'>'+esc(c.name)+' ('+nfmt(c.q)+')</option>');});
-    if(qbMember&&otherQ>0)opts.push('<option value="__other__"'+("__other__"===selKey?' selected':'')+'>Other companies ('+nfmt(otherQ)+')</option>');
+    if(otherQ>0)opts.push('<option value="__other__"'+("__other__"===selKey?' selected':'')+'>Other (unlabelled companies)</option>');
     sel.innerHTML=opts.join("");
   }
   function loadQuestions(){
