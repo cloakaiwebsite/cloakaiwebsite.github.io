@@ -46,6 +46,9 @@
     .otp-btn:disabled{opacity:.6;cursor:default;transform:none;}
     .otp-link{background:none;border:none;color:#64748B;font:inherit;font-size:.78rem;cursor:pointer;text-decoration:underline;padding:0;}
     .otp-link:hover{color:#94A3B8;}
+    .otp-link:disabled{color:#475569;cursor:default;text-decoration:none;}
+    #otp-resend-btn:not(:disabled){color:#34D399;}
+    .otp-resend-timer{color:#475569;font-size:.76rem;margin-left:4px;}
     .otp-msg{font-size:.8rem;margin-top:6px;min-height:1em;}
     .otp-msg.err{color:#EF4444;}
     .otp-msg.inf{color:#34D399;}
@@ -61,6 +64,15 @@
     .btn-renew:hover{filter:brightness(1.05);box-shadow:0 4px 20px rgba(0,230,118,.4);}
     .btn-renew::after{content:"";position:absolute;top:0;left:-130%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);animation:renewShine 3s infinite;}
     @keyframes renewShine{0%,62%{left:-130%}80%,100%{left:130%}}
+    /* Membership days-remaining pill (shown for members). Green normally; turns red and
+       pulses with a ticking clock when 10 days or fewer remain, mirroring the app's
+       urgent-timer cue. */
+    .acct-days{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:10px;font-size:.8rem;font-weight:800;letter-spacing:-.1px;white-space:nowrap;background:rgba(0,230,118,.12);border:1px solid rgba(52,211,153,.4);color:#34D399;}
+    .acct-days-ic{width:15px;height:15px;flex-shrink:0;}
+    .acct-days.urgent{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.5);color:#F87171;animation:daysPulse 1.3s ease-in-out infinite;}
+    .acct-days.urgent .acct-days-ic{transform-origin:50% 50%;animation:daysTick 2s linear infinite;}
+    @keyframes daysPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}50%{box-shadow:0 0 0 5px rgba(239,68,68,.14);}}
+    @keyframes daysTick{to{transform:rotate(360deg);}}
     .btn-ghost{padding:9px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#94A3B8;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;}
     .btn-ghost:hover{border-color:rgba(255,255,255,.25);color:#E2E8F0;}
 
@@ -317,7 +329,12 @@
     .view-back{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid rgba(255,255,255,.12);color:#94A3B8;font:inherit;font-size:.85rem;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer;}
     .view-back:hover{border-color:rgba(255,255,255,.28);color:#E2E8F0;}
     .page-size{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;color:#64748B;}
-    .page-size select{background:#0b1410;border:1px solid rgba(255,255,255,.14);color:#E2E8F0;font:inherit;font-size:.82rem;border-radius:8px;padding:6px 8px;cursor:pointer;}
+    .page-size select{appearance:none;-webkit-appearance:none;-moz-appearance:none;
+      background:#0b1410 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2334D399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 9px center;
+      border:1px solid rgba(52,211,153,.30);color:#E2E8F0;font:inherit;font-size:.82rem;font-weight:700;border-radius:9px;padding:7px 28px 7px 12px;cursor:pointer;transition:border-color .16s,box-shadow .16s;}
+    .page-size select:hover{border-color:rgba(52,211,153,.55);}
+    .page-size select:focus{outline:none;border-color:#34D399;box-shadow:0 0 0 3px rgba(0,230,118,.14);}
+    .page-size select option{background:#0b1410;color:#E2E8F0;}
     .pager{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;}
     .pager button{min-width:34px;height:34px;padding:0 10px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:#0b1410;color:#94A3B8;font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
     .pager button:hover:not(:disabled){border-color:rgba(52,211,153,.4);color:#E2E8F0;}
@@ -421,6 +438,9 @@
       <input id="otp-code" inputmode="numeric" maxlength="6" placeholder="6-digit code">
       <button type="button" id="otp-verify-btn" class="otp-btn" onclick="otpVerify()">Verify &amp; sign in</button>
     </div>
+    <div id="otp-resend-row" style="display:none;margin:-2px 2px 10px;">
+      <button type="button" id="otp-resend-btn" class="otp-link" onclick="otpResend()" disabled>Resend code</button><span id="otp-resend-timer" class="otp-resend-timer"></span>
+    </div>
     <div id="otp-back" style="display:none;"><button type="button" class="otp-link" onclick="otpReset()">Use a different email</button></div>
     <div id="otp-msg" class="otp-msg"></div>
 
@@ -438,6 +458,10 @@
         </div>
       </div>
       <div class="acct-top-act">
+        <span class="acct-days" id="acct-days" style="display:none;" title="Question Bank membership time remaining">
+          <svg class="acct-days-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span class="acct-days-txt"></span>
+        </span>
         <button class="btn-renew" id="acct-renew" style="display:none;" onclick="qbJoin(this)">Renew membership</button>
         <button class="btn-ghost" onclick="signOut()">Sign out</button>
       </div>
@@ -666,7 +690,7 @@
     otpMsg('','');
     _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,account:'1'}))
       .then(function(d){ if(b){b.disabled=false;b.textContent='Send code';}
-        if(d&&d.success){ otpEmail=email; document.getElementById('otp-step1').style.display='none'; document.getElementById('otp-step2').style.display=''; document.getElementById('otp-back').style.display=''; var c=document.getElementById('otp-code'); if(c)c.focus(); otpMsg('Code sent to '+email+'. Check your inbox (and spam).','inf'); }
+        if(d&&d.success){ otpEmail=email; document.getElementById('otp-step1').style.display='none'; document.getElementById('otp-step2').style.display=''; document.getElementById('otp-back').style.display=''; var c=document.getElementById('otp-code'); if(c)c.focus(); otpMsg('Code sent to '+email+'. Check your inbox (and spam).','inf'); startOtpResend(); }
         else otpMsg((d&&d.error)||'Could not send the code. Please try again.','err');
       })
       .catch(function(err){ if(b){b.disabled=false;b.textContent='Send code';} otpMsg(_acctErrMsg(err),'err'); });
@@ -683,7 +707,27 @@
       })
       .catch(function(err){ if(b){b.disabled=false;b.textContent='Verify & sign in';} otpMsg(_acctErrMsg(err),'err'); });
   }
-  function otpReset(){ otpEmail=''; var s2=document.getElementById('otp-step2'),s1=document.getElementById('otp-step1'),bk=document.getElementById('otp-back'),c=document.getElementById('otp-code'); if(s2)s2.style.display='none'; if(bk)bk.style.display='none'; if(s1)s1.style.display=''; if(c)c.value=''; otpMsg('',''); }
+  function otpReset(){ otpEmail=''; var s2=document.getElementById('otp-step2'),s1=document.getElementById('otp-step1'),bk=document.getElementById('otp-back'),c=document.getElementById('otp-code'); if(s2)s2.style.display='none'; if(bk)bk.style.display='none'; if(s1)s1.style.display=''; if(c)c.value=''; stopOtpResend(); var rr=document.getElementById('otp-resend-row'); if(rr)rr.style.display='none'; otpMsg('',''); }
+  // Resend code: available only after a 30s cooldown (so the user can recover a missing
+  // email/code without hammering send_otp). The countdown restarts on every successful send.
+  var _otpResendT=null;
+  function stopOtpResend(){ if(_otpResendT){clearInterval(_otpResendT);_otpResendT=null;} }
+  function startOtpResend(){
+    var row=document.getElementById('otp-resend-row'); if(row)row.style.display='';
+    var btn=document.getElementById('otp-resend-btn'), tm=document.getElementById('otp-resend-timer');
+    var left=30; if(btn)btn.disabled=true; if(tm)tm.textContent=' available in '+left+'s';
+    stopOtpResend();
+    _otpResendT=setInterval(function(){
+      left--;
+      if(left<=0){ stopOtpResend(); if(btn)btn.disabled=false; if(tm)tm.textContent=''; }
+      else if(tm)tm.textContent=' available in '+left+'s';
+    },1000);
+  }
+  function otpResend(){
+    var btn=document.getElementById('otp-resend-btn'); if(btn&&btn.disabled)return;
+    var el=document.getElementById('otp-email'); if(el && !((el.value||'').trim()) && otpEmail)el.value=otpEmail; // step 1 is hidden; restore the email for otpSend
+    otpSend(); // re-sends to the same email and restarts the 30s cooldown via its success path
+  }
 
   function showMsg(text, cls){var m=document.getElementById('msg');m.textContent=text;m.className='msg '+(cls||'inf');}
   function clearMsg(){var m=document.getElementById('msg');m.textContent='';m.className='msg';}
@@ -1215,7 +1259,7 @@
 
   // ---------- Question Bank (members-only; non-members get 0 from the backend) ----------
   var QB_API="https://app.cloakai.in/";
-  var qbBooted=false, companies=[], otherQ=0, selKey="__all__", selName="All companies", qbRole="All", cur=null, qbQPage=1, qbMember=false, searchT=null, qbSelGw="";
+  var qbBooted=false, companies=[], otherQ=0, selKey="__all__", selName="All companies", qbRole="All", cur=null, qbQPage=1, qbMember=false, searchT=null, qbSelGw="", qbDaysLeft=0, qbExpiresTs=0;
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]});}
   function nfmt(n){try{return Number(n||0).toLocaleString();}catch(e){return String(n||0);}}
   function qbToken(){try{return sessionStorage.getItem('cloakai_gtok')||"";}catch(e){return "";}}
@@ -1255,10 +1299,24 @@
   // Reveal the "Renew membership" button beside Sign out for active members only.
   // Runs on account load (independent of opening the Question Bank) via the qb_membership status call.
   function qbSetRenewBtn(on){ var b=$("acct-renew"); if(!b)return; if(on&&b.getAttribute("data-busy")!=="1")b.textContent="Renew / extend - "+qbPrice(); b.style.display=on?"":"none"; }
+  // Days-remaining pill. n=null hides it. Green normally; red + pulse/tick at <=10 days.
+  function qbSetDays(n){
+    var el=$("acct-days"); if(!el)return;
+    if(n==null){ el.style.display="none"; el.classList.remove("urgent"); return; }
+    n=Math.max(0,Math.round(n));
+    var txt=el.querySelector(".acct-days-txt");
+    if(txt)txt.textContent = n<=0 ? "Expires today" : (n===1 ? "1 day left" : n+" days left");
+    el.classList.toggle("urgent", n<=10);
+    el.style.display="";
+  }
   window.qbCheckMembership=function(){
-    if(!qbSignedIn()){ qbSetRenewBtn(false); return; }
+    if(!qbSignedIn()){ qbSetRenewBtn(false); qbSetDays(null); return; }
     fetch(QB_API+"?action=qb_membership",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify(qbAuth())})
-      .then(function(r){return r.json();}).then(function(d){ qbSetRenewBtn(!!(d&&d.member)); })
+      .then(function(r){return r.json();}).then(function(d){
+        var member=!!(d&&d.member); qbSetRenewBtn(member);
+        if(member){ qbDaysLeft=Number(d.days_left||0); qbExpiresTs=Number(d.expires_ts||0); qbSetDays(qbDaysLeft); }
+        else qbSetDays(null);
+      })
       .catch(function(){});
   };
   window.qbEnsure=function(){ qbThemeInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(); };
@@ -1288,7 +1346,7 @@
   function loadQuestions(){
     var panel=$("qb-panel");if(!selKey){if(panel)panel.innerHTML="";var rs=$("qb-role-select");if(rs)rs.innerHTML="";return;}
     if(panel)panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Loading '+esc(selName)+'...</div>';
-    qbQ(selKey).then(function(d){var wasMember=qbMember;cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;qbSetRenewBtn(qbMember);if(qbMember&&!wasMember)renderCompanies();renderChips();renderPanel();});
+    qbQ(selKey).then(function(d){var wasMember=qbMember;cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;qbSetRenewBtn(qbMember);if(!qbMember)qbSetDays(null);if(qbMember&&!wasMember)renderCompanies();renderChips();renderPanel();});
   }
   function renderChips(){
     var sel=$("qb-role-select");if(!sel)return;
