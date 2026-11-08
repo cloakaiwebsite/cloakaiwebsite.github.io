@@ -303,6 +303,15 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;display:flex;flex-dir
         var status = data.status;
 
         if (status === 'PAID') {
+          // Question Bank membership: skip the license view. Fire the revenue event, then send the
+          // user to their Question Bank section with a flag so the account page celebrates + unlocks.
+          if (data.plan === 'qb') {
+            trackPurchase(data, 'Question Bank Membership');
+            var pl = document.querySelector('.poll-label');
+            if (pl) pl.textContent = 'Membership activated! Opening your Question Bank...';
+            setTimeout(function () { window.location.href = 'account.html?qb_activated=1#qb'; }, 1200);
+            return;
+          }
           renderSuccess(data);
         } else if (status === 'FAILED') {
           // Pairs with 'purchase' so the checkout success RATE is visible. A sudden

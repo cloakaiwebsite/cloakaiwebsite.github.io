@@ -327,6 +327,24 @@
     #view-qb.qb-light .qb-price small{color:#5a7566;}
     #view-qb.qb-light .qb-pager-btn{background:#fff;border-color:#cfe0d5;color:#35553f;}
     #view-qb .qb-join{background:linear-gradient(45deg,var(--pg),var(--ag));}
+    /* ===== Membership-activated celebration ===== */
+    .qbc-overlay{position:fixed;inset:0;z-index:4000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(6,13,9,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+    .qbc-overlay.on{display:flex;}
+    .qbc-card{position:relative;max-width:420px;width:100%;text-align:center;background:linear-gradient(165deg,#0c1611,#060d09);border:1px solid rgba(52,211,153,.35);border-radius:22px;padding:38px 30px 30px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 60px rgba(0,230,118,.12);animation:qbcPop .5s cubic-bezier(.17,.89,.32,1.28);}
+    @keyframes qbcPop{0%{transform:scale(.8);opacity:0;}100%{transform:scale(1);opacity:1;}}
+    .qbc-check{width:88px;height:88px;margin:0 auto 18px;border-radius:50%;background:rgba(0,230,118,.1);display:flex;align-items:center;justify-content:center;animation:qbcPulse 2s ease-in-out infinite;}
+    @keyframes qbcPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,230,118,.4);}50%{box-shadow:0 0 0 14px rgba(0,230,118,0);}}
+    .qbc-check svg{width:58px;height:58px;}
+    .qbc-c-circle{fill:none;stroke:#34D399;stroke-width:2.5;stroke-dasharray:151;stroke-dashoffset:151;animation:qbcDraw .6s ease forwards;}
+    .qbc-c-tick{fill:none;stroke:#34D399;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:qbcDrawT .45s .55s ease forwards;}
+    @keyframes qbcDraw{to{stroke-dashoffset:0;}}
+    @keyframes qbcDrawT{to{stroke-dashoffset:0;}}
+    .qbc-title{font-size:1.5rem;font-weight:900;color:#eafff0;margin:0 0 10px;letter-spacing:-.4px;}
+    .qbc-sub{font-size:.92rem;color:#8CA3B0;line-height:1.6;margin:0 0 22px;}
+    .qbc-btn{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font:inherit;font-weight:700;font-size:1rem;cursor:pointer;animation:buyGlow 2.4s ease-in-out infinite;}
+    .qbc-confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+    .qbc-confetti i{position:absolute;top:-14px;width:8px;height:13px;border-radius:2px;animation:qbcFall linear forwards;}
+    @keyframes qbcFall{0%{transform:translateY(-14px) rotate(0);opacity:1;}100%{transform:translateY(100vh) rotate(600deg);opacity:0;}}
   </style>
 </head>
 <body>
@@ -510,6 +528,17 @@
     <button class="btn-ghost" onclick="loadAccount()" style="margin-top:14px;">Try again</button>
   </div>
 </main>
+
+<!-- Membership-activated celebration (shown after a completed Question Bank payment) -->
+<div id="qb-celebrate" class="qbc-overlay" aria-hidden="true" onclick="if(event.target===this)qbCelebrateClose()">
+  <div class="qbc-confetti" id="qbc-confetti"></div>
+  <div class="qbc-card">
+    <div class="qbc-check"><svg viewBox="0 0 52 52"><circle class="qbc-c-circle" cx="26" cy="26" r="24"/><path class="qbc-c-tick" d="M14 27l8 8 16-16"/></svg></div>
+    <h2 class="qbc-title">Membership Activated!</h2>
+    <p class="qbc-sub">Your Question Bank is unlocked - every question, across every company and role, refreshed regularly.</p>
+    <button type="button" class="qbc-btn" onclick="qbCelebrateClose()">Explore the Question Bank</button>
+  </div>
+</div>
 
 <!-- Top-up modal: pick a pack and pay, right here, for the selected key -->
 <div id="topup-modal" class="tu-modal hidden" onclick="if(event.target===this)closeTopup()">
@@ -1022,9 +1051,24 @@
     if($('asec-ord-ct'))$('asec-ord-ct').textContent=orders.length+(orders.length===1?' order':' orders');
     if($('asec-ref-ct'))$('asec-ref-ct').textContent=nref+(nref===1?' referral':' referrals');
     backSections();
-    // Arriving from the homepage "Get Question Bank" CTA (account.html#qb): open the QB section directly.
-    try{ if((location.hash||'')==='#qb'){ goSection('qb'); } }catch(e){}
+    // Arriving from the homepage CTA (#qb) or a completed membership payment (?qb_activated=1):
+    // open the Question Bank directly, and celebrate on a fresh activation.
+    try{
+      var activated=/[?&]qb_activated=1/.test(location.search);
+      if((location.hash||'')==='#qb' || activated){ goSection('qb'); }
+      if(activated){ setTimeout(qbCelebrateShow, 1000); try{ history.replaceState(null,'','account.html#qb'); }catch(_){} }
+    }catch(e){}
   };
+  window.qbCelebrateClose=function(){ var o=$('qb-celebrate'); if(o){ o.classList.remove('on'); o.setAttribute('aria-hidden','true'); } };
+  function qbCelebrateShow(){
+    var o=$('qb-celebrate'); if(!o)return;
+    var c=$('qbc-confetti');
+    if(c){ var cols=['#00e676','#34D399','#38BDF8','#A78BFA','#F59E0B','#fff']; var h='';
+      for(var i=0;i<30;i++){ h+='<i style="left:'+(Math.random()*100).toFixed(1)+'%;background:'+cols[i%cols.length]+';animation-duration:'+(2+Math.random()*1.6).toFixed(2)+'s;animation-delay:'+(Math.random()*1.4).toFixed(2)+'s"></i>'; }
+      c.innerHTML=h;
+    }
+    o.classList.add('on'); o.setAttribute('aria-hidden','false');
+  }
   window.goSection=function(sec){
     if($('acct-sections'))$('acct-sections').style.display='none';
     if($('view-bar'))$('view-bar').style.display='';
