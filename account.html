@@ -52,6 +52,11 @@
     .acct-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(45deg,var(--pg),var(--ag));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:1.1rem;flex-shrink:0;}
     .acct-name{font-size:1rem;font-weight:700;color:#E2E8F0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     .acct-email{font-size:.82rem;color:#64748B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .acct-top-act{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .btn-renew{position:relative;overflow:hidden;padding:9px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,#00e676,#00c853);color:#04170f;font-size:.85rem;font-weight:800;cursor:pointer;transition:.2s;white-space:nowrap;box-shadow:0 2px 14px rgba(0,230,118,.28);}
+    .btn-renew:hover{filter:brightness(1.05);box-shadow:0 4px 20px rgba(0,230,118,.4);}
+    .btn-renew::after{content:"";position:absolute;top:0;left:-130%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);animation:renewShine 3s infinite;}
+    @keyframes renewShine{0%,62%{left:-130%}80%,100%{left:130%}}
     .btn-ghost{padding:9px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#94A3B8;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap;}
     .btn-ghost:hover{border-color:rgba(255,255,255,.25);color:#E2E8F0;}
 
@@ -415,7 +420,10 @@
           <div class="acct-email" id="acct-email"></div>
         </div>
       </div>
-      <button class="btn-ghost" onclick="signOut()">Sign out</button>
+      <div class="acct-top-act">
+        <button class="btn-renew" id="acct-renew" style="display:none;" onclick="qbJoin(this)">Renew membership</button>
+        <button class="btn-ghost" onclick="signOut()">Sign out</button>
+      </div>
     </div>
     <div class="summary">
       <div><div class="s-num" id="sum-keys">0</div><div class="s-lbl">Keys</div></div>
@@ -449,7 +457,7 @@
     <!-- Shared bar for any open section: back + one page-size control for all 4 sections -->
     <div class="view-bar" id="view-bar" style="display:none;">
       <button type="button" class="view-back" onclick="backSections()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg> All sections</button>
-      <label class="page-size">Show <select id="acct-pagesize" onchange="acctPageSizeChange()"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select> per page</label>
+      <label class="page-size">Show <select id="acct-pagesize" onchange="acctPageSizeChange()"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select> <span id="acct-pagesize-unit">questions</span> per page</label>
     </div>
 
     <!-- View: Question Bank (light + bold theme, members-only, 0 free) -->
@@ -1056,6 +1064,7 @@
     if($('asec-ord-ct'))$('asec-ord-ct').textContent=orders.length+(orders.length===1?' order':' orders');
     if($('asec-ref-ct'))$('asec-ref-ct').textContent=nref+(nref===1?' referral':' referrals');
     backSections();
+    try{ if(window.qbCheckMembership)qbCheckMembership(); }catch(_){}
     // Arriving from the homepage CTA (#qb) or a completed membership payment (?qb_activated=1):
     // open the Question Bank directly, and celebrate on a fresh activation.
     try{
@@ -1074,9 +1083,11 @@
     }
     o.classList.add('on'); o.setAttribute('aria-hidden','false');
   }
+  var SEC_UNIT={qb:'questions',licenses:'keys',referrals:'referrals',orders:'orders'};
   window.goSection=function(sec){
     if($('acct-sections'))$('acct-sections').style.display='none';
     if($('view-bar'))$('view-bar').style.display='';
+    if($('acct-pagesize-unit'))$('acct-pagesize-unit').textContent=SEC_UNIT[sec]||'items';
     ['qb','licenses','referrals','orders'].forEach(function(s){var v=$('view-'+s);if(v)v.classList.toggle('on',s===sec);});
     activeSection=sec;
     try{window.scrollTo({top:0,behavior:'smooth'});}catch(_){}
@@ -1162,6 +1173,15 @@
     if(saved==="light")v.classList.add("qb-light"); else v.classList.remove("qb-light"); // default: dark
     qbThemeLabel();
   }
+  // Reveal the "Renew membership" button beside Sign out for active members only.
+  // Runs on account load (independent of opening the Question Bank) via the qb_membership status call.
+  function qbSetRenewBtn(on){ var b=$("acct-renew"); if(!b)return; if(on&&b.getAttribute("data-busy")!=="1")b.textContent="Renew / extend - "+qbPrice(); b.style.display=on?"":"none"; }
+  window.qbCheckMembership=function(){
+    if(!qbSignedIn()){ qbSetRenewBtn(false); return; }
+    fetch(QB_API+"?action=qb_membership",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify(qbAuth())})
+      .then(function(r){return r.json();}).then(function(d){ qbSetRenewBtn(!!(d&&d.member)); })
+      .catch(function(){});
+  };
   window.qbEnsure=function(){ qbThemeInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(); };
   window.qbRefresh=function(){ var s=$("qb-refresh-svg"); if(s){s.style.transition="transform .6s";s.style.transform="rotate(360deg)";setTimeout(function(){s.style.transition="";s.style.transform="";},650);} loadStats(); loadCompanies(); };
   function loadStats(){
@@ -1189,7 +1209,7 @@
   function loadQuestions(){
     var panel=$("qb-panel");if(!selKey){if(panel)panel.innerHTML="";var rs=$("qb-role-select");if(rs)rs.innerHTML="";return;}
     if(panel)panel.innerHTML='<div class="qb-sep" style="margin:10px 0">Loading '+esc(selName)+'...</div>';
-    qbQ(selKey).then(function(d){var wasMember=qbMember;cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;if(qbMember&&!wasMember)renderCompanies();renderChips();renderPanel();});
+    qbQ(selKey).then(function(d){var wasMember=qbMember;cur=d||{};qbMember=!!(cur&&cur.locked===false);qbQPage=1;qbSetRenewBtn(qbMember);if(qbMember&&!wasMember)renderCompanies();renderChips();renderPanel();});
   }
   function renderChips(){
     var sel=$("qb-role-select");if(!sel)return;
@@ -1237,23 +1257,24 @@
     }
     panel.className="qb-panel qb-protect";
     panel.innerHTML=head+'<div class="qb-qlist">'+rows+'</div>'+pager+
-      '<div style="text-align:center;margin-top:18px"><button class="qb-join" id="qb-join-btn" style="width:auto;padding:11px 24px" onclick="qbJoin()">Renew / extend membership - '+esc(qbPrice())+'</button><div style="font-size:.72rem;color:#64748B;margin-top:7px">Renew early and your remaining days roll over - you never lose a day.</div></div>'+
+      '<div style="text-align:center;margin-top:16px;font-size:.72rem;color:#64748B">Use <strong>Renew membership</strong> at the top to extend. Renew early and your remaining days roll over - you never lose a day.</div>'+
       qbWm();
     panel.querySelectorAll("button[data-qp]").forEach(function(b){b.onclick=function(){var p=parseInt(b.getAttribute("data-qp"),10);if(p>=1&&p<=pages){qbQPage=p;renderPanel();}};});
   }
   function qbWm(){var m=memberEmail()+"  -  "+new Date().toISOString().slice(0,10);var s="";for(var i=0;i<48;i++)s+="<span>"+esc(m)+"</span>";return '<div class="qb-wm" aria-hidden="true">'+s+"</div>";}
   window.qbRepaginate=function(){ if(cur)renderPanel(); };
 
-  window.qbJoin=function(){
+  window.qbJoin=function(btnEl){
     if(!qbSignedIn()){ location.href="account.html"; return; }
     var cb=$("qb-agree-cb");
     if(cb && !cb.checked){ var lbl=cb.closest(".qb-agree"); if(lbl){lbl.style.color="#EF4444";setTimeout(function(){lbl.style.color="";},2500);} return; }
-    var btn=$("qb-join-btn");
+    var btn=(btnEl&&btnEl.tagName)?btnEl:$("qb-join-btn");
+    var orig=btn?btn.textContent:"";
     if(btn){ if(btn.getAttribute("data-busy")==="1")return; btn.setAttribute("data-busy","1"); btn.textContent="Starting checkout..."; }
     var intl=(window.cloakRegion==="INTL");
     var action=intl?"paypal_create_order":"create_order";
     var body=Object.assign({plan:"qb"},qbAuth()); if(!intl)body.ajax="1";
-    function reset(){ if(btn){ btn.removeAttribute("data-busy"); btn.textContent="Become a member - "+qbPrice(); } }
+    function reset(){ if(btn){ btn.removeAttribute("data-busy"); btn.textContent=orig||("Become a member - "+qbPrice()); } }
     fetch(QB_API+"?action="+action,{method:"POST",headers:{"Content-Type":"application/json"},credentials:"omit",body:JSON.stringify(body)})
       .then(function(r){return r.json();}).then(function(d){
         var url=d&&(d.payment_url||d.approve_url||d.approval_url||d.url);
