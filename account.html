@@ -680,8 +680,20 @@
   // Email-OTP sign-in (for users without a Google account). An OTP session token stands in for the
   // Google id_token; the backend (accountIdentity) accepts either.
   var otpToken = '', otpEmail = '';
+  // Single active web device: a rotating session id issued by the server on each sign-in.
+  // Sent with every account call; the server signs out any device whose id is not the current one.
+  var webSid = '';
+  function setWebSid(s){ webSid = s || ''; try{ if(webSid){ sessionStorage.setItem('cloakai_wsid', webSid); localStorage.setItem('cloakai_wsid', webSid); } }catch(_){} }
   function isSignedIn(){ return !!(idToken || otpToken); }
-  function authQS(){ return idToken ? {id_token:idToken} : (otpToken ? {otp_token:otpToken, otp_email:otpEmail} : {}); }
+  function authQS(){ var b = idToken ? {id_token:idToken} : (otpToken ? {otp_token:otpToken, otp_email:otpEmail} : {}); if(webSid) b.web_sid = webSid; return b; }
+  // Google sign-in has no server round trip of its own, so ask the backend to mint the
+  // single-device session id (OTP gets its web_sid straight from verify_otp). Best-effort:
+  // on failure we still load (the server grants grace when no session doc exists yet).
+  function establishWebSession(done){
+    _acctFetch(SCRIPT_URL + '?' + new URLSearchParams(Object.assign({action:'account_login'}, authQS())))
+      .then(function(d){ if(d && d.success && d.web_sid) setWebSid(d.web_sid); if(done)done(); })
+      .catch(function(){ if(done)done(); });
+  }
   function otpMsg(t,c){ var m=document.getElementById('otp-msg'); if(m){m.textContent=t;m.className='otp-msg '+(c||'');} }
   function otpSend(){
     var el=document.getElementById('otp-email'), email=((el&&el.value)||'').trim().toLowerCase();
@@ -702,7 +714,7 @@
     otpMsg('','');
     _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'verify_otp',email:otpEmail,otp:code,account:'1'}))
       .then(function(d){ if(b){b.disabled=false;b.textContent='Verify & sign in';}
-        if(d&&d.success&&d.otp_token){ otpToken=d.otp_token; idToken=''; try{sessionStorage.setItem('cloakai_otp_tok',otpToken);sessionStorage.setItem('cloakai_otp_email',otpEmail);localStorage.setItem('cloakai_otp_tok',otpToken);localStorage.setItem('cloakai_otp_email',otpEmail);}catch(_){} loadAccount(); }
+        if(d&&d.success&&d.otp_token){ otpToken=d.otp_token; idToken=''; try{sessionStorage.setItem('cloakai_otp_tok',otpToken);sessionStorage.setItem('cloakai_otp_email',otpEmail);localStorage.setItem('cloakai_otp_tok',otpToken);localStorage.setItem('cloakai_otp_email',otpEmail);}catch(_){} setWebSid(d.web_sid||''); loadAccount(); }
         else otpMsg((d&&d.error)||'Incorrect or expired code.','err');
       })
       .catch(function(err){ if(b){b.disabled=false;b.textContent='Verify & sign in';} otpMsg(_acctErrMsg(err),'err'); });
@@ -780,7 +792,8 @@
     // out right after paying. localStorage survives it; the token is still server-validated
     // on every call and expiry-checked by tokenExpired().
     try{sessionStorage.setItem('cloakai_gtok', idToken);localStorage.setItem('cloakai_gtok', idToken);}catch(_){}
-    loadAccount();
+    // Mint a single-device web session (rotates out any other device), then load.
+    establishWebSession(loadAccount);
   }
 
   var _gInit=false;
@@ -798,7 +811,8 @@
 
   function signOut(){
     idToken=''; otpToken=''; otpEmail='';
-    try{sessionStorage.removeItem('cloakai_gtok');sessionStorage.removeItem('cloakai_otp_tok');sessionStorage.removeItem('cloakai_otp_email');localStorage.removeItem('cloakai_gtok');localStorage.removeItem('cloakai_otp_tok');localStorage.removeItem('cloakai_otp_email');}catch(_){}
+    webSid='';
+    try{sessionStorage.removeItem('cloakai_gtok');sessionStorage.removeItem('cloakai_otp_tok');sessionStorage.removeItem('cloakai_otp_email');sessionStorage.removeItem('cloakai_wsid');localStorage.removeItem('cloakai_gtok');localStorage.removeItem('cloakai_otp_tok');localStorage.removeItem('cloakai_otp_email');localStorage.removeItem('cloakai_wsid');}catch(_){}
     try{ if(typeof google!=='undefined'&&google.accounts) google.accounts.id.disableAutoSelect(); }catch(_){}
     document.getElementById('signed-in').style.display='none';
     document.getElementById('signed-out').style.display='';
@@ -1127,6 +1141,8 @@
     }
     // If sign-in never becomes available (library blocked/offline), show the fallback note.
     setTimeout(function(){ if(!_gInit) document.getElementById('gbtn-fallback').style.display='block'; }, 6000);
+    // Restore the single-device web session id (survives reload + the payment redirect).
+    try{ webSid = sessionStorage.getItem('cloakai_wsid') || localStorage.getItem('cloakai_wsid') || ''; if(webSid)sessionStorage.setItem('cloakai_wsid',webSid); }catch(_){}
     // Read from sessionStorage first, then fall back to localStorage (which survives the
     // payment redirect roundtrip). Whatever we recover is re-seeded into sessionStorage so
     // the Question Bank module (which reads sessionStorage) stays in sync.
@@ -1264,10 +1280,12 @@
   function nfmt(n){try{return Number(n||0).toLocaleString();}catch(e){return String(n||0);}}
   function qbToken(){try{return sessionStorage.getItem('cloakai_gtok')||"";}catch(e){return "";}}
   // Auth for QB calls: a Google id_token, else an email-OTP session token (both accepted server-side).
+  function qbWsid(){ try{return sessionStorage.getItem('cloakai_wsid')||localStorage.getItem('cloakai_wsid')||"";}catch(e){return "";} }
   function qbAuth(){
-    var g=qbToken(); if(g) return {id_token:g};
+    var w=qbWsid(); var g=qbToken();
+    if(g) return w?{id_token:g, web_sid:w}:{id_token:g};
     var t="",em=""; try{t=sessionStorage.getItem('cloakai_otp_tok')||"";em=sessionStorage.getItem('cloakai_otp_email')||"";}catch(e){}
-    if(t&&em) return {otp_token:t, otp_email:em};
+    if(t&&em) return w?{otp_token:t, otp_email:em, web_sid:w}:{otp_token:t, otp_email:em};
     return {};
   }
   function qbSignedIn(){ var a=qbAuth(); return !!(a.id_token||a.otp_token); }
