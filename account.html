@@ -46,9 +46,12 @@
     .otp-btn:disabled{opacity:.6;cursor:default;transform:none;}
     .otp-link{background:none;border:none;color:#64748B;font:inherit;font-size:.78rem;cursor:pointer;text-decoration:underline;padding:0;}
     .otp-link:hover{color:#94A3B8;}
-    .otp-link:disabled{color:#475569;cursor:default;text-decoration:none;}
-    #otp-resend-btn:not(:disabled){color:#34D399;}
-    .otp-resend-timer{color:#475569;font-size:.76rem;margin-left:4px;}
+    /* Secondary (ghost-green) buttons for the resend / change-email row */
+    .otp-actions{display:flex;gap:10px;margin:12px 0 2px;}
+    .otp-btn2{flex:1;padding:9px 14px;border-radius:10px;border:1px solid rgba(52,211,153,.4);background:rgba(0,230,118,.06);color:#34D399;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .16s,border-color .16s,color .16s,opacity .16s;}
+    .otp-btn2:hover:not(:disabled){background:rgba(0,230,118,.14);border-color:rgba(52,211,153,.7);}
+    .otp-btn2:disabled{color:#475569;border-color:rgba(255,255,255,.1);background:transparent;cursor:default;}
+    @media(max-width:460px){.otp-actions{flex-direction:column;}}
     .otp-msg{font-size:.8rem;margin-top:6px;min-height:1em;}
     .otp-msg.err{color:#EF4444;}
     .otp-msg.inf{color:#34D399;}
@@ -438,10 +441,10 @@
       <input id="otp-code" inputmode="numeric" maxlength="6" placeholder="6-digit code">
       <button type="button" id="otp-verify-btn" class="otp-btn" onclick="otpVerify()">Verify &amp; sign in</button>
     </div>
-    <div id="otp-resend-row" style="display:none;margin:-2px 2px 10px;">
-      <button type="button" id="otp-resend-btn" class="otp-link" onclick="otpResend()" disabled>Resend code</button><span id="otp-resend-timer" class="otp-resend-timer"></span>
+    <div id="otp-actions" class="otp-actions" style="display:none;">
+      <button type="button" id="otp-resend-btn" class="otp-btn2" onclick="otpResend()" disabled>Resend code</button>
+      <button type="button" class="otp-btn2" onclick="otpReset()">Use a different email</button>
     </div>
-    <div id="otp-back" style="display:none;"><button type="button" class="otp-link" onclick="otpReset()">Use a different email</button></div>
     <div id="otp-msg" class="otp-msg"></div>
 
     <div class="signin-note">By signing in you agree to our <a href="terms.html" style="color:var(--gg);">Terms</a> and <a href="privacy.html" style="color:var(--gg);">Privacy Policy</a>.</div>
@@ -511,10 +514,10 @@
           <span class="panel-count" id="qb-badge">Members only</span>
         </div>
         <div class="qb-stats">
-          <div class="qb-stat"><div class="n" id="qb-interviews">-</div><div class="l">Sessions</div></div>
           <div class="qb-stat"><div class="n" id="qb-questions">-</div><div class="l">Questions</div></div>
           <div class="qb-stat"><div class="n" id="qb-roles">-</div><div class="l">Roles</div></div>
           <div class="qb-stat"><div class="n" id="qb-companies">-</div><div class="l">Companies</div></div>
+          <div class="qb-stat"><div class="n" id="qb-interviews">-</div><div class="l">Sessions</div></div>
         </div>
         <div class="qb-selects">
           <label class="qb-sel"><span class="qb-sel-l">Company</span><select id="qb-co-select" onchange="qbPickCompany(this.value)"></select></label>
@@ -702,7 +705,7 @@
     otpMsg('','');
     _acctFetch(SCRIPT_URL+'?'+new URLSearchParams({action:'send_otp',email:email,account:'1'}))
       .then(function(d){ if(b){b.disabled=false;b.textContent='Send code';}
-        if(d&&d.success){ otpEmail=email; document.getElementById('otp-step1').style.display='none'; document.getElementById('otp-step2').style.display=''; document.getElementById('otp-back').style.display=''; var c=document.getElementById('otp-code'); if(c)c.focus(); otpMsg('Code sent to '+email+'. Check your inbox (and spam).','inf'); startOtpResend(); }
+        if(d&&d.success){ otpEmail=email; document.getElementById('otp-step1').style.display='none'; document.getElementById('otp-step2').style.display=''; document.getElementById('otp-actions').style.display=''; var c=document.getElementById('otp-code'); if(c)c.focus(); otpMsg('Code sent to '+email+'. Check your inbox (and spam).','inf'); startOtpResend(); }
         else otpMsg((d&&d.error)||'Could not send the code. Please try again.','err');
       })
       .catch(function(err){ if(b){b.disabled=false;b.textContent='Send code';} otpMsg(_acctErrMsg(err),'err'); });
@@ -719,20 +722,19 @@
       })
       .catch(function(err){ if(b){b.disabled=false;b.textContent='Verify & sign in';} otpMsg(_acctErrMsg(err),'err'); });
   }
-  function otpReset(){ otpEmail=''; var s2=document.getElementById('otp-step2'),s1=document.getElementById('otp-step1'),bk=document.getElementById('otp-back'),c=document.getElementById('otp-code'); if(s2)s2.style.display='none'; if(bk)bk.style.display='none'; if(s1)s1.style.display=''; if(c)c.value=''; stopOtpResend(); var rr=document.getElementById('otp-resend-row'); if(rr)rr.style.display='none'; otpMsg('',''); }
+  function otpReset(){ otpEmail=''; var s2=document.getElementById('otp-step2'),s1=document.getElementById('otp-step1'),ac=document.getElementById('otp-actions'),c=document.getElementById('otp-code'); if(s2)s2.style.display='none'; if(ac)ac.style.display='none'; if(s1)s1.style.display=''; if(c)c.value=''; stopOtpResend(); otpMsg('',''); }
   // Resend code: available only after a 30s cooldown (so the user can recover a missing
   // email/code without hammering send_otp). The countdown restarts on every successful send.
   var _otpResendT=null;
   function stopOtpResend(){ if(_otpResendT){clearInterval(_otpResendT);_otpResendT=null;} }
   function startOtpResend(){
-    var row=document.getElementById('otp-resend-row'); if(row)row.style.display='';
-    var btn=document.getElementById('otp-resend-btn'), tm=document.getElementById('otp-resend-timer');
-    var left=30; if(btn)btn.disabled=true; if(tm)tm.textContent=' available in '+left+'s';
+    var btn=document.getElementById('otp-resend-btn');
+    var left=30; if(btn){ btn.disabled=true; btn.textContent='Resend code ('+left+'s)'; }
     stopOtpResend();
     _otpResendT=setInterval(function(){
       left--;
-      if(left<=0){ stopOtpResend(); if(btn)btn.disabled=false; if(tm)tm.textContent=''; }
-      else if(tm)tm.textContent=' available in '+left+'s';
+      if(left<=0){ stopOtpResend(); if(btn){ btn.disabled=false; btn.textContent='Resend code'; } }
+      else if(btn) btn.textContent='Resend code ('+left+'s)';
     },1000);
   }
   function otpResend(){
