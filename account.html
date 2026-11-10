@@ -821,11 +821,9 @@
     document.getElementById('signed-out').style.display='';
     document.getElementById('page-sub').style.display='';
     clearMsg();
-    // Hard reload to a clean page so NO in-memory state from the previous account can survive
-    // (the Question Bank module caches the signed-in member's questions; a signed-out + sign-in
-    // as a different user on the same page would otherwise still show them). Money-safe reset.
-    try{ if(location.hash) history.replaceState(null,'',location.pathname+location.search); }catch(_){}
-    try{ location.reload(); }catch(_){}
+    // No reload needed: qbReset wipes the loaded data, and qbEnsure is keyed on the web
+    // session id, so the next user's Question Bank always loads fresh (preview + CTA), never
+    // the previous member's questions and never a stale blank panel.
   }
 
   // ── Data ──
@@ -1283,7 +1281,10 @@
 
   // ---------- Question Bank (members-only; non-members get 0 from the backend) ----------
   var QB_API="https://app.cloakai.in/";
-  var qbBooted=false, companies=[], otherQ=0, selKey="__all__", selName="All companies", qbRole="All", cur=null, qbQPage=1, qbMember=false, searchT=null, qbSelGw="", qbDaysLeft=0, qbExpiresTs=0;
+  var qbBooted=false, companies=[], otherQ=0, selKey="__all__", selName="All companies", qbRole="All", cur=null, qbQPage=1, qbMember=false, searchT=null, qbSelGw="", qbDaysLeft=0, qbExpiresTs=0, qbLoadedKey=null;
+  // Identity key for the loaded data: the rotating web session id (changes on every sign-in),
+  // so the Question Bank reloads whenever a different user signs in - never shows stale data.
+  function qbCurrentKey(){ try{ return sessionStorage.getItem('cloakai_wsid')||sessionStorage.getItem('cloakai_gtok')||sessionStorage.getItem('cloakai_otp_tok')||''; }catch(e){ return ''; } }
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]});}
   function nfmt(n){try{return Number(n||0).toLocaleString();}catch(e){return String(n||0);}}
   function qbToken(){try{return sessionStorage.getItem('cloakai_gtok')||"";}catch(e){return "";}}
@@ -1348,14 +1349,14 @@
   // Wipe ALL Question Bank state + rendered content. Called on sign-out so a different user
   // signing in on the same page can never see the previous member's loaded questions.
   window.qbReset=function(){
-    qbBooted=false; qbMember=false; cur=null; companies=[]; otherQ=0;
+    qbBooted=false; qbMember=false; cur=null; companies=[]; otherQ=0; qbLoadedKey=null;
     selKey="__all__"; selName="All companies"; qbRole="All"; qbQPage=1; qbDaysLeft=0; qbExpiresTs=0;
     var p=$("qb-panel"); if(p)p.innerHTML="";
     ["qb-interviews","qb-questions","qb-roles","qb-companies"].forEach(function(id){var e=$(id);if(e)e.textContent="-";});
     var co=$("qb-co-select"); if(co)co.innerHTML=""; var ro=$("qb-role-select"); if(ro)ro.innerHTML="";
     try{ qbSetRenewBtn(false); qbSetDays(null); }catch(_){}
   };
-  window.qbEnsure=function(){ qbThemeInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(); };
+  window.qbEnsure=function(){ qbThemeInit(); var k=qbCurrentKey(); if(qbBooted && qbLoadedKey===k)return; qbBooted=true; qbLoadedKey=k; loadStats(); loadCompanies(); };
   window.qbRefresh=function(){ var s=$("qb-refresh-svg"); if(s){s.style.transition="transform .6s";s.style.transform="rotate(360deg)";setTimeout(function(){s.style.transition="";s.style.transform="";},650);} loadStats(); loadCompanies(); };
   function loadStats(){
     ["qb-interviews","qb-questions","qb-roles","qb-companies"].forEach(function(id){var e=$(id);if(e)e.textContent="…";});
