@@ -816,10 +816,16 @@
     webSid='';
     try{sessionStorage.removeItem('cloakai_gtok');sessionStorage.removeItem('cloakai_otp_tok');sessionStorage.removeItem('cloakai_otp_email');sessionStorage.removeItem('cloakai_wsid');localStorage.removeItem('cloakai_gtok');localStorage.removeItem('cloakai_otp_tok');localStorage.removeItem('cloakai_otp_email');localStorage.removeItem('cloakai_wsid');}catch(_){}
     try{ if(typeof google!=='undefined'&&google.accounts) google.accounts.id.disableAutoSelect(); }catch(_){}
+    try{ if(window.qbReset) window.qbReset(); }catch(_){}   // drop the previous user's loaded questions
     document.getElementById('signed-in').style.display='none';
     document.getElementById('signed-out').style.display='';
     document.getElementById('page-sub').style.display='';
     clearMsg();
+    // Hard reload to a clean page so NO in-memory state from the previous account can survive
+    // (the Question Bank module caches the signed-in member's questions; a signed-out + sign-in
+    // as a different user on the same page would otherwise still show them). Money-safe reset.
+    try{ if(location.hash) history.replaceState(null,'',location.pathname+location.search); }catch(_){}
+    try{ location.reload(); }catch(_){}
   }
 
   // ── Data ──
@@ -1338,6 +1344,16 @@
         else qbSetDays(null);
       })
       .catch(function(){});
+  };
+  // Wipe ALL Question Bank state + rendered content. Called on sign-out so a different user
+  // signing in on the same page can never see the previous member's loaded questions.
+  window.qbReset=function(){
+    qbBooted=false; qbMember=false; cur=null; companies=[]; otherQ=0;
+    selKey="__all__"; selName="All companies"; qbRole="All"; qbQPage=1; qbDaysLeft=0; qbExpiresTs=0;
+    var p=$("qb-panel"); if(p)p.innerHTML="";
+    ["qb-interviews","qb-questions","qb-roles","qb-companies"].forEach(function(id){var e=$(id);if(e)e.textContent="-";});
+    var co=$("qb-co-select"); if(co)co.innerHTML=""; var ro=$("qb-role-select"); if(ro)ro.innerHTML="";
+    try{ qbSetRenewBtn(false); qbSetDays(null); }catch(_){}
   };
   window.qbEnsure=function(){ qbThemeInit(); if(qbBooted)return; qbBooted=true; loadStats(); loadCompanies(); };
   window.qbRefresh=function(){ var s=$("qb-refresh-svg"); if(s){s.style.transition="transform .6s";s.style.transform="rotate(360deg)";setTimeout(function(){s.style.transition="";s.style.transform="";},650);} loadStats(); loadCompanies(); };
