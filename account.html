@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- CSP: this page holds the session token in local/sessionStorage, so lock the exfiltration
+       vectors (connect-src / img-src / form-action allow only our own + the sign-in/payment
+       hosts, never an attacker domain). script-src stays permissive (inline + the Google and
+       Razorpay SDKs) because a static page cannot use nonces and breaking Razorpay/GSI would
+       break payments. PhonePe/PayPal are full-page redirects, unaffected by CSP. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://apis.google.com https://checkout.razorpay.com https://cdn.razorpay.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.gstatic.com https://*.googleusercontent.com https://*.razorpay.com; font-src 'self' data:; connect-src 'self' https://app.cloakai.in https://accounts.google.com https://*.razorpay.com https://ipapi.co; frame-src https://accounts.google.com https://*.razorpay.com; base-uri 'none'; object-src 'none'; form-action 'self' https://*.razorpay.com">
 <meta name="google-adsense-account" content="ca-pub-4276388839695004">
   <link rel="stylesheet" href="theme.css?v=20261013">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
