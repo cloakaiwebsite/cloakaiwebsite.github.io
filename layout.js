@@ -62,14 +62,6 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
 })();
 
-/* ── License & Referral: MOBILE menu only (hidden from the desktop bar, kept in the
-   hamburger dropdown and the footer). The link is hardcoded in each page's #mnav. */
-(function(){
-  var nav=document.getElementById('mnav'); if(!nav)return;
-  var a=nav.querySelector('a[href="license-info.html"]');
-  if(a)a.classList.add('menu-mobile-only');
-})();
-
 /* ── Account link in the top nav, on EVERY page ──────────────────────
    Injected here so all pages get it without editing each file. The label is
    "My Account" when a valid Google session token is present (set by the account
