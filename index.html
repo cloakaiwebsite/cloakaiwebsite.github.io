@@ -41,33 +41,15 @@
     :root{--cb:rgba(15,61,46,.6);--gb:1px solid rgba(46,204,113,.3);}
     body{background:var(--bg);color:var(--tc);overflow-x:hidden;min-height:100vh;}
 
-
-
     100%{transform:translate(0,0) rotate(360deg);}}
 
     50%{opacity:.5;}100%{transform:translateY(-100px) translateX(50px);opacity:0;}}
     .wrap{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
     /* Header */
 
-
-
-
-
-
-
-
-
-
-
-
-
     @media(max-width:860px){
 
-
-
       #m
-
-
 
     }
     /* Hero */
@@ -556,19 +538,10 @@
     .hero-cta2{display:flex;justify-content:center;align-items:center;margin:2px auto 24px;}
     .hc2-demo{display:inline-flex;align-items:center;gap:10px;background:rgba(0,230,118,.08);color:var(--gg);font-weight:800;font-size:1rem;padding:12px 24px;border-radius:30px;border:1px solid rgba(46,204,113,.5);cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s;}
     .hc2-demo:hover{background:rgba(0,230,118,.16);border-color:var(--gg);transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,230,118,.25);}
-    /* Hero "Get Question Bank" - a PURPLE-ACCENTED pill like the Pro plan (purple border + glow on the
-       dark theme, not a solid purple fill), with the site's standard button hover animation. */
-    /* Same size + the same shine-sweep animation as the "Get Access" button (.btn), just the book
-       icon and a NEW tag to tell them apart. No separate glow. */
-    .btn-qb{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-weight:700;font-size:1.05rem;border-radius:30px;border:1px solid var(--gg);box-shadow:0 0 20px rgba(46,204,113,.4);text-decoration:none;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
-    .btn-qb::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent);transform:rotate(45deg);animation:shine 3s infinite;pointer-events:none;}
-    .btn-qb-ic{width:19px;height:19px;flex-shrink:0;position:relative;z-index:1;}
-    .btn-qb-new{position:relative;z-index:1;font-size:.6rem;font-weight:800;letter-spacing:.6px;background:#fff;color:#0a7c44;padding:2px 6px;border-radius:5px;}
-    .btn-qb:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 0 36px rgba(46,204,113,.6);}
-    /* Mobile: make "Get Access", "Get Question Bank" and the Windows download the same size (equal
+    /* Mobile: make "Get Access" and the Windows download the same size (equal
        full width). The Windows button keeps its outline style, just matched in width. */
     @media(max-width:600px){
-      .cta-group .btn,.cta-group .btn-qb,.cta-group .dl-stack{width:100%;max-width:340px;justify-content:center;box-sizing:border-box;}
+      .cta-group .btn,.cta-group .dl-stack{width:100%;max-width:340px;justify-content:center;box-sizing:border-box;}
       .cta-group .dl-stack .btn-outline{width:100%;justify-content:center;box-sizing:border-box;}
     }
     .hc2-play{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--gg);color:#042a14;flex-shrink:0;}
@@ -656,11 +629,6 @@
     <a href="https://github.com/cloakaiwebsite/releases/releases/download/app/CloakAI-macOS.dmg" class="btn-outline-blue" onclick="trackEvent('Hero','Download','Mac')">
       <svg class="win-icon" width="18" height="18" viewBox="0 0 24 24" fill="#60a5fa"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
       Download for Mac
-    </a>
-    <a href="#qbank" class="btn-qb" onclick="trackEvent('Hero','CTA','QuestionBank')">
-      <svg class="btn-qb-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
-      Get Question Bank
-      <span class="btn-qb-new">NEW</span>
     </a>
   </div>
   <p class="hero-note" style="line-height:1.7;margin-top:12px;">Latest version <strong style="color:var(--gg)">v16.0.8</strong> &nbsp;·&nbsp; Windows 10 &amp; 11</p>
@@ -1082,127 +1050,7 @@
   <span class="cb-sub">20-minute free trial &nbsp;·&nbsp; No credit card required &nbsp;·&nbsp; Windows 10 &amp; 11</span>
 </div>
 
-<!-- ===== INTERVIEW QUESTION BANK (promo) =====
-     Public marketing surface: REAL aggregate counts (safe) + price, but the sample questions are
-     GENERIC hand-written illustrations (never real logged data, since this page is public). The real
-     questions are members-only, behind sign-in on the account page. CTA -> account page to sign in. -->
-<style>
-  #qbank{max-width:1080px;margin:92px auto 0;padding:0 24px;}
-  #qbank .qbk-eyebrow{font-size:.72rem;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#00e676;display:flex;align-items:center;gap:8px;justify-content:center;}
-  #qbank .qbk-new{background:rgba(0,230,118,.16);border:1px solid rgba(0,230,118,.4);color:#34d399;padding:2px 8px;border-radius:6px;font-size:.62rem;letter-spacing:1px;}
-  #qbank h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;letter-spacing:-.6px;text-align:center;margin:12px auto 10px;max-width:18ch;line-height:1.14;}
-  #qbank h2 .hl{background:linear-gradient(90deg,#00e676,#00c853);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  #qbank .qbk-sub{text-align:center;color:#8aa094;font-size:1rem;max-width:60ch;margin:0 auto 24px;line-height:1.65;}
-  #qbank .qbk-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:760px;margin:0 auto 14px;}
-  @media(max-width:600px){#qbank .qbk-stats{grid-template-columns:repeat(2,1fr);}}
-  #qbank .qbk-stat{text-align:center;background:linear-gradient(165deg,rgba(0,230,118,.06),rgba(255,255,255,.012));border:1px solid rgba(0,230,118,.22);border-radius:14px;padding:16px 10px;}
-  #qbank .qbk-stat .n{font-size:1.7rem;font-weight:900;letter-spacing:-.5px;color:#34d399;line-height:1;}
-  #qbank .qbk-stat .l{font-size:.66rem;color:#5d7268;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-top:6px;}
-  #qbank .qbk-live{display:flex;align-items:center;gap:8px;justify-content:center;font-size:.78rem;color:#8aa094;margin-bottom:28px;}
-  #qbank .qbk-live .d{width:8px;height:8px;border-radius:50%;background:#00e676;animation:qbkp 2.4s infinite;}
-  @keyframes qbkp{0%{box-shadow:0 0 0 0 rgba(0,230,118,.45)}70%{box-shadow:0 0 0 8px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
-  #qbank .qbk-split{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:start;}
-  @media(max-width:820px){#qbank .qbk-split{grid-template-columns:1fr;}}
-  #qbank .qbk-card{background:linear-gradient(165deg,#0f0b18,#0a0810);border:1px solid rgba(255,255,255,.08);border-radius:20px;}
-  #qbank .qbk-prev{padding:18px;}
-  #qbank .qbk-top{display:flex;align-items:center;gap:8px;font-size:.82rem;color:#8aa094;margin-bottom:12px;}
-  #qbank .qbk-top b{color:#e6efe9;margin-left:auto;}
-  #qbank .qbk-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
-  #qbank .qbk-pill{font-size:.76rem;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:#8aa094;padding:6px 12px;border-radius:999px;font-family:inherit;}
-  #qbank .qbk-pill.on{background:rgba(0,230,118,.16);border-color:rgba(0,230,118,.4);color:#34d399;}
-  #qbank .qbk-qlist{display:flex;flex-direction:column;gap:9px;}
-  #qbank .qbk-q{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px 14px;}
-  #qbank .qbk-q .t{font-size:.9rem;color:#e6efe9;}
-  #qbank .qbk-q .m{font-size:.7rem;color:#5d7268;margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;}
-  #qbank .qbk-q .m .tag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:1px 7px;border-radius:5px;}
-  #qbank .qbk-q.blur{filter:blur(5px);opacity:.7;user-select:none;}
-  #qbank .qbk-lockrow{display:flex;align-items:center;gap:8px;justify-content:center;font-size:.76rem;color:#8aa094;margin-top:12px;}
-  #qbank .qbk-lockrow svg{color:#00e676;flex-shrink:0;}
-  #qbank .qbk-offer{padding:22px;}
-  #qbank .qbk-badge{display:inline-flex;align-items:center;gap:7px;font-size:.66rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#34d399;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.4);padding:4px 10px;border-radius:7px;}
-  #qbank .qbk-price{display:flex;align-items:baseline;gap:8px;margin:14px 0 2px;}
-  #qbank .qbk-price .amt{font-size:2.8rem;font-weight:900;letter-spacing:-1px;color:#fff;line-height:1;}
-  #qbank .qbk-price .per{color:#8aa094;font-size:1rem;font-weight:600;}
-  #qbank .qbk-pnote{font-size:.8rem;color:#5d7268;margin-bottom:16px;}
-  #qbank .qbk-feat{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:10px;}
-  #qbank .qbk-feat li{display:flex;gap:10px;font-size:.9rem;color:#e6efe9;align-items:flex-start;}
-  #qbank .qbk-feat li svg{color:#00e676;flex-shrink:0;margin-top:3px;}
-  #qbank .qbk-cta{width:100%;padding:14px 16px;border-radius:30px;border:1px solid var(--gg);background:linear-gradient(45deg,var(--pg),var(--ag));color:#fff;font-family:inherit;font-size:1.02rem;font-weight:700;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:transform .3s;animation:buyGlow 2.4s ease-in-out infinite;}
-  #qbank .qbk-cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 36px rgba(46,204,113,.6);}
-  #qbank .qbk-sep{font-size:.76rem;color:#5d7268;text-align:center;margin-top:12px;line-height:1.5;}
-  #qbank .qbk-disc{text-align:center;font-size:.78rem;color:#5d7268;max-width:72ch;margin:26px auto 0;line-height:1.6;}
-  #qbank .qbk-disc b{color:#8aa094;}
-</style>
-<section id="qbank" class="reveal">
-  <div class="qbk-eyebrow"><span class="qbk-new">NEW</span> Question Bank</div>
-  <h2>Walk in knowing <span class="hl">what they ask</span></h2>
-  <p class="qbk-sub">Real questions, logged from actual CloakAI sessions and sorted by company and role. The bank refreshes regularly. Sign in to see which companies and roles are available to you.</p>
-  <div class="qbk-stats">
-    <div class="qbk-stat"><div class="n" id="qbk-interviews">-</div><div class="l">Sessions</div></div>
-    <div class="qbk-stat"><div class="n" id="qbk-questions">-</div><div class="l">Questions</div></div>
-    <div class="qbk-stat"><div class="n" id="qbk-companies">-</div><div class="l">Companies</div></div>
-    <div class="qbk-stat"><div class="n" id="qbk-roles">-</div><div class="l">Roles</div></div>
-  </div>
-  <div class="qbk-live"><span class="d"></span> Updated automatically from real sessions</div>
-  <div class="qbk-split">
-    <div class="qbk-card qbk-prev">
-      <div class="qbk-top">Example questions (illustrative) <b id="qbk-coname">Google</b></div>
-      <div class="qbk-pills" id="qbk-pills"></div>
-      <div class="qbk-qlist" id="qbk-qlist"></div>
-      <div class="qbk-lockrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Real questions are members-only, inside your account</div>
-    </div>
-    <div class="qbk-card qbk-offer">
-      <span class="qbk-badge">Membership</span>
-      <div class="qbk-price"><span class="amt" id="qbk-amt">&#8377;499</span><span class="per">/ month</span></div>
-      <div class="qbk-pnote">30 days of access. Separate from the app - it uses no app hours.</div>
-      <ul class="qbk-feat">
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Every question, grouped by company and role</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Fresh questions added regularly from real sessions</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> See how recently each one was asked</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> A daily email when new questions land</li>
-      </ul>
-      <a href="account.html#qb" class="qbk-cta" id="qbk-cta-btn" onclick="try{if(window.trackEvent)trackEvent('QuestionBank','CTA','homepage')}catch(e){}">Subscribe - <span id="qbk-cta-amt">&#8377;499</span> / month</a>
-      <div class="qbk-sep">Sign in first to see the companies and questions available to you, then join. Cancel anytime - it simply does not renew.</div>
-    </div>
-  </div>
-  <p class="qbk-disc">Community-sourced questions, grouped by company and role; companies too small to identify anyone are grouped under "Other". Personal information is automatically removed - only general and technical questions are included, never names, audio, answers or confidential details. The examples shown here are illustrative, not real data.</p>
-</section>
-<script>
-(function(){
-  var CO=[
-    {name:"Google",qs:[{t:"Design a rate limiter for a public API. Walk through the data structures.",r:"SDE",d:"asked ~4d ago"},{t:"Find the top K log sources in the last 5 minutes from a stream.",r:"SDE",d:"asked ~1w ago"},{t:"Roll out a change to 1% of traffic - how do you measure it safely?",r:"SRE",d:"asked ~2w ago"}]},
-    {name:"Amazon",qs:[{t:"Tell me about a time you disagreed with your manager.",r:"SDE",d:"asked ~2d ago"},{t:"Design the 'customers also bought' feature end to end.",r:"SDE",d:"asked ~1w ago"},{t:"Two-sum, then the follow-up: what if the array is sorted?",r:"SDE",d:"asked ~2w ago"}]},
-    {name:"Microsoft",qs:[{t:"Reverse a linked list in groups of k, then the edge cases.",r:"SDE",d:"asked ~3d ago"},{t:"What happens when you type a URL and press enter?",r:"SRE",d:"asked ~2w ago"},{t:"Design a key-value store with expiry.",r:"SDE",d:"asked ~1w ago"}]},
-    {name:"Infosys",qs:[{t:"Difference between abstraction and encapsulation, with an example.",r:"SDE",d:"asked ~1d ago"},{t:"SQL: second highest salary per department.",r:"Data",d:"asked ~1w ago"},{t:"Explain a project from your resume and your exact role.",r:"SDE",d:"asked ~2d ago"}]}
-  ];
-  var sel=0;
-  function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
-  function g(id){return document.getElementById(id)}
-  function render(){
-    if(!g("qbk-pills"))return;
-    g("qbk-pills").innerHTML=CO.map(function(c,i){return '<button class="qbk-pill'+(i===sel?" on":"")+'" data-i="'+i+'">'+esc(c.name)+'</button>'}).join("");
-    g("qbk-pills").querySelectorAll(".qbk-pill").forEach(function(b){b.onclick=function(){sel=+b.dataset.i;render()}});
-    g("qbk-coname").textContent=CO[sel].name;
-    g("qbk-qlist").innerHTML=CO[sel].qs.map(function(x,i){return '<div class="qbk-q'+(i>=1?" blur":"")+'"><div class="t">'+esc(x.t)+'</div><div class="m"><span class="tag">'+esc(x.r)+'</span><span style="color:#34d399">'+esc(x.d)+'</span></div></div>'}).join("");
-  }
-  function price(){ var intl=(window.cloakRegion==='INTL'); var amt=intl?"$9.99":"&#8377;499"; var e=g("qbk-amt"); if(e)e.innerHTML=amt; var c=g("qbk-cta-amt"); if(c)c.innerHTML=amt; }
-  function nfmt(n){try{return Number(n||0).toLocaleString()}catch(e){return String(n||0)}}
-  function stats(){
-    try{
-      fetch("https://app.cloakai.in/?action=qb_stats",{credentials:"omit"}).then(function(r){return r.json()}).then(function(d){
-        if(!d||!d.success)return;
-        g("qbk-interviews").textContent=nfmt(d.interviews);g("qbk-questions").textContent=nfmt(d.questions);
-        g("qbk-companies").textContent=nfmt(d.companies);g("qbk-roles").textContent=nfmt(d.roles);
-      }).catch(function(){});
-    }catch(e){}
-  }
-  function boot(){render();price();stats();}
-  if(document.readyState!=="loading")boot(); else document.addEventListener("DOMContentLoaded",boot);
-  window.addEventListener("cloakregion",price);
-})();
-</script>
-
-<!-- ===== LICENSE & REFERRAL (promo, after the Question Bank) ===== -->
+<!-- ===== LICENSE & REFERRAL (promo) ===== -->
 <style>
   #license-referral{max-width:1080px;margin:92px auto 0;padding:0 24px;}
   #license-referral .lr-head{text-align:center;margin-bottom:26px;}
@@ -1271,7 +1119,7 @@
         </div>
         <div class="ai-feat">
           <div class="ai-feat-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></div>
-          <div><h4>Accurate, context-aware responses</h4><p>GPT-4o-mini writes precise answers tuned to your resume, role and the exact question asked, not generic filler you have to rewrite.</p></div>
+          <div><h4>Accurate, context-aware responses</h4><p>CloakAI's AI writes precise answers tuned to your resume, role and the exact question asked, not generic filler you have to rewrite.</p></div>
         </div>
       </div>
     </div>
@@ -1500,8 +1348,6 @@
 @media(max-width:460px){.inv-grid{grid-template-columns:1fr;}}
 </style>
 
-
-
 <section class="reveal">
   <div class="sh"><h2>Invisible Where It Counts</h2><p>CloakAI hides from screen sharing and recording. It is also honest about what it cannot hide.</p></div>
   <div class="inv-grid">
@@ -1676,7 +1522,7 @@
     <div class="faq-item"><div class="faq-q">How does CloakAI hear the questions being asked? <span class="ic">+</span></div><div class="faq-a">It listens through your microphone or computer audio. By default, it automatically detects when someone is speaking and starts processing. When they stop, it sends the audio for analysis and shows you the answer. You can also switch to manual mode where you hold the Alt key while the question is being asked and release to send it.</div></div>
     <div class="faq-item"><div class="faq-q">What if the question is long or complex? Will the answer still be good? <span class="ic">+</span></div><div class="faq-a">Yes. The longer and more complex the question, the more context the AI has to work with, which often improves the answer. The AI streams answers word-by-word so you start seeing the response almost immediately regardless.</div></div>
     <div class="faq-item"><div class="faq-q">What is the context feature and why does it matter? <span class="ic">+</span></div><div class="faq-a">Before your call, you can tell CloakAI things like: "This is about a senior backend engineer role at a fintech company. The stack is Python, Django, and PostgreSQL. I have 4 years of experience." From that point on, every answer it generates is tailored specifically to your situation.</div></div>
-    <div class="faq-item"><div class="faq-q">What happens to my questions and answers after the call? <span class="ic">+</span></div><div class="faq-a">CloakAI automatically stores every question asked and every answer generated during your session. You can download the full session log as a file afterwards. No other tool offers this feature.</div></div>
+    <div class="faq-item"><div class="faq-q">What happens to my questions and answers after the call? <span class="ic">+</span></div><div class="faq-a">Your questions and answers are processed in real time to generate your response and are not stored on our servers. During a session you can save the full transcript to your own computer if you want a copy; once the session ends, we keep no record of what was asked or answered.</div></div>
     <div class="faq-item"><div class="faq-q">If I accidentally clear my screen mid-call, is the answer gone? <span class="ic">+</span></div><div class="faq-a">No. CloakAI keeps your last 100 answers in memory throughout the session. Use the navigation arrows in the interface to scroll back through previous answers at any point during the call.</div></div>
     <div class="faq-item"><div class="faq-q">Can it solve coding challenges shown on a shared screen? <span class="ic">+</span></div><div class="faq-a">Yes. Use the screen capture feature. Click the camera icon, and CloakAI takes a screenshot of everything visible on your screen and sends it to the AI for analysis. This works for coding problems, data diagrams, system design prompts, or anything displayed visually.</div></div>
     <div class="faq-item"><div class="faq-q">When do I receive my license key after paying? <span class="ic">+</span></div><div class="faq-a">Your license key is generated automatically the moment your payment is confirmed and sent to the email address you provided at checkout. This is fully automated and happens within seconds, at any time of day.</div></div>

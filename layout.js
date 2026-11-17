@@ -62,25 +62,6 @@ document.querySelectorAll('#mnav a').forEach(function(a){
   if(cta)nav.insertBefore(a,cta);else nav.appendChild(a);
 })();
 
-/* ── Question Bank link in the main nav, on EVERY page (desktop + mobile). Target: the
-   homepage promo section (#qbank) on the homepage, the account page's own section (#qb)
-   on the account page, else the homepage promo on every other page. */
-(function(){
-  var nav=document.getElementById('mnav');
-  if(!nav||nav.querySelector('[data-qbank-link]'))return;
-  var href = document.getElementById('qbank') ? '#qbank'
-           : document.getElementById('qb')    ? '#qb'
-           : 'index.html#qbank';
-  var a=document.createElement('a');
-  a.href=href;
-  a.setAttribute('data-qbank-link','');
-  a.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Question Bank';
-  // Place it right AFTER the Pricing link. Fall back to before the CTA if Pricing is not found.
-  var pricing=nav.querySelector('a[href="#pricing"],a[href="index.html#pricing"],a[href$="#pricing"]');
-  if(pricing&&pricing.parentNode===nav){ pricing.insertAdjacentElement('afterend',a); }
-  else { var cta=nav.querySelector('.nav-cta'); if(cta)nav.insertBefore(a,cta);else nav.appendChild(a); }
-})();
-
 /* ── License & Referral: MOBILE menu only (hidden from the desktop bar, kept in the
    hamburger dropdown and the footer). The link is hardcoded in each page's #mnav. */
 (function(){
