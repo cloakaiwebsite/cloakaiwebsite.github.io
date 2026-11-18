@@ -9,6 +9,13 @@
        on a slow mobile link, delaying first paint for no benefit. gtag is async, so
        moving it down costs nothing: it still loads, just not ahead of the paint. -->
   <link rel="stylesheet" href="theme.css?v=20261013">
+  <!-- Warm the YouTube connection so the "Watch Demo" video starts faster on click. These
+       only open a connection (DNS + TLS); the player itself is still fetched ONLY on click,
+       so page-load weight is unchanged. Without them the click paid the full cold handshake. -->
+  <link rel="preconnect" href="https://www.youtube.com" crossorigin>
+  <link rel="preconnect" href="https://i.ytimg.com" crossorigin>
+  <link rel="preconnect" href="https://s.ytimg.com" crossorigin>
+  <link rel="dns-prefetch" href="https://www.google.com">
   <!-- Google Identity Services for the optional "Continue with Google" checkout. Async,
        so if it fails to load the email + OTP flow below is completely unaffected. -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -551,7 +558,10 @@
     .vmo.open{opacity:1;visibility:visible;}
     .vmo-inner{position:relative;width:100%;max-width:920px;}
     .vmo-frame{position:relative;width:100%;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 24px 80px rgba(0,0,0,.7),0 0 0 1px rgba(46,204,113,.25);}
-    .vmo-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+    /* Spinner shown behind the (transparent until loaded) iframe so the window never looks frozen while YouTube loads. */
+    .vmo-frame::before{content:"";position:absolute;top:50%;left:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border:3px solid rgba(255,255,255,.22);border-top-color:var(--gg);border-radius:50%;animation:vmospin .8s linear infinite;z-index:0;}
+    @keyframes vmospin{to{transform:rotate(360deg);}}
+    .vmo-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1;}
     .vmo-close{position:absolute;top:-46px;right:0;background:none;border:none;color:#fff;font-size:32px;line-height:1;cursor:pointer;opacity:.85;}
     .vmo-close:hover{opacity:1;}
     @media(max-width:560px){.vmo-close{top:-40px;}}
@@ -639,7 +649,7 @@
   <div class="vmo-inner">
     <button class="vmo-close" type="button" onclick="closeDemoVideo()" aria-label="Close video">&times;</button>
     <div class="vmo-frame">
-      <iframe id="demo-video-iframe" src="" title="CloakAI demo video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+      <iframe id="demo-video-iframe" src="" title="CloakAI demo video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   </div>
 </div>
