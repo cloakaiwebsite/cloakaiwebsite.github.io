@@ -304,9 +304,10 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;padding:0;}
         '<div class="ref-code-box">' +
         '<div class="ref-code-label">Share this with friends</div>' +
         '<div class="ref-code" id="ref-code-val">' + d.referral_code + '</div>' +
-        '<button class="btn-copy" onclick="copyCode(\'' + d.referral_code + '\')">📋 Copy Code</button>' +
+        '<button class="btn-copy btn-copy-code" onclick="copyCode(\'' + d.referral_code + '\')">📋 Copy Code</button>' +
+        '<button class="btn-copy btn-copy-link" onclick="copyLink(\'' + d.referral_code + '\')" style="margin-left:8px">🔗 Copy referral link</button>' +
         '</div>' +
-        '<div style="font-size:.8rem;color:#64748B;line-height:1.55;">When a friend buys a plan and enters this code while activating, you <strong style="color:#F59E0B;">both get +1 free hour</strong> of AI time (you can earn up to 3 hours). <a href="#" onclick="switchTab(\'how\');return false;" style="color:#F59E0B;">How does this work?</a></div>' +
+        '<div style="font-size:.8rem;color:#64748B;line-height:1.55;">Share your <strong style="color:#F59E0B;">referral link</strong>. When a friend opens it and buys a plan, you <strong style="color:#F59E0B;">both get +1 free hour</strong> of AI time (up to 3 hours), applied automatically when they activate - no code to type. <a href="#" onclick="switchTab(\'how\');return false;" style="color:#F59E0B;">How does this work?</a></div>' +
         '</div>';
     }
 
@@ -345,7 +346,8 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;padding:0;}
       '<div class="ref-code-box">' +
       '<div class="ref-code-label">Share this code with friends</div>' +
       '<div class="ref-code" id="ref-code-val2">' + d.referral_code + '</div>' +
-      '<button class="btn-copy" onclick="copyCode(\'' + d.referral_code + '\')">📋 Copy Code</button>' +
+      '<button class="btn-copy btn-copy-code" onclick="copyCode(\'' + d.referral_code + '\')">📋 Copy Code</button>' +
+      '<button class="btn-copy btn-copy-link" onclick="copyLink(\'' + d.referral_code + '\')" style="margin-left:8px">🔗 Copy referral link</button>' +
       '</div>' +
       '<div class="ref-how">' +
       '<div class="ref-how-title">How to use it</div>' +
@@ -385,12 +387,24 @@ body{background:var(--bg);color:var(--tc);min-height:100vh;padding:0;}
 
   function copyCode(code) {
     navigator.clipboard.writeText(code).then(function() {
-      var btns = document.querySelectorAll('.btn-copy');
+      var btns = document.querySelectorAll('.btn-copy-code');
       btns.forEach(function(b) { b.textContent = '✓ Copied!'; setTimeout(function() { b.innerHTML = '📋 Copy Code'; }, 2000); });
     }).catch(function() {
       // Fallback for older browsers
       var ta = document.createElement('textarea');
       ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    });
+  }
+  // Copy a full share link (cloakai.in/?ref=CODE). The friend opens it, buys, and the referral
+  // is applied AUTOMATICALLY at activation - they never type the code. The server still gates
+  // every credit (first paid purchase, dedup by email+device, no self-referral, 3h cap).
+  function copyLink(code) {
+    var link = 'https://cloakai.in/?ref=' + code;
+    navigator.clipboard.writeText(link).then(function() {
+      document.querySelectorAll('.btn-copy-link').forEach(function(b) { b.textContent = '✓ Link copied!'; setTimeout(function() { b.innerHTML = '🔗 Copy referral link'; }, 2000); });
+    }).catch(function() {
+      var ta = document.createElement('textarea');
+      ta.value = link; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
     });
   }
 

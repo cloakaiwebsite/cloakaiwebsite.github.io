@@ -2098,6 +2098,7 @@
     if(_authMode==='google'){params.id_token=_pmGToken;params.phone=_authPhone;}
     else{params.email=_verifiedEmail;}
     if(_topupKey)params.topup_key=_topupKey;
+    if(_refCode&&!_topupKey)params.referral_code=_refCode;   // referral applies to a first purchase, never a top-up
     if(g==='phonepe'){params.action='create_order';}
     else if(g==='razorpay'){params.action='razorpay_create_order';params.intl=_intlParam();}
     else if(g==='paypal'){params.action='paypal_create_order';}
@@ -2226,10 +2227,19 @@
   // topped up (it falls back to a new key). The query is dropped after reading so a
   // refresh or shared link does not silently attach a stale key to a fresh purchase.
   var _topupKey='';
+  // Referral code carried in via a ?ref=REF-XXXXXXXX share link. Kept in sessionStorage so it
+  // survives the OTP + checkout flow in this tab but does NOT persist forever (a stale code must
+  // not silently attach to an unrelated later purchase). The server still gates every grant
+  // (first paid purchase, dedup by email+device, no self-referral, 3h cap), so this is only a
+  // convenience capture - it cannot create an unearned credit.
+  var _refCode='';
   (function(){
     var q=new URLSearchParams(location.search);
     var t=(q.get('topup')||'').trim().toUpperCase();
     if(/^CLAI-[A-Z0-9-]{5,}$/.test(t)){_topupKey=t;history.replaceState(null,'',location.pathname+location.hash);}
+    var rf=(q.get('ref')||'').trim().toUpperCase();
+    if(/^REF-[A-Z0-9]{8}$/.test(rf)){_refCode=rf;try{sessionStorage.setItem('cloak_ref',rf);}catch(e){}history.replaceState(null,'',location.pathname+location.hash);}
+    else{try{var sv=(sessionStorage.getItem('cloak_ref')||'').trim().toUpperCase();if(/^REF-[A-Z0-9]{8}$/.test(sv))_refCode=sv;}catch(e){}}
     // Region for the cards + checkout. Share the decision layout.js already made
     // (override -> session -> timezone -> IP) via window.cloakRegion so this page
     // and every other page always agree. Fall back to local detection if layout.js
