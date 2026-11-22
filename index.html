@@ -954,8 +954,7 @@
       </ul>
       <button class="btn-buy" onclick="openPay('basic')">Get 6 Hour Pack</button>
     </div>
-    <div class="pc pop" data-tier="pro" data-plan="pro" style="border-color:rgba(167,139,250,.3);box-shadow:0 0 24px rgba(167,139,250,.15);">
-      <div class="pc-badge-pop" style="background:linear-gradient(45deg,#7C3AED,#A78BFA);color:#fff;">POWER USER</div>
+    <div class="pc" data-tier="pro" data-plan="pro">
       <h3>Pro</h3>
       <div class="pc-old"><span class="pc-old-amt">₹5,999</span> <span class="pc-discount" style="background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.3);color:#A78BFA;">55% OFF</span></div>
       <div class="pc-price"><sup>₹</sup>2,699</div>
@@ -1605,6 +1604,13 @@
       <div><div class="plan-prev-name" id="pm-name">Loading...</div><div class="plan-prev-dur" id="pm-dur"></div></div>
       <div class="plan-prev-price" id="pm-price"></div>
     </div>
+    <!-- Shown only when this visit carries a ?ref= referral link (openPay toggles it).
+         The +1 bonus hour is still gated server-side (first paid purchase, dedup by
+         email+device, no self-referral), so the "first purchase" wording is the honest
+         condition and this is a display-only nudge, never a grant. -->
+    <div id="pm-ref-note" style="display:none;background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.22);border-radius:8px;padding:9px 13px;margin-bottom:14px;font-size:.8rem;color:#34D399;line-height:1.55;">
+      🎁 <strong style="color:#fff;">Referral applied.</strong> Get <strong style="color:#fff;">+1 bonus hour free</strong> on your first CloakAI purchase.
+    </div>
     <!-- Step 1: Continue with Google (primary) OR email + OTP (fallback) -->
     <div id="pm-step1">
       <!-- Google: one tap, verified email, no OTP. If the library is blocked this
@@ -2157,13 +2163,23 @@
     curPlan=plan;_verifiedEmail='';_authMode='';_authPhone='';_otpVerified=false;
     resetGoogleCheckout();
     document.getElementById('pm-name').textContent=m.name;
+    // Referral payoff: show the "+1 bonus hour" note only when a ?ref= link is active
+    // and this is not a top-up (referral never applies to a top-up). Display-only; the
+    // grant stays server-gated.
+    var _rn=document.getElementById('pm-ref-note');if(_rn)_rn.style.display=(_refCode&&!_topupKey)?'':'none';
     _paintPayRegion();renderGateways();
     document.getElementById('pm-msg').textContent='';_otpMsg('','');
     document.getElementById('pm-email').value='';document.getElementById('pm-phone').value='';document.getElementById('pm-otp').value='';
     document.getElementById('pm-step1').style.display='';document.getElementById('pm-step2').style.display='none';
     _btnLoading(document.getElementById('pm-g-continue'),false);_btnLoading(document.getElementById('pm-otp-continue'),false);
     _resetOTPBtn();_clearResendCooldown();
-    openMo('pay-mo');setTimeout(function(){document.getElementById('pm-email').focus();},180);
+    openMo('pay-mo');
+    // Do NOT auto-focus the email field on touch / narrow screens. Google one-tap is the
+    // primary path shown ABOVE this form, and focusing email pops the soft keyboard over it
+    // the instant the modal opens, hiding the recommended path. Only auto-focus on a
+    // pointer-based wide screen, where the email form is already fully visible.
+    var _noAutoFocus=(window.matchMedia&&(window.matchMedia('(pointer: coarse)').matches||window.matchMedia('(max-width: 640px)').matches));
+    if(!_noAutoFocus)setTimeout(function(){var e=document.getElementById('pm-email');if(e)e.focus();},180);
     if(_topupKey)_pmMsg('Adding hours to your existing key '+_topupKey+'. Use the email it was bought with.','inf');
     trackEvent('Checkout','Open',plan);
   }
